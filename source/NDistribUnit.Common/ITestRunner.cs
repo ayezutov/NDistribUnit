@@ -1,10 +1,10 @@
 ﻿using System.Runtime.Serialization;
 using System.ServiceModel;
 
-namespace NDistribUnit.Server
+namespace NDistribUnit.Common
 {
-    // NOTE: If you change the interface name "IService1" here, you must also update the reference to "IService1" in App.config.
-    [ServiceContract]
+    [ServiceContract(SessionMode=SessionMode.Required, 
+        CallbackContract=typeof(ICallbacks))]
     public interface ITestRunner
     {
         [OperationContract]
@@ -16,7 +16,6 @@ namespace NDistribUnit.Server
         // TODO: Add your service operations here
     }
 
-    // Use a data contract as illustrated in the sample below to add composite types to service operations
     [DataContract]
     public class CompositeType
     {
