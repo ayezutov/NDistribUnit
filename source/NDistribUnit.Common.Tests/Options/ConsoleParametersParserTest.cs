@@ -43,13 +43,23 @@ namespace NDistribUnit.Common.Tests.Options
         }
 
         [Test]
-        public void UnregisterdFlagBeforeNameValueIsParsedCorrectly()
+        public void UnregisteredFlagBeforeNameValueIsParsedCorrectly()
         {
             var consoleParametersParser = new ConsoleParametersParser();
 
             var result = consoleParametersParser.Parse(new[]{"/int:40", "/tag:asdgf", "/flag", "/tag2:bsdfg"});
 
             Assert.That(result.Select(r => r.Name).ToArray(), Is.EquivalentTo(new[]{"int", "tag", "flag", "tag2"}));
+        }
+
+        [Test]
+        public void UnregisteredFlagAtTheEndIsParsedCorrectly()
+        {
+            var consoleParametersParser = new ConsoleParametersParser();
+
+            var result = consoleParametersParser.Parse(new[]{"/int:40", "/tag:asdgf", "/flag", "/tag2:bsdfg", "/flag2"});
+
+            Assert.That(result.Select(r => r.Name).ToArray(), Is.EquivalentTo(new[]{"int", "tag", "flag", "tag2", "flag2"}));
         }
     }
 }
