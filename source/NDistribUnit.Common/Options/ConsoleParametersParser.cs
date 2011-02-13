@@ -5,50 +5,70 @@ using System.Linq;
 
 namespace NDistribUnit.Common.Options
 {
+    /// <summary>
+    /// Parser, which parses the command line by invoking registered actions
+    /// </summary>
     public class ConsoleParametersParser : IEnumerable
     {
-        readonly IList<OptionMatchDescription> options = new List<OptionMatchDescription>();
-        public const string UnnamedOptionName = "/unnamed/";
+        private readonly IList<OptionMatchDescription> optionActions = new List<OptionMatchDescription>();
 
+        /// <summary>
+        /// Initializes a new console parameters parser instance
+        /// </summary>
         public ConsoleParametersParser()
         {
-            ParameterPrefixes = new []{"-", "/"};
+            ParameterPrefixes = new[] {"-", "/"};
             ParameterDelimiters = new[] {":"};
         }
 
-        public string[] ParameterPrefixes { get; set; }
-        public string[] ParameterDelimiters { get; set; }
+        private string[] ParameterPrefixes { get; set; }
+        private string[] ParameterDelimiters { get; set; }
 
+        /// <summary>
+        /// Adds actions for different option names
+        /// </summary>
+        /// <typeparam name="T">Supposed option value type</typeparam>
+        /// <param name="optionName">Option name</param>
+        /// <param name="action">Action, which should be performed on match</param>
+        /// <param name="isFlag">Indicates, that the option with such a name is a flag option</param>
         public void Add<T>(string optionName, Action<T> action, bool isFlag)
         {
-            options.Add(new OptionMatchDescription(optionName, action, typeof(T), isFlag));
+            optionActions.Add(new OptionMatchDescription(optionName, action, typeof (T), isFlag));
+        }
+        
+        /// <summary>
+        /// Adds actions for different non flag option names
+        /// </summary>
+        /// <typeparam name="T">Supposed option value type</typeparam>
+        /// <param name="optionName">Option name</param>
+        /// <param name="action">Action, which should be performed on match</param>
+        public void Add<T>(string optionName, Action<T> action)
+        {
+            Add(optionName, action, false);
         }
 
-        public IList<Option> Parse(IEnumerable<string> commandLine)
+        /// <summary>
+        /// Parser the command line and invokes all registered action for each option name match
+        /// </summary>
+        /// <param name="commandLine">The command line</param>
+        /// <returns>Returns all the options, which were not registered for action</returns>
+        public IList<ConsoleOption> Parse(IEnumerable<string> commandLine)
         {
             var availableOptions = GetAllOptions(commandLine);
-            
-            foreach (var option in options)
+
+            foreach (var optionAction in optionActions)
             {
-                IEnumerable<Option> matchingOptions;
-                if ((matchingOptions = availableOptions.Where(o =>
-                                                        {
-                                                            if (!o.Name.Equals(option.Name))
-                                                                return false;
-                                                            try
-                                                            {
-                                                                Convert.ChangeType(o.Value, option.OptionType);
-                                                            }
-                                                            catch (Exception)
-                                                            {
-                                                                return false;
-                                                            }
-                                                            return true;
-                                                        }).ToArray()).Count() > 0)
+                IEnumerable<ConsoleOption> matchingOptions;
+                if ((matchingOptions = FindAllMatchingOptions(availableOptions, optionAction)).Count() > 0)
                 {
                     foreach (var matchingOption in matchingOptions)
                     {
-                        option.Action.DynamicInvoke(new[] { Convert.ChangeType(matchingOption.Value, option.OptionType) });
+                        optionAction.Action.DynamicInvoke(
+                            new[]
+                                {
+                                    Convert.ChangeType(matchingOption.Value,
+                                                       optionAction.OptionValueType)
+                                });
                         availableOptions.Remove(matchingOption);
                     }
                 }
@@ -57,86 +77,112 @@ namespace NDistribUnit.Common.Options
             return availableOptions;
         }
 
-        private IList<Option> GetAllOptions(IEnumerable<string> commandLine)
+        /// <summary>
+        /// Finds all options, which match by name and at the same time can be converted to registered type
+        /// </summary>
+        /// <param name="availableOptions">List of all available options to search in</param>
+        /// <param name="option">Option description to match with</param>
+        /// <returns></returns>
+        private static ConsoleOption[] FindAllMatchingOptions(IEnumerable<ConsoleOption> availableOptions,
+                                                       OptionMatchDescription option)
         {
-            var result = new List<Option>();
-            string currentArgumentName = null;
+            return availableOptions.Where(o =>
+                                              {
+                                                  if (!o.Name.Equals(option.Name))
+                                                      return false;
+                                                  try
+                                                  {
+                                                      Convert.ChangeType(o.Value,
+                                                                         option.OptionValueType);
+                                                  }
+                                                  catch (Exception)
+                                                  {
+                                                      return false;
+                                                  }
+                                                  return true;
+                                              }).ToArray();
+        }
+
+        /// <summary>
+        /// Parses the 
+        /// </summary>
+        /// <param name="commandLine"></param>
+        /// <returns></returns>
+        private IList<ConsoleOption> GetAllOptions(IEnumerable<string> commandLine)
+        {
+            var result = new List<ConsoleOption>();
+            string previousArgumentName = null;
 
             foreach (var argument in commandLine)
             {
-                if (!string.IsNullOrEmpty(currentArgumentName))
+                string prefix = ParameterPrefixes.FirstOrDefault(argument.StartsWith);
+
+                // if previous argument was a switch and current argument is a switch
+                // treat previous as a flag
+                if (!string.IsNullOrEmpty(prefix) && !string.IsNullOrEmpty(previousArgumentName))
                 {
-                    result.Add(new Option(currentArgumentName, argument));
-                    currentArgumentName = null;
+                    result.Add(new ConsoleOption(previousArgumentName, true.ToString()));
+                    previousArgumentName = null;
+                }
+
+                // console argument, which follows its name after a whitespace
+                if (!string.IsNullOrEmpty(previousArgumentName))
+                {
+                    result.Add(new ConsoleOption(previousArgumentName, argument));
+                    previousArgumentName = null;
                     continue;
                 }
 
-                string prefix = ParameterPrefixes.FirstOrDefault(argument.StartsWith);
+                // If the argument starts with prefix it is a named argument or an argument name
                 if (!string.IsNullOrEmpty(prefix))
                 {
                     string argumentWithoutPrefix = argument.Substring(prefix.Length);
                     var delimiter = ParameterDelimiters.FirstOrDefault(argumentWithoutPrefix.Contains);
+
+                    // Option with delimiter is a /name:value option
                     if (!string.IsNullOrEmpty(delimiter))
                     {
-                        string[] parts = argumentWithoutPrefix.Split(ParameterDelimiters, 2, StringSplitOptions.RemoveEmptyEntries);
-                        result.Add(new Option(parts[0], parts[1]));
+                        string[] parts = argumentWithoutPrefix.Split(ParameterDelimiters, 2,
+                                                                     StringSplitOptions.RemoveEmptyEntries);
+                        result.Add(new ConsoleOption(parts[0], parts[1]));
                     }
                     else
                     {
-                        if (options.FirstOrDefault(o => o.Name.Equals(argumentWithoutPrefix) && o.IsFlag) != null)
+                        // Option without delimiter is either a flag (if registered)
+                        if (optionActions.FirstOrDefault(o => o.Name.Equals(argumentWithoutPrefix) && o.IsFlag) != null)
                         {
-                            result.Add(new Option(argumentWithoutPrefix, true.ToString()));
+                            result.Add(new ConsoleOption(argumentWithoutPrefix, true.ToString()));
                             continue;
                         }
 
-                        currentArgumentName = argumentWithoutPrefix;
+                        // or just an option name
+                        previousArgumentName = argumentWithoutPrefix;
                     }
                 }
+                    // If the argument doesn't start with prefix it is an unnamed argument
                 else
                 {
-                    result.Add(new Option(UnnamedOptionName, argument));
+                    result.Add(new ConsoleOption(argument));
                 }
             }
 
-            if (!string.IsNullOrEmpty(currentArgumentName))
+            // If we have something left on exit, let's assume it is a flag
+            if (!string.IsNullOrEmpty(previousArgumentName))
             {
-                result.Add(new Option(currentArgumentName, true.ToString()));
+                result.Add(new ConsoleOption(previousArgumentName, true.ToString()));
             }
 
             return result;
         }
 
-        public IEnumerator GetEnumerator()
+        /// <summary>
+        ///  Is never used as enumerator, but the interface implementation
+        ///  is required to support collection initializer syntax
+        /// </summary>
+        /// <returns>Always throws an exception, if trying to access</returns>
+        IEnumerator IEnumerable.GetEnumerator()
         {
             throw new NotImplementedException();
-        }
-    }
-
-    public class Option
-    {
-        public Option(string name, string value)
-        {
-            Name = name;
-            Value = value;
-        }
-
-        public string Name { get; set; }
-        public string Value { get; set; }
-    }
-
-    public class OptionMatchDescription
-    {
-        public bool IsFlag { get; set; }
-        public string Name { get; set; }
-        public Delegate Action { get; set; }
-        public Type OptionType { get; set; }
-
-        public OptionMatchDescription(string name, Delegate action, Type optionType, bool isFlag)
-        {
-            IsFlag = isFlag;
-            Name = name;
-            Action = action;
-            OptionType = optionType;
         }
     }
 }

@@ -11,14 +11,15 @@ namespace NDistribUnit.Client.Configuration
 
             var set = new ConsoleParametersParser
                 {
-                    {"run", (string testName) => parameters.TestToRun = testName, false},
+// Disabling is required as far as inspection warning is incorrect and compilation doesn't succeed, if fixed
+// ReSharper disable RedundantLambdaParameterType
                     {"xml", (string xmlFileName) => parameters.XmlFileName = xmlFileName, false },
                     {"noshadow", (bool noShadow) => parameters.NoShadow = noShadow, true },
-                    {ConsoleParametersParser.UnnamedOptionName, (string assembly) => parameters.AssembliesToTest.Add(assembly), false}
+                    {ConsoleOption.UnnamedOptionName, (string assembly) => parameters.AssembliesToTest.Add(assembly), false}
+// ReSharper restore RedundantLambdaParameterType
                 };
 
-            set.Parse(strings);
-
+            parameters.UnknownOption.AddRange(set.Parse(strings));
             return parameters;
         }
     }
