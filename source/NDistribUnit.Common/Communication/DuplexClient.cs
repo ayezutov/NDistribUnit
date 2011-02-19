@@ -51,5 +51,10 @@ namespace NDistribUnit.Common.Communication
             TIContract channel = base.CreateChannel();
             return channel;
         }
+
+        public TIContract Actions
+        {
+            get { return Channel; }
+        }
     }
 }

@@ -1,0 +1,143 @@
+<html>
+<head>
+    <title>NDistribUnit dashboard</title>
+
+    <script type="text/javascript" src="scripts/jquery-1.4.4.min.js"></script>
+
+    <script type="text/javascript" src="scripts/jquery-ui-1.8.9.custom.min.js"></script>
+
+    <!-- http://docs.jquery.com/Plugins/Treeview -->
+    <link rel="stylesheet" href="scripts/jquery.treeview/jquery.treeview.css" type="text/css" />
+
+    <script type="text/javascript" src="scripts/jquery.treeview/jquery.treeview.js"></script>
+
+    <!-- http://layout.jquery-dev.net/documentation.cfm -->
+
+    <script type="text/javascript" src="scripts/jquery.layout.min.js"></script>
+
+    <script type="text/javascript" src="scripts/jquery.history.js"></script>
+
+    <link rel="stylesheet" href="styles/NDistribUnit.Dashboard.css" type="text/css" />
+
+    <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.js"></script>
+
+    <script type="text/javascript">
+        var d = new Dashboard();
+        $(function() {
+            $("body").layout({
+                north: { paneSelector: "#top-pane", size: 30, resizable: false, spacing_open: 0 },
+                center: { paneSelector: "#main-pane" }
+                //,west: { paneSelector: "#tests-tree-pane", size: 200, resizable: true, slideable: false, minSize: 200, maxSize: 0, spacing_open: 6 }
+            });
+            $("#tests-tree-pane>UL").treeview();
+
+            $("#tests-content").layout({
+                center: { paneSelector: "#test-results-pane" },
+                west: { paneSelector: "#tests-tree-pane", size: 200, resizable: true, slideable: false, minSize: 200, maxSize: 0, spacing_open: 6 }
+            });
+            $.history.init(function(newHash) {
+                if (newHash == "") {
+                    $("#tests-content").show().animate({ left: 0 }, { duration: 2000 });
+                    $("#status-pane").slideUp();
+                    $("#settings-pane").slideUp();
+                }
+                else if (newHash == "status") {
+                    $("#tests-content").animate({ left: -1000 }, {duration: 2000}).hide();
+                    $("#status-pane").slideDown();
+                    $("#settings-pane").slideUp();
+                }
+                else if (newHash == "settings") {
+                    $("#tests-content").slideUp();
+                    $("#status-pane").slideUp();
+                    $("#settings-pane").slideDown();
+                }
+                else if (newHash == "status") {
+                }
+            });
+        })
+    </script>
+
+</head>
+<body>
+    <div id="top-pane">
+        <span>
+            <img id="logo" alt="NDistribUnit" src="images/logo-medium.gif" /></span> <span id="settingsCommand">
+                <a class="menuCommand menuCommandRight" href="#settings">
+                    <img alt="settings" src="images/settings.gif" />
+                    Settings</a></span> <span id="infoCommand"><a class="menuCommand menuCommandRight"
+                        href="#status">
+                        <img alt="info" src="images/info.gif" />
+                        Status</a></span> <span id="homeCommand"><a class="menuCommand menuCommandRight"
+                            href="#">
+                            <img alt="home" src="images/home.gif" />
+                            Home</a></span>
+    </div>
+    <div id="main-pane">
+        <div id="tests-content" class="content">
+            <div id="tests-tree-pane">
+                <ul>
+                    <li><span><a href="#O2I_nightly">O2I nightly</a></span>
+                        <ul style="display: none;">
+                            <li><span><a href="#run_2791873">19 Feb 2010 [epmsd122/dev]</a></span>
+                                <ul style="display: none;">
+                                    <li><span class="success"><a href="#test_FullNameSpace">item 1.1</a></span></li>
+                                    <li><span class="failed">item 1.2</span></li>
+                                    <li><span class="running">item 1.3</span></li>
+                                </ul>
+                            </li>
+                            <li><span class="failed">18 Feb 2010 [epmsd122/dev]</span>
+                                <ul style="display: none;">
+                                    <li><span class="success">item 1.1</span></li>
+                                    <li><span class="failed">item 1.2</span></li>
+                                    <li><span class="ignored">item 1.3</span></li>
+                                </ul>
+                            </li>
+                            <li><span class="success">17 Feb 2010 [epmsd122/dev]</span>
+                                <ul style="display: none;">
+                                    <li><span class="success">item 1.1</span></li>
+                                    <li><span class="success">item 1.2</span></li>
+                                    <li><span class="ignored">item 1.3</span></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><span>O2I for 6.0</span>
+                        <ul style="display: none;">
+                            <li><span>19 Feb 2010 [STG]</span>
+                                <ul style="display: none;">
+                                    <li><span class="success">item 1.1</span></li>
+                                    <li><span class="failed">item 1.2</span></li>
+                                    <li><span class="running">item 1.3</span></li>
+                                </ul>
+                            </li>
+                            <li><span class="failed">18 Feb 2010 [STG]</span>
+                                <ul style="display: none;">
+                                    <li><span class="success">item 1.1</span></li>
+                                    <li><span class="failed">item 1.2</span></li>
+                                    <li><span class="ignored">item 1.3</span></li>
+                                </ul>
+                            </li>
+                            <li><span class="success">17 Feb 2010 [TST]</span>
+                                <ul style="display: none;">
+                                    <li><span class="success">item 1.1</span></li>
+                                    <li><span class="success">item 1.2</span></li>
+                                    <li><span class="ignored">item 1.3</span></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="test-results-pane">
+                Hi all
+            </div>
+        </div>
+        <div id="status-pane" class="content" style="display: none">
+            Status
+        </div>
+        <div id="settings-pane" class="content" style="display: none">
+            Settings
+        </div>
+    </div>
+</body>
+</html>

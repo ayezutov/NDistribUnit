@@ -43,6 +43,9 @@
     <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.ServiceModel.Web">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -55,12 +58,68 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="dashboard\scripts\jquery.treeview\.gitignore" />
+    <None Include="dashboard\scripts\jquery.treeview\.project" />
+    <None Include="dashboard\scripts\jquery.treeview\README.md" />
+    <None Include="dashboard\scripts\jquery.treeview\todo" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NDistribUnit.Common\NDistribUnit.Common.csproj">
       <Project>{B060BDAC-E277-42BB-871C-320D6D8C5CA7}</Project>
       <Name>NDistribUnit.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="dashboard\images\home.gif" />
+    <Content Include="dashboard\images\home.jpg" />
+    <Content Include="dashboard\images\info.gif" />
+    <Content Include="dashboard\images\logo-medium.gif" />
+    <Content Include="dashboard\images\logo.gif" />
+    <Content Include="dashboard\images\nunit_icons\Failure.jpg" />
+    <Content Include="dashboard\images\nunit_icons\Gray.jpg" />
+    <Content Include="dashboard\images\nunit_icons\Ignored.jpg" />
+    <Content Include="dashboard\images\nunit_icons\project-run.png" />
+    <Content Include="dashboard\images\nunit_icons\project.png" />
+    <Content Include="dashboard\images\nunit_icons\Success.jpg" />
+    <Content Include="dashboard\images\nunit_icons\test_running.gif" />
+    <Content Include="dashboard\images\resizer_bg.png" />
+    <Content Include="dashboard\images\settings.gif" />
+    <Content Include="dashboard\images\settings_bg.gif" />
+    <Content Include="dashboard\images\tests_bg.png" />
+    <Content Include="dashboard\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery-1.4.4.min.js" />
+    <Content Include="dashboard\scripts\jquery-ui-1.8.9.custom.min.js" />
+    <Content Include="dashboard\scripts\jquery.history.js" />
+    <Content Include="dashboard\scripts\jquery.layout.min.js" />
+    <Content Include="dashboard\scripts\jquery.treeview\changelog.txt" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\ajax-loader.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\file.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\folder-closed.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\folder.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\minus.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\plus.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-black-line.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-black.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-default-line.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-default.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-famfamfam-line.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-famfamfam.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-gray-line.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-gray.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-red-line.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-red.gif" />
+    <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.async.js" />
+    <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.css" />
+    <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.edit.js" />
+    <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.js" />
+    <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.sortable.js" />
+    <Content Include="dashboard\scripts\jquery.ui.all.js" />
+    <Content Include="dashboard\scripts\NDistribUnit.Dashboard.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\styles\NDistribUnit.Dashboard.css" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

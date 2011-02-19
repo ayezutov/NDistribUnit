@@ -1,0 +1,111 @@
+﻿body
+{
+    margin: 0px;
+    padding: 0px;
+    font-family: arial, sans serif;
+    font-size: small;
+}
+
+#top-pane
+{
+    width: 100%;
+    height: 30px;
+    background-image: url('../images/settings_bg.gif');
+    background-repeat: repeat-x;
+    background-position: bottom;
+    padding-right: 10px;
+}
+
+#logo
+{
+    margin-left: 10px;
+}
+
+a
+{   
+    text-decoration: none;
+    padding-bottom: 0px;
+    color: #6866FF;
+    border-bottom: dashed 1px #A8B6FF;
+}
+
+.menuCommand
+{
+    color: #6866FF;
+    border-bottom: dashed 1px #A8B6FF;
+    font-weight: bold;
+    margin-right: 15px;
+    margin-top:7px;
+}
+
+.menuCommand IMG
+{
+    vertical-align: text-top;
+}
+.menuCommandRight
+{
+    float: right;
+}
+.ui-layout-resizer
+{
+    background: url(../images/resizer_bg.png);
+}
+
+UL, LI
+{
+    background-color: transparent;
+}
+
+#tests-tree-pane
+{
+    background: url(../images/tests_bg.png) repeat-y;
+    overflow: auto;
+}
+
+#tests-tree-pane li span
+{
+    height: 24px;
+    padding-left: 20px;
+    background: url(../images/nunit_icons/project.png) no-repeat 1px 0px;
+}
+
+#tests-tree-pane li li span
+{
+    background: url(../images/nunit_icons/project-run.png) no-repeat 0px 0px;
+}
+
+#tests-tree-pane li li li span
+{
+    background: url(../images/nunit_icons/Gray.jpg) no-repeat 2px 0px;
+}
+
+#tests-tree-pane li li li span.failed
+{
+    background: url(../images/nunit_icons/Failure.jpg) no-repeat 2px 0px;
+}
+
+#tests-tree-pane li li li span.ignored
+{
+    background: url(../images/nunit_icons/Ignored.jpg) no-repeat 2px 0px;
+}
+
+#tests-tree-pane li li li span.success
+{
+    background: url(../images/nunit_icons/Success.jpg) no-repeat 2px 0px;
+}
+
+#tests-tree-pane li li li span.running
+{
+    background: url(../images/nunit_icons/test_running.gif) no-repeat 2px 0px;
+}
+
+.treeview UL
+{
+    background-color: Transparent;
+}
+
+.content
+{
+    width: 100%;
+    height: 100%;
+}

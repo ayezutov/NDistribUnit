@@ -1,5 +1,9 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.IO;
+using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Web;
+using System.Text;
 
 namespace NDistribUnit.Common
 {
@@ -14,6 +18,23 @@ namespace NDistribUnit.Common
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
         // TODO: Add your service operations here
+    }
+
+    [ServiceContract]
+    public interface IWebEnabledContract
+    {
+        [OperationContract, WebGet]
+        Stream GetWeb();
+    }
+
+    public class WebEnabledContract : IWebEnabledContract
+    {
+
+        public Stream GetWeb()
+        {
+            WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
+            return new MemoryStream(Encoding.UTF8.GetBytes("<html><body><table><tr><td>Hello</td></tr><tr><td>world</td></tr></table></body></html>"));
+        }
     }
 
     [DataContract]
