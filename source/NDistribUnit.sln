@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDistribUnit.Client", "NDistribUnit.Client\NDistribUnit.Client.csproj", "{EA43284E-A328-4F06-9527-30DE52C37546}"
 	ProjectSection(ProjectDependencies) = postProject
 		{91A452A1-4EBC-42C6-A724-F3BFF3A66EAF} = {91A452A1-4EBC-42C6-A724-F3BFF3A66EAF}
@@ -19,6 +19,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDistribUnit.Common.Tests", "NDistribUnit.Common.Tests\NDistribUnit.Common.Tests.csproj", "{5B6FAB51-B99B-4D78-B08A-D701BE9CAEF3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDistribUnit.Server.Tests", "NDistribUnit.Server.Tests\NDistribUnit.Server.Tests.csproj", "{4ECA0DB7-1527-405A-BD64-45CD0559EBC9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{37BB1319-1D9E-48A9-B649-F0FA1B5DDD41}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code", "Code", "{00086EEA-1A01-400D-BACD-ED4C97AA29FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,5 +65,15 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AF3A8DB3-9BB8-461A-9184-476C8D47FB72} = {37BB1319-1D9E-48A9-B649-F0FA1B5DDD41}
+		{10082BDC-CC29-4E06-86E5-080746C7BD38} = {37BB1319-1D9E-48A9-B649-F0FA1B5DDD41}
+		{5B6FAB51-B99B-4D78-B08A-D701BE9CAEF3} = {37BB1319-1D9E-48A9-B649-F0FA1B5DDD41}
+		{4ECA0DB7-1527-405A-BD64-45CD0559EBC9} = {37BB1319-1D9E-48A9-B649-F0FA1B5DDD41}
+		{2F1BC3F1-EB1B-4D71-992A-564CF104F9A1} = {00086EEA-1A01-400D-BACD-ED4C97AA29FE}
+		{91A452A1-4EBC-42C6-A724-F3BFF3A66EAF} = {00086EEA-1A01-400D-BACD-ED4C97AA29FE}
+		{EA43284E-A328-4F06-9527-30DE52C37546} = {00086EEA-1A01-400D-BACD-ED4C97AA29FE}
+		{B060BDAC-E277-42BB-871C-320D6D8C5CA7} = {00086EEA-1A01-400D-BACD-ED4C97AA29FE}
 	EndGlobalSection
 EndGlobal
