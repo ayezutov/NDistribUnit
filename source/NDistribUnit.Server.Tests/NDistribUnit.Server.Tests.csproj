@@ -63,7 +63,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="dashboardTests\NDistribUnit.config" />
+    <None Include="jsTestDriver.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="dashboardTests\dashboardTests.js" />

@@ -19,24 +19,14 @@
 
     <link rel="stylesheet" href="styles/NDistribUnit.Dashboard.css" type="text/css" />
 
+    <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.UI.js"></script>
     <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.js"></script>
+    <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.Dispatcher.js"></script>
 
     <script type="text/javascript">
-        var d = new Dashboard();
-        $(function() {
-            $("body").layout({
-                north: { paneSelector: "#top-pane", size: 30, resizable: false, spacing_open: 0 },
-                center: { paneSelector: "#main-pane" }
-                //,west: { paneSelector: "#tests-tree-pane", size: 200, resizable: true, slideable: false, minSize: 200, maxSize: 0, spacing_open: 6 }
-            });
-            $("#tests-tree-pane>UL").treeview();
+        var dashboard = new Dashboard();
 
-            $("#tests-content").layout({
-                center: { paneSelector: "#test-results-pane" },
-                west: { paneSelector: "#tests-tree-pane", size: 200, resizable: true, slideable: false, minSize: 200, maxSize: 0, spacing_open: 6 }
-            });
-           
-        })
+        $(function () { dashboard.init(); });
     </script>
 
 </head>
