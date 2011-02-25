@@ -144,5 +144,53 @@ TestCase("Dashboard.Dispatcher.Tests", {
         });
         dispatcher.route("test/test2/test2/parameter1/parameter2");
         assertEquals("unknown: test/test2/test2/parameter1/parameter2", value);
+    },
+
+    testEmptyActionShouldBeInvokedIfExactMatchOnIntermediateObject: function () {
+        var value = "";
+        var dispatcher = new DashboardDispatcher({
+            "test": {
+                test2: {
+                    "": function () { value = "default for this"; },
+                    test3: function (par, par2) { value = par2 + par; }
+                }
+            },
+            "test/test2/test3": function () { value = "full route"; },
+            unknownAction: function (route) { value = "unknown: " + route; }
+        });
+        dispatcher.route("test/test2");
+        assertEquals("default for this", value);
+    },
+
+    testEmptyActionShouldBeInvokedIfExactMatchWithSlashOnIntermediateObject: function () {
+        var value = "";
+        var dispatcher = new DashboardDispatcher({
+            "test": {
+                test2: {
+                    "": function () { value = "default for this"; },
+                    test3: function (par, par2) { value = par2 + par; }
+                }
+            },
+            "test/test2/test3": function () { value = "full route"; },
+            unknownAction: function (route) { value = "unknown: " + route; }
+        });
+        dispatcher.route("test/test2/");
+        assertEquals("default for this", value);
+    },
+
+    testSlashesAreNotImportantForRouting: function () {
+        var value = "";
+        var dispatcher = new DashboardDispatcher({
+            "test": {
+                test2: {
+                    test3: function (par, par2) { value = par2 + par; }
+                }
+            },
+            "test/test2/test3": function () { value = "full route"; },
+            unknownAction: function (route) { value = "unknown: " + route; }
+        });
+        dispatcher.route("/test/test2/test3/parameter1/parameter2/");
+        assertEquals("parameter2parameter1", value);
     }
+    
 });
