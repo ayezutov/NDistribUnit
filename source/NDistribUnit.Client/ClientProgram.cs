@@ -1,14 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using NDistribUnit.Client.Configuration;
+using NDistribUnit.Common.ConsoleProcessing;
 
 namespace NDistribUnit.Client
 {
-    class ClientProgram
+    public class ClientProgram
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            ClientParameters parameters = new ClientParametersParser().Parse(args);
+            return new ClientProgram().Run(ClientParameters.Parse(args));
+        }
 
+        protected int Run(ClientParameters options)
+        {
+            Console.WriteLine("Client was started");
+            Console.ReadLine();
+
+            return 0;
         }
     }
 }

@@ -1,129 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Net;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Description;
-using System.ServiceModel.Web;
-using System.Text;
+using NDistribUnit.Server.Communication;
 
 namespace NDistribUnit.Server
 {
     internal class ServerProgram
     {
-        private static void Main(string[] args)
+        private static int Main(string[] args)
         {
-            var baseAddress = new Uri(string.Format("http://{0}:8008/", Environment.MachineName));
-//            var host = new ServiceHost(typeof(TestRunner));
-//            host.Open();
+            return new ServerProgram().Run(ServerParameters.Parse(args));
+        }
+        private ServerHost serverHost;
 
-            var webHost = new ServiceHost(typeof (DashboardService), baseAddress);
-            webHost.AddServiceEndpoint(typeof (IDashboardService),
-                                       new WebHttpBinding(), "dashboard").Behaviors.Add(new WebHttpBehavior(){DefaultOutgoingResponseFormat = WebMessageFormat.Json});
-            webHost.Description.Behaviors.Add(new ServiceMetadataBehavior {HttpGetEnabled = true});
-            webHost.Open();
-
-            Console.WriteLine("Host was started");
+        private int Run(ServerParameters options)
+        {
+            Console.WriteLine("Server is starting...");
+            serverHost = new ServerHost(8008, 8009);
+            serverHost.Start();
+            Console.WriteLine("Server was started. Please press <Enter> to exit");
             Console.ReadLine();
-
-            webHost.Close();
+            return 0;
         }
-    }
-
-    internal class DashboardService : IDashboardService
-    {
-        private static readonly IDictionary<string, string> allowed =
-            new Dictionary<string, string>
-                {
-                    {".html", "text/html"},
-                    {".htm", "text/html"},
-                    {".js", "text/javascript"},
-                    {".css", "text/css"},
-                    {".png", "image/png"},
-                    {".gif", "image/gif"},
-                    {".jpg", "image/jpeg"}
-                };
-
-        public ProjectDescription[] GetProjectList()
-        {
-            return new []
-                       {
-                           new ProjectDescription
-                               {
-                                   Name = "O2I Nightly",
-                                   UniqueIdentifier = Guid.NewGuid().ToString()
-                               },
-                           new ProjectDescription
-                               {
-                                   Name = "O2I Build for 6.0",
-                                   UniqueIdentifier = Guid.NewGuid().ToString()
-                               },
-                           new ProjectDescription
-                               {
-                                   Name = "O2I Build for 5.2",
-                                   UniqueIdentifier = Guid.NewGuid().ToString()
-                               },
-                           new ProjectDescription
-                               {
-                                   Name = "BDB Nightly",
-                                   UniqueIdentifier = Guid.NewGuid().ToString()
-                               },
-                       };
-        }
-
-        public Stream Get(string fileName)
-        {
-            Debug.Assert(WebOperationContext.Current != null);
-
-            var physicalPathToFile =
-                Path.Combine(
-                    Path.Combine(Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().CodeBase).AbsolutePath),
-                                 "../../dashboard"), fileName);
-            var response = WebOperationContext.Current.OutgoingResponse;
-
-            if (!File.Exists(physicalPathToFile))
-            {
-                response.SetStatusAsNotFound();
-                return new MemoryStream(Encoding.UTF8.GetBytes("Not found"));
-            }
-
-            var extension = Path.GetExtension(physicalPathToFile);
-            if (!IsAllowedExtension(extension))
-            {
-                response.StatusCode = HttpStatusCode.Forbidden;
-                return new MemoryStream(Encoding.UTF8.GetBytes("Forbidden"));
-            }
-
-            response.ContentType = allowed[extension];
-            return new FileStream(physicalPathToFile, FileMode.Open, FileAccess.Read);
-        }
-
-        private static bool IsAllowedExtension(string extension)
-        {
-            return allowed.Keys.Contains(extension);
-        }
-    }
-
-    [ServiceContract]
-    internal interface IDashboardService
-    {
-        [OperationContract, WebGet(UriTemplate = "get/{*fileName}")]
-        Stream Get(string fileName);
-
-        [OperationContract, WebGet(UriTemplate = "getProjectList")]
-        ProjectDescription[] GetProjectList();
-    }
-
-    [DataContract]
-    internal class ProjectDescription
-    {
-        [DataMember]
-        public string UniqueIdentifier { get; set; }
-
-        [DataMember]
-        public string Name { get; set; }
     }
 }

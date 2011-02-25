@@ -35,25 +35,7 @@
                 center: { paneSelector: "#test-results-pane" },
                 west: { paneSelector: "#tests-tree-pane", size: 200, resizable: true, slideable: false, minSize: 200, maxSize: 0, spacing_open: 6 }
             });
-            $.history.init(function(newHash) {
-                if (newHash == "") {
-                    $("#tests-content").show().animate({ left: 0 }, { duration: 2000 });
-                    $("#status-pane").slideUp();
-                    $("#settings-pane").slideUp();
-                }
-                else if (newHash == "status") {
-                    $("#tests-content").animate({ left: -1000 }, {duration: 2000}).hide();
-                    $("#status-pane").slideDown();
-                    $("#settings-pane").slideUp();
-                }
-                else if (newHash == "settings") {
-                    $("#tests-content").slideUp();
-                    $("#status-pane").slideUp();
-                    $("#settings-pane").slideDown();
-                }
-                else if (newHash == "status") {
-                }
-            });
+           
         })
     </script>
 

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using NDistribUnit.Common.Options;
+using NDistribUnit.Common.ConsoleProcessing.Options;
 
 namespace NDistribUnit.Client.Configuration
 {
@@ -38,6 +38,26 @@ namespace NDistribUnit.Client.Configuration
         /// <summary>
         /// A collection of all unknown options, which were detected during parsing
         /// </summary>
-        public List<ConsoleOption> UnknownOption { get; private set; }
+        private List<ConsoleOption> UnknownOption { get; set; }
+
+        /// <summary>
+        /// Parses the command line returning a typed 
+        /// options object
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static ClientParameters Parse(IEnumerable<string> arguments)
+        {
+            var result = new ClientParameters();
+            var set = new ConsoleParametersParser
+                {
+                    {"xml", (string xmlFileName) => result.XmlFileName = xmlFileName, false },
+                    {"noshadow", (bool noShadow) => result.NoShadow = noShadow, true },
+                    {ConsoleOption.UnnamedOptionName, (string assembly) => result.AssembliesToTest.Add(assembly), false}
+                };
+
+            result.UnknownOption.AddRange(set.Parse(arguments));
+            return result;
+        }
     }
 }

@@ -11,13 +11,14 @@
     <RootNamespace>NDistribUnit.Server</RootNamespace>
     <AssemblyName>NDistribUnit.Server</AssemblyName>
     <StartArguments>/client:"WcfTestClient.exe"</StartArguments>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <StartupObject>
     </StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,6 +49,7 @@
     <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.ServiceModel.Discovery" />
     <Reference Include="System.ServiceModel.Web">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -57,9 +59,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Communication\AgentInformation.cs" />
+    <Compile Include="Communication\AgentState.cs" />
+    <Compile Include="Communication\ServerConnectionsTracker.cs" />
+    <Compile Include="ServerParameters.cs" />
+    <Compile Include="Services\DashboardService.cs" />
+    <Compile Include="Communication\ServerHost.cs" />
     <Compile Include="ServerProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestRunner.cs" />
+    <Compile Include="Services\TestRunnerServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -75,57 +83,143 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="dashboard\images\home.gif" />
-    <Content Include="dashboard\images\home.jpg" />
-    <Content Include="dashboard\images\info.gif" />
-    <Content Include="dashboard\images\logo-medium.gif" />
-    <Content Include="dashboard\images\logo.gif" />
-    <Content Include="dashboard\images\nunit_icons\Failure.jpg" />
-    <Content Include="dashboard\images\nunit_icons\Gray.jpg" />
-    <Content Include="dashboard\images\nunit_icons\Ignored.jpg" />
-    <Content Include="dashboard\images\nunit_icons\project-run.png" />
-    <Content Include="dashboard\images\nunit_icons\project.png" />
-    <Content Include="dashboard\images\nunit_icons\Success.jpg" />
-    <Content Include="dashboard\images\nunit_icons\test_running.gif" />
-    <Content Include="dashboard\images\resizer_bg.png" />
-    <Content Include="dashboard\images\settings.gif" />
-    <Content Include="dashboard\images\settings_bg.gif" />
-    <Content Include="dashboard\images\tests_bg.png" />
+    <Content Include="dashboard\images\home.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\home.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\info.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\logo-medium.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\logo.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\nunit_icons\Failure.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\nunit_icons\Gray.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\nunit_icons\Ignored.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\nunit_icons\project-run.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\nunit_icons\project.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\nunit_icons\Success.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\nunit_icons\test_running.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\resizer_bg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\settings.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\settings_bg.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\tests_bg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="dashboard\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dashboard\scripts\jquery-1.4.4.min.js" />
-    <Content Include="dashboard\scripts\jquery-ui-1.8.9.custom.min.js" />
-    <Content Include="dashboard\scripts\jquery.history.js" />
-    <Content Include="dashboard\scripts\jquery.layout.min.js" />
+    <Content Include="dashboard\scripts\jquery-1.4.4.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery-ui-1.8.9.custom.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.history.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.layout.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="dashboard\scripts\jquery.treeview\changelog.txt" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\ajax-loader.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\file.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\folder-closed.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\folder.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\minus.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\plus.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-black-line.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-black.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-default-line.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-default.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-famfamfam-line.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-famfamfam.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-gray-line.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-gray.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-red-line.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-red.gif" />
-    <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.async.js" />
-    <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.css" />
-    <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.edit.js" />
-    <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.js" />
-    <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.sortable.js" />
-    <Content Include="dashboard\scripts\jquery.ui.all.js" />
+    <Content Include="dashboard\scripts\jquery.treeview\images\ajax-loader.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\images\file.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\images\folder-closed.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\images\folder.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\images\minus.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\images\plus.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-black-line.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-black.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-default-line.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-default.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-famfamfam-line.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-famfamfam.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-gray-line.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-gray.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-red-line.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\images\treeview-red.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.async.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.edit.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.sortable.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\NDistribUnit.Dashboard.Dispatcher.js" />
     <Content Include="dashboard\scripts\NDistribUnit.Dashboard.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dashboard\styles\NDistribUnit.Dashboard.css" />
+    <Content Include="dashboard\scripts\NDistribUnit.Dashboard.UI.js" />
+    <Content Include="dashboard\styles\NDistribUnit.Dashboard.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

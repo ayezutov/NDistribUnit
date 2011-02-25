@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NDistribUnit.Common.Console.Options;
 
-namespace NDistribUnit.Common.Options
+namespace NDistribUnit.Common.ConsoleProcessing.Options
 {
     /// <summary>
     /// Parser, which parses the command line by invoking registered actions
@@ -31,20 +32,9 @@ namespace NDistribUnit.Common.Options
         /// <param name="optionName">Option name</param>
         /// <param name="action">Action, which should be performed on match</param>
         /// <param name="isFlag">Indicates, that the option with such a name is a flag option</param>
-        public void Add<T>(string optionName, Action<T> action, bool isFlag)
+        public void Add<T>(string optionName, Action<T> action, bool isFlag = false)
         {
             optionActions.Add(new OptionMatchDescription(optionName, action, typeof (T), isFlag));
-        }
-        
-        /// <summary>
-        /// Adds actions for different non flag option names
-        /// </summary>
-        /// <typeparam name="T">Supposed option value type</typeparam>
-        /// <param name="optionName">Option name</param>
-        /// <param name="action">Action, which should be performed on match</param>
-        public void Add<T>(string optionName, Action<T> action)
-        {
-            Add(optionName, action, false);
         }
 
         /// <summary>
@@ -83,7 +73,7 @@ namespace NDistribUnit.Common.Options
         /// <param name="availableOptions">List of all available options to search in</param>
         /// <param name="option">Option description to match with</param>
         /// <returns></returns>
-        private static ConsoleOption[] FindAllMatchingOptions(IEnumerable<ConsoleOption> availableOptions,
+        private static IEnumerable<ConsoleOption> FindAllMatchingOptions(IEnumerable<ConsoleOption> availableOptions,
                                                        OptionMatchDescription option)
         {
             return availableOptions.Where(o =>

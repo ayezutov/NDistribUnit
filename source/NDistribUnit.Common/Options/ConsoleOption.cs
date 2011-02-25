@@ -1,4 +1,4 @@
-namespace NDistribUnit.Common.Options
+namespace NDistribUnit.Common.ConsoleProcessing.Options
 {
     /// <summary>
     /// Describes a single parsed console option

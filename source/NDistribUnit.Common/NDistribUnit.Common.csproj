@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NDistribUnit.Common</RootNamespace>
     <AssemblyName>NDistribUnit.Common</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>
     </StartupObject>
@@ -18,6 +18,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,6 +48,7 @@
     <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.ServiceModel.Discovery" />
     <Reference Include="System.ServiceModel.Web">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -60,15 +62,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Callbacks.cs" />
-    <Compile Include="Communication\DuplexClient.cs" />
-    <Compile Include="Communication\IDuplexService.cs" />
-    <Compile Include="ICallbacks.cs" />
-    <Compile Include="ITestRunner.cs" />
-    <Compile Include="Options\ConsoleOptionMatchDescription.cs" />
-    <Compile Include="Options\ConsoleParametersParser.cs" />
-    <Compile Include="Options\ConsoleOption.cs" />
+    <Compile Include="Communication\DiscoveryConnectionsTracker.cs" />
+    <Compile Include="Communication\EndpointConnectionChangedEventArgs.cs" />
+    <Compile Include="Communication\EndpointInformation.cs" />
+    <Compile Include="Communication\ConnectionState.cs" />
+    <Compile Include="ServiceContracts\IPingable.cs" />
+    <Compile Include="Communication\WcfUtilities.cs" />
+    <Compile Include="ConsoleProcessing\ConsoleExitHandler.cs" />
+    <Compile Include="ConsoleProcessing\CtrlType.cs" />
+    <Compile Include="ConsoleProcessing\Native.cs" />
+    <Compile Include="DataContracts\ProjectDescription.cs" />
+    <Compile Include="ServiceContracts\ITestRunnerAgent.cs" />
+    <Compile Include="ServiceContracts\ITestRunnerServer.cs" />
+    <Compile Include="ConsoleProcessing\Options\ConsoleOptionMatchDescription.cs" />
+    <Compile Include="ConsoleProcessing\Options\ConsoleParametersParser.cs" />
+    <Compile Include="ConsoleProcessing\Options\ConsoleOption.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceContracts\IDashboardService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Testing\" />

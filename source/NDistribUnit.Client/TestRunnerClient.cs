@@ -1,9 +1,9 @@
-using NDistribUnit.Common;
+using NDistribUnit.Common.ServiceContracts;
 
 namespace NDistribUnit.Client
 {
     [System.Diagnostics.DebuggerStepThroughAttribute]
-    public class TestRunnerClient : System.ServiceModel.DuplexClientBase<ITestRunner>
+    public class TestRunnerClient : System.ServiceModel.DuplexClientBase<ITestRunnerServer>
     {
 
         public TestRunnerClient(System.ServiceModel.InstanceContext callbackInstance) :
@@ -31,6 +31,6 @@ namespace NDistribUnit.Client
         {
         }
 
-        public ITestRunner Actions { get { return Channel; } }
+        public ITestRunnerServer Actions { get { return Channel; } }
     }
 }

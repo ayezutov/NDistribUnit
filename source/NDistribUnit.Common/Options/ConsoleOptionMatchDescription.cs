@@ -1,6 +1,6 @@
 using System;
 
-namespace NDistribUnit.Common.Options
+namespace NDistribUnit.Common.Console.Options
 {
     /// <summary>
     /// Describes an action, which should be performed on a particular match

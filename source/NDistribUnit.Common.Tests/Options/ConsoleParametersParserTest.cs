@@ -1,4 +1,4 @@
-using NDistribUnit.Common.Options;
+using NDistribUnit.Common.ConsoleProcessing.Options;
 using NUnit.Framework;
 using System.Linq;
 
