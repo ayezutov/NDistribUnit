@@ -17,7 +17,7 @@ namespace NDistribUnit.Agent.Communication
             AgentTestRunnerHost = new ServiceHost(testRunnerAgent, new Uri(string.Format("net.tcp://{0}:{1}", Environment.MachineName, WcfUtilities.FindPort())));
             var agentTestRunnerEndpoint = AgentTestRunnerHost.AddServiceEndpoint(typeof (ITestRunnerAgent), new NetTcpBinding(), "");
             var agentTestRunnerDiscoveryBehavior = new EndpointDiscoveryBehavior();
-            agentTestRunnerDiscoveryBehavior.Scopes.Add(new Uri("http://hubwoo.com/trr1-odc/1"));
+            agentTestRunnerDiscoveryBehavior.Scopes.Add(new Uri("http://hubwoo.com/trr-odc"));
             agentTestRunnerEndpoint.Behaviors.Add(agentTestRunnerDiscoveryBehavior);
             AgentTestRunnerHost.Description.Behaviors.Add(new ServiceDiscoveryBehavior());
             AgentTestRunnerHost.AddServiceEndpoint(new UdpDiscoveryEndpoint());

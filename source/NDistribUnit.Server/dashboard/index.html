@@ -20,8 +20,8 @@
     <link rel="stylesheet" href="styles/NDistribUnit.Dashboard.css" type="text/css" />
 
     <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.UI.js"></script>
+  <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.Dispatcher.js"></script>
     <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.js"></script>
-    <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.Dispatcher.js"></script>
 
     <script type="text/javascript">
         var dashboard = new Dashboard();
@@ -31,7 +31,7 @@
 
 </head>
 <body>
-    <div id="top-pane">
+    <div id="menu-pane">
         <span>
             <img id="logo" alt="NDistribUnit" src="images/logo-medium.gif" /></span> <span id="settingsCommand">
                 <a class="menuCommand menuCommandRight" href="#settings">
@@ -40,12 +40,12 @@
                         href="#status">
                         <img alt="info" src="images/info.gif" />
                         Status</a></span> <span id="homeCommand"><a class="menuCommand menuCommandRight"
-                            href="#">
+                            href="#tests">
                             <img alt="home" src="images/home.gif" />
                             Home</a></span>
     </div>
-    <div id="main-pane">
-        <div id="tests-content" class="content">
+    <div id="content-pane">
+        <div id="tests-pane" class="content">
             <div id="tests-tree-pane">
                 <ul>
                     <li><span><a href="#O2I_nightly">O2I nightly</a></span>

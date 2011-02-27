@@ -32,7 +32,7 @@ TestCase("Dashboard.Dispatcher.Tests", {
         assertEquals("parameter2parameter1", value);
     },
 
-    testSimpleRouteInvokesBeforeAction: function () {
+    testBeforeActionIsInvoked: function () {
         var value = "";
         var dispatcher = new DashboardDispatcher({
             beforeAction: function () { value += "before"; },
@@ -42,6 +42,60 @@ TestCase("Dashboard.Dispatcher.Tests", {
         });
         dispatcher.route("test/parameter1/parameter2");
         assertEquals("beforeparameter2parameter1", value);
+    },
+
+    testBeforeActionIsInvokedOnIntermediateObject: function () {
+        var value = "";
+        var dispatcher = new DashboardDispatcher({
+            beforeAction: function () { value += "before1 "; },
+            "test": {
+                beforeAction: function () { value += "before2 "; },
+                test2: {
+                    beforeAction: function () { value += "before3 "; },
+                    test3: function (par, par2) { value += par2 + par; }
+                }
+            },
+            "test/test2/test3": function () { value += "full route"; },
+            unknownAction: function (route) { value += "unknown: " + route; }
+        });
+        dispatcher.route("test/test2/test3/parameter1/parameter2");
+        assertEquals("before1 before2 before3 parameter2parameter1", value);
+    },
+
+    testBeforeActionIsInvokedOnIntermediateAndTargetObjectsEvenIfThereIsExactMatch: function () {
+        var value = "";
+        var dispatcher = new DashboardDispatcher({
+            beforeAction: function () { value += "before1 "; },
+            "test": {
+                beforeAction: function () { value += "before2 "; },
+                test2: {
+                    beforeAction: function () { value += "before3 "; },
+                    test3: function (par, par2) { value += par2 + par; }
+                }
+            },
+            "test/test2/test3": function () { value += "full route"; },
+            unknownAction: function (route) { value += "unknown: " + route; }
+        });
+        dispatcher.route("test/test2");
+        assertEquals("before1 before2 before3 ", value);
+    },
+        
+    testBeforeActionIsNotInvokedAtAllIfUnknownAction: function () {
+        var value = "";
+        var dispatcher = new DashboardDispatcher({
+            beforeAction: function () { value += "before1 "; },
+            "test": {
+                beforeAction: function () { value += "before2 "; },
+                test2: {
+                    beforeAction: function () { value += "before3 "; },
+                    test3: function (par, par2) { value += par2 + par; }
+                }
+            },
+            "test/test2/test3": function () { value += "full route"; },
+            unknownAction: function (route) { value += "unknown: " + route; }
+        });
+        dispatcher.route("test/test2/test4/parameter1/parameter2");
+        assertEquals("unknown: test/test2/test4/parameter1/parameter2", value);
     },
 
     testComplexRoute: function () {
@@ -192,5 +246,5 @@ TestCase("Dashboard.Dispatcher.Tests", {
         dispatcher.route("/test/test2/test3/parameter1/parameter2/");
         assertEquals("parameter2parameter1", value);
     }
-    
+
 });
