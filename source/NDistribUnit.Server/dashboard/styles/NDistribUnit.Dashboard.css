@@ -54,12 +54,26 @@ a
 UL, LI
 {
     background-color: transparent;
+    list-style-type: none;
+    padding-left: 0px;
+    padding-top: 0px;
 }
 
-#tests-tree-pane
+UL.list-menu LI
 {
-    background: url(../images/tests_bg.png) repeat-y;
+    margin-top: 5px;
+    }
+
+.left-menu-pane
+{
+    background: white url(../images/tests_bg.png) repeat-y;
     overflow: auto;
+    padding: 7px;
+}
+
+.right-content-pane
+{
+    padding: 7px;
 }
 
 #tests-tree-pane li span
@@ -114,16 +128,28 @@ UL, LI
 }
 
 #tests-pane{
-    background-color: yellow;
+    background: url(../images/content_bg.gif);
     position: absolute;
 }
 
 #status-pane{
-    background-color: red;
+    background: url(../images/content_bg.gif);
     position: absolute;
 }
 
 #settings-pane{
-    background-color: blue;
+    background: url(../images/content_bg.gif);
     position: absolute;
 }
+
+#server-status-menu
+{
+    padding-left: 20px;
+    background: url(../images/server.png) no-repeat;
+    }
+    
+#clients-statuses-menu
+{
+    padding-left: 20px;
+    background: url(../images/agent.png) no-repeat;
+    }

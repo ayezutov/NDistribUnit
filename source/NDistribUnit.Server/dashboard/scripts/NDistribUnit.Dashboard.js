@@ -11,10 +11,13 @@ function Dashboard()
         status:
             {
                 beforeAction: function () { me.ui.openStatusPane(); },
-                client: function (clientName) {
-                    me.dashboard.openClientStatus(clientName);
+                clients: function (clientName) {
+                    if (typeof (clientName) == undefined) {
+                        
+                    }
+                    me.openClientStatus(clientName);
                 },
-                server: function () { me.dashboard.openServerStatus(); }
+                server: function () { me.openServerStatus(); }
             },
         tests: {
             beforeAction: function () { me.ui.openTestsPane(); }
@@ -30,9 +33,18 @@ Dashboard.prototype = {
         this.dispatcher.init();
     },
     openServerStatus: function () {
-
+        this.ui.openServerStatus();
     },
     openClientStatus: function () {
+        this.ui.openClientStatus();
+        $.ajax({
+            url: 'getStatus/client',
+            dataType: 'json',
+            success: function () {
+                var i = 0;
+            },
+            error: function () { alert('Error!'); }
+        });
 
     }
 }

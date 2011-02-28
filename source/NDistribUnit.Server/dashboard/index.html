@@ -8,16 +8,18 @@
 
     <!-- http://docs.jquery.com/Plugins/Treeview -->
     <link rel="stylesheet" href="scripts/jquery.treeview/jquery.treeview.css" type="text/css" />
+    <link rel="stylesheet" href="styles/NDistribUnit.Dashboard.css" type="text/css" />
 
     <script type="text/javascript" src="scripts/jquery.treeview/jquery.treeview.js"></script>
 
     <!-- http://layout.jquery-dev.net/documentation.cfm -->
-
     <script type="text/javascript" src="scripts/jquery.layout.min.js"></script>
 
+    <!-- http://tkyk.github.com/jquery-history-plugin/#documentation -->
     <script type="text/javascript" src="scripts/jquery.history.js"></script>
 
-    <link rel="stylesheet" href="styles/NDistribUnit.Dashboard.css" type="text/css" />
+    <!-- http://jtemplates.tpython.com/ -->
+    <script type="text/javascript" src="scripts/jquery-jtemplates.js"></script>
 
     <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.UI.js"></script>
   <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.Dispatcher.js"></script>
@@ -46,7 +48,7 @@
     </div>
     <div id="content-pane">
         <div id="tests-pane" class="content">
-            <div id="tests-tree-pane">
+            <div id="tests-tree-pane" class="left-menu-pane">
                 <ul>
                     <li><span><a href="#O2I_nightly">O2I nightly</a></span>
                         <ul style="display: none;">
@@ -100,15 +102,34 @@
                     </li>
                 </ul>
             </div>
-            <div id="test-results-pane">
-                Hi all
+            <div id="test-content-pane" class="right-content-pane">
+                Test results for selected run/suite/test
             </div>
         </div>
-        <div id="status-pane" class="content" style="display: none">
-            Status
+        <div id="status-pane" class="content">
+            <div id="status-tree-pane" class="left-menu-pane">
+                <ul class="list-menu">
+                    <li><a href="#status/server" id="server-status-menu">Server status</a></li>
+                    <li><a href="#status/clients" id="clients-statuses-menu">Clients' statuses</a></li>
+                </ul>
+            </div>
+            <div id="status-content-pane" class="right-content-pane">
+                <div id="status-home-page">
+                    You can find the statuses of all parts of NDistribUnit here.
+                </div>
+                <div id="server-status-pane">
+                    Server's status (execution queue, logs)
+                </div>
+                <div id="clients-statuses-pane">
+                    Clients statuses 
+                </div>
+            </div>
         </div>
-        <div id="settings-pane" class="content" style="display: none">
-            Settings
+        <div id="settings-pane" class="content">
+            <div id="settings-tree-pane" class="left-menu-pane">Menu settings tree goes here</div>
+            <div id="settings-content-pane" class="right-content-pane">
+                Menu settings content goes here
+            </div>
         </div>
     </div>
 </body>

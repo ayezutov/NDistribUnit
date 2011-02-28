@@ -83,6 +83,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="dashboard\images\content_bg.gif" />
     <Content Include="dashboard\images\home.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -137,6 +138,7 @@
     <Content Include="dashboard\scripts\jquery-1.4.4.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="dashboard\scripts\jquery-jtemplates.js" />
     <Content Include="dashboard\scripts\jquery-ui-1.8.9.custom.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

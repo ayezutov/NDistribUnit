@@ -52,6 +52,11 @@ namespace NDistribUnit.Server.Services
                        };
         }
 
+        public Stream GetRoot()
+        {
+            return Get("index.html");
+        }
+
         public Stream Get(string fileName)
         {
             Debug.Assert(WebOperationContext.Current != null);

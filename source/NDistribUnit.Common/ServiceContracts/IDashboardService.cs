@@ -7,6 +7,9 @@ namespace NDistribUnit.Server
     [ServiceContract]
     public interface IDashboardService
     {
+        [OperationContract, WebGet(UriTemplate = "/")]
+        Stream GetRoot();
+
         [OperationContract, WebGet(UriTemplate = "get/{*fileName}")]
         Stream Get(string fileName);
 

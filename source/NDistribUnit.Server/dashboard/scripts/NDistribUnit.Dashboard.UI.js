@@ -8,7 +8,20 @@
         tests: {
             treeview: "#tests-tree-pane>UL", 
             treePane: "#tests-tree-pane",
-            resultsPane: "#test-results-pane"
+            contentPane: "#test-content-pane"
+        },
+        status: {
+            treeview: "#status-tree-pane>UL",
+            treePane: "#status-tree-pane",
+            contentPane: "#status-content-pane",
+            homePane: "#status-home-page",
+            serverStatusPane: "#server-status-pane",
+            clientsStatusesPane: "#clients-statuses-pane"
+        },
+        settings: {
+            treeview: "#settings-tree-pane>UL",
+            treePane: "#settings-tree-pane",
+            contentPane: "#settings-content-pane"
         }
     };
     this.elements = { };
@@ -23,29 +36,51 @@ DashboardUI.prototype = {
         $(this.selectors.tests.treeview).treeview();
         $(this.selectors.testsPane).layout({
             west: { paneSelector: this.selectors.tests.treePane, size: 200, resizable: true, slideable: false, minSize: 200, maxSize: 0, spacing_open: 6 },
-            center: { paneSelector: this.selectors.tests.resultsPane }
+            center: { paneSelector: this.selectors.tests.contentPane }
+        });
+
+        $(this.selectors.statusPane).layout({
+            west: { paneSelector: this.selectors.status.treePane, size: 200, resizable: true, slideable: false, minSize: 200, maxSize: 0, spacing_open: 6 },
+            center: { paneSelector: this.selectors.status.contentPane }
+        });
+        $(this.selectors.settingsPane).layout({
+            west: { paneSelector: this.selectors.settings.treePane, size: 200, resizable: true, slideable: false, minSize: 200, maxSize: 0, spacing_open: 6 },
+            center: { paneSelector: this.selectors.settings.contentPane }
         });
         this.panes =
             [
                 $(this.selectors.testsPane),
-                $(this.selectors.statusPane),
-                $(this.selectors.settingsPane)
+                $(this.selectors.statusPane).hide(),
+                $(this.selectors.settingsPane).hide()
             ];
-        this.panes.tests = this.panes[0];
-        this.panes.status = this.panes[1];
-        this.panes.settings = this.panes[2];
+        this.statusPanes =
+            [
+                $(this.selectors.status.homePane),
+                $(this.selectors.status.serverStatusPane).hide(),
+                $(this.selectors.status.clientsStatusesPane).hide()
+            ];
+
+
     },
 
     openSettingsPane: function () {
-        this.openPane(this.panes, this.panes.settings, "horizontal");
+        this.openPane(this.panes, this.panes[2], "horizontal");
     },
 
     openStatusPane: function () {
-        this.openPane(this.panes, this.panes.status, "horizontal");
+        this.openPane(this.panes, this.panes[1], "horizontal");
     },
 
     openTestsPane: function () {
-        this.openPane(this.panes, this.panes.tests, "horizontal");
+        this.openPane(this.panes, this.panes[0], "horizontal");
+    },
+
+    openClientStatus: function () {
+        this.openPane(this.statusPanes, this.statusPanes[2], "vertical");
+    },
+
+    openServerStatus: function () {
+        this.openPane(this.statusPanes, this.statusPanes[1], "vertical");
     },
 
     showSettingsInfo: function ()
@@ -78,8 +113,9 @@ DashboardUI.prototype = {
                 var animateForward = function (counter) {
                     if (counter >= newIndex)
                         return;
-                    panes[counter].hide("slide", { direction: previousEffectDirection }, 500);
-                    panes[counter + 1].show("slide", { direction: nextEffectDirection }, 500, function () {
+                    var animationSpeed = counter == newIndex - 1 ? 800 : 200;
+                    panes[counter].hide("slide", { direction: previousEffectDirection }, animationSpeed);
+                    panes[counter + 1].show("slide", { direction: nextEffectDirection }, animationSpeed, function () {
                         animateForward(counter + 1);
                     });
                 };
@@ -89,8 +125,9 @@ DashboardUI.prototype = {
                 var animateBackwards = function (counter) {
                     if (counter <= newIndex)
                         return;
-                    panes[counter].hide("slide", { direction: nextEffectDirection }, 500);
-                    panes[counter - 1].show("slide", { direction: previousEffectDirection }, 500, function () {
+                    var animationSpeed = counter == newIndex + 1 ? 800 : 200;
+                    panes[counter].hide("slide", { direction: nextEffectDirection }, animationSpeed);
+                    panes[counter - 1].show("slide", { direction: previousEffectDirection }, animationSpeed, function () {
                         animateBackwards(counter - 1);
                     });
                 };
