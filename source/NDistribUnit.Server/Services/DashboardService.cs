@@ -15,7 +15,7 @@ using System.Linq;
 namespace NDistribUnit.Server.Services
 {
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
-    internal class DashboardService : IDashboardService
+    public class DashboardService : IDashboardService
     {
         private readonly ServerHost host;
 

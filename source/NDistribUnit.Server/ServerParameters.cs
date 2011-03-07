@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace NDistribUnit.Server
 {
@@ -6,7 +7,13 @@ namespace NDistribUnit.Server
     {
         public static ServerParameters Parse(IEnumerable<string> arguments)
         {
-            return new ServerParameters();
+            var result = new ServerParameters()
+                             {
+                                 DashboardPort = 8008,
+                             };
+            return result;
         }
+
+        public int DashboardPort { get; private set; }
     }
 }

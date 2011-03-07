@@ -3,7 +3,6 @@ using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.ServiceModel.Web;
-using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Server.Services;
 
@@ -20,8 +19,8 @@ namespace NDistribUnit.Server.Communication
         private ServiceHost dashboardService;
         private ServiceHost testRunnerService;
 
-        private DashboardService dashboard;
-        private TestRunnerServer testRunner;
+        private readonly DashboardService dashboard;
+        private readonly TestRunnerServer testRunner;
 
         public ServerConnectionsTracker ConnectionsTracker { get; private set; }
 
@@ -30,10 +29,15 @@ namespace NDistribUnit.Server.Communication
         /// </summary>
         /// <param name="dashboardPort">The port for dashboard</param>
         /// <param name="testRunnerPort">The port for test runner</param>
-        public ServerHost(int dashboardPort, int testRunnerPort)
+        /// <param name="testRunner">The test runner instance</param>
+        /// <param name="dashboard">The dashboard instance</param>
+        public ServerHost(int dashboardPort, int testRunnerPort, TestRunnerServer testRunner, DashboardService dashboard, ServerConnectionsTracker conenctionsTracker)
         {
             this.dashboardPort = dashboardPort;
             this.testRunnerPort = testRunnerPort;
+            this.testRunner = testRunner;
+            this.dashboard = dashboard;
+            ConnectionsTracker = conenctionsTracker;
         }
 
         /// <summary>
@@ -41,27 +45,24 @@ namespace NDistribUnit.Server.Communication
         /// </summary>
         public void Start()
         {
-            testRunner = new TestRunnerServer();
-            dashboard = new DashboardService(this);
-
-            ExposeDashboardAndTestRunnerAsServices();
-            ConnectionsTracker = new ServerConnectionsTracker("http://hubwoo.com/trr-odc");
+            ExposeDashboard();
+            ExposeTestRunner();
             ConnectionsTracker.Start();
         }
 
-        /// <summary>
-        /// Exposes dashboard and test runner as services
-        /// </summary>
-        private void ExposeDashboardAndTestRunnerAsServices()
+        private void ExposeTestRunner()
+        {
+            testRunnerService = new ServiceHost(testRunner, new Uri(string.Format("net.tcp://{0}:{1}", Environment.MachineName, testRunnerPort)));
+            testRunnerService.AddServiceEndpoint(typeof(ITestRunnerServer), new NetTcpBinding(), "");
+            testRunnerService.Open();
+        }
+
+        private void ExposeDashboard()
         {
             dashboardService = new ServiceHost(dashboard, new Uri(Path.Combine(string.Format("http://{0}:{1}", Environment.MachineName, dashboardPort))));
             dashboardService.AddServiceEndpoint(typeof(IDashboardService), new WebHttpBinding(), "")
                 .Behaviors.Add(new WebHttpBehavior(){DefaultOutgoingResponseFormat = WebMessageFormat.Json});
             dashboardService.Open();
-
-            testRunnerService = new ServiceHost(testRunner, new Uri(string.Format("net.tcp://{0}:{1}", Environment.MachineName, testRunnerPort)));
-            testRunnerService.AddServiceEndpoint(typeof(ITestRunnerServer), new NetTcpBinding(), "");
-            testRunnerService.Open();
         }
 
         /// <summary>

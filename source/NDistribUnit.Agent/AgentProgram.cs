@@ -1,4 +1,5 @@
 ﻿using System;
+using Autofac;
 using NDistribUnit.Agent.Communication;
 using NDistribUnit.Agent.Options;
 using NDistribUnit.Common.ConsoleProcessing;
@@ -7,19 +8,30 @@ namespace NDistribUnit.Agent
 {
     public class AgentProgram
     {
-        static void Main(string[] args)
+        public AgentHost AgentHost { get; set; }
+
+        static int Main(string[] args)
         {
-            new AgentProgram().Run(AgentConsoleParameters.Parse(args));
+            var builder = new ContainerBuilder();
+            builder.RegisterType<AgentProgram>();
+            builder.RegisterType<AgentHost>();
+            builder.Register(c => AgentConsoleParameters.Parse(args)).InstancePerLifetimeScope();
+            var container = builder.Build();
+            return container.Resolve<AgentProgram>().Run();
         }
 
-        protected int Run(AgentConsoleParameters parameters)
+        public AgentProgram(AgentHost agentHost)
+        {
+            AgentHost = agentHost;
+        }
+
+        private int Run()
         {
             Console.WriteLine("Starting...");
-            var agentHost = new AgentHost();
-            agentHost.Start();
+            AgentHost.Start();
             Console.WriteLine("Started. Press <Enter> to exit.");
             Console.ReadLine();
-            agentHost.Stop();
+            AgentHost.Stop();
             return 0;
         }
     }

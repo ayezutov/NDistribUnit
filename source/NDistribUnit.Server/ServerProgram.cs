@@ -1,5 +1,8 @@
 ﻿using System;
+using Autofac;
+using Autofac.Core;
 using NDistribUnit.Server.Communication;
+using NDistribUnit.Server.Services;
 
 namespace NDistribUnit.Server
 {
@@ -7,15 +10,36 @@ namespace NDistribUnit.Server
     {
         private static int Main(string[] args)
         {
-            return new ServerProgram().Run(ServerParameters.Parse(args));
+            var builder = new ContainerBuilder();
+            builder.RegisterType<ServerProgram>();
+            builder.Register(c => ServerParameters.Parse(args)).InstancePerLifetimeScope();
+            builder.RegisterType<TestRunnerServer>().InstancePerLifetimeScope();
+            builder.RegisterType<DashboardService>().InstancePerLifetimeScope();
+            builder.Register(c => new ServerConnectionsTracker("http://hubwoo.com/trr-odc")).InstancePerLifetimeScope();
+            builder.Register(
+                c =>
+                new ServerHost(c.Resolve<ServerParameters>().DashboardPort, 
+                    c.Resolve<ServerParameters>().DashboardPort,
+                    c.Resolve<TestRunnerServer>(),
+                    c.Resolve<DashboardService>(),
+                    c.Resolve<ServerConnectionsTracker>())).InstancePerLifetimeScope();
+            var container = builder.Build();
+            return container.Resolve<ServerProgram>().Run();
         }
-        private ServerHost serverHost;
 
-        private int Run(ServerParameters options)
+        private ServerParameters Options { get; set; }
+        private ServerHost ServerHost { get; set; }
+
+        public ServerProgram(ServerParameters options, ServerHost serverHost)
+        {
+            Options = options;
+            ServerHost = serverHost;
+        }
+
+        private int Run()
         {
             Console.WriteLine("Server is starting...");
-            serverHost = new ServerHost(8008, 8009);
-            serverHost.Start();
+            ServerHost.Start();
             Console.WriteLine("Server was started. Please press <Enter> to exit");
             Console.ReadLine();
             return 0;
