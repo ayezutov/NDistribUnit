@@ -245,6 +245,80 @@ TestCase("Dashboard.Dispatcher.Tests", {
         });
         dispatcher.route("/test/test2/test3/parameter1/parameter2/");
         assertEquals("parameter2parameter1", value);
+    },
+        
+    testHistoryWorksOkForStepByStepCalls: function () {
+        var dispatcher = new DashboardDispatcher({
+            "test": {
+                test2: {
+                    test3: function (par, par2) { }
+                }
+            },
+            "test/test2/test3": function () { },
+            unknownAction: function (route) { }
+        });
+        dispatcher.route("test");
+        assertEquals("test", dispatcher.getLatestOrSelf("test"));
+        assertEquals("test/test2", dispatcher.getLatestOrSelf("test/test2"));
+        assertEquals("test/test2/test3", dispatcher.getLatestOrSelf("test/test2/test3"));
+    },
+        
+    testHistoryWorksOkForStepByStepCalls2: function () {
+        var dispatcher = new DashboardDispatcher({
+            "test": {
+                test2: {
+                    test3: function (par, par2) { }
+                }
+            },
+            "test/test2/test3": function () { },
+            unknownAction: function (route) { }
+        });
+        
+        dispatcher.route("test");
+        dispatcher.route("test/test2");
+        assertEquals("test/test2", dispatcher.getLatestOrSelf("test"));
+        assertEquals("test/test2", dispatcher.getLatestOrSelf("test/test2"));
+        assertEquals("test/test2/test3", dispatcher.getLatestOrSelf("test/test2/test3"));
+        
+    },
+        
+    testHistoryWorksOkForStepByStepCalls3: function () {
+        var dispatcher = new DashboardDispatcher({
+            "test": {
+                test2: {
+                    test3: function (par, par2) { }
+                }
+            },
+            "test/test2/test3": function () { },
+            unknownAction: function (route) { }
+        });
+        dispatcher.route("test");
+        dispatcher.route("test/test2");
+        dispatcher.route("test/test2/test3");
+        assertEquals("test/test2/test3", dispatcher.getLatestOrSelf("test"));
+        assertEquals("test/test2/test3", dispatcher.getLatestOrSelf("test/test2"));
+        assertEquals("test/test2/test3", dispatcher.getLatestOrSelf("test/test2/test3"));
+    },
+        
+    testHistoryWorksOkForStepByStepCalls4: function () {
+        var dispatcher = new DashboardDispatcher({
+            "test": {
+                test2: {
+                    test3: function (par, par2) { }
+                }
+            },
+            "test/test2/test3": function () { },
+            unknownAction: function (route) { }
+        });
+        dispatcher.route("test");
+        dispatcher.route("test/test2");
+        dispatcher.route("test/test2/test3");
+        dispatcher.route("test/test2/test4");
+        assertEquals("test/test2/test3", dispatcher.getLatestOrSelf("test"));
+        assertEquals("test/test2/test3", dispatcher.getLatestOrSelf("test/test2"));
+        assertEquals("test/test2/test3", dispatcher.getLatestOrSelf("test/test2/test3"));
+        assertEquals("test/test2/test4", dispatcher.getLatestOrSelf("test/test2/test4"));
+        
     }
 
-});
+    });

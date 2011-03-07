@@ -23,7 +23,8 @@ function Dashboard()
             beforeAction: function () { me.ui.openTestsPane(); }
         },
         unknownAction: function () { window.location.hash = "tests"; }
-    });
+    },
+    {autoCompleteRouteToLastUsed: true});
     this.ui = new DashboardUI();
     this.server = new DashboardServer();
 }
