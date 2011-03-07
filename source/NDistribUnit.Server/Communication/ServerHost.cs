@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using System.ServiceModel.Web;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Server.Services;
@@ -22,7 +23,7 @@ namespace NDistribUnit.Server.Communication
         private DashboardService dashboard;
         private TestRunnerServer testRunner;
 
-        public DiscoveryConnectionsTracker<ITestRunnerAgent> ConnectionsTracker { get; private set; }
+        public ServerConnectionsTracker ConnectionsTracker { get; private set; }
 
         /// <summary>
         /// Creates a new server instance, which exposes dashboard and test runner at given ports
@@ -40,13 +41,11 @@ namespace NDistribUnit.Server.Communication
         /// </summary>
         public void Start()
         {
-            dashboard = new DashboardService();
             testRunner = new TestRunnerServer();
+            dashboard = new DashboardService(this);
 
             ExposeDashboardAndTestRunnerAsServices();
-            ConnectionsTracker = new DiscoveryConnectionsTracker<ITestRunnerAgent>("http://hubwoo.com/trr-odc");
-            ConnectionsTracker.EndpointConnected += (s, e) => Console.WriteLine(string.Format("Endpoint found: {0}", e.EndpointInfo.Endpoint.Address));
-            ConnectionsTracker.EndpointDisconnected += (s, e) => Console.WriteLine(string.Format("Endpoint lost: {0}", e.EndpointInfo.Endpoint.Address));
+            ConnectionsTracker = new ServerConnectionsTracker("http://hubwoo.com/trr-odc");
             ConnectionsTracker.Start();
         }
 
@@ -57,7 +56,7 @@ namespace NDistribUnit.Server.Communication
         {
             dashboardService = new ServiceHost(dashboard, new Uri(Path.Combine(string.Format("http://{0}:{1}", Environment.MachineName, dashboardPort))));
             dashboardService.AddServiceEndpoint(typeof(IDashboardService), new WebHttpBinding(), "")
-                .Behaviors.Add(new WebHttpBehavior());
+                .Behaviors.Add(new WebHttpBehavior(){DefaultOutgoingResponseFormat = WebMessageFormat.Json});
             dashboardService.Open();
 
             testRunnerService = new ServiceHost(testRunner, new Uri(string.Format("net.tcp://{0}:{1}", Environment.MachineName, testRunnerPort)));

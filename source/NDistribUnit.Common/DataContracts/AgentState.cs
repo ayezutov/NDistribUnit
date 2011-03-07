@@ -1,4 +1,4 @@
-﻿namespace NDistribUnit.Server.Communication
+﻿namespace NDistribUnit.Common.DataContracts
 {
     public enum AgentState
     {

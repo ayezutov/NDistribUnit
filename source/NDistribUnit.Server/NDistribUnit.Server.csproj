@@ -59,8 +59,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Communication\AgentInformation.cs" />
-    <Compile Include="Communication\AgentState.cs" />
     <Compile Include="Communication\ServerConnectionsTracker.cs" />
     <Compile Include="ServerParameters.cs" />
     <Compile Include="Services\DashboardService.cs" />
@@ -90,6 +88,27 @@
     <Content Include="dashboard\images\home.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="dashboard\images\icons\Point Black.png" />
+    <Content Include="dashboard\images\icons\Point Black10x10.png" />
+    <Content Include="dashboard\images\icons\Point Blue.png" />
+    <Content Include="dashboard\images\icons\Point Blue10x10.png" />
+    <Content Include="dashboard\images\icons\Point Gray Question.png" />
+    <Content Include="dashboard\images\icons\Point Gray.png" />
+    <Content Include="dashboard\images\icons\Point Gray10x10.png" />
+    <Content Include="dashboard\images\icons\Point Green.png" />
+    <Content Include="dashboard\images\icons\Point Green10x10.png" />
+    <Content Include="dashboard\images\icons\Point Light Red.png" />
+    <Content Include="dashboard\images\icons\Point Light Red10x10.png" />
+    <Content Include="dashboard\images\icons\Point Orange.png" />
+    <Content Include="dashboard\images\icons\Point Orange10x10.png" />
+    <Content Include="dashboard\images\icons\Point Pink.png" />
+    <Content Include="dashboard\images\icons\Point Pink10x10.png" />
+    <Content Include="dashboard\images\icons\Point Red.png" />
+    <Content Include="dashboard\images\icons\Point Red10x10.png" />
+    <Content Include="dashboard\images\icons\Point White.png" />
+    <Content Include="dashboard\images\icons\Point White10x10.png" />
+    <Content Include="dashboard\images\icons\Point Yellow.png" />
+    <Content Include="dashboard\images\icons\Point Yellow10x10.png" />
     <Content Include="dashboard\images\info.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -129,6 +148,7 @@
     <Content Include="dashboard\images\settings_bg.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="dashboard\images\syncing.gif" />
     <Content Include="dashboard\images\tests_bg.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -216,7 +236,9 @@
     <Content Include="dashboard\scripts\NDistribUnit.Dashboard.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="dashboard\scripts\NDistribUnit.Dashboard.Server.js" />
     <Content Include="dashboard\scripts\NDistribUnit.Dashboard.UI.js" />
+    <Content Include="dashboard\scripts\NDistribUnit.Helpers.js" />
     <Content Include="dashboard\styles\NDistribUnit.Dashboard.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

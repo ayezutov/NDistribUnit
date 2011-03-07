@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using NDistribUnit.Common.Communication;
+using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.ServiceContracts;
 
 namespace NDistribUnit.Server.Communication

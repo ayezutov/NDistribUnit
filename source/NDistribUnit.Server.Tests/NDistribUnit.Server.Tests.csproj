@@ -63,10 +63,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="jsTestDriver.config" />
+    <None Include="jsTestDriver.conf" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="dashboardTests\dashboardTests.js" />
+    <Content Include="dashboardTests\helperTests.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

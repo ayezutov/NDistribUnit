@@ -29,6 +29,10 @@
 
 DashboardUI.prototype = {
     init: function () {
+        /// <summary>Initializes the UI of the application</summary>
+
+        var me = this;
+
         $("body").layout({
             north: { paneSelector: this.selectors.menuPane, size: 30, resizable: false, spacing_open: 0 },
             center: { paneSelector: this.selectors.contentPane }
@@ -60,7 +64,12 @@ DashboardUI.prototype = {
                 $(this.selectors.status.clientsStatusesPane).hide()
             ];
 
+        this.statusPanes.clientsStatusesPane = this.statusPanes[2];
+        $("#clients-statuses-display-area").setTemplateElement("clients-statuses-template");
 
+        this.isPaneTransitionInProgress = false;
+
+        this.clientStatus = new ClientsDashboardUI(this);
     },
 
     openSettingsPane: function () {
@@ -76,7 +85,7 @@ DashboardUI.prototype = {
     },
 
     openClientStatus: function () {
-        this.openPane(this.statusPanes, this.statusPanes[2], "vertical");
+        this.openPane(this.statusPanes, this.statusPanes.clientsStatusesPane, "vertical");
     },
 
     openServerStatus: function () {
@@ -87,6 +96,10 @@ DashboardUI.prototype = {
     { },
 
     openPane: function (panes, paneToOpen, effect) {
+        /// <summary>Opens a panel with a sliding effect, moving the intermediate panels on higher speed.</summary>
+
+        var me = this;
+        me.isPaneTransitionInProgress = true;
         var previousEffectDirection = effect == "horizontal" ? "left" : "up";
         var nextEffectDirection = effect == "horizontal" ? "right" : "down";
         var currentIndex = -1;
@@ -99,6 +112,7 @@ DashboardUI.prototype = {
         }
 
         if (currentIndex == -1 && newIndex == -1) {
+            me.isPaneTransitionInProgress = false;
             return;
         }
         else if (currentIndex != -1 && newIndex == -1) {
@@ -111,29 +125,66 @@ DashboardUI.prototype = {
         else {
             if (currentIndex < newIndex) {
                 var animateForward = function (counter) {
-                    if (counter >= newIndex)
+                    if (counter >= newIndex) {
+                        me.isPaneTransitionInProgress = false;
                         return;
+                    }
                     var animationSpeed = counter == newIndex - 1 ? 800 : 200;
                     panes[counter].hide("slide", { direction: previousEffectDirection }, animationSpeed);
                     panes[counter + 1].show("slide", { direction: nextEffectDirection }, animationSpeed, function () {
                         animateForward(counter + 1);
                     });
+                    $(window).resize();
                 };
                 animateForward(currentIndex);
             }
             else if (currentIndex > newIndex) {
                 var animateBackwards = function (counter) {
-                    if (counter <= newIndex)
+                    if (counter <= newIndex) {
+                        me.isPaneTransitionInProgress = false;
                         return;
+                    }
                     var animationSpeed = counter == newIndex + 1 ? 800 : 200;
                     panes[counter].hide("slide", { direction: nextEffectDirection }, animationSpeed);
                     panes[counter - 1].show("slide", { direction: previousEffectDirection }, animationSpeed, function () {
                         animateBackwards(counter - 1);
                     });
+                    $(window).resize();
                 };
                 animateBackwards(currentIndex);
             }
-
+            else {
+                me.isPaneTransitionInProgress = false;
+            }
         }
     }
+};
+
+function ClientsDashboardUI(parentUi) {
+    this.parentUi = parentUi;
+    this.$progress = $('#client-status-progress');
+    this.$error = $('#client-status-error');
+    this.$displayArea = $("#clients-statuses-display-area");
 }
+
+ClientsDashboardUI.prototype = {
+    showUpdateProgress: function () { this.$progress.show(); },
+    hideUpdateProgress: function () { this.$progress.hide(); },
+    isVisible: function () {
+        return !this.parentUi.isPaneTransitionInProgress
+            && this.parentUi.statusPanes.clientsStatusesPane.is(":visible");
+    },
+    showError: function (errorMessage) {
+        this.$error.html(errorMessage);
+        this.$error.show();
+    },
+    hideError: function () {
+        this.$error.hide();
+    },
+    showAllAsUnknown: function () {
+        this.$displayArea.find(".agent").addClass("Unknown");
+    },
+    displayClients: function (data) {
+        this.$displayArea.processTemplate(data);
+    }
+};

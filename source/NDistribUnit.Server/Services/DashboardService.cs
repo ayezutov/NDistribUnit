@@ -7,12 +7,18 @@ using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using NDistribUnit.Common.DataContracts;
+using NDistribUnit.Common.ServiceContracts;
+using NDistribUnit.Server.Communication;
+using System.Linq;
 
 namespace NDistribUnit.Server.Services
 {
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     internal class DashboardService : IDashboardService
     {
+        private readonly ServerHost host;
+
         private static readonly IDictionary<string, string> allowed =
             new Dictionary<string, string>
                 {
@@ -24,6 +30,11 @@ namespace NDistribUnit.Server.Services
                     {".gif", "image/gif"},
                     {".jpg", "image/jpeg"}
                 };
+
+        public DashboardService(ServerHost host)
+        {
+            this.host = host;
+        }
 
         public ProjectDescription[] GetProjectList()
         {
@@ -52,9 +63,44 @@ namespace NDistribUnit.Server.Services
                        };
         }
 
+        public AgentInformation[] GetClientStatuses()
+        {
+            return host.ConnectionsTracker.Agents.ToArray();
+        }
+
         public Stream GetRoot()
         {
             return Get("index.html");
+        }
+
+        public static string EnumsJavascriptRegistration;
+        public Stream GetEnumsJavascriptRegistration()
+        {
+            WebOperationContext.Current.OutgoingResponse.ContentType = allowed[".js"];
+            if (string.IsNullOrEmpty(EnumsJavascriptRegistration))
+            {
+                var enumsToRegister = new Type[]
+                                             {
+                                                 typeof(AgentState)
+                                             };
+                var sb = new StringBuilder();
+                foreach (var type in enumsToRegister)
+                {
+                    sb.AppendFormat("var {0} = {{", type.Name);
+                    bool first = true;
+                    foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
+                    {
+                        if(!first)
+                            sb.Append(",");
+                        first = false;
+
+                        sb.AppendFormat("{0}: {1}", field.Name, field.GetRawConstantValue());
+                    }
+                    sb.Append("}");
+                }
+                EnumsJavascriptRegistration = sb.ToString();
+            }
+            return new MemoryStream(Encoding.UTF8.GetBytes(EnumsJavascriptRegistration));
         }
 
         public Stream Get(string fileName)

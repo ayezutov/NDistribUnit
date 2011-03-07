@@ -66,6 +66,8 @@
     <Compile Include="Communication\EndpointConnectionChangedEventArgs.cs" />
     <Compile Include="Communication\EndpointInformation.cs" />
     <Compile Include="Communication\ConnectionState.cs" />
+    <Compile Include="DataContracts\AgentInformation.cs" />
+    <Compile Include="DataContracts\AgentState.cs" />
     <Compile Include="ServiceContracts\IPingable.cs" />
     <Compile Include="Communication\WcfUtilities.cs" />
     <Compile Include="ConsoleProcessing\ConsoleExitHandler.cs" />

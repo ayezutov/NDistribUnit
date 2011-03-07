@@ -1,50 +1,46 @@
 <html>
 <head>
     <title>NDistribUnit dashboard</title>
-
     <script type="text/javascript" src="scripts/jquery-1.4.4.min.js"></script>
-
     <script type="text/javascript" src="scripts/jquery-ui-1.8.9.custom.min.js"></script>
-
     <!-- http://docs.jquery.com/Plugins/Treeview -->
     <link rel="stylesheet" href="scripts/jquery.treeview/jquery.treeview.css" type="text/css" />
     <link rel="stylesheet" href="styles/NDistribUnit.Dashboard.css" type="text/css" />
-
     <script type="text/javascript" src="scripts/jquery.treeview/jquery.treeview.js"></script>
-
     <!-- http://layout.jquery-dev.net/documentation.cfm -->
     <script type="text/javascript" src="scripts/jquery.layout.min.js"></script>
-
     <!-- http://tkyk.github.com/jquery-history-plugin/#documentation -->
     <script type="text/javascript" src="scripts/jquery.history.js"></script>
-
     <!-- http://jtemplates.tpython.com/ -->
     <script type="text/javascript" src="scripts/jquery-jtemplates.js"></script>
-
+    <script type="text/javascript" src="javascriptEnums.js"></script>
+    <script type="text/javascript" src="scripts/NDistribUnit.Helpers.js"></script>
+    <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.Server.js"></script>
     <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.UI.js"></script>
-  <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.Dispatcher.js"></script>
+    <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.Dispatcher.js"></script>
     <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.js"></script>
-
     <script type="text/javascript">
         var dashboard = new Dashboard();
 
         $(function () { dashboard.init(); });
     </script>
-
 </head>
 <body>
     <div id="menu-pane">
-        <span>
-            <img id="logo" alt="NDistribUnit" src="images/logo-medium.gif" /></span> <span id="settingsCommand">
-                <a class="menuCommand menuCommandRight" href="#settings">
-                    <img alt="settings" src="images/settings.gif" />
-                    Settings</a></span> <span id="infoCommand"><a class="menuCommand menuCommandRight"
-                        href="#status">
-                        <img alt="info" src="images/info.gif" />
-                        Status</a></span> <span id="homeCommand"><a class="menuCommand menuCommandRight"
-                            href="#tests">
-                            <img alt="home" src="images/home.gif" />
-                            Home</a></span>
+        <div style="float: left;">
+            <img id="logo" alt="NDistribUnit" src="images/logo-medium.gif" /></div>
+        <div id="" class="menuCommandRight">
+            <a href="#settings">
+                <img alt="settings" src="images/settings.gif" />
+                Settings</a></div>
+        <div id="infoCommand" class="menuCommandRight">
+            <a href="#status">
+                <img alt="info" src="images/info.gif" />
+                Status</a></div>
+        <div id="homeCommand" class="menuCommandRight">
+            <a href="#tests">
+                <img alt="home" src="images/home.gif" />
+                Home</a></div>
     </div>
     <div id="content-pane">
         <div id="tests-pane" class="content">
@@ -121,12 +117,59 @@
                     Server's status (execution queue, logs)
                 </div>
                 <div id="clients-statuses-pane">
-                    Clients statuses 
+                    <p style="display: none">
+                        <textarea id="clients-statuses-template" rows="0" cols="0"><!--
+                        {#template MAIN}
+                         {#if $T.data.length==0}
+                            no agents are available
+                         {#else}
+                             {#foreach $T.data as agent}
+                              {#include row root=$T.agent}
+                             {#/for}
+                         {#/if}
+                        {#/template MAIN}
+
+                        {#template row}
+                         <div id="agent-{$T.Name}" class="agent { Helper.getEnumNameByValue(AgentState, $T.State)}">
+                          <span class="agent-name">{$T.Name}</span><br/>
+                          <span class="agent-timestamp">
+                              <span class="agent-time">{Helper.getJsonDate($T.LastStatusUpdate).toLocaleTimeString()},</span>
+                              <span class="agent-date">{Helper.getJsonDate($T.LastStatusUpdate).toLocaleDateString()}</span>
+                          </span>
+                         </div>
+                        {#/template row}
+
+                    --></textarea></p>
+                    <h3 style="height: 20px;">
+                        Agents' statuses:
+                        <img id="client-status-progress" style="vertical-align: text-top" alt="sync" src="images/syncing.gif" />
+                    </h3>
+                    <div class="agent-legend">
+                        <span class="agent Connected">-&nbsp;Connected</span> <span class="agent Busy">-&nbsp;Busy</span>
+                        <span class="agent Disconnected">-&nbsp;Disconnected</span> <span class="agent Unknown">
+                            -&nbsp;Unknown</span>
+                    </div>
+                    <div style="clear: both;">
+                    </div>
+                    <div id="client-status-error" class="error" style="display: none">
+                        Oooops...</div>
+                    <div id="clients-statuses-display-area">
+                    </div>
+                    <div style="display: none;">
+                        <h3 style="float: left;">
+                            Log:
+                        </h3>
+                        <div style="clear: both;">
+                        </div>
+                        <div id="client-status-log">
+                            log goes here</div>
+                    </div>
                 </div>
             </div>
         </div>
         <div id="settings-pane" class="content">
-            <div id="settings-tree-pane" class="left-menu-pane">Menu settings tree goes here</div>
+            <div id="settings-tree-pane" class="left-menu-pane">
+                Menu settings tree goes here</div>
             <div id="settings-content-pane" class="right-content-pane">
                 Menu settings content goes here
             </div>
