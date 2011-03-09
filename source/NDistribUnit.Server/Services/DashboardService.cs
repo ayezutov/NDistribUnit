@@ -17,7 +17,7 @@ namespace NDistribUnit.Server.Services
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public class DashboardService : IDashboardService
     {
-        private readonly ServerHost host;
+        private readonly ServerConnectionsTracker connectionsTracker;
 
         private static readonly IDictionary<string, string> allowed =
             new Dictionary<string, string>
@@ -31,9 +31,9 @@ namespace NDistribUnit.Server.Services
                     {".jpg", "image/jpeg"}
                 };
 
-        public DashboardService(ServerHost host)
+        public DashboardService(ServerConnectionsTracker connectionsTracker, TestRunnerServer server)
         {
-            this.host = host;
+            this.connectionsTracker = connectionsTracker;
         }
 
         public ProjectDescription[] GetProjectList()
@@ -65,7 +65,7 @@ namespace NDistribUnit.Server.Services
 
         public AgentInformation[] GetClientStatuses()
         {
-            return host.ConnectionsTracker.Agents.ToArray();
+            return connectionsTracker.Agents.ToArray();
         }
 
         public Stream GetRoot()

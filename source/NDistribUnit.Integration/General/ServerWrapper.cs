@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Runtime.Serialization.Formatters;
+using Autofac;
 using NDistribUnit.Server;
 using NDistribUnit.Server.Communication;
+using NDistribUnit.Server.Services;
 
 namespace NDistribUnit.Integration.Tests.General
 {
@@ -21,7 +24,13 @@ namespace NDistribUnit.Integration.Tests.General
 
         public static ServerWrapper Start()
         {
-            var host = new ServerHost(9008, 9009);
+            var builder = new ContainerBuilder();
+            builder.Register<ServerHost>(c => new ServerHost(9008, 9009, 
+                c.Resolve<TestRunnerServer>(), 
+                c.Resolve<DashboardService>(), 
+                c.Resolve<ServerConnectionsTracker>()));
+            var container = builder.Build();
+            var host = container.Resolve<ServerHost>();
             var serverWrapper = new ServerWrapper(host);
             host.Start();
             return serverWrapper;

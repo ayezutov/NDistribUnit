@@ -19,7 +19,7 @@ namespace NDistribUnit.Server
             builder.Register(
                 c =>
                 new ServerHost(c.Resolve<ServerParameters>().DashboardPort, 
-                    c.Resolve<ServerParameters>().DashboardPort,
+                    c.Resolve<ServerParameters>().TestRunnerPort,
                     c.Resolve<TestRunnerServer>(),
                     c.Resolve<DashboardService>(),
                     c.Resolve<ServerConnectionsTracker>())).InstancePerLifetimeScope();

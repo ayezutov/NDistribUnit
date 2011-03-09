@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=2.4.4.705, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL" />
     <Reference Include="nunit.framework">
       <HintPath>..\_dependencies\NUnit-2.5.9.10348\bin\net-2.0\framework\nunit.framework.dll</HintPath>
     </Reference>
@@ -52,6 +53,10 @@
     <ProjectReference Include="..\NDistribUnit.Agent\NDistribUnit.Agent.csproj">
       <Project>{2F1BC3F1-EB1B-4D71-992A-564CF104F9A1}</Project>
       <Name>NDistribUnit.Agent</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NDistribUnit.Common\NDistribUnit.Common.csproj">
+      <Project>{B060BDAC-E277-42BB-871C-320D6D8C5CA7}</Project>
+      <Name>NDistribUnit.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\NDistribUnit.Server\NDistribUnit.Server.csproj">
       <Project>{91A452A1-4EBC-42C6-A724-F3BFF3A66EAF}</Project>
