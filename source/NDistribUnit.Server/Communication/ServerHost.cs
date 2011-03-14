@@ -22,7 +22,7 @@ namespace NDistribUnit.Server.Communication
         private readonly DashboardService dashboard;
         private readonly TestRunnerServer testRunner;
 
-        public ServerConnectionsTracker ConnectionsTracker { get; private set; }
+        private ServerConnectionsTracker ConnectionsTracker { get; set; }
 
         /// <summary>
         /// Creates a new server instance, which exposes dashboard and test runner at given ports
@@ -31,6 +31,7 @@ namespace NDistribUnit.Server.Communication
         /// <param name="testRunnerPort">The port for test runner</param>
         /// <param name="testRunner">The test runner instance</param>
         /// <param name="dashboard">The dashboard instance</param>
+        /// <param name="conenctionsTracker">The connection tracker for the host</param>
         public ServerHost(int dashboardPort, int testRunnerPort, TestRunnerServer testRunner, DashboardService dashboard, ServerConnectionsTracker conenctionsTracker)
         {
             this.dashboardPort = dashboardPort;

@@ -1,15 +1,21 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Discovery;
+using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.ServiceContracts;
-using NDistribUnit.Server;
 
 namespace NDistribUnit.Agent.Communication
 {
+    /// <summary>
+    /// A host, which manages all agent's services
+    /// </summary>
     public class AgentHost
     {
-        protected ServiceHost AgentTestRunnerHost { get; set; }
+        private ServiceHost AgentTestRunnerHost { get; set; }
 
+        /// <summary>
+        /// Starts agent's services
+        /// </summary>
         public void Start()
         {
             var testRunnerAgent = new TestRunnerAgent();
@@ -24,6 +30,9 @@ namespace NDistribUnit.Agent.Communication
             AgentTestRunnerHost.Open();
         }
 
+        /// <summary>
+        /// Stops all agent's services
+        /// </summary>
         public void Stop()
         {
             AgentTestRunnerHost.Close();

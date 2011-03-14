@@ -14,6 +14,9 @@ using System.Linq;
 
 namespace NDistribUnit.Server.Services
 {
+    /// <summary>
+    /// The service, which allows a web-based status tracking of the server
+    /// </summary>
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public class DashboardService : IDashboardService
     {
@@ -31,11 +34,19 @@ namespace NDistribUnit.Server.Services
                     {".jpg", "image/jpeg"}
                 };
 
-        public DashboardService(ServerConnectionsTracker connectionsTracker, TestRunnerServer server)
+        /// <summary>
+        /// Initializes a new instance of dashboard service
+        /// </summary>
+        /// <param name="connectionsTracker">The <see cref="ServerConnectionsTracker">connections tracker</see> for the server</param>
+        public DashboardService(ServerConnectionsTracker connectionsTracker)
         {
             this.connectionsTracker = connectionsTracker;
         }
 
+        /// <summary>
+        /// Returns the list of actual projects
+        /// </summary>
+        /// <returns></returns>
         public ProjectDescription[] GetProjectList()
         {
             return new []
@@ -63,17 +74,21 @@ namespace NDistribUnit.Server.Services
                        };
         }
 
+        /// <summary>
+        /// Gets the statuses of connected agents
+        /// </summary>
+        /// <returns></returns>
         public AgentInformation[] GetClientStatuses()
         {
             return connectionsTracker.Agents.ToArray();
         }
 
-        public Stream GetRoot()
-        {
-            return Get("index.html");
-        }
+        private static string EnumsJavascriptRegistration;
 
-        public static string EnumsJavascriptRegistration;
+        /// <summary>
+        /// Gets the javascript representation of important enumerations
+        /// </summary>
+        /// <returns></returns>
         public Stream GetEnumsJavascriptRegistration()
         {
             WebOperationContext.Current.OutgoingResponse.ContentType = allowed[".js"];
@@ -103,6 +118,11 @@ namespace NDistribUnit.Server.Services
             return new MemoryStream(Encoding.UTF8.GetBytes(EnumsJavascriptRegistration));
         }
 
+        /// <summary>
+        /// Gets some file from server
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public Stream Get(string fileName)
         {
             Debug.Assert(WebOperationContext.Current != null);

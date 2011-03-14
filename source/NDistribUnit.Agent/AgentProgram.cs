@@ -2,12 +2,17 @@
 using Autofac;
 using NDistribUnit.Agent.Communication;
 using NDistribUnit.Agent.Options;
-using NDistribUnit.Common.ConsoleProcessing;
 
 namespace NDistribUnit.Agent
 {
+    /// <summary>
+    /// The entry point into agent's console application
+    /// </summary>
     public class AgentProgram
     {
+        /// <summary>
+        ///  The host, which enables all communication services
+        /// </summary>
         public AgentHost AgentHost { get; set; }
 
         static int Main(string[] args)
@@ -20,6 +25,10 @@ namespace NDistribUnit.Agent
             return container.Resolve<AgentProgram>().Run();
         }
 
+        /// <summary>
+        /// Initializes a new instance of an agent program
+        /// </summary>
+        /// <param name="agentHost"></param>
         public AgentProgram(AgentHost agentHost)
         {
             AgentHost = agentHost;

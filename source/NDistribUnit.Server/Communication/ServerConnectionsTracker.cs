@@ -2,18 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using System.ServiceModel.Description;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.ServiceContracts;
 
 namespace NDistribUnit.Server.Communication
 {
+    /// <summary>
+    /// Tracks connections on NDistribUnit server. It always has a list of agents with actual statuses.
+    /// </summary>
     public class ServerConnectionsTracker
     {
         private readonly DiscoveryConnectionsTracker<ITestRunnerAgent> connectionsTracker;
-        public IList<AgentInformation> Agents { get; set; }
 
+        /// <summary>
+        /// Gets the list of agents
+        /// </summary>
+        public IList<AgentInformation> Agents { get; private set; }
+
+        /// <summary>
+        /// Initializes a new instance of a connection tracker
+        /// </summary>
+        /// <param name="scope"></param>
         public ServerConnectionsTracker(string scope)
         {
             Agents = new List<AgentInformation>();
@@ -79,11 +89,17 @@ namespace NDistribUnit.Server.Communication
             return Agents.FirstOrDefault(agent => agent.Endpoint.Address.ToString().Equals(address.ToString()));
         }
 
+        /// <summary>
+        /// Starts listening on agents' availability and monitors connected agents' statuses.
+        /// </summary>
         public void Start()
         {
             connectionsTracker.Start();
         }
 
+        /// <summary>
+        /// Stops listening for agents
+        /// </summary>
         public void Stop()
         {
             connectionsTracker.Stop();

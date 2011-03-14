@@ -8,6 +8,10 @@ using NDistribUnit.Common.ServiceContracts;
 
 namespace NDistribUnit.Common.Communication
 {
+    /// <summary>
+    /// A connection tracker, which relies on discovery mechanism
+    /// </summary>
+    /// <typeparam name="TIEndpoint"></typeparam>
     public class DiscoveryConnectionsTracker<TIEndpoint>
         where TIEndpoint : IPingable
     {
@@ -15,19 +19,36 @@ namespace NDistribUnit.Common.Communication
         private readonly IList<EndpointInformation> endpoints = new List<EndpointInformation>();
         private DiscoveryClient discoveryClient;
         private FindCriteria findCriteria;
+        private const int DiscoveryIntervalInMiliseconds = 20000;
+        private const int PingIntervalInMiliseconds = 5000;
 
+        /// <summary>
+        /// Event, which is fired, whenever a new endpoint is connected
+        /// </summary>
         public event EventHandler<EndpointConnectionChangedEventArgs> EndpointConnected;
+
+        /// <summary>
+        /// Event, which is firedm whenever an endpoint is successfully pinged
+        /// </summary>
         public event EventHandler<EndpointConnectionChangedEventArgs> EndpointSuccessfulPing;
+
+        /// <summary>
+        /// An event, which is fired, whenever an endpoint is disconnected
+        /// </summary>
         public event EventHandler<EndpointConnectionChangedEventArgs> EndpointDisconnected;
 
+        /// <summary>
+        /// Initializes a new instance of connections tracker
+        /// </summary>
+        /// <param name="scope"></param>
         public DiscoveryConnectionsTracker(string scope)
         {
             this.scope = scope;
         }
 
-        private const int DiscoveryIntervalInMiliseconds = 20000;
-        private const int PingIntervalInMiliseconds = 5000;
-
+        /// <summary>
+        /// Starts the connections tracker
+        /// </summary>
         public void Start()
         {
             discoveryClient = new DiscoveryClient(new UdpDiscoveryEndpoint());
@@ -56,6 +77,9 @@ namespace NDistribUnit.Common.Communication
             AddEndpointForTracking(endpoint);
         }
 
+        /// <summary>
+        /// Stops the connections tracker
+        /// </summary>
         public void Stop()
         {
             discoveryClient.Close();

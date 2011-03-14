@@ -56,7 +56,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="JavascriptTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SomeTests.cs" />
   </ItemGroup>

@@ -57,6 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\RollingListTests.cs" />
+    <Compile Include="Logging\RollingLogTests.cs" />
     <Compile Include="Options\ConsoleParametersParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

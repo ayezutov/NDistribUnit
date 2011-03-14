@@ -28,6 +28,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\NDistribUnit.Common.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -62,17 +64,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\RollingList.cs" />
     <Compile Include="Communication\DiscoveryConnectionsTracker.cs" />
     <Compile Include="Communication\EndpointConnectionChangedEventArgs.cs" />
     <Compile Include="Communication\EndpointInformation.cs" />
-    <Compile Include="Communication\ConnectionState.cs" />
     <Compile Include="DataContracts\AgentInformation.cs" />
     <Compile Include="DataContracts\AgentState.cs" />
+    <Compile Include="Logging\CombinedLog.cs" />
+    <Compile Include="Logging\ConsoleLog.cs" />
+    <Compile Include="Logging\ILog.cs" />
+    <Compile Include="Logging\LogEntry.cs" />
+    <Compile Include="Logging\LogEntryType.cs" />
+    <Compile Include="Logging\LoggingUtility.cs" />
+    <Compile Include="Logging\RollingLog.cs" />
     <Compile Include="ServiceContracts\IPingable.cs" />
     <Compile Include="Communication\WcfUtilities.cs" />
-    <Compile Include="ConsoleProcessing\ConsoleExitHandler.cs" />
-    <Compile Include="ConsoleProcessing\CtrlType.cs" />
-    <Compile Include="ConsoleProcessing\Native.cs" />
     <Compile Include="DataContracts\ProjectDescription.cs" />
     <Compile Include="ServiceContracts\ITestRunnerAgent.cs" />
     <Compile Include="ServiceContracts\ITestRunnerServer.cs" />
@@ -85,6 +91,9 @@
   <ItemGroup>
     <Folder Include="Testing\" />
     <Folder Include="Updating\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

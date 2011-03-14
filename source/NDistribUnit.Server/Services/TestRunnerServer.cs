@@ -6,13 +6,20 @@ using NDistribUnit.Common.ServiceContracts;
 
 namespace NDistribUnit.Server.Services
 {
-    // NOTE: If you change the class name "Service1" here, you must also update the reference to "Service1" in App.config.
+    /// <summary>
+    /// The test runner service, which is used by clients to tell the job
+    /// </summary>
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public class TestRunnerServer : ITestRunnerServer
     {
         private string g = Guid.NewGuid().ToString();
 
-
+        /// <summary>
+        /// Method for testing purposes
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        // TODO: Should be finally deleted
         public string GetData(int value)
         {
             
@@ -32,7 +39,9 @@ namespace NDistribUnit.Server.Services
             return string.Format("You entered: {0}", value);
         }
 
-
+        /// <summary>
+        /// Runs tests from client
+        /// </summary>
         public void RunTests()
         {
             throw new NotImplementedException();
