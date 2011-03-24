@@ -1,111 +1,120 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading;
+﻿using System.Threading;
 using NDistribUnit.Integration.Tests.General;
 using NUnit.Framework;
 
 namespace NDistribUnit.Integration.Tests
 {
-    [TestFixture]
+    [TestFixture, Ignore("The implementation of these tests was started, when the current approach for server/agent was not yet chosen. It is required to update them.")]
     public class ConnectionTrackersStateTests: IntegrationTestBase
     {
+        private ServerWrapper Server { get; set; }
+        private AgentWrapper Agent { get; set; }
+
+        [TearDown]
+        public void TearDown()
+        {
+            if (Server != null)
+                Server.Dispose();
+
+            if (Agent != null)
+                Agent.Dispose();
+        }
+
         [Test]
         public void AgentIsNotConnectedByDefault()
         {
-            var agent = AgentWrapper.Start();
+            Agent = AgentWrapper.Start();
 
-            Assert.That(agent.IsNotConnectedTo(ServerWrapper.Any));
+            Assert.That(Agent.IsNotConnectedTo(ServerWrapper.Any));
         }
 
 
         [Test]
         public void ServerIsNotConnectedByDefault()
         {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            var server = ServerWrapper.Start();
-            stopwatch.Stop();
-            Console.WriteLine(stopwatch.ElapsedMilliseconds);
-
-            Assert.That(server.IsNotConnectedTo(AgentWrapper.Any));
+            Server = ServerWrapper.Start();
+            
+            Assert.That(Server.IsNotConnectedTo(AgentWrapper.Any));
         }
 
         [Test]
         public void AgentAndServerAreConnectedIfServerIsStartedFirst()
         {
-            var server = ServerWrapper.Start();
-            var agent = AgentWrapper.Start();
+            Server = ServerWrapper.Start();
+            Agent = AgentWrapper.Start();
 
-            Assert.That(agent.IsConnectedTo(server));
-            Assert.That(server.IsConnectedTo(agent));
+            Assert.That(Agent.IsConnectedTo(Server));
+            Assert.That(Server.IsConnectedTo(Agent));
+
+            Server.Dispose();
         }
 
         [Test]
         public void AgentAndServerAreConnectedIfAgentIsStartedFirst()
         {
-            var server = ServerWrapper.Start();
-            var agent = AgentWrapper.Start();
+            Agent = AgentWrapper.Start();
+            Server = ServerWrapper.Start();
 
             Thread.Sleep(2000);
 
-            Assert.That(agent.IsConnectedTo(server));
-            Assert.That(server.IsConnectedTo(agent));
+            Assert.That(Agent.IsConnectedTo(Server));
+            Assert.That(Server.IsConnectedTo(Agent));
         }
 
         [Test]
         public void AgentDetectsServersExpectedShutdown()
         {
-            var server = ServerWrapper.Start();
-            var agent = AgentWrapper.Start();
+            Server = ServerWrapper.Start();
+            Agent = AgentWrapper.Start();
 
-            Assert.That(agent.IsConnectedTo(server));
-            Assert.That(server.IsConnectedTo(agent));
+            Assert.That(Agent.IsConnectedTo(Server));
+            Assert.That(Server.IsConnectedTo(Agent));
 
-            server.ShutDownInExpectedWay();
+            Server.ShutDownInExpectedWay();
 
-            Assert.That(agent.IsNotConnectedTo(server));
+            Assert.That(Agent.IsNotConnectedTo(Server));
         }
 
         [Test]
         public void AgentDetectsServersUnexpectedShutdown()
         {
-            var server = ServerWrapper.Start();
-            var agent = AgentWrapper.Start();
+            Server = ServerWrapper.Start();
+            Agent = AgentWrapper.Start();
 
-            Assert.That(agent.IsConnectedTo(server));
-            Assert.That(server.IsConnectedTo(agent));
+            Assert.That(Agent.IsConnectedTo(Server));
+            Assert.That(Server.IsConnectedTo(Agent));
 
-            server.ShutDownUngraceful();
+            Server.ShutDownUngraceful();
 
-            Assert.That(agent.IsNotConnectedTo(server));
+            Assert.That(Agent.IsNotConnectedTo(Server));
         }
 
         [Test]
         public void ServerDetectsAgentsExpectedShutdown()
         {
-            var server = ServerWrapper.Start();
-            var agent = AgentWrapper.Start();
+            Server = ServerWrapper.Start();
+            Agent = AgentWrapper.Start();
 
-            Assert.That(agent.IsConnectedTo(server));
-            Assert.That(server.IsConnectedTo(agent));
+            Assert.That(Agent.IsConnectedTo(Server));
+            Assert.That(Server.IsConnectedTo(Agent));
 
-            agent.ShutDownInExpectedWay();
+            Agent.ShutDownInExpectedWay();
 
-            Assert.That(server.IsNotConnectedTo(agent));
+            Assert.That(Server.IsNotConnectedTo(Agent));
         }
 
         [Test]
         public void ServerDetectsAgentsUnexpectedShutdown()
         {
-            var server = ServerWrapper.Start();
-            var agent = AgentWrapper.Start();
+            Server = ServerWrapper.Start();
+            Agent = AgentWrapper.Start();
 
-            Assert.That(agent.IsConnectedTo(server));
-            Assert.That(server.IsConnectedTo(agent));
+            Assert.That(Agent.IsConnectedTo(Server));
+            Assert.That(Server.IsConnectedTo(Agent));
 
-            agent.ShutDownUngraceful();
+            Agent.ShutDownUngraceful();
 
-            Assert.That(server.IsNotConnectedTo(agent));
+            Assert.That(Server.IsNotConnectedTo(Agent));
         }
 
 

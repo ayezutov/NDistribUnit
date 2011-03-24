@@ -16,7 +16,7 @@
             contentPane: "#status-content-pane",
             homePane: "#status-home-page",
             serverStatusPane: "#server-status-pane",
-            clientsStatusesPane: "#clients-statuses-pane"
+            agentsStatusesPane: "#agents-statuses-pane"
         },
         settings: {
             treeview: "#settings-tree-pane>UL",
@@ -24,7 +24,8 @@
             contentPane: "#settings-content-pane"
         }
     };
-    this.elements = { };
+    this.agentsStatus = new AgentsDashboardUI(this);
+    this.serverStatus = new ServerDashboardUI(this);
 }
 
 DashboardUI.prototype = {
@@ -51,6 +52,19 @@ DashboardUI.prototype = {
             west: { paneSelector: this.selectors.settings.treePane, size: 200, resizable: true, slideable: false, minSize: 200, maxSize: 0, spacing_open: 6 },
             center: { paneSelector: this.selectors.settings.contentPane }
         });
+        //
+        //        $(this.selectors.status.serverStatusPane).layout({
+        //            east: { paneSelector: this.selectors.status.serverQueuePane, size: 200, resizable: true, slideable: false, minSize: 200, maxSize: 0 },
+        //            center: { paneSelector: this.selectors.status.serverLogPane, minSize: 100 }
+        //        });
+        
+        $(this.selectors.status.serverStatusPane).layout({
+            center: { paneSelector: "#server-status-pane-wrapper" }
+                });
+        $(this.selectors.status.agentsStatusesPane).layout({
+            center: { paneSelector: "#agents-statuses-pane-wrapper" }
+                });
+        
         this.panes =
             [
                 $(this.selectors.testsPane),
@@ -61,15 +75,15 @@ DashboardUI.prototype = {
             [
                 $(this.selectors.status.homePane),
                 $(this.selectors.status.serverStatusPane).hide(),
-                $(this.selectors.status.clientsStatusesPane).hide()
+                $(this.selectors.status.agentsStatusesPane).hide()
             ];
 
-        this.statusPanes.clientsStatusesPane = this.statusPanes[2];
-        $("#clients-statuses-display-area").setTemplateElement("clients-statuses-template");
+        this.statusPanes.agentsStatusesPane = this.statusPanes[2];
+       
+        me.agentsStatus.init();
+        me.serverStatus.init();
 
         this.isPaneTransitionInProgress = false;
-
-        this.clientStatus = new ClientsDashboardUI(this);
     },
 
     openSettingsPane: function () {
@@ -85,11 +99,11 @@ DashboardUI.prototype = {
     },
 
     openClientStatus: function () {
-        this.openPane(this.statusPanes, this.statusPanes.clientsStatusesPane, "vertical");
+        this.openPane(this.statusPanes, this.statusPanes.agentsStatusesPane, "horizontal");
     },
 
     openServerStatus: function () {
-        this.openPane(this.statusPanes, this.statusPanes[1], "vertical");
+        this.openPane(this.statusPanes, this.statusPanes[1], "horizontal");
     },
 
     showSettingsInfo: function ()
@@ -160,19 +174,25 @@ DashboardUI.prototype = {
     }
 };
 
-function ClientsDashboardUI(parentUi) {
+
+
+function AgentsDashboardUI(parentUi) {
+    /// <summary>Agents' dashboard-related UI activities</summary>
     this.parentUi = parentUi;
-    this.$progress = $('#client-status-progress');
-    this.$error = $('#client-status-error');
-    this.$displayArea = $("#clients-statuses-display-area");
 }
 
-ClientsDashboardUI.prototype = {
+AgentsDashboardUI.prototype = {
+    init: function () {
+        this.$progress = $('#agents-statuses-progress');
+        this.$error = $('#agents-statuses-error');
+        this.$displayArea = $("#agents-statuses-display-area");
+        this.$agentsTemplate = $("#agents-statuses-template").template();
+    },
     showUpdateProgress: function () { this.$progress.show(); },
     hideUpdateProgress: function () { this.$progress.hide(); },
     isVisible: function () {
         return !this.parentUi.isPaneTransitionInProgress
-            && this.parentUi.statusPanes.clientsStatusesPane.is(":visible");
+            && this.parentUi.statusPanes.agentsStatusesPane.is(":visible");
     },
     showError: function (errorMessage) {
         this.$error.html(errorMessage);
@@ -184,7 +204,58 @@ ClientsDashboardUI.prototype = {
     showAllAsUnknown: function () {
         this.$displayArea.find(".agent").addClass("Unknown");
     },
-    displayClients: function (data) {
-        this.$displayArea.processTemplate(data);
+    displayAgents: function (data) {
+        this.$displayArea.empty();
+        $.tmpl(this.$agentsTemplate, data)
+            .appendTo(this.$displayArea);
+    }
+};
+
+function ServerDashboardUI(parentUi) {
+    this.parentUi = parentUi;
+}
+
+ServerDashboardUI.prototype = {
+    init: function () {
+        this.$logProgress = $('#server-log-progress');
+        this.$logError = $('#server-log-error');
+        this.$logDisplayArea = $("#server-log-display-area");
+        this.$logTemplate = $("#log-entry-template").template();
+    },
+    showLogUpdateProgress: function () { this.$logProgress.show(); },
+    hideLogUpdateProgress: function () { this.$logProgress.hide(); },
+    isLogVisible: function () {
+        return !this.parentUi.isPaneTransitionInProgress
+            && this.$logDisplayArea.is(":visible");
+    },
+    showLogError: function (errorMessage) {
+        this.$logError.html(errorMessage);
+        this.$logError.show();
+    },
+    hideLogError: function () {
+        this.$logError.hide();
+    },
+    displayLogEntries: function (data) {
+        var currentCount = this.$logDisplayArea.children().length;
+        var maxCount = 1000;
+
+        if (currentCount > maxCount) {
+            var toBeDeletedCount = currentCount - maxCount;
+            var nodesToRemove = this.$logDisplayArea.children(":lt(" + toBeDeletedCount + ")");
+            nodesToRemove.remove();
+        }
+
+        var $nodes = $.tmpl(this.$logTemplate, data.data);
+        var $scrollingContainer = this.$logDisplayArea.parent();
+        var shouldScroll = ($scrollingContainer.scrollTop() + $scrollingContainer.height() + 10) >= $scrollingContainer.attr("scrollHeight");
+
+        $nodes.appendTo(this.$logDisplayArea);
+
+        if (shouldScroll) {
+            $scrollingContainer.scrollTop($scrollingContainer.attr("scrollHeight"));
+        }
+
+        $nodes.css('background-color', '#D3BC9E');
+        $nodes.animate({ backgroundColor: '#000000' }, 1000);
     }
 };

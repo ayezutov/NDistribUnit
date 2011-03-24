@@ -41,5 +41,10 @@ namespace NDistribUnit.Integration.Tests.General
         {
             throw new NotImplementedException();
         }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

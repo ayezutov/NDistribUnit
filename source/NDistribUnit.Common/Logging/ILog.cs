@@ -25,7 +25,10 @@ namespace NDistribUnit.Common.Logging
         /// <param name="message">A message to be logged</param>
         void Info(string message);
 
-        ///
+        /// <summary>
+        /// Logs successful event
+        /// </summary>
+        /// <param name="message">A message to be logged</param>
         void Success(string message);
 
         /// <summary>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.DataContracts;
+using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
 
 namespace NDistribUnit.Server.Communication
@@ -13,6 +14,7 @@ namespace NDistribUnit.Server.Communication
     /// </summary>
     public class ServerConnectionsTracker
     {
+        private readonly ILog log;
         private readonly DiscoveryConnectionsTracker<ITestRunnerAgent> connectionsTracker;
 
         /// <summary>
@@ -24,10 +26,12 @@ namespace NDistribUnit.Server.Communication
         /// Initializes a new instance of a connection tracker
         /// </summary>
         /// <param name="scope"></param>
-        public ServerConnectionsTracker(string scope)
+        /// <param name="log"></param>
+        public ServerConnectionsTracker(string scope, ILog log)
         {
+            this.log = log;
             Agents = new List<AgentInformation>();
-            connectionsTracker = new DiscoveryConnectionsTracker<ITestRunnerAgent>(scope);
+            connectionsTracker = new DiscoveryConnectionsTracker<ITestRunnerAgent>(scope, log);
             connectionsTracker.EndpointConnected += OnEndpointConnected;
             connectionsTracker.EndpointDisconnected += OnEndpointDisconnected;
             connectionsTracker.EndpointSuccessfulPing += OnEndpointSuccessfulPing;

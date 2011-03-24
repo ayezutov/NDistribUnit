@@ -12,7 +12,13 @@
     <!-- http://tkyk.github.com/jquery-history-plugin/#documentation -->
     <script type="text/javascript" src="scripts/jquery.history.js"></script>
     <!-- http://jtemplates.tpython.com/ -->
-    <script type="text/javascript" src="scripts/jquery-jtemplates.js"></script>
+    <!--<script type="text/javascript" src="scripts/jquery-jtemplates.js"></script>-->
+    <!-- http://api.jquery.com/jquery.tmpl/ -->
+    <script type="text/javascript" src="scripts/jquery-jquery-tmpl/jquery.tmpl.min.js"></script>
+    <!-- http://www.bitstorm.org/jquery/color-animation/ -->
+    <script type="text/javascript" src="scripts/jquery.animate-colors-min.js"></script>
+
+
     <script type="text/javascript" src="javascriptEnums.js"></script>
     <script type="text/javascript" src="scripts/NDistribUnit.Helpers.js"></script>
     <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.Server.js"></script>
@@ -109,61 +115,87 @@
                     <li><a href="#status/clients" id="clients-statuses-menu">Clients' statuses</a></li>
                 </ul>
             </div>
-            <div id="status-content-pane" class="right-content-pane">
+            <div id="status-content-pane">
                 <div id="status-home-page">
                     You can find the statuses of all parts of NDistribUnit here.
                 </div>
-                <div id="server-status-pane">
-                    Server's status (execution queue, logs)
-                </div>
-                <div id="clients-statuses-pane">
-                    <p style="display: none">
-                        <textarea id="clients-statuses-template" rows="0" cols="0"><!--
-                        {#template MAIN}
-                         {#if $T.data.length==0}
-                            no agents are available
-                         {#else}
-                             {#foreach $T.data as agent}
-                              {#include row root=$T.agent}
-                             {#/for}
-                         {#/if}
-                        {#/template MAIN}
-
-                        {#template row}
-                         <div id="agent-{$T.Name}" class="agent { Helper.getEnumNameByValue(AgentState, $T.State)}">
-                          <span class="agent-name">{$T.Name}</span><br/>
-                          <span class="agent-timestamp">
-                              <span class="agent-time">{Helper.getJsonDate($T.LastStatusUpdate).toLocaleTimeString()},</span>
-                              <span class="agent-date">{Helper.getJsonDate($T.LastStatusUpdate).toLocaleDateString()}</span>
+                <div id="server-status-pane" style="height:100%;">
+                    <div id="server-status-pane-wrapper">
+                    <h3>
+                            Log:
+                            <img id="server-log-progress" style="vertical-align: text-top" alt="sync" src="images/syncing.gif" />
+                            <div id="server-log-error" class="error" style="display: none">Oooops...</div>
+                        </h3>
+                        
+                    <div id="server-log-pane" class="ui-layout-content">
+                        
+                        
+                        <script id="log-entry-template" type="text/x-jquery-tmpl">
+                            <div id="server-log-${Id}" class="log ${ Helper.getEnumNameByValue(LogEntryType, Type)}">
+                          
+                          <span class="log-time">
+                              [<span class="agent-time">${LogTime.toLocaleTimeString()}</span>]
                           </span>
-                         </div>
-                        {#/template row}
 
-                    --></textarea></p>
-                    <h3 style="height: 20px;">
+                          <span class="log-indicator"></span>
+                          <span class="log-message">${Message}</span>
+                          {{if Exception!=null}}
+                            <span class="log-exception">${Exception.Message}</span>
+                          {{/if}}
+                         </div>
+                        </script>
+                                                
+                    <div style="clear: both;"></div>
+                    
+                    <div id="server-log-display-area" class="console ">
+                            
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div id="agents-statuses-pane"  style="height:100%;">
+                <div id="agents-statuses-pane-wrapper" class="right-content-pane">
+                   
+                    <script id="agents-statuses-template" type="text/x-jquery-tmpl">
+                        {{if data.length==0}}
+                            no agents are yet available
+                        {{else}}
+                            {{each data}} 
+                                <div id="agent-${Name}" class="agent ${ Helper.getEnumNameByValue(AgentState, State)}">
+                                  <span class="agent-name">${Name}</span><br/>
+                                  <span class="agent-timestamp">
+                                      <span class="agent-time">${LastStatusUpdate.toLocaleTimeString()},</span>
+                                      <span class="agent-date">${LastStatusUpdate.toLocaleDateString()}</span>
+                                  </span>
+                                 </div>
+                            {{/each}}
+                        {{/if}}             
+                    </script>
+
+                    <h3>
                         Agents' statuses:
-                        <img id="client-status-progress" style="vertical-align: text-top" alt="sync" src="images/syncing.gif" />
-                    </h3>
-                    <div class="agent-legend">
+                        <img id="agents-statuses-progress" style="vertical-align: text-top" alt="sync" src="images/syncing.gif" />
+                        <div id="agents-statuses-error" class="error" style="display: none">
+                        Oooops...</div></h3>
+                    <div class="agents-legend">
                         <span class="agent Connected">-&nbsp;Connected</span> <span class="agent Busy">-&nbsp;Busy</span>
                         <span class="agent Disconnected">-&nbsp;Disconnected</span> <span class="agent Unknown">
                             -&nbsp;Unknown</span>
                     </div>
-                    <div style="clear: both;">
+                    <div style="clear: both;"></div>                    
+                    <div style="clear:both; height:10px;"></div>
+                    <div id="agents-statuses-display-area"  class="ui-layout-content">
                     </div>
-                    <div id="client-status-error" class="error" style="display: none">
-                        Oooops...</div>
-                    <div id="clients-statuses-display-area">
-                    </div>
-                    <div style="display: none;">
+                    <!--div style="display: none;">
                         <h3 style="float: left;">
                             Log:
                         </h3>
                         <div style="clear: both;">
                         </div>
-                        <div id="client-status-log">
+                        <div id="agents-log">
                             log goes here</div>
-                    </div>
+                    </div-->
+                </div>
                 </div>
             </div>
         </div>

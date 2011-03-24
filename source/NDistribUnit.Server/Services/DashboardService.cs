@@ -8,6 +8,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using NDistribUnit.Common.DataContracts;
+using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Server.Communication;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace NDistribUnit.Server.Services
     public class DashboardService : IDashboardService
     {
         private readonly ServerConnectionsTracker connectionsTracker;
+        private readonly RollingLog log;
 
         private static readonly IDictionary<string, string> allowed =
             new Dictionary<string, string>
@@ -38,9 +40,11 @@ namespace NDistribUnit.Server.Services
         /// Initializes a new instance of dashboard service
         /// </summary>
         /// <param name="connectionsTracker">The <see cref="ServerConnectionsTracker">connections tracker</see> for the server</param>
-        public DashboardService(ServerConnectionsTracker connectionsTracker)
+        /// <param name="log">The log to display for requests</param>
+        public DashboardService(ServerConnectionsTracker connectionsTracker, RollingLog log)
         {
             this.connectionsTracker = connectionsTracker;
+            this.log = log;
         }
 
         /// <summary>
@@ -83,7 +87,16 @@ namespace NDistribUnit.Server.Services
             return connectionsTracker.Agents.ToArray();
         }
 
-        private static string EnumsJavascriptRegistration;
+        /// <summary>
+        /// Gets the log for the server
+        /// </summary>
+        /// <returns></returns>
+        public LogEntry[] GetServerLog(int maxItemsCount, int? lastFetchedEntryId = null)
+        {
+            return log.GetEntries(lastFetchedEntryId, maxItemsCount);
+        }
+
+        private static string enumsJavascriptRegistration;
 
         /// <summary>
         /// Gets the javascript representation of important enumerations
@@ -91,12 +104,14 @@ namespace NDistribUnit.Server.Services
         /// <returns></returns>
         public Stream GetEnumsJavascriptRegistration()
         {
+            Debug.Assert(WebOperationContext.Current != null);
             WebOperationContext.Current.OutgoingResponse.ContentType = allowed[".js"];
-            if (string.IsNullOrEmpty(EnumsJavascriptRegistration))
+            if (string.IsNullOrEmpty(enumsJavascriptRegistration))
             {
-                var enumsToRegister = new Type[]
+                var enumsToRegister = new[]
                                              {
-                                                 typeof(AgentState)
+                                                 typeof(AgentState), 
+                                                 typeof(LogEntryType)
                                              };
                 var sb = new StringBuilder();
                 foreach (var type in enumsToRegister)
@@ -111,11 +126,11 @@ namespace NDistribUnit.Server.Services
 
                         sb.AppendFormat("{0}: {1}", field.Name, field.GetRawConstantValue());
                     }
-                    sb.Append("}");
+                    sb.Append("}; ");
                 }
-                EnumsJavascriptRegistration = sb.ToString();
+                enumsJavascriptRegistration = sb.ToString();
             }
-            return new MemoryStream(Encoding.UTF8.GetBytes(EnumsJavascriptRegistration));
+            return new MemoryStream(Encoding.UTF8.GetBytes(enumsJavascriptRegistration));
         }
 
         /// <summary>
@@ -140,7 +155,7 @@ namespace NDistribUnit.Server.Services
             }
 
             var extension = Path.GetExtension(physicalPathToFile);
-            if (!IsAllowedExtension(extension))
+            if (!IsAllowedExtension(extension) || extension == null)
             {
                 response.StatusCode = HttpStatusCode.Forbidden;
                 return new MemoryStream(Encoding.UTF8.GetBytes("Forbidden"));

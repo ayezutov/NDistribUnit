@@ -2,6 +2,7 @@
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using NDistribUnit.Common.DataContracts;
+using NDistribUnit.Common.Logging;
 
 namespace NDistribUnit.Common.ServiceContracts
 {
@@ -38,7 +39,14 @@ namespace NDistribUnit.Common.ServiceContracts
         /// Gets the statuses of connected agents
         /// </summary>
         /// <returns></returns>
-        [OperationContract, WebGet(UriTemplate = "getStatus/client")]
+        [OperationContract, WebGet(UriTemplate = "agent/getStatus")]
         AgentInformation[] GetClientStatuses();
+
+        /// <summary>
+        /// Gets the log for the server
+        /// </summary>
+        /// <returns></returns>
+        [OperationContract, WebInvoke(UriTemplate = "server/getLog", BodyStyle = WebMessageBodyStyle.Wrapped)]
+        LogEntry[] GetServerLog(int maxItemsCount, int? lastFetchedEntryId = null);
     }
 }

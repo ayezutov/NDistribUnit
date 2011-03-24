@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization.Formatters;
 using Autofac;
+using NDistribUnit.Common.Logging;
 using NDistribUnit.Server;
 using NDistribUnit.Server.Communication;
 using NDistribUnit.Server.Services;
@@ -11,7 +12,7 @@ namespace NDistribUnit.Integration.Tests.General
     /// The class is a special wrapper around real server program to allow easy access
     /// in testing code
     /// </summary>
-    public class ServerWrapper
+    public class ServerWrapper: IDisposable
     {
         private readonly ServerHost serverHost;
 
@@ -25,10 +26,14 @@ namespace NDistribUnit.Integration.Tests.General
         public static ServerWrapper Start()
         {
             var builder = new ContainerBuilder();
-            builder.Register<ServerHost>(c => new ServerHost(9008, 9009, 
+            builder.Register(c => new ServerHost(9098, 9099, 
                 c.Resolve<TestRunnerServer>(), 
                 c.Resolve<DashboardService>(), 
-                c.Resolve<ServerConnectionsTracker>()));
+                c.Resolve<ServerConnectionsTracker>(),
+                new ConsoleLog()));
+            builder.Register(c => new TestRunnerServer());
+            builder.Register(c => new DashboardService(c.Resolve<ServerConnectionsTracker>(), new RollingLog(5)));
+            builder.Register(c => new ServerConnectionsTracker("http://hubwoo.com", new ConsoleLog()));
             var container = builder.Build();
             var host = container.Resolve<ServerHost>();
             var serverWrapper = new ServerWrapper(host);
@@ -54,6 +59,15 @@ namespace NDistribUnit.Integration.Tests.General
         public void ShutDownUngraceful()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            ShutDownInExpectedWay();
         }
     }
 }

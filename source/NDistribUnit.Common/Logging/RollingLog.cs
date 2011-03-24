@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using NDistribUnit.Common.Collections;
 
 namespace NDistribUnit.Common.Logging
 {
@@ -7,9 +9,10 @@ namespace NDistribUnit.Common.Logging
     /// Represents a log, which contains a fixed number of entries.
     /// After the number of those entries exceeds the maximum number of items, new items begin to overwrite old ones.
     /// </summary>
-    public class RollingLog: ILog
+    public class RollingLog : ILog
     {
-        private readonly int logEntriesCount;
+        private readonly RollingList<LogEntry> list;
+        private int idCounter = 1;
 
         /// <summary>
         /// Initializes a new instance of <see cref="RollingLog"/>
@@ -17,7 +20,7 @@ namespace NDistribUnit.Common.Logging
         /// <param name="logEntriesCount"></param>
         public RollingLog(int logEntriesCount)
         {
-            this.logEntriesCount = logEntriesCount;
+            list = new RollingList<LogEntry>(logEntriesCount);
         }
 
         /// <summary>
@@ -29,12 +32,17 @@ namespace NDistribUnit.Common.Logging
             AddItem(LogEntryType.ActivityStart, message);
         }
 
-        private void AddItem(LogEntryType type, string message)
+        private void AddItem(LogEntryType type, string message, Exception exception = null)
         {
             lock (this)
             {
-                var list = new LinkedList<LogEntry>();
+                list.Add(new LogEntry(GetNextId(), type, message, DateTime.UtcNow, exception));
             }
+        }
+
+        private int GetNextId()
+        {
+            return idCounter++;
         }
 
         /// <summary>
@@ -43,7 +51,7 @@ namespace NDistribUnit.Common.Logging
         /// <param name="message">A message, which describes the activity</param>
         public void EndActivity(string message)
         {
-            throw new NotImplementedException();
+            AddItem(LogEntryType.ActivityEnd, message);
         }
 
         /// <summary>
@@ -52,13 +60,16 @@ namespace NDistribUnit.Common.Logging
         /// <param name="message">A message to be logged</param>
         public void Info(string message)
         {
-            throw new NotImplementedException();
+            AddItem(LogEntryType.Info, message);
         }
 
-        ///
+        /// <summary>
+        /// Logs successful event
+        /// </summary>
+        /// <param name="message">A message to be logged</param>
         public void Success(string message)
         {
-            throw new NotImplementedException();
+            AddItem(LogEntryType.Success, message);
         }
 
         /// <summary>
@@ -67,7 +78,7 @@ namespace NDistribUnit.Common.Logging
         /// <param name="message">The warning message</param>
         public void Warning(string message)
         {
-            throw new NotImplementedException();
+            AddItem(LogEntryType.Warning, message);
         }
 
         /// <summary>
@@ -77,7 +88,7 @@ namespace NDistribUnit.Common.Logging
         /// <param name="exception">The exception, which caused the warning</param>
         public void Warning(string message, Exception exception)
         {
-            throw new NotImplementedException();
+            AddItem(LogEntryType.Warning, message, exception);
         }
 
         /// <summary>
@@ -86,7 +97,7 @@ namespace NDistribUnit.Common.Logging
         /// <param name="message">The error message</param>
         public void Error(string message)
         {
-            throw new NotImplementedException();
+            AddItem(LogEntryType.Error, message);
         }
 
         /// <summary>
@@ -96,17 +107,25 @@ namespace NDistribUnit.Common.Logging
         /// <param name="exception">The exception, which caused the error</param>
         public void Error(string message, Exception exception)
         {
-            throw new NotImplementedException();
+            AddItem(LogEntryType.Error, message, exception);
         }
 
         /// <summary>
         /// Gets the saved entries
         /// </summary>
-        /// <param name="startEntryId">The starting id of some entry. Use "0" if you want to start with the very beginning</param>
+        /// <param name="lastFetchedEntryId">The starting id of some entry. Use "0" if you want to start with the very beginning</param>
         /// <param name="maxReturnCount">The maximum number of entries, which should be returned</param>
-        public LogEntry[] GetEntries(int startEntryId, int maxReturnCount)
+        public LogEntry[] GetEntries(int? lastFetchedEntryId, int maxReturnCount)
         {
-            throw new NotImplementedException();
+            // TODO: use hash-based collection (dictionary) for quick find
+
+            RollingListItem<LogEntry> item = lastFetchedEntryId.HasValue 
+                                       ? list.FindFirst(v => v.Id.Equals(lastFetchedEntryId.Value)) 
+                                       : null;
+
+            return item == null 
+                ? list.GetHead(maxReturnCount).ToArray() 
+                : list.GetItemsAfter(item, maxReturnCount).ToArray();
         }
     }
 }

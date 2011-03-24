@@ -22,6 +22,12 @@
     margin-left: 10px;
 }
 
+h3
+{
+     margin: 0px;
+     padding: 10px;
+     }
+
 a
 {   
     text-decoration: none;
@@ -88,6 +94,7 @@ UL.list-menu LI
 .right-content-pane
 {
     padding: 7px;
+    position: absolute;
 }
 
 #tests-tree-pane li span
@@ -136,6 +143,7 @@ UL.list-menu LI
 {
     width: 100%;
     height: 100%;
+    position: absolute;
 }
 
 #content-pane{
@@ -230,5 +238,30 @@ UL.list-menu LI
     color: #ffffff;
     padding: 3px;
     border-radius: 3px;
-    margin-bottom: 8px;
 }
+
+.console
+{
+    font-family: monospace;
+    background-color: #000;
+}
+
+.log.ActivityStart{
+   color: white;
+}
+.log.ActivityEnd{
+   color: darkgray;
+}
+.log.Info{
+  color: gray;
+}
+.log.Warning{
+  color: yellow;
+}
+.log.Success{
+  color: lime;
+}
+.log.Error{
+  color: red;
+}
+

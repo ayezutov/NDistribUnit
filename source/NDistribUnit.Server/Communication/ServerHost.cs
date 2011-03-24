@@ -2,7 +2,9 @@ using System;
 using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using System.ServiceModel.Discovery;
 using System.ServiceModel.Web;
+using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Server.Services;
 
@@ -20,6 +22,7 @@ namespace NDistribUnit.Server.Communication
         private ServiceHost testRunnerService;
 
         private readonly DashboardService dashboard;
+        private readonly ILog log;
         private readonly TestRunnerServer testRunner;
 
         private ServerConnectionsTracker ConnectionsTracker { get; set; }
@@ -32,12 +35,14 @@ namespace NDistribUnit.Server.Communication
         /// <param name="testRunner">The test runner instance</param>
         /// <param name="dashboard">The dashboard instance</param>
         /// <param name="conenctionsTracker">The connection tracker for the host</param>
-        public ServerHost(int dashboardPort, int testRunnerPort, TestRunnerServer testRunner, DashboardService dashboard, ServerConnectionsTracker conenctionsTracker)
+        /// <param name="log">The logger</param>
+        public ServerHost(int dashboardPort, int testRunnerPort, TestRunnerServer testRunner, DashboardService dashboard, ServerConnectionsTracker conenctionsTracker, ILog log)
         {
             this.dashboardPort = dashboardPort;
             this.testRunnerPort = testRunnerPort;
             this.testRunner = testRunner;
             this.dashboard = dashboard;
+            this.log = log;
             ConnectionsTracker = conenctionsTracker;
         }
 
@@ -49,6 +54,24 @@ namespace NDistribUnit.Server.Communication
             ExposeDashboard();
             ExposeTestRunner();
             ConnectionsTracker.Start();
+//            for (int i = 0; i < 10; i++)
+//            {
+//                var announcementClient = new AnnouncementClient(new UdpAnnouncementEndpoint());
+//                foreach (ServiceEndpoint endpoint in testRunnerService.Description.Endpoints)
+//                {
+//                    EndpointDiscoveryMetadata metadata = EndpointDiscoveryMetadata.
+//                        FromServiceEndpoint(endpoint);
+//                    try
+//                    {
+//                        announcementClient.AnnounceOnline(metadata);
+//                        log.Success("Successfully announced!");
+//                    }
+//                    catch(Exception ex)
+//                    {
+//                        log.Error("Announcing error!", ex);
+//                    }
+//                }
+//            }
         }
 
         private void ExposeTestRunner()
@@ -62,7 +85,7 @@ namespace NDistribUnit.Server.Communication
         {
             dashboardService = new ServiceHost(dashboard, new Uri(Path.Combine(string.Format("http://{0}:{1}", Environment.MachineName, dashboardPort))));
             dashboardService.AddServiceEndpoint(typeof(IDashboardService), new WebHttpBinding(), "")
-                .Behaviors.Add(new WebHttpBehavior(){DefaultOutgoingResponseFormat = WebMessageFormat.Json});
+                .Behaviors.Add(new WebHttpBehavior(){DefaultOutgoingResponseFormat = WebMessageFormat.Json, DefaultOutgoingRequestFormat = WebMessageFormat.Json});
             dashboardService.Open();
         }
 

@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\RollingList.cs" />
+    <Compile Include="Collections\RollingListItem.cs" />
     <Compile Include="Communication\DiscoveryConnectionsTracker.cs" />
     <Compile Include="Communication\EndpointConnectionChangedEventArgs.cs" />
     <Compile Include="Communication\EndpointInformation.cs" />

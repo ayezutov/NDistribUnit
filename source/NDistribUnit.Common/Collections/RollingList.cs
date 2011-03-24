@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using NDistribUnit.Common.Logging;
 
 namespace NDistribUnit.Common.Collections
 {
@@ -138,27 +140,78 @@ namespace NDistribUnit.Common.Collections
         {
             return GetEnumerator();
         }
-    }
-
-    /// <summary>
-    /// A single item in rolling list
-    /// </summary>
-    /// <typeparam name="TValue"></typeparam>
-    public class RollingListItem<TValue>
-    {
-        /// <summary>
-        /// Gets or sets the value of the item
-        /// </summary>
-        public TValue Value { get; set; }
 
         /// <summary>
-        /// Gets or sets the previous item in the list
+        /// Gets the earliest items from list.
         /// </summary>
-        public RollingListItem<TValue> Previous { get; internal set; }
+        /// <param name="maxReturnCount">The maximum count of items to be returned</param>
+        /// <returns></returns>
+        public IEnumerable<TValue> GetHead(int maxReturnCount)
+        {
+            return GetItemsStartingFrom(First, maxReturnCount);
+        }
 
         /// <summary>
-        /// Gets or sets the next item in the list
+        /// Gets the items, starting with <paramref name="item"/>
         /// </summary>
-        public RollingListItem<TValue> Next { get; set; }
+        /// <param name="item">The item.</param>
+        /// <param name="maxReturnCount">The max return count.</param>
+        /// <returns></returns>
+        public IEnumerable<TValue> GetItemsAfter(RollingListItem<TValue> item, int maxReturnCount)
+        {
+            if (item == Last)
+                return new TValue[0];
+            return GetItemsStartingFrom(item.Next, maxReturnCount);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="condition"></param>
+        /// <returns></returns>
+        public RollingListItem<TValue> FindFirst(Func<TValue , bool> condition)
+        {
+            lock (this)
+            {
+
+                RollingListItem<TValue> current = null;
+
+                do
+                {
+                    current = current == null ? First : current.Next;
+
+                    if (condition(current.Value))
+                        return current;
+
+                } while (current != Last);
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns items, starting from given. It will return maximum <paramref name="maxReturnCount"/> items
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="maxReturnCount">The max return count.</param>
+        /// <returns></returns>
+        private IEnumerable<TValue> GetItemsStartingFrom(RollingListItem<TValue> item, int maxReturnCount)
+        {
+            lock (this)
+            {
+                if (Count == 0)
+                    yield break;
+
+                RollingListItem<TValue> current = null;
+                var count = 0;
+                do
+                {
+                    current = current == null ? (item??First) : current.Next;
+
+                    yield return current.Value;
+                } while (current != Last && ++count < maxReturnCount);
+                yield break;
+            }
+        }
     }
 }

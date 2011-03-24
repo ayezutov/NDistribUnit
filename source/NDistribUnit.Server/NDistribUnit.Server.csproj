@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Debug\NDistribUnit.Server.XML</DocumentationFile>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -166,10 +167,15 @@
     <Content Include="dashboard\scripts\jquery-1.4.4.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="dashboard\scripts\jquery-jquery-tmpl\jquery.tmpl.js" />
+    <Content Include="dashboard\scripts\jquery-jquery-tmpl\jquery.tmpl.min.js" />
+    <Content Include="dashboard\scripts\jquery-jquery-tmpl\jquery.tmplPlus.js" />
+    <Content Include="dashboard\scripts\jquery-jquery-tmpl\jquery.tmplplus.min.js" />
     <Content Include="dashboard\scripts\jquery-jtemplates.js" />
     <Content Include="dashboard\scripts\jquery-ui-1.8.9.custom.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="dashboard\scripts\jquery.animate-colors-min.js" />
     <Content Include="dashboard\scripts\jquery.history.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -240,6 +246,7 @@
     <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.sortable.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="dashboard\scripts\json2.js" />
     <Content Include="dashboard\scripts\NDistribUnit.Dashboard.Dispatcher.js" />
     <Content Include="dashboard\scripts\NDistribUnit.Dashboard.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
