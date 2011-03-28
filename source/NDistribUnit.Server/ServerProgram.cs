@@ -1,7 +1,11 @@
 ﻿using System;
 using Autofac;
 using Autofac.Core;
+using NDistribUnit.Common.Communication;
+using NDistribUnit.Common.Communication.ConnectionTracking;
+using NDistribUnit.Common.Communication.ConnectionTracking.Discovery;
 using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Server.Communication;
 using NDistribUnit.Server.Services;
 
@@ -20,7 +24,15 @@ namespace NDistribUnit.Server
             builder.Register(c => ServerParameters.Parse(args)).InstancePerLifetimeScope();
             builder.RegisterType<TestRunnerServer>().InstancePerLifetimeScope();
             builder.RegisterType<DashboardService>().InstancePerLifetimeScope();
-            builder.Register(c => new ServerConnectionsTracker("http://hubwoo.com/trr-odc", c.Resolve<ILog>())).InstancePerLifetimeScope();
+            builder.Register(c => new DiscoveryConnectionsTracker<ITestRunnerAgent>(new DiscoveryOptions()
+                                                                                        {
+                                                                                            Scope = new Uri("http://hubwoo.com/trr-odc"),
+                                                                                            DiscoveryIntervalInMiliseconds = 20000,
+                                                                                            PingIntervalInMiliseconds = 5000
+                                                                                        },c.Resolve<ILog>()))
+                .As<IConnectionsTracker<ITestRunnerAgent>>();
+            builder.Register(c => new ServerConnectionsTracker(c.Resolve<IConnectionsTracker<ITestRunnerAgent>>(), c.Resolve<ILog>()))
+                .InstancePerLifetimeScope();
             builder.Register(
                 c =>
                 new ServerHost(c.Resolve<ServerParameters>().DashboardPort, 

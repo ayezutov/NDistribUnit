@@ -19,7 +19,7 @@ namespace NDistribUnit.Agent
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<AgentProgram>();
-            builder.RegisterType<AgentHost>();
+            builder.Register(c => new AgentHost(new Uri("http://hubwoo.com/trr-odc")));
             builder.Register(c => AgentConsoleParameters.Parse(args)).InstancePerLifetimeScope();
             var container = builder.Build();
             return container.Resolve<AgentProgram>().Run();

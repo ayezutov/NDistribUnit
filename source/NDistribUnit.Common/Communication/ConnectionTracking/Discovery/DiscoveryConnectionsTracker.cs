@@ -2,28 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.ServiceModel;
-using System.ServiceModel.Description;
 using System.ServiceModel.Discovery;
 using System.Threading;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
 
-namespace NDistribUnit.Common.Communication
+namespace NDistribUnit.Common.Communication.ConnectionTracking.Discovery
 {
     /// <summary>
     /// A connection tracker, which relies on discovery mechanism
     /// </summary>
     /// <typeparam name="TIEndpoint"></typeparam>
-    public class DiscoveryConnectionsTracker<TIEndpoint>
-        where TIEndpoint : IPingable
+    public class DiscoveryConnectionsTracker<TIEndpoint> : IConnectionsTracker<TIEndpoint> where TIEndpoint : IPingable
     {
-        private readonly string scope;
+        private readonly DiscoveryOptions options;
         private readonly ILog log;
+        private readonly Guid guid = Guid.NewGuid();
+
         private readonly IList<EndpointInformation> endpoints = new List<EndpointInformation>();
         private DiscoveryClient discoveryClient;
         private FindCriteria findCriteria;
-        private const int DiscoveryIntervalInMiliseconds = 5000;
-        private const int PingIntervalInMiliseconds = 5000;
+        private bool stopped;
 
         /// <summary>
         /// Event, which is fired, whenever a new endpoint is connected
@@ -43,11 +42,11 @@ namespace NDistribUnit.Common.Communication
         /// <summary>
         /// Initializes a new instance of connections tracker
         /// </summary>
-        /// <param name="scope"></param>
+        /// <param name="options">The options for use while discovery</param>
         /// <param name="log"></param>
-        public DiscoveryConnectionsTracker(string scope, ILog log)
+        public DiscoveryConnectionsTracker(DiscoveryOptions options, ILog log)
         {
-            this.scope = scope;
+            this.options = options;
             this.log = log;
         }
 
@@ -56,43 +55,29 @@ namespace NDistribUnit.Common.Communication
         /// </summary>
         public void Start()
         {
-            findCriteria = new FindCriteria(typeof(ITestRunnerAgent))
+            findCriteria = new FindCriteria(typeof(TIEndpoint))
                                {
-                                   Scopes = {new Uri(scope)},
-                                   Duration = TimeSpan.FromMilliseconds(DiscoveryIntervalInMiliseconds)
+                                   Scopes = {options.Scope},
+                                   Duration = TimeSpan.FromMilliseconds(options.DiscoveryIntervalInMiliseconds)
                                };
             discoveryClient = GetInitilizedDisoveryClient();
-            log.Info("Starting clients tracking");
+            log.Info(string.Format("{0}: Starting clients tracking", guid));
 
-            var thread = new Thread(Discover);
-            thread.Start();
+            Discover();
             
         }
 
         private void Discover()
         {
-            while (true)
-            {
+            
                 try
                 {
-                    var client = new DiscoveryClient(new UdpDiscoveryEndpoint());
-                    var result = client.Find(new FindCriteria(typeof (ITestRunnerAgent))
-                               {
-                                   Scopes = {new Uri(scope)},
-                                   Duration = TimeSpan.FromMilliseconds(DiscoveryIntervalInMiliseconds)
-                               });
-                    client.Close();
-                    foreach (var endpointDiscoveryMetadata in result.Endpoints)
-                    {
-                        AddEndpointForTracking(endpointDiscoveryMetadata);
-                    }
-                    log.Success("Discovery client was successfull");
-                
-                }catch (Exception)
-                {
-                    log.Warning("Discovery client got faulted");
+                    discoveryClient.FindAsync(findCriteria);
                 }
-            }
+                catch (Exception)
+                {
+                    log.Warning(string.Format("{0}: Discovery client got faulted", guid));
+                }
         }
 
         private DiscoveryClient GetInitilizedDisoveryClient()
@@ -105,30 +90,19 @@ namespace NDistribUnit.Common.Communication
 
         private void OnFindCompleted(object sender, FindCompletedEventArgs e)
         {
-            if (!e.Cancelled)
+            if (!e.Cancelled && !stopped)
             {
                 if (e.Error != null)
                 {
-                    log.Warning("Discovery client got faulted");
+                    log.Warning(string.Format("{0}: Discovery client got faulted", guid));
                     discoveryClient.Close();
                     discoveryClient = GetInitilizedDisoveryClient();
                 }
                 else
                 {
-                    log.Info("Discovery client finished. Restarting...");
+                    log.Info(string.Format("{0}: Discovery client finished. Restarting...", guid));
                 }
-                try
-                {
-                    var result = discoveryClient.Find(findCriteria);
-                    foreach (var endpointDiscoveryMetadata in result.Endpoints)
-                    {
-                        AddEndpointForTracking(endpointDiscoveryMetadata);
-                    }
-                }
-                catch(Exception)
-                {
-                    throw;
-                }
+                discoveryClient.FindAsync(findCriteria);
             }
         }
 
@@ -145,7 +119,17 @@ namespace NDistribUnit.Common.Communication
         /// </summary>
         public void Stop()
         {
+            stopped = true;
             discoveryClient.Close();
+
+            foreach (var endpointInformation in endpoints)
+            {
+                if (endpointInformation.PingTimer != null)
+                {
+                    endpointInformation.PingTimer.Dispose();
+                    endpointInformation.PingTimer = null;
+                }
+            }
         }
 
         private void OnEndpointPing(object state)
@@ -156,7 +140,7 @@ namespace NDistribUnit.Common.Communication
             try
             {
                 endpointInformation.Pingable.Ping();
-                endpointInformation.PingTimer.Change(PingIntervalInMiliseconds, Timeout.Infinite);
+                endpointInformation.PingTimer.Change(options.PingIntervalInMiliseconds, Timeout.Infinite);
                 endpointInformation.LastStatusUpdateTime = DateTime.UtcNow;
                 if (EndpointSuccessfulPing != null)
                     EndpointSuccessfulPing(this, new EndpointConnectionChangedEventArgs
@@ -181,13 +165,13 @@ namespace NDistribUnit.Common.Communication
             {
                 if (!endpoints.Contains(endpointInformation))
                 {
-                    log.Info(string.Format("New endpoint was detected: {0}", endpoint.Address));
+                    log.Info(string.Format("{1}: New endpoint was detected: {0}", endpoint.Address, guid));
                     endpoints.Add(endpointInformation);
 
                     endpointInformation.Pingable = ChannelFactory<TIEndpoint>.CreateChannel(new NetTcpBinding(),
                                                                                             endpoint.Address);
                     endpointInformation.PingTimer = new Timer(OnEndpointPing, endpointInformation,
-                                                              PingIntervalInMiliseconds,
+                                                              options.PingIntervalInMiliseconds,
                                                               Timeout.Infinite);
 
                     if (EndpointConnected != null)
@@ -198,10 +182,13 @@ namespace NDistribUnit.Common.Communication
 
         private void RemoveEndpointFromTracking(EndpointInformation endpointInformation)
         {
-            log.Info(string.Format("Endpoint was disconnected: {0}", endpointInformation.Endpoint.Address));
+            log.Info(string.Format("{1}: Endpoint was disconnected: {0}", endpointInformation.Endpoint.Address, guid));
             lock (endpointInformation)
             {
-                endpointInformation.PingTimer.Dispose();
+                if (endpointInformation.PingTimer != null)
+                {
+                    endpointInformation.PingTimer.Dispose();
+                }
                 endpointInformation.LastStatusUpdateTime = DateTime.UtcNow;
                 endpoints.Remove(endpointInformation);
             }

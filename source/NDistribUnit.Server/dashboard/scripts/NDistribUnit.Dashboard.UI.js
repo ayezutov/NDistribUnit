@@ -256,6 +256,6 @@ ServerDashboardUI.prototype = {
         }
 
         $nodes.css('background-color', '#D3BC9E');
-        $nodes.animate({ backgroundColor: '#000000' }, 1000);
+        $nodes.animate({ backgroundColor: '#000000' }, 2000);
     }
 };

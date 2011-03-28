@@ -6,45 +6,31 @@ namespace NDistribUnit.Integration.Tests.General
 {
     public class AgentWrapper
     {
-        public static AgentWrapper Any { get; private set; }
-
-        private AgentWrapper(AgentHost agentHost)
+        internal AgentWrapper(AgentHost agentHost)
         {
             AgentHost = agentHost;
         }
 
         public AgentHost AgentHost { get; private set; }
 
-        public static AgentWrapper Start()
+        public void Start()
         {
-            var agentHost = new AgentHost();
-            agentHost.Start();
-            return new AgentWrapper(agentHost);
-        }
-
-        public bool IsConnectedTo(ServerWrapper server)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsNotConnectedTo(ServerWrapper server)
-        {
-            return !IsConnectedTo(server);
+            AgentHost.Start();
         }
 
         public void ShutDownInExpectedWay()
         {
-            throw new NotImplementedException();
+            AgentHost.Stop();
         }
 
         public void ShutDownUngraceful()
         {
-            throw new NotImplementedException();
+            AgentHost.Abort();
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            AgentHost.Abort();
         }
     }
 }

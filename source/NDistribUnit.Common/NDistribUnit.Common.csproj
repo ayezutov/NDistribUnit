@@ -66,9 +66,12 @@
   <ItemGroup>
     <Compile Include="Collections\RollingList.cs" />
     <Compile Include="Collections\RollingListItem.cs" />
-    <Compile Include="Communication\DiscoveryConnectionsTracker.cs" />
-    <Compile Include="Communication\EndpointConnectionChangedEventArgs.cs" />
-    <Compile Include="Communication\EndpointInformation.cs" />
+    <Compile Include="Communication\ConnectionTracking\Announcement\AnnouncementConnectionsTracker.cs" />
+    <Compile Include="Communication\ConnectionTracking\Discovery\DiscoveryConnectionsTracker.cs" />
+    <Compile Include="Communication\ConnectionTracking\Discovery\DiscoveryOptions.cs" />
+    <Compile Include="Communication\ConnectionTracking\EndpointConnectionChangedEventArgs.cs" />
+    <Compile Include="Communication\ConnectionTracking\EndpointInformation.cs" />
+    <Compile Include="Communication\ConnectionTracking\IConnectionsTracker.cs" />
     <Compile Include="DataContracts\AgentInformation.cs" />
     <Compile Include="DataContracts\AgentState.cs" />
     <Compile Include="Logging\CombinedLog.cs" />
@@ -78,6 +81,7 @@
     <Compile Include="Logging\LogEntryType.cs" />
     <Compile Include="Logging\LoggingUtility.cs" />
     <Compile Include="Logging\RollingLog.cs" />
+    <Compile Include="Retrying\Retry.cs" />
     <Compile Include="ServiceContracts\IPingable.cs" />
     <Compile Include="Communication\WcfUtilities.cs" />
     <Compile Include="DataContracts\ProjectDescription.cs" />
@@ -90,6 +94,7 @@
     <Compile Include="ServiceContracts\IDashboardService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Communication\ConnectionTracking\PredefinedConnectionsTracker\" />
     <Folder Include="Testing\" />
     <Folder Include="Updating\" />
   </ItemGroup>

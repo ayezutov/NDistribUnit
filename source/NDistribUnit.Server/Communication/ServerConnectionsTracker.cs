@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using NDistribUnit.Common.Communication;
+using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
@@ -15,7 +16,7 @@ namespace NDistribUnit.Server.Communication
     public class ServerConnectionsTracker
     {
         private readonly ILog log;
-        private readonly DiscoveryConnectionsTracker<ITestRunnerAgent> connectionsTracker;
+        private readonly IConnectionsTracker<ITestRunnerAgent> connectionsTracker;
 
         /// <summary>
         /// Gets the list of agents
@@ -25,16 +26,16 @@ namespace NDistribUnit.Server.Communication
         /// <summary>
         /// Initializes a new instance of a connection tracker
         /// </summary>
-        /// <param name="scope"></param>
+        /// <param name="connectionsTracker"></param>
         /// <param name="log"></param>
-        public ServerConnectionsTracker(string scope, ILog log)
+        public ServerConnectionsTracker(IConnectionsTracker<ITestRunnerAgent> connectionsTracker, ILog log)
         {
             this.log = log;
             Agents = new List<AgentInformation>();
-            connectionsTracker = new DiscoveryConnectionsTracker<ITestRunnerAgent>(scope, log);
-            connectionsTracker.EndpointConnected += OnEndpointConnected;
-            connectionsTracker.EndpointDisconnected += OnEndpointDisconnected;
-            connectionsTracker.EndpointSuccessfulPing += OnEndpointSuccessfulPing;
+            this.connectionsTracker = connectionsTracker;
+            this.connectionsTracker.EndpointConnected += OnEndpointConnected;
+            this.connectionsTracker.EndpointDisconnected += OnEndpointDisconnected;
+            this.connectionsTracker.EndpointSuccessfulPing += OnEndpointSuccessfulPing;
         }
 
         private void OnEndpointSuccessfulPing(object sender, EndpointConnectionChangedEventArgs e)

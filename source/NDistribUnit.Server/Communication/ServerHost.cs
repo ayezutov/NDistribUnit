@@ -25,7 +25,13 @@ namespace NDistribUnit.Server.Communication
         private readonly ILog log;
         private readonly TestRunnerServer testRunner;
 
-        private ServerConnectionsTracker ConnectionsTracker { get; set; }
+        /// <summary>
+        /// Gets or sets the connections tracker.
+        /// </summary>
+        /// <value>
+        /// The connections tracker.
+        /// </value>
+        public ServerConnectionsTracker ConnectionsTracker { get; private set; }
 
         /// <summary>
         /// Creates a new server instance, which exposes dashboard and test runner at given ports
@@ -97,6 +103,16 @@ namespace NDistribUnit.Server.Communication
             ConnectionsTracker.Stop();
             dashboardService.Close();
             testRunnerService.Close();
+        }
+
+        /// <summary>
+        /// Aborts this instance.
+        /// </summary>
+        public void Abort()
+        {
+            ConnectionsTracker.Stop();
+            dashboardService.Abort();
+            testRunnerService.Abort();
         }
     }
 }

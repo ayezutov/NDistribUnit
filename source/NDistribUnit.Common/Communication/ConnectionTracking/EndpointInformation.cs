@@ -3,7 +3,7 @@ using System.ServiceModel.Discovery;
 using System.Threading;
 using NDistribUnit.Common.ServiceContracts;
 
-namespace NDistribUnit.Common.Communication
+namespace NDistribUnit.Common.Communication.ConnectionTracking
 {
     /// <summary>
     /// The endpoint information, which is being tracked

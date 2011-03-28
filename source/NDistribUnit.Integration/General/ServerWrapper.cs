@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Runtime.Serialization.Formatters;
-using Autofac;
-using NDistribUnit.Common.Logging;
-using NDistribUnit.Server;
+using NDistribUnit.Common.DataContracts;
+using NDistribUnit.Common.Retrying;
 using NDistribUnit.Server.Communication;
-using NDistribUnit.Server.Services;
+using System.Linq;
 
 namespace NDistribUnit.Integration.Tests.General
 {
@@ -14,46 +12,43 @@ namespace NDistribUnit.Integration.Tests.General
     /// </summary>
     public class ServerWrapper: IDisposable
     {
-        private readonly ServerHost serverHost;
+        private ServerHost ServerHost { get; set; }
 
-        private ServerWrapper(ServerHost serverHost)
+        internal ServerWrapper(ServerHost serverHost)
         {
-            this.serverHost = serverHost;
+            ServerHost = serverHost;
         }
 
-        public static ServerWrapper Any { get; private set; }
-
-        public static ServerWrapper Start()
+        public void Start()
         {
-            var builder = new ContainerBuilder();
-            builder.Register(c => new ServerHost(9098, 9099, 
-                c.Resolve<TestRunnerServer>(), 
-                c.Resolve<DashboardService>(), 
-                c.Resolve<ServerConnectionsTracker>(),
-                new ConsoleLog()));
-            builder.Register(c => new TestRunnerServer());
-            builder.Register(c => new DashboardService(c.Resolve<ServerConnectionsTracker>(), new RollingLog(5)));
-            builder.Register(c => new ServerConnectionsTracker("http://hubwoo.com", new ConsoleLog()));
-            var container = builder.Build();
-            var host = container.Resolve<ServerHost>();
-            var serverWrapper = new ServerWrapper(host);
-            host.Start();
-            return serverWrapper;
+            ServerHost.Start();
         }
 
-        public bool IsConnectedTo(AgentWrapper agent)
+        public bool HasAConnected(AgentWrapper agent)
         {
-            throw new NotImplementedException();
+            return Retry.While(
+                () =>
+                    {
+                        AgentInformation found = ServerHost.ConnectionsTracker.Agents.FirstOrDefault(a => a.Endpoint.Address.Equals(agent.AgentHost.Endpoint.Address));
+                        return found != null && found.State != AgentState.Disconnected;
+                    }, 500);
         }
 
-        public bool IsNotConnectedTo(AgentWrapper agent)
+        public bool HasADisconnected(AgentWrapper agent)
         {
-            return !IsConnectedTo(agent);
+            return Retry.While(
+                () =>
+                    {
+                        AgentInformation found = ServerHost.ConnectionsTracker.Agents.FirstOrDefault(
+                            a => a.Endpoint.Address.Equals(agent.AgentHost.Endpoint.Address));
+                        return found == null || found.State == AgentState.Disconnected;
+                    }, 500);
+       
         }
 
         public void ShutDownInExpectedWay()
         {
-            serverHost.Close();
+            ServerHost.Close();
         }
 
         public void ShutDownUngraceful()
@@ -67,7 +62,18 @@ namespace NDistribUnit.Integration.Tests.General
         /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
-            ShutDownInExpectedWay();
+            ServerHost.Abort();
+        }
+
+        /// <summary>
+        /// Determines whether the server has no conected agents.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if the server has no connected agents; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasNoConnectedAgents()
+        {
+            return !Retry.While(() => ServerHost.ConnectionsTracker.Agents.Count != 0, 500);
         }
     }
 }
