@@ -67,11 +67,14 @@
     <Compile Include="Collections\RollingList.cs" />
     <Compile Include="Collections\RollingListItem.cs" />
     <Compile Include="Communication\ConnectionTracking\Announcement\AnnouncementConnectionsTracker.cs" />
+    <Compile Include="Communication\ConnectionTracking\Announcement\AnnouncementConnectionsTrackerOptions.cs" />
+    <Compile Include="Communication\ConnectionTracking\ConnectionsTrackerBase.cs" />
     <Compile Include="Communication\ConnectionTracking\Discovery\DiscoveryConnectionsTracker.cs" />
     <Compile Include="Communication\ConnectionTracking\Discovery\DiscoveryOptions.cs" />
     <Compile Include="Communication\ConnectionTracking\EndpointConnectionChangedEventArgs.cs" />
     <Compile Include="Communication\ConnectionTracking\EndpointInformation.cs" />
     <Compile Include="Communication\ConnectionTracking\IConnectionsTracker.cs" />
+    <Compile Include="Communication\ConnectionTracking\IConnectionsTrackerOptions.cs" />
     <Compile Include="DataContracts\AgentInformation.cs" />
     <Compile Include="DataContracts\AgentState.cs" />
     <Compile Include="Logging\CombinedLog.cs" />

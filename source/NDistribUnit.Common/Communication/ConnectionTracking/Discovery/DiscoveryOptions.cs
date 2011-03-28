@@ -5,7 +5,7 @@ namespace NDistribUnit.Common.Communication.ConnectionTracking.Discovery
     /// <summary>
     /// The options for <see cref="DiscoveryConnectionsTracker{TIEndpoint}"/>
     /// </summary>
-    public class DiscoveryOptions
+    public class DiscoveryOptions: IConnectionsTrackerOptions
     {
         /// <summary>
         /// Gets or sets the discovery interval in miliseconds.

@@ -15,7 +15,7 @@ namespace NDistribUnit.Common.Communication.ConnectionTracking
         event EventHandler<EndpointConnectionChangedEventArgs> EndpointConnected;
 
         /// <summary>
-        /// Event, which is firedm whenever an endpoint is successfully pinged
+        /// Event, which is fired, whenever an endpoint is successfully pinged
         /// </summary>
         event EventHandler<EndpointConnectionChangedEventArgs> EndpointSuccessfulPing;
 
