@@ -1,13 +1,9 @@
-﻿using System.Threading;
-using NDistribUnit.Common.Communication;
-using NDistribUnit.Common.Communication.ConnectionTracking.Discovery;
 using NDistribUnit.Integration.Tests.General;
 using NUnit.Framework;
 
-namespace NDistribUnit.Integration.Tests
+namespace NDistribUnit.Integration.Tests.Communication
 {
-    [TestFixture]
-    public class ConnectionTrackersStateTests
+    public abstract class ConnectionTrackersStateTestsBase
     {
         private IntegrationTestsFixture fixture;
 
@@ -15,21 +11,16 @@ namespace NDistribUnit.Integration.Tests
         public void Init()
         {
             fixture = GetTestFixture();
-            fixture.SetConnectionsTracker(typeof(DiscoveryConnectionsTracker<>));
             fixture.Init();
         }
 
-        private static IntegrationTestsFixture GetTestFixture()
-        {
-            return new IntegrationTestsFixture();
-        }
+        protected abstract IntegrationTestsFixture GetTestFixture();
 
         [TearDown]
         public void TearDown()
         {
             fixture.Dispose();
         }
-        
 
         [Test]
         public void ServerIsNotConnectedByDefault()
@@ -58,7 +49,7 @@ namespace NDistribUnit.Integration.Tests
 
             Assert.That(server.HasAConnected(agent));
         }
-        
+
         [Test]
         public void ServerDetectsAgentsExpectedShutdown()
         {
@@ -84,8 +75,5 @@ namespace NDistribUnit.Integration.Tests
 
             Assert.That(server.HasADisconnected(agent));
         }
-
-
     }
-
 }

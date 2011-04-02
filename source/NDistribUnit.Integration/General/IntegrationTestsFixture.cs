@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using Autofac;
 using NDistribUnit.Agent.Communication;
-using NDistribUnit.Common.Communication;
+using NDistribUnit.Agent.Communication.ExternalModules;
+using NDistribUnit.Agent.Naming;
 using NDistribUnit.Common.Communication.ConnectionTracking;
+using NDistribUnit.Common.Communication.ConnectionTracking.Announcement;
 using NDistribUnit.Common.Communication.ConnectionTracking.Discovery;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
@@ -44,8 +46,26 @@ namespace NDistribUnit.Integration.Tests.General
                                                                                }, c.Resolve<ILog>()))
                     .As<IConnectionsTracker<ITestRunnerAgent>>();
             }
+            else if (connectionsTrackerType == typeof(AnnouncementConnectionsTracker<>))
+            {
+                builder.Register(
+                    c => new AnnouncementConnectionsTracker<ITestRunnerAgent>(new AnnouncementConnectionsTrackerOptions()
+                    {
+                        Scope =
+                            new Uri(
+                            "http://ndistribunit.com/tests"),
+                        PingIntervalInMiliseconds = 500
+                    }, c.Resolve<ILog>()))
+                    .As<IConnectionsTracker<ITestRunnerAgent>>();
+            }
+
             builder.Register(c => new ServerConnectionsTracker(c.Resolve<IConnectionsTracker<ITestRunnerAgent>>(), c.Resolve<ILog>()));
-            builder.Register(c => new AgentHost(new Uri("http://ndistribunit.com/tests")));
+            builder.RegisterInstance(new FreeNumberNameProvider(Environment.MachineName)).As<INameProvider>();
+            builder.Register(c => new AgentHost(new TestRunnerAgent(c.Resolve<ILog>(), c.Resolve<INameProvider>()), new IAgentExternalModule[]
+                                                    {
+                                                        new DiscoveryModule(new Uri("http://ndistribunit.com/tests")),
+                                                        new AnnouncementModule(TimeSpan.FromMilliseconds(200), new Uri("http://ndistribunit.com/tests")), 
+                                                    }, c.Resolve<ILog>()));
             container = builder.Build();
         }
 

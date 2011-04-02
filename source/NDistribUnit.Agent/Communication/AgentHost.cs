@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Description;
-using System.ServiceModel.Discovery;
 using NDistribUnit.Common.Communication;
+using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
 
 namespace NDistribUnit.Agent.Communication
@@ -12,8 +13,9 @@ namespace NDistribUnit.Agent.Communication
     /// </summary>
     public class AgentHost
     {
-        private Uri scope;
-        private ServiceHost AgentTestRunnerHost { get; set; }
+        private readonly IEnumerable<IAgentExternalModule> modules;
+        private ILog log;
+        internal ServiceHost TestRunnerHost { get; set; }
 
         /// <summary>
         /// Gets the endpoint.
@@ -23,10 +25,14 @@ namespace NDistribUnit.Agent.Communication
         /// <summary>
         /// Initializes a new instance of the <see cref="AgentHost"/> class.
         /// </summary>
-        /// <param name="scope">The scope.</param>
-        public AgentHost(Uri scope)
+        /// <param name="testRunner">The test runner.</param>
+        /// <param name="modules">The agents' external modules.</param>
+        /// <param name="log">The log.</param>
+        public AgentHost(TestRunnerAgent testRunner, IEnumerable<IAgentExternalModule> modules, ILog log)
         {
-            this.scope = scope;
+            TestRunner = testRunner;
+            this.modules = modules;
+            this.log = log;
         }
 
         /// <summary>
@@ -34,24 +40,45 @@ namespace NDistribUnit.Agent.Communication
         /// </summary>
         public void Start()
         {
-            var testRunnerAgent = new TestRunnerAgent();
+            var baseAddress = new Uri(string.Format("net.tcp://{0}:{1}", Environment.MachineName, WcfUtilities.FindPort()));
 
-            AgentTestRunnerHost = new ServiceHost(testRunnerAgent, new Uri(string.Format("net.tcp://{0}:{1}", Environment.MachineName, WcfUtilities.FindPort())));
-            Endpoint = AgentTestRunnerHost.AddServiceEndpoint(typeof (ITestRunnerAgent), new NetTcpBinding(), "");
-            var agentTestRunnerDiscoveryBehavior = new EndpointDiscoveryBehavior();
-            agentTestRunnerDiscoveryBehavior.Scopes.Add(scope);
-            Endpoint.Behaviors.Add(agentTestRunnerDiscoveryBehavior);
-            AgentTestRunnerHost.Description.Behaviors.Add(new ServiceDiscoveryBehavior());
-            AgentTestRunnerHost.AddServiceEndpoint(new UdpDiscoveryEndpoint());
-            AgentTestRunnerHost.Open();
+            log.BeginActivity(string.Format("Starting agent {1} on '{0}'...", baseAddress, TestRunner.Name));
+            TestRunnerHost = new ServiceHost(TestRunner, baseAddress);
+            Endpoint = TestRunnerHost.AddServiceEndpoint(typeof (ITestRunnerAgent), new NetTcpBinding(), "");
+
+            log.BeginActivity("Starting external modules...");
+            foreach (var module in modules)
+            {
+                module.Start(this);
+            }
+            log.EndActivity("External modules were started.");
+
+            TestRunnerHost.Open();
+            log.EndActivity("Agent host was started.");
         }
+
+        /// <summary>
+        /// Gets or sets the test runner.
+        /// </summary>
+        /// <value>
+        /// The test runner.
+        /// </value>
+        public TestRunnerAgent TestRunner { get; set; }
 
         /// <summary>
         /// Stops all agent's services
         /// </summary>
         public void Stop()
         {
-            AgentTestRunnerHost.Close();
+            log.BeginActivity("Stopping host...");
+            TestRunnerHost.Close();
+            log.BeginActivity("Stopping external modules...");
+            foreach (var module in modules)
+            {
+                module.Stop(this);
+            }
+            log.EndActivity("External modules were stopped.");
+            log.EndActivity("Agent host was stopped");
         }
 
         /// <summary>
@@ -59,7 +86,11 @@ namespace NDistribUnit.Agent.Communication
         /// </summary>
         public void Abort()
         {
-            AgentTestRunnerHost.Abort();
+            TestRunnerHost.Abort();
+            foreach (var module in modules)
+            {
+                module.Abort(this);
+            }
         }
     }
 }

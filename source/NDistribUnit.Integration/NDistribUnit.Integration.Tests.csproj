@@ -46,8 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Communication\AnnouncementConnectionTrackersStateTests.cs" />
+    <Compile Include="Communication\ConnectionTrackersStateTestsBase.cs" />
+    <Compile Include="Communication\DiscoveryConnectionTrackersStateTests.cs" />
     <Compile Include="General\AgentWrapper.cs" />
-    <Compile Include="ConnectionTrackersStateTests.cs" />
     <Compile Include="General\IntegrationTestsFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="General\ServerWrapper.cs" />

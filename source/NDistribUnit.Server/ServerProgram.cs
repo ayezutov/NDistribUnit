@@ -3,6 +3,7 @@ using Autofac;
 using Autofac.Core;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Communication.ConnectionTracking;
+using NDistribUnit.Common.Communication.ConnectionTracking.Announcement;
 using NDistribUnit.Common.Communication.ConnectionTracking.Discovery;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
@@ -24,13 +25,36 @@ namespace NDistribUnit.Server
             builder.Register(c => ServerParameters.Parse(args)).InstancePerLifetimeScope();
             builder.RegisterType<TestRunnerServer>().InstancePerLifetimeScope();
             builder.RegisterType<DashboardService>().InstancePerLifetimeScope();
-            builder.Register(c => new DiscoveryConnectionsTracker<ITestRunnerAgent>(new DiscoveryOptions()
-                                                                                        {
-                                                                                            Scope = new Uri("http://hubwoo.com/trr-odc"),
-                                                                                            DiscoveryIntervalInMiliseconds = 20000,
-                                                                                            PingIntervalInMiliseconds = 5000
-                                                                                        },c.Resolve<ILog>()))
-                .As<IConnectionsTracker<ITestRunnerAgent>>();
+
+#pragma warning disable 162
+            if (false)
+            {
+                builder.Register(c => new DiscoveryConnectionsTracker<ITestRunnerAgent>(new DiscoveryOptions()
+                                                                                            {
+                                                                                                Scope =
+                                                                                                    new Uri(
+                                                                                                    "http://hubwoo.com/trr-odc"),
+                                                                                                DiscoveryIntervalInMiliseconds
+                                                                                                    = 20000,
+                                                                                                PingIntervalInMiliseconds
+                                                                                                    = 5000
+                                                                                            }, c.Resolve<ILog>()))
+                    .As<IConnectionsTracker<ITestRunnerAgent>>();
+            }
+            else
+
+            {
+                builder.Register(c => new AnnouncementConnectionsTracker<ITestRunnerAgent>(new AnnouncementConnectionsTrackerOptions()
+                {
+                    Scope =
+                        new Uri(
+                        "http://hubwoo.com/trr-odc"),
+                    PingIntervalInMiliseconds
+                        = 5000
+                }, c.Resolve<ILog>()))
+                    .As<IConnectionsTracker<ITestRunnerAgent>>();
+            }
+#pragma warning restore 162
             builder.Register(c => new ServerConnectionsTracker(c.Resolve<IConnectionsTracker<ITestRunnerAgent>>(), c.Resolve<ILog>()))
                 .InstancePerLifetimeScope();
             builder.Register(

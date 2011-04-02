@@ -1,3 +1,5 @@
+using System;
+
 namespace NDistribUnit.Common.Communication.ConnectionTracking.Announcement
 {
     /// <summary>
@@ -9,5 +11,13 @@ namespace NDistribUnit.Common.Communication.ConnectionTracking.Announcement
         /// Gets the ping interval in miliseconds.
         /// </summary>
         public int PingIntervalInMiliseconds { get; set; }
+
+        /// <summary>
+        /// Gets or sets the scope.
+        /// </summary>
+        /// <value>
+        /// The scope.
+        /// </value>
+        public Uri Scope { get; set; }
     }
 }

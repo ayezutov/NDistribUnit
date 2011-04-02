@@ -1,7 +1,14 @@
 ﻿using System;
+using System.ComponentModel;
+using System.IO;
+using System.Reflection;
+using System.Threading;
 using Autofac;
 using NDistribUnit.Agent.Communication;
+using NDistribUnit.Agent.Communication.ExternalModules;
+using NDistribUnit.Agent.Naming;
 using NDistribUnit.Agent.Options;
+using NDistribUnit.Common.Logging;
 
 namespace NDistribUnit.Agent
 {
@@ -10,6 +17,8 @@ namespace NDistribUnit.Agent
     /// </summary>
     public class AgentProgram
     {
+        private readonly ILog log;
+
         /// <summary>
         ///  The host, which enables all communication services
         /// </summary>
@@ -19,28 +28,55 @@ namespace NDistribUnit.Agent
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<AgentProgram>();
-            builder.Register(c => new AgentHost(new Uri("http://hubwoo.com/trr-odc")));
+            builder.RegisterInstance(new FreeNumberNameProvider(Environment.MachineName)).As<INameProvider>();
+            builder.Register(c => new CombinedLog(new ConsoleLog(), new RollingLog(1000))).As<ILog>();
+            builder.Register(c => new AgentHost(new TestRunnerAgent(c.Resolve<ILog>(), c.Resolve<INameProvider>()), new IAgentExternalModule[]
+                                                                                          {
+                                                                                              new DiscoveryModule(new Uri("http://hubwoo.com/trr-odc")),
+                                                                                              new AnnouncementModule(TimeSpan.FromSeconds(15), new Uri("http://hubwoo.com/trr-odc"))
+                                                                                          }, c.Resolve<ILog>()));
             builder.Register(c => AgentConsoleParameters.Parse(args)).InstancePerLifetimeScope();
             var container = builder.Build();
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             return container.Resolve<AgentProgram>().Run();
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// Initializes a new instance of an agent program
         /// </summary>
         /// <param name="agentHost"></param>
-        public AgentProgram(AgentHost agentHost)
+        /// <param name="log"></param>
+        public AgentProgram(AgentHost agentHost, ILog log)
         {
+            this.log = log;
             AgentHost = agentHost;
         }
 
+
         private int Run()
         {
-            Console.WriteLine("Starting...");
-            AgentHost.Start();
-            Console.WriteLine("Started. Press <Enter> to exit.");
-            Console.ReadLine();
-            AgentHost.Stop();
+            try
+            {
+                log.BeginActivity("Starting agent...");
+                AgentHost.Start();
+                log.EndActivity("Agent was successfully started. Press <Enter> to exit.");
+
+
+                Console.ReadLine();
+                AgentHost.Stop();
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception, while running", ex);
+                throw;
+            }
+            
+            
             return 0;
         }
     }

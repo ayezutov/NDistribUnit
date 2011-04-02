@@ -1,4 +1,6 @@
-﻿using System.ServiceModel.Discovery;
+﻿using System;
+using System.ServiceModel;
+using System.ServiceModel.Discovery;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
 
@@ -11,6 +13,7 @@ namespace NDistribUnit.Common.Communication.ConnectionTracking.Announcement
     {
         private AnnouncementConnectionsTrackerOptions options;
         private AnnouncementService announcementService;
+        private ServiceHost announcementServiceHost;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AnnouncementConnectionsTracker&lt;TIEndpoint&gt;"/> class.
@@ -29,11 +32,16 @@ namespace NDistribUnit.Common.Communication.ConnectionTracking.Announcement
         {
             announcementService = new AnnouncementService();
             announcementService.OnlineAnnouncementReceived += OnClientNotificationReceived;
+
+            announcementServiceHost = new ServiceHost(announcementService);
+            announcementServiceHost.AddServiceEndpoint(new UdpAnnouncementEndpoint());
+            announcementServiceHost.Open();
         }
 
         private void OnClientNotificationReceived(object sender, AnnouncementEventArgs e)
         {
-            AddEndpointForTracking(e.EndpointDiscoveryMetadata);
+            if (e.EndpointDiscoveryMetadata.Scopes.Contains(options.Scope))
+                AddEndpointForTracking(e.EndpointDiscoveryMetadata);
         }
 
         /// <summary>
@@ -41,6 +49,7 @@ namespace NDistribUnit.Common.Communication.ConnectionTracking.Announcement
         /// </summary>
         public override void Stop()
         {
+            announcementServiceHost.Close();
             StopPingingEndpoints();
         }
     }

@@ -47,6 +47,8 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -61,6 +63,10 @@
     <Compile Include="SomeTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NDistribUnit.Agent\NDistribUnit.Agent.csproj">
+      <Project>{2F1BC3F1-EB1B-4D71-992A-564CF104F9A1}</Project>
+      <Name>NDistribUnit.Agent</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NDistribUnit.Server\NDistribUnit.Server.csproj">
       <Project>{91A452A1-4EBC-42C6-A724-F3BFF3A66EAF}</Project>
       <Name>NDistribUnit.Server</Name>

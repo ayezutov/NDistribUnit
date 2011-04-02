@@ -45,7 +45,7 @@ namespace NDistribUnit.Common.Communication.ConnectionTracking
 
             try
             {
-                endpointInformation.Pingable.Ping();
+                endpointInformation.Pingable.Ping(TimeSpan.FromMilliseconds(options.PingIntervalInMiliseconds));
                 endpointInformation.PingTimer.Change(options.PingIntervalInMiliseconds, Timeout.Infinite);
                 endpointInformation.LastStatusUpdateTime = DateTime.UtcNow;
                 if (EndpointSuccessfulPing != null)

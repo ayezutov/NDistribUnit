@@ -62,7 +62,12 @@
   <ItemGroup>
     <Compile Include="Communication\AgentHost.cs" />
     <Compile Include="AgentProgram.cs" />
+    <Compile Include="Communication\ExternalModules\AnnouncementModule.cs" />
+    <Compile Include="Communication\ExternalModules\DiscoveryModule.cs" />
+    <Compile Include="Communication\IAgentExternalModule.cs" />
     <Compile Include="Communication\TestRunnerAgent.cs" />
+    <Compile Include="Naming\FreeNumberNameProvider.cs" />
+    <Compile Include="Naming\INameProvider.cs" />
     <Compile Include="Options\AgentConsoleParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -78,6 +83,7 @@
   <ItemGroup>
     <Content Include="icon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
