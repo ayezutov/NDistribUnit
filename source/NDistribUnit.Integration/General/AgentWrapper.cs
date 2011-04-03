@@ -1,6 +1,6 @@
 ﻿using System;
 using NDistribUnit.Agent;
-using NDistribUnit.Agent.Communication;
+using NDistribUnit.Common.Agent;
 
 namespace NDistribUnit.Integration.Tests.General
 {
@@ -31,6 +31,11 @@ namespace NDistribUnit.Integration.Tests.General
         public void Dispose()
         {
             AgentHost.Abort();
+        }
+
+        public void ChangeNameTo(string newName)
+        {
+            AgentHost.TestRunner.Name = newName;
         }
     }
 }

@@ -13,18 +13,22 @@ function Dashboard()
                 beforeAction: function () { me.ui.openStatusPane(); },
                 clients: function (clientName) {
                     if (typeof (clientName) == undefined) {
-                        
+
                     }
                     me.openClientStatus(clientName);
                 },
-                server: function () { me.openServerStatus(); }
+                server: {
+                    log: function () {
+                        me.openServerStatus(); 
+                    }
+            }
             },
         tests: {
             beforeAction: function () { me.ui.openTestsPane(); }
         },
         unknownAction: function () { window.location.hash = "tests"; }
     },
-    {autoCompleteRouteToLastUsed: true});
+    { autoCompleteRouteToLastUsed: true });
     this.ui = new DashboardUI();
     this.server = new DashboardServer();
 }

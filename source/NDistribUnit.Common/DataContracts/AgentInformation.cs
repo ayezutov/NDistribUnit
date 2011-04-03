@@ -31,7 +31,14 @@ namespace NDistribUnit.Common.DataContracts
         /// The friendly name of the agent
         /// </summary>
         [DataMember]
-        public string Name
+        public string Name { get; set; }
+
+        
+        /// <summary>
+        /// The friendly name of the agent
+        /// </summary>
+        [DataMember]
+        public string Address
         {
             get { return Endpoint.Address.ToString(); }
             set { throw new NotSupportedException(); }

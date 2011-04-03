@@ -1,6 +1,5 @@
 using System;
 using System.Linq.Expressions;
-using NDistribUnit.Agent.Communication;
 using NUnit.Framework;
 
 namespace NDistribUnit.Server.Tests

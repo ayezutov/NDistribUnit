@@ -60,15 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Communication\AgentHost.cs" />
     <Compile Include="AgentProgram.cs" />
-    <Compile Include="Communication\ExternalModules\AnnouncementModule.cs" />
-    <Compile Include="Communication\ExternalModules\DiscoveryModule.cs" />
-    <Compile Include="Communication\IAgentExternalModule.cs" />
-    <Compile Include="Communication\TestRunnerAgent.cs" />
-    <Compile Include="Naming\FreeNumberNameProvider.cs" />
-    <Compile Include="Naming\INameProvider.cs" />
-    <Compile Include="Options\AgentConsoleParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

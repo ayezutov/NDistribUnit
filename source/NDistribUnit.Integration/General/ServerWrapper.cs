@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ServiceModel;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Retrying;
 using NDistribUnit.Server.Communication;
@@ -26,24 +27,36 @@ namespace NDistribUnit.Integration.Tests.General
 
         public bool HasAConnected(AgentWrapper agent)
         {
+            string agentName = agent.AgentHost.TestRunner.Name;
+
+            return HasAConnected(agentName);
+        }
+
+        public bool HasAConnected(string agentName, EndpointAddress address = null)
+        {
             return Retry.While(
-                () =>
-                    {
-                        AgentInformation found = ServerHost.ConnectionsTracker.Agents.FirstOrDefault(a => a.Endpoint.Address.Equals(agent.AgentHost.Endpoint.Address));
-                        return found != null && found.State != AgentState.Disconnected;
-                    }, 500);
+                 () =>
+                 {
+                     AgentInformation found = ServerHost.ConnectionsTracker.Agents.FirstOrDefault(a => a.Name.Equals(agentName) && (address == null || a.Endpoint.Address.Equals(address)));
+                     return found != null && found.State != AgentState.Disconnected;
+                 }, 500);
         }
 
         public bool HasADisconnected(AgentWrapper agent)
         {
+            string agentName = agent.AgentHost.TestRunner.Name;
+            return HasADisconnected(agentName);
+        }
+
+        public bool HasADisconnected(string agentName)
+        {
             return Retry.While(
                 () =>
-                    {
-                        AgentInformation found = ServerHost.ConnectionsTracker.Agents.FirstOrDefault(
-                            a => a.Endpoint.Address.Equals(agent.AgentHost.Endpoint.Address));
-                        return found == null || found.State == AgentState.Disconnected;
-                    }, 500);
-       
+                {
+                    AgentInformation found = ServerHost.ConnectionsTracker.Agents.FirstOrDefault(
+                        a => a.Name.Equals(agentName));
+                    return found == null || found.State == AgentState.Disconnected;
+                }, 500);
         }
 
         public void ShutDownInExpectedWay()
@@ -53,7 +66,7 @@ namespace NDistribUnit.Integration.Tests.General
 
         public void ShutDownUngraceful()
         {
-            throw new NotImplementedException();
+            ServerHost.Abort();
         }
 
         /// <summary>
@@ -62,7 +75,7 @@ namespace NDistribUnit.Integration.Tests.General
         /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
-            ServerHost.Abort();
+            ShutDownUngraceful();
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 using NDistribUnit.Common.Communication.ConnectionTracking.Discovery;
+using NDistribUnit.Common.Server.ConnectionTracking.Discovery;
 using NDistribUnit.Integration.Tests.General;
 using NUnit.Framework;
 

@@ -84,6 +84,15 @@ UL.list-menu LI
     margin-top: 5px;
     }
 
+UL.list-menu LI UL
+{
+    padding-left: 40px;
+    }
+    
+UL.list-menu LI>SPAN
+{
+    color: #6866FF;
+    }
 .left-menu-pane
 {
     background: white url(../images/tests_bg.png) repeat-y;
@@ -210,6 +219,13 @@ UL.list-menu LI
 {
     font-weight: bold;
 }
+
+.agent-address
+{
+    font-size: 12px;
+    color: #666666;
+    font-weight: bold;
+    }
 
 .agent-timestamp
 {

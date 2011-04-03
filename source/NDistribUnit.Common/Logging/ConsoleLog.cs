@@ -92,7 +92,8 @@ namespace NDistribUnit.Common.Logging
             {
                 var oldColor = System.Console.ForegroundColor;
                 System.Console.ForegroundColor = color;
-                writer.WriteLine(prefix + message);
+                writer.Write("{0}: ", DateTime.Now.ToString("hh:mm:ss:ffffff"));
+                writer.WriteLine("{0} {1}", prefix, message);
                 System.Console.ForegroundColor = oldColor;
             }
         }

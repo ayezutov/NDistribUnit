@@ -4,10 +4,10 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using Autofac;
-using NDistribUnit.Agent.Communication;
-using NDistribUnit.Agent.Communication.ExternalModules;
-using NDistribUnit.Agent.Naming;
 using NDistribUnit.Agent.Options;
+using NDistribUnit.Common.Agent;
+using NDistribUnit.Common.Agent.ExternalModules;
+using NDistribUnit.Common.Agent.Naming;
 using NDistribUnit.Common.Logging;
 
 namespace NDistribUnit.Agent
@@ -28,12 +28,11 @@ namespace NDistribUnit.Agent
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<AgentProgram>();
-            builder.RegisterInstance(new FreeNumberNameProvider(Environment.MachineName)).As<INameProvider>();
             builder.Register(c => new CombinedLog(new ConsoleLog(), new RollingLog(1000))).As<ILog>();
-            builder.Register(c => new AgentHost(new TestRunnerAgent(c.Resolve<ILog>(), c.Resolve<INameProvider>()), new IAgentExternalModule[]
+            builder.Register(c => new AgentHost(new TestRunnerAgentService(c.Resolve<ILog>(), string.Format("{0} #{1:000}", Environment.MachineName, InstanceNumberSearcher.Number)), new IAgentExternalModule[]
                                                                                           {
                                                                                               new DiscoveryModule(new Uri("http://hubwoo.com/trr-odc")),
-                                                                                              new AnnouncementModule(TimeSpan.FromSeconds(15), new Uri("http://hubwoo.com/trr-odc"))
+                                                                                              new AnnouncementModule(TimeSpan.FromSeconds(15), new Uri("http://hubwoo.com/trr-odc"), c.Resolve<ILog>())
                                                                                           }, c.Resolve<ILog>()));
             builder.Register(c => AgentConsoleParameters.Parse(args)).InstancePerLifetimeScope();
             var container = builder.Build();

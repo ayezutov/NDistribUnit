@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Autofac;
-using NDistribUnit.Agent.Communication;
-using NDistribUnit.Agent.Communication.ExternalModules;
-using NDistribUnit.Agent.Naming;
+using NDistribUnit.Common.Agent;
+using NDistribUnit.Common.Agent.ExternalModules;
 using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.Communication.ConnectionTracking.Announcement;
 using NDistribUnit.Common.Communication.ConnectionTracking.Discovery;
 using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.Server.ConnectionTracking.Discovery;
 using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Server.Communication;
 using NDistribUnit.Server.Services;
@@ -60,11 +60,11 @@ namespace NDistribUnit.Integration.Tests.General
             }
 
             builder.Register(c => new ServerConnectionsTracker(c.Resolve<IConnectionsTracker<ITestRunnerAgent>>(), c.Resolve<ILog>()));
-            builder.RegisterInstance(new FreeNumberNameProvider(Environment.MachineName)).As<INameProvider>();
-            builder.Register(c => new AgentHost(new TestRunnerAgent(c.Resolve<ILog>(), c.Resolve<INameProvider>()), new IAgentExternalModule[]
+            builder.Register(c => new TestRunnerAgentService(c.Resolve<ILog>(), "Agent #1"));
+            builder.Register(c => new AgentHost(c.Resolve<TestRunnerAgentService>(), new IAgentExternalModule[]
                                                     {
                                                         new DiscoveryModule(new Uri("http://ndistribunit.com/tests")),
-                                                        new AnnouncementModule(TimeSpan.FromMilliseconds(200), new Uri("http://ndistribunit.com/tests")), 
+                                                        new AnnouncementModule(TimeSpan.FromMilliseconds(200), new Uri("http://ndistribunit.com/tests"), c.Resolve<ILog>()), 
                                                     }, c.Resolve<ILog>()));
             container = builder.Build();
         }
@@ -77,8 +77,14 @@ namespace NDistribUnit.Integration.Tests.General
             return server;
         }
 
-        public AgentWrapper StartAgent()
+        public AgentWrapper StartAgent(string agentName = null)
         {
+            if (agentName != null)
+            {
+                var builder = new ContainerBuilder();
+                builder.Register(c => new TestRunnerAgentService(c.Resolve<ILog>(), agentName));
+                builder.Update(container);
+            }
             var agent = new AgentWrapper(container.Resolve<AgentHost>());
             agents.Add(agent);
             agent.Start();

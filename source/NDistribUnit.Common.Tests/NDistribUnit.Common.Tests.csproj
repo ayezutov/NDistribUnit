@@ -57,12 +57,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client\Options\ClientParametersParserTests.cs" />
     <Compile Include="Collections\RollingListTests.cs" />
     <Compile Include="Logging\RollingLogTests.cs" />
     <Compile Include="Options\ConsoleParametersParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NDistribUnit.Client\NDistribUnit.Client.csproj">
+      <Project>{EA43284E-A328-4F06-9527-30DE52C37546}</Project>
+      <Name>NDistribUnit.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NDistribUnit.Common\NDistribUnit.Common.csproj">
       <Project>{B060BDAC-E277-42BB-871C-320D6D8C5CA7}</Project>
       <Name>NDistribUnit.Common</Name>

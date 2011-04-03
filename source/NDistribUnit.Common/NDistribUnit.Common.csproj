@@ -64,18 +64,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Agent\AgentHost.cs" />
+    <Compile Include="Agent\ExternalModules\AnnouncementModule.cs" />
+    <Compile Include="Agent\ExternalModules\DiscoveryModule.cs" />
+    <Compile Include="Agent\ExternalModules\IAgentExternalModule.cs" />
+    <Compile Include="Agent\Naming\InstanceNumberSearcher.cs" />
+    <Compile Include="Agent\Options\AgentConsoleParameters.cs" />
+    <Compile Include="Agent\TestRunnerAgentService.cs" />
+    <Compile Include="Communication\AgentAdditionalDataManager.cs" />
+    <Compile Include="DataContracts\PingResult.cs" />
     <Compile Include="EventArgs.cs" />
     <Compile Include="Collections\RollingList.cs" />
     <Compile Include="Collections\RollingListItem.cs" />
-    <Compile Include="Communication\ConnectionTracking\Announcement\AnnouncementConnectionsTracker.cs" />
-    <Compile Include="Communication\ConnectionTracking\Announcement\AnnouncementConnectionsTrackerOptions.cs" />
-    <Compile Include="Communication\ConnectionTracking\ConnectionsTrackerBase.cs" />
-    <Compile Include="Communication\ConnectionTracking\Discovery\DiscoveryConnectionsTracker.cs" />
-    <Compile Include="Communication\ConnectionTracking\Discovery\DiscoveryOptions.cs" />
-    <Compile Include="Communication\ConnectionTracking\EndpointConnectionChangedEventArgs.cs" />
-    <Compile Include="Communication\ConnectionTracking\EndpointInformation.cs" />
-    <Compile Include="Communication\ConnectionTracking\IConnectionsTracker.cs" />
-    <Compile Include="Communication\ConnectionTracking\IConnectionsTrackerOptions.cs" />
+    <Compile Include="Server\ConnectionTracking\Announcement\AnnouncementConnectionsTracker.cs" />
+    <Compile Include="Server\ConnectionTracking\Announcement\AnnouncementConnectionsTrackerOptions.cs" />
+    <Compile Include="Server\ConnectionTracking\ConnectionsTrackerBase.cs" />
+    <Compile Include="Server\ConnectionTracking\Discovery\DiscoveryConnectionsTracker.cs" />
+    <Compile Include="Server\ConnectionTracking\Discovery\DiscoveryOptions.cs" />
+    <Compile Include="Server\ConnectionTracking\EndpointConnectionChangedEventArgs.cs" />
+    <Compile Include="Server\ConnectionTracking\EndpointInformation.cs" />
+    <Compile Include="Server\ConnectionTracking\IConnectionsTracker.cs" />
+    <Compile Include="Server\ConnectionTracking\IConnectionsTrackerOptions.cs" />
     <Compile Include="DataContracts\AgentInformation.cs" />
     <Compile Include="DataContracts\AgentState.cs" />
     <Compile Include="Logging\CombinedLog.cs" />
@@ -86,6 +95,11 @@
     <Compile Include="Logging\LoggingUtility.cs" />
     <Compile Include="Logging\RollingLog.cs" />
     <Compile Include="Retrying\Retry.cs" />
+    <Compile Include="Server\Communication\ServerConnectionsTracker.cs" />
+    <Compile Include="Server\Communication\ServerHost.cs" />
+    <Compile Include="Server\Options\ServerParameters.cs" />
+    <Compile Include="Server\Services\DashboardService.cs" />
+    <Compile Include="Server\Services\TestRunnerServer.cs" />
     <Compile Include="ServiceContracts\IPingable.cs" />
     <Compile Include="Communication\WcfUtilities.cs" />
     <Compile Include="DataContracts\ProjectDescription.cs" />
@@ -98,7 +112,7 @@
     <Compile Include="ServiceContracts\IDashboardService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Communication\ConnectionTracking\PredefinedConnectionsTracker\" />
+    <Folder Include="Server\ConnectionTracking\PredefinedConnectionsTracker\" />
     <Folder Include="Testing\" />
     <Folder Include="Updating\" />
   </ItemGroup>

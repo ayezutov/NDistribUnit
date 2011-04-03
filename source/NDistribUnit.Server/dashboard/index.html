@@ -111,7 +111,12 @@
         <div id="status-pane" class="content">
             <div id="status-tree-pane" class="left-menu-pane">
                 <ul class="list-menu">
-                    <li><a href="#status/server" id="server-status-menu">Server status</a></li>
+                    <li><span id="server-status-menu">Server's status</span></li>
+                    <li>
+                        <ul>
+                            <li><a href="#status/server/log" id="server-log-link">Log</a></li>
+                        </ul>
+                    </li>
                     <li><a href="#status/clients" id="clients-statuses-menu">Clients' statuses</a></li>
                 </ul>
             </div>
@@ -162,7 +167,7 @@
                         {{else}}
                             {{each data}} 
                                 <div id="agent-${Name}" class="agent ${ Helper.getEnumNameByValue(AgentState, State)}">
-                                  <span class="agent-name">${Name}</span><br/>
+                                  <span class="agent-name">${Name}</span><span class="agent-address"> (${Address})</span><br/>
                                   <span class="agent-timestamp">
                                       <span class="agent-time">${LastStatusUpdate.toLocaleTimeString()},</span>
                                       <span class="agent-date">${LastStatusUpdate.toLocaleDateString()}</span>
@@ -194,7 +199,7 @@
                         </div>
                         <div id="agents-log">
                             log goes here</div>
-                    </div-->
+                    < / div-->
                 </div>
                 </div>
             </div>

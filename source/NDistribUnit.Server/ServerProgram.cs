@@ -6,6 +6,8 @@ using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.Communication.ConnectionTracking.Announcement;
 using NDistribUnit.Common.Communication.ConnectionTracking.Discovery;
 using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.Server.ConnectionTracking.Discovery;
+using NDistribUnit.Common.Server.Options;
 using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Server.Communication;
 using NDistribUnit.Server.Services;
@@ -27,7 +29,7 @@ namespace NDistribUnit.Server
             builder.RegisterType<DashboardService>().InstancePerLifetimeScope();
 
 #pragma warning disable 162
-            if (false)
+            if (true)
             {
                 builder.Register(c => new DiscoveryConnectionsTracker<ITestRunnerAgent>(new DiscoveryOptions()
                                                                                             {

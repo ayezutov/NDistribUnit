@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ServiceModel;
+using NDistribUnit.Common.DataContracts;
 
 namespace NDistribUnit.Common.ServiceContracts
 {
@@ -15,6 +16,6 @@ namespace NDistribUnit.Common.ServiceContracts
         /// <param name="pingInterval"></param>
         /// <returns>true if everything is ok</returns>
         [OperationContract]
-        bool Ping(TimeSpan pingInterval);
+        PingResult Ping(TimeSpan pingInterval);
     }
 }
