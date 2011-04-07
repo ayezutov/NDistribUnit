@@ -96,6 +96,25 @@ namespace NDistribUnit.Server.Services
             return log.GetEntries(lastFetchedEntryId, maxItemsCount);
         }
 
+        /// <summary>
+        /// Gets the log for the agent
+        /// </summary>
+        /// <param name="agentName">Name of the agent.</param>
+        /// <param name="maxItemsCount">The max items count.</param>
+        /// <param name="lastFetchedEntryId">The last fetched entry id.</param>
+        /// <returns></returns>
+        public LogEntry[] GetAgentLog(string agentName, int maxItemsCount, int? lastFetchedEntryId = null)
+        {
+            AgentInformation agent = connectionsTracker.Agents.FirstOrDefault(a => a.Name.Equals(agentName));
+
+            if (agent == null)
+                return new LogEntry[0];
+
+            LogEntry[] result = ChannelFactory<ITestRunnerAgent>.CreateChannel(new NetTcpBinding(), agent.Endpoint.Address)
+                .GetLog(maxItemsCount, lastFetchedEntryId);
+            return result;
+        }
+
         private static string enumsJavascriptRegistration;
 
         /// <summary>

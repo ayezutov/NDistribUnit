@@ -1,4 +1,7 @@
 ﻿function DashboardUI() {
+    this.options = {
+        maxLogItemsCount: 1000
+    };
     this.selectors = {
         menuPane: "#menu-pane",
         contentPane: "#content-pane",
@@ -16,7 +19,9 @@
             contentPane: "#status-content-pane",
             homePane: "#status-home-page",
             serverStatusPane: "#server-status-pane",
-            agentsStatusesPane: "#agents-statuses-pane"
+            agentsStatusesPane: "#agents-statuses-pane",
+            agentsLogPane: "#agents-log-pane",
+            agentsLogDisplayArea: "#agents-log-display-area"
         },
         settings: {
             treeview: "#settings-tree-pane>UL",
@@ -52,38 +57,64 @@ DashboardUI.prototype = {
             west: { paneSelector: this.selectors.settings.treePane, size: 200, resizable: true, slideable: false, minSize: 200, maxSize: 0, spacing_open: 6 },
             center: { paneSelector: this.selectors.settings.contentPane }
         });
-        //
-        //        $(this.selectors.status.serverStatusPane).layout({
-        //            east: { paneSelector: this.selectors.status.serverQueuePane, size: 200, resizable: true, slideable: false, minSize: 200, maxSize: 0 },
-        //            center: { paneSelector: this.selectors.status.serverLogPane, minSize: 100 }
-        //        });
-        
+
         $(this.selectors.status.serverStatusPane).layout({
             center: { paneSelector: "#server-status-pane-wrapper" }
-                });
-        $(this.selectors.status.agentsStatusesPane).layout({
-            center: { paneSelector: "#agents-statuses-pane-wrapper" }
-                });
-        
+        });
+        //        $(this.selectors.status.agentsStatusesPane).layout({
+        //            center: { paneSelector: "#agents-statuses-pane-wrapper" }
+        //        });
+
+
+
         this.panes =
             [
                 $(this.selectors.testsPane),
                 $(this.selectors.statusPane).hide(),
                 $(this.selectors.settingsPane).hide()
             ];
-        this.statusPanes =
-            [
-                $(this.selectors.status.homePane),
-                $(this.selectors.status.serverStatusPane).hide(),
-                $(this.selectors.status.agentsStatusesPane).hide()
-            ];
+        this.statusPanes = [];
+        this.statusPanes.$agentsStatusesPane = $(this.selectors.status.agentsStatusesPane);
+        this.statusPanes.push($(this.selectors.status.homePane));
+        this.statusPanes.push($(this.selectors.status.serverStatusPane).hide());
+        this.statusPanes.push(this.statusPanes.$agentsStatusesPane.hide());
 
-        this.statusPanes.agentsStatusesPane = this.statusPanes[2];
-       
+        this.statusPanes.$agentsLogPane = $(this.selectors.status.agentsLogPane);
+        this.statusPanes.$agentsLogDisplayArea = $(this.selectors.status.agentsLogDisplayArea);
+
+        this.statusPanes.$agentsStatusesPane.layoutInstance = this.statusPanes.$agentsStatusesPane.layout({
+            autoResize: true,
+            center: { paneSelector: "#agents-statuses-pane-wrapper", size: '50%' },
+            south: { paneSelector: this.selectors.status.agentsLogPane, size: '50%', initHidden: true }
+        });
+        this.$logTemplate = $("#log-entry-template").template();
+        //this.statusPanes.$agentsStatusesPane.layoutInstance.panes.center.show();
         me.agentsStatus.init();
         me.serverStatus.init();
 
         this.isPaneTransitionInProgress = false;
+    },
+
+    showOrCreateAgentLogPane: function (agentName) {
+        /// <summary>Displays the log area and shows the log for the <paramref name="agentName" /></summary>
+        var layoutInstance = this.statusPanes.$agentsStatusesPane.layoutInstance;
+        if (layoutInstance.state.south.isHidden) {
+            layoutInstance.show('south');
+        }
+        this.statusPanes.$agentsLogDisplayArea.children().hide();
+        var $currentAgentPane = this.statusPanes.$agentsLogDisplayArea.data(agentName);
+
+        if (!$currentAgentPane) {
+            $currentAgentPane = $("<div id='" + agentName + "'></div>");
+            this.statusPanes.$agentsLogDisplayArea.append($currentAgentPane);
+            this.statusPanes.$agentsLogDisplayArea.data(agentName, $currentAgentPane);
+        }
+        $currentAgentPane.show();
+        var $scrollingContainer = $currentAgentPane.parent();
+        $scrollingContainer.scrollTop($scrollingContainer.attr("scrollHeight"));
+
+        this.statusPanes.$agentsStatusesPane.find("#current-agent-name").text(agentName);
+
     },
 
     openSettingsPane: function () {
@@ -98,8 +129,8 @@ DashboardUI.prototype = {
         this.openPane(this.panes, this.panes[0], "horizontal");
     },
 
-    openClientStatus: function () {
-        this.openPane(this.statusPanes, this.statusPanes.agentsStatusesPane, "horizontal");
+    openAgentsStatusPane: function () {
+        this.openPane(this.statusPanes, this.statusPanes.$agentsStatusesPane, "horizontal");
     },
 
     openServerStatus: function () {
@@ -171,6 +202,28 @@ DashboardUI.prototype = {
                 me.isPaneTransitionInProgress = false;
             }
         }
+    },
+    showLogItems: function (data, $element) {
+        var currentCount = $element.children().length;
+
+        if (currentCount > this.options.maxLogItemsCount) {
+            var toBeDeletedCount = currentCount - this.options.maxLogItemsCount;
+            var nodesToRemove = $element.children(":lt(" + toBeDeletedCount + ")");
+            nodesToRemove.remove();
+        }
+
+        var $nodes = $.tmpl(this.$logTemplate, data.data);
+        var $scrollingContainer = $element.parent();
+        var shouldScroll = ($scrollingContainer.scrollTop() + $scrollingContainer.height() + 10) >= $scrollingContainer.attr("scrollHeight");
+
+        $nodes.appendTo($element);
+
+        if (shouldScroll) {
+            $scrollingContainer.scrollTop($scrollingContainer.attr("scrollHeight"));
+        }
+
+        $nodes.css('background-color', '#D3BC9E');
+        $nodes.animate({ backgroundColor: '#000000' }, 2000);
     }
 };
 
@@ -184,15 +237,24 @@ function AgentsDashboardUI(parentUi) {
 AgentsDashboardUI.prototype = {
     init: function () {
         this.$progress = $('#agents-statuses-progress');
+        this.$logProgress = $('#agents-log-progress');
         this.$error = $('#agents-statuses-error');
+        this.$logError = $('#agents-log-error');
         this.$displayArea = $("#agents-statuses-display-area");
         this.$agentsTemplate = $("#agents-statuses-template").template();
     },
     showUpdateProgress: function () { this.$progress.show(); },
+    showLogUpdateProgress: function () { this.$logProgress.show(); },
     hideUpdateProgress: function () { this.$progress.hide(); },
+    hideLogUpdateProgress: function () { this.$logProgress.hide(); },
     isVisible: function () {
         return !this.parentUi.isPaneTransitionInProgress
-            && this.parentUi.statusPanes.agentsStatusesPane.is(":visible");
+            && this.parentUi.statusPanes.$agentsStatusesPane.is(":visible");
+    },
+
+    isLogVisible: function () {
+        return !this.parentUi.isPaneTransitionInProgress
+            && this.parentUi.statusPanes.$agentsStatusesPane.is(":visible");
     },
     showError: function (errorMessage) {
         this.$error.html(errorMessage);
@@ -201,6 +263,13 @@ AgentsDashboardUI.prototype = {
     hideError: function () {
         this.$error.hide();
     },
+    showLogError: function (errorMessage) {
+        this.$logError.html(errorMessage);
+        this.$logError.show();
+    },
+    hideLogError: function () {
+        this.$logError.hide();
+    },
     showAllAsUnknown: function () {
         this.$displayArea.find(".agent").addClass("Unknown");
     },
@@ -208,6 +277,11 @@ AgentsDashboardUI.prototype = {
         this.$displayArea.empty();
         $.tmpl(this.$agentsTemplate, data)
             .appendTo(this.$displayArea);
+    },
+
+    displayLogEntries: function (agentName, data) {
+        var $currentAgentPane = this.parentUi.statusPanes.$agentsLogDisplayArea.data(agentName);
+        this.parentUi.showLogItems(data, $currentAgentPane);
     }
 };
 
@@ -220,7 +294,6 @@ ServerDashboardUI.prototype = {
         this.$logProgress = $('#server-log-progress');
         this.$logError = $('#server-log-error');
         this.$logDisplayArea = $("#server-log-display-area");
-        this.$logTemplate = $("#log-entry-template").template();
     },
     showLogUpdateProgress: function () { this.$logProgress.show(); },
     hideLogUpdateProgress: function () { this.$logProgress.hide(); },
@@ -235,27 +308,8 @@ ServerDashboardUI.prototype = {
     hideLogError: function () {
         this.$logError.hide();
     },
+
     displayLogEntries: function (data) {
-        var currentCount = this.$logDisplayArea.children().length;
-        var maxCount = 1000;
-
-        if (currentCount > maxCount) {
-            var toBeDeletedCount = currentCount - maxCount;
-            var nodesToRemove = this.$logDisplayArea.children(":lt(" + toBeDeletedCount + ")");
-            nodesToRemove.remove();
-        }
-
-        var $nodes = $.tmpl(this.$logTemplate, data.data);
-        var $scrollingContainer = this.$logDisplayArea.parent();
-        var shouldScroll = ($scrollingContainer.scrollTop() + $scrollingContainer.height() + 10) >= $scrollingContainer.attr("scrollHeight");
-
-        $nodes.appendTo(this.$logDisplayArea);
-
-        if (shouldScroll) {
-            $scrollingContainer.scrollTop($scrollingContainer.attr("scrollHeight"));
-        }
-
-        $nodes.css('background-color', '#D3BC9E');
-        $nodes.animate({ backgroundColor: '#000000' }, 2000);
+        this.parentUi.showLogItems(data, this.$logDisplayArea);
     }
 };

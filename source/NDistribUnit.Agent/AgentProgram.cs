@@ -28,8 +28,9 @@ namespace NDistribUnit.Agent
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<AgentProgram>();
-            builder.Register(c => new CombinedLog(new ConsoleLog(), new RollingLog(1000))).As<ILog>();
-            builder.Register(c => new AgentHost(new TestRunnerAgentService(c.Resolve<ILog>(), string.Format("{0} #{1:000}", Environment.MachineName, InstanceNumberSearcher.Number)), new IAgentExternalModule[]
+            builder.Register(c => new RollingLog(1000)).InstancePerLifetimeScope();
+            builder.Register(c => new CombinedLog(new ConsoleLog(), c.Resolve<RollingLog>())).As<ILog>();
+            builder.Register(c => new AgentHost(new TestRunnerAgentService(c.Resolve<ILog>(), string.Format("{0} #{1:000}", Environment.MachineName, InstanceNumberSearcher.Number), c.Resolve<RollingLog>()), new IAgentExternalModule[]
                                                                                           {
                                                                                               new DiscoveryModule(new Uri("http://hubwoo.com/trr-odc")),
                                                                                               new AnnouncementModule(TimeSpan.FromSeconds(15), new Uri("http://hubwoo.com/trr-odc"), c.Resolve<ILog>())

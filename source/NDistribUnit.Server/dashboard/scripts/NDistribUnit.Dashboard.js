@@ -11,11 +11,8 @@ function Dashboard()
         status:
             {
                 beforeAction: function () { me.ui.openStatusPane(); },
-                clients: function (clientName) {
-                    if (typeof (clientName) == undefined) {
-
-                    }
-                    me.openClientStatus(clientName);
+                agents: function (agentName) {
+                    me.openAgentsStatus(agentName);
                 },
                 server: {
                     log: function () {
@@ -37,17 +34,34 @@ Dashboard.prototype = {
     init: function () {
         this.ui.init();
         this.dispatcher.init();
+
+        this.__lastFetchedServerLogId = null;
+        this.__lastFetchedAgentLogId = {};
+        this.__maxFetchedServerLogCount = this.__maxFetchedAgentsLogCount = 1000;
+
         this.initializeAgentsStatusesUpdate();
+        this.initializeAgentsLogUpdate();
         this.initializeServerLogUpdate();
-        this.lastFetchedServerLogId = null;
-        this.maxFetchedServerLogCount = 1000;
+
     },
 
     openServerStatus: function () {
         this.ui.openServerStatus();
     },
-    openClientStatus: function () {
-        this.ui.openClientStatus();
+    openAgentsStatus: function (agentName) {
+        this.ui.openAgentsStatusPane();
+        if (typeof (agentName) != 'undefined' && agentName != "") {
+            this.__logShowingAgentName = agentName;
+            this.ui.showOrCreateAgentLogPane(agentName);
+        }
+    },
+    getMessageFromError: function (error) {
+        var message = "Ooops... Something bad happened.";
+        if (error.code == 0 || error.code == 12029)
+            message += " The server seems to be unavailable.";
+        else
+            message += "(" + error.code + ": " + error.text + ")";
+        return message;
     },
     initializeAgentsStatusesUpdate: function () {
         var me = this;
@@ -58,20 +72,50 @@ Dashboard.prototype = {
             function (finished) {
                 me.ui.agentsStatus.showUpdateProgress();
 
-                me.server.getClientStatuses(function (result) {
+                me.server.getAgentsStatuses(function (result) {
                     me.ui.agentsStatus.hideUpdateProgress();
                     if (result.error) {
-                        var message = "Ooops... Something bad happened.";
-                        if (result.error.code == 0 || result.error.code == 12029)
-                            message += " The server seems to be unavailable.";
-                        else
-                            message += "(" + result.error.code + ": " + result.error.text + ")";
+                        var message = me.getMessageFromError(result.error);
                         me.ui.agentsStatus.showError(message);
                         me.ui.agentsStatus.showAllAsUnknown();
                     }
                     else {
                         me.ui.agentsStatus.hideError();
                         me.ui.agentsStatus.displayAgents(result);
+                    }
+
+                    finished();
+                });
+            },
+            5000);
+    },
+    initializeAgentsLogUpdate: function () {
+        var me = this;
+        Helper.executeWhen(
+            function () { return me.ui.agentsStatus.isLogVisible(); },
+            function fetchLog(finished) {
+
+                var currentAgentName = me.__logShowingAgentName;
+
+                me.ui.agentsStatus.showLogUpdateProgress();
+
+                me.server.getAgentsLog(currentAgentName, me.__lastFetchedAgentLogId[currentAgentName], me.__maxFetchedAgentsLogCount, function (result) {
+                    me.ui.agentsStatus.hideLogUpdateProgress();
+                    if (result.error) {
+                        var message = me.getMessageFromError(result.error);
+                        me.ui.agentsStatus.showLogError(message);
+                    }
+                    else {
+                        if (result.data.length > 0) {
+                            me.__lastFetchedAgentLogId[currentAgentName] = result.data[result.data.length - 1].Id;
+                            me.ui.agentsStatus.hideLogError();
+                            me.ui.agentsStatus.displayLogEntries(currentAgentName, result);
+                        }
+
+                        if (result.data.length >= me.__maxFetchedServerLogCount) {
+                            setTimeout(function () { fetchLog(finished); }, 50);
+                            return;
+                        }
                     }
 
                     finished();
@@ -86,24 +130,20 @@ Dashboard.prototype = {
             function fetchLog(finished) {
                 me.ui.serverStatus.showLogUpdateProgress();
 
-                me.server.getServerLog(me.lastFetchedServerLogId, me.maxFetchedServerLogCount, function (result) {
+                me.server.getServerLog(me.__lastFetchedServerLogId, me.__maxFetchedServerLogCount, function (result) {
                     me.ui.serverStatus.hideLogUpdateProgress();
                     if (result.error) {
-                        var message = "Ooops... Something bad happened.";
-                        if (result.error.code == 0 || result.error.code == 12029)
-                            message += " The server seems to be unavailable.";
-                        else
-                            message += "(" + result.error.code + ": " + result.error.text + ")";
+                        var message = me.getMessageFromError(result.error);
                         me.ui.serverStatus.showLogError(message);
                     }
                     else {
                         if (result.data.length > 0) {
-                            me.lastFetchedServerLogId = result.data[result.data.length - 1].Id;
+                            me.__lastFetchedServerLogId = result.data[result.data.length - 1].Id;
                             me.ui.serverStatus.hideLogError();
                             me.ui.serverStatus.displayLogEntries(result);
                         }
 
-                        if (result.data.length >= me.maxFetchedServerLogCount) {
+                        if (result.data.length >= me.__maxFetchedServerLogCount) {
                             setTimeout(function () { fetchLog(finished); }, 50);
                             return;
                         }

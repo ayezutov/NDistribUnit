@@ -64,9 +64,17 @@ IMG
 {
     background: url(../images/resizer_bg.png);
 }
+.ui-layout-resizer-south
+{
+    background: url(../images/resizer_vertical_bg.png);
+}
 .ui-layout-toggler
 {
     background: url(../images/toggler_bg.png);
+}
+.ui-layout-toggler-south
+{
+    background: url(../images/toggler_vertical_bg.png);
 }
 
 UL, LI
@@ -178,12 +186,20 @@ UL.list-menu LI>SPAN
     padding-left: 20px;
     background: url(../images/server.png) no-repeat;
     }
-    
+.ui-layout-content
+{
+    overflow:auto;
+}
 #clients-statuses-menu
 {
     padding-left: 20px;
     background: url(../images/agent.png) no-repeat;
 }
+
+#agents-statuses-display-area
+{
+    padding-top: 10px;
+    }
 
 .agent
 {
@@ -238,10 +254,9 @@ UL.list-menu LI>SPAN
     font-weight: bold;
 }
 
-.agent-legend
+.agents-legend
 {
-    margin-bottom: 20px;
-    padding-left: 20px;
+    padding-left: 30px;
 }
 .agent-legend SPAN
 {

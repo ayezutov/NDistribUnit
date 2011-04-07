@@ -29,7 +29,7 @@ namespace NDistribUnit.Server
             builder.RegisterType<DashboardService>().InstancePerLifetimeScope();
 
 #pragma warning disable 162
-            if (true)
+            if (false)
             {
                 builder.Register(c => new DiscoveryConnectionsTracker<ITestRunnerAgent>(new DiscoveryOptions()
                                                                                             {

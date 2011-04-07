@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="styles/NDistribUnit.Dashboard.css" type="text/css" />
     <script type="text/javascript" src="scripts/jquery.treeview/jquery.treeview.js"></script>
     <!-- http://layout.jquery-dev.net/documentation.cfm -->
-    <script type="text/javascript" src="scripts/jquery.layout.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery.layout-latest.js"></script>
     <!-- http://tkyk.github.com/jquery-history-plugin/#documentation -->
     <script type="text/javascript" src="scripts/jquery.history.js"></script>
     <!-- http://jtemplates.tpython.com/ -->
@@ -117,7 +117,7 @@
                             <li><a href="#status/server/log" id="server-log-link">Log</a></li>
                         </ul>
                     </li>
-                    <li><a href="#status/clients" id="clients-statuses-menu">Clients' statuses</a></li>
+                    <li><a href="#status/agents" id="clients-statuses-menu">Agents' statuses</a></li>
                 </ul>
             </div>
             <div id="status-content-pane">
@@ -159,15 +159,19 @@
                     </div>
                 </div>
                 <div id="agents-statuses-pane"  style="height:100%;">
-                <div id="agents-statuses-pane-wrapper" class="right-content-pane">
-                   
                     <script id="agents-statuses-template" type="text/x-jquery-tmpl">
                         {{if data.length==0}}
                             no agents are yet available
                         {{else}}
                             {{each data}} 
                                 <div id="agent-${Name}" class="agent ${ Helper.getEnumNameByValue(AgentState, State)}">
-                                  <span class="agent-name">${Name}</span><span class="agent-address"> (${Address})</span><br/>
+                                  <span class="agent-name" title="${Name}: ${Helper.getEnumNameByValue(AgentState, State)}&#13;&#10;Click to show log">
+                                  {{if Helper.getEnumNameByValue(AgentState, State)!='Disconnected'}}
+                                    <a href="#status/agents/${Name}">${Name}</a>
+                                  {{else}}
+                                    ${Name}
+                                  {{/if}}
+                                  </span><span class="agent-address"> (${Address})</span><br/>
                                   <span class="agent-timestamp">
                                       <span class="agent-time">${LastStatusUpdate.toLocaleTimeString()},</span>
                                       <span class="agent-date">${LastStatusUpdate.toLocaleDateString()}</span>
@@ -176,6 +180,7 @@
                             {{/each}}
                         {{/if}}             
                     </script>
+                    <div id="agents-statuses-pane-wrapper">
 
                     <h3>
                         Agents' statuses:
@@ -191,16 +196,19 @@
                     <div style="clear:both; height:10px;"></div>
                     <div id="agents-statuses-display-area"  class="ui-layout-content">
                     </div>
-                    <!--div style="display: none;">
+                </div>
+                
+                    <div id="agents-log-pane">
                         <h3 style="float: left;">
-                            Log:
-                        </h3>
+                            Log for <span id="current-agent-name"></span>:
+                            <img id="agents-log-progress" style="vertical-align: text-top" alt="sync" src="images/syncing.gif" />
+                            <div id="agents-log-error" class="error" style="display: none">Oooops...</div>
+                        
+                            </h3>
                         <div style="clear: both;">
                         </div>
-                        <div id="agents-log">
-                            log goes here</div>
-                    < / div-->
-                </div>
+                        <div id="agents-log-display-area"  class="ui-layout-content"></div>
+                    </div>
                 </div>
             </div>
         </div>

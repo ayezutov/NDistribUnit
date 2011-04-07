@@ -60,7 +60,7 @@ namespace NDistribUnit.Integration.Tests.General
             }
 
             builder.Register(c => new ServerConnectionsTracker(c.Resolve<IConnectionsTracker<ITestRunnerAgent>>(), c.Resolve<ILog>()));
-            builder.Register(c => new TestRunnerAgentService(c.Resolve<ILog>(), "Agent #1"));
+            builder.Register(c => new TestRunnerAgentService(c.Resolve<ILog>(), "Agent #1", null));
             builder.Register(c => new AgentHost(c.Resolve<TestRunnerAgentService>(), new IAgentExternalModule[]
                                                     {
                                                         new DiscoveryModule(new Uri("http://ndistribunit.com/tests")),
@@ -82,7 +82,7 @@ namespace NDistribUnit.Integration.Tests.General
             if (agentName != null)
             {
                 var builder = new ContainerBuilder();
-                builder.Register(c => new TestRunnerAgentService(c.Resolve<ILog>(), agentName));
+                builder.Register(c => new TestRunnerAgentService(c.Resolve<ILog>(), agentName, null));
                 builder.Update(container);
             }
             var agent = new AgentWrapper(container.Resolve<AgentHost>());

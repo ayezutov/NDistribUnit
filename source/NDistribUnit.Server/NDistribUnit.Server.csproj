@@ -179,7 +179,8 @@
     <Content Include="dashboard\scripts\jquery.history.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dashboard\scripts\jquery.layout.min.js">
+    <Content Include="dashboard\scripts\jquery.layout-latest.js" />
+    <Content Include="dashboard\scripts\jquery.layout.1.2.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="dashboard\scripts\jquery.treeview\changelog.txt" />

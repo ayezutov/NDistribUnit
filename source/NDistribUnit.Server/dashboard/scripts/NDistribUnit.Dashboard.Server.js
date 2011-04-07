@@ -3,12 +3,19 @@
 }
 
 DashboardServer.prototype = {
-    getClientStatuses: function (onComplete) {
+    getAgentsStatuses: function (onComplete) {
         this.call('agent/getStatus', onComplete);
     },
     getServerLog: function (lastFetchedEntryId, maxItemsCount, onComplete) {
         this.call('server/getLog', onComplete,
             { method: "POST", data: { maxItemsCount: maxItemsCount, lastFetchedEntryId: lastFetchedEntryId }, resultContainer: "GetServerLogResult" });
+    },
+
+    getAgentsLog: function (agentName, lastFetchedEntryId, maxItemsCount, onComplete) {
+        this.call('agent/getLog', onComplete,
+            { method: "POST", data: { agentName: agentName, maxItemsCount: maxItemsCount, lastFetchedEntryId: !!lastFetchedEntryId ? lastFetchedEntryId : null },
+                resultContainer: "GetAgentLogResult"
+            });
     },
 
     call: function (url, onComplete, options) {
@@ -31,7 +38,7 @@ DashboardServer.prototype = {
             dataFilter: function (data, type) {
                 return JSON.parse(data, function (key, value) {
                     var regex = /\/Date\((\d+)\)\//gi;
-                    if (typeof(value) == "string" && value.match(regex))
+                    if (typeof (value) == "string" && value.match(regex))
                         return new Date(parseInt(value.substr(6)));
                     return value;
                 });

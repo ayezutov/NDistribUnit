@@ -14,15 +14,18 @@ namespace NDistribUnit.Common.Agent
     public class TestRunnerAgentService : ITestRunnerAgent
     {
         private readonly ILog log;
+        private readonly RollingLog logStorage;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestRunnerAgentService"/> class.
         /// </summary>
         /// <param name="log">The log.</param>
         /// <param name="name">The name of the agent.</param>
-        public TestRunnerAgentService(ILog log, string name)
+        /// <param name="logStorage">The log storage.</param>
+        public TestRunnerAgentService(ILog log, string name, RollingLog logStorage)
         {
             this.log = log;
+            this.logStorage = logStorage;
             Name = name;
         }
 
@@ -40,6 +43,17 @@ namespace NDistribUnit.Common.Agent
         {
             log.Info(string.Format("Run Tests command Received: {0}", callbackValue));
             return true;
+        }
+
+        /// <summary>
+        /// Gets the log.
+        /// </summary>
+        /// <param name="maxItemsCount">The max items count.</param>
+        /// <param name="lastFetchedEntryId">The last fetched entry id.</param>
+        /// <returns></returns>
+        public LogEntry[] GetLog(int maxItemsCount, int? lastFetchedEntryId)
+        {
+            return logStorage.GetEntries(lastFetchedEntryId, maxItemsCount);
         }
 
 
