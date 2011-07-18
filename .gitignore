@@ -9,3 +9,4 @@ obj
 _ReSharper.*
 /source/NDistribUnit.Server/dashboard/scripts/jquery-jquery-tmpl/demos
 /source/_dependencies/diagone-icons-by-yusuke-kamiyamane
+/source/builds/Debug

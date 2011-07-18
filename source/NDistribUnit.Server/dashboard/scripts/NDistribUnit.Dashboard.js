@@ -6,7 +6,10 @@ function Dashboard()
     this.dispatcher = new DashboardDispatcher({
         settings: {
             beforeAction: function () { me.ui.openSettingsPane(); },
-            "": function () { me.ui.showSettingsInfo(); }
+            "": function () { me.ui.showSettingsInfo(); },
+            updates: function () {
+                me.ui.showUpdatesScreen();
+            }
         },
         status:
             {
@@ -16,9 +19,9 @@ function Dashboard()
                 },
                 server: {
                     log: function () {
-                        me.openServerStatus(); 
+                        me.openServerStatus();
                     }
-            }
+                }
             },
         tests: {
             beforeAction: function () { me.ui.openTestsPane(); }
@@ -54,6 +57,9 @@ Dashboard.prototype = {
             this.__logShowingAgentName = agentName;
             this.ui.showOrCreateAgentLogPane(agentName);
         }
+    },
+    showUpdatesScreen: function () {
+
     },
     getMessageFromError: function (error) {
         var message = "Ooops... Something bad happened.";
@@ -146,6 +152,31 @@ Dashboard.prototype = {
                         if (result.data.length >= me.__maxFetchedServerLogCount) {
                             setTimeout(function () { fetchLog(finished); }, 50);
                             return;
+                        }
+                    }
+
+                    finished();
+                });
+            },
+            5000);
+    },
+    initializeUpdatesListUpdate: function () {
+        var me = this;
+        Helper.executeWhen(
+            function () { return me.ui.updateSettings.isVisible(); },
+            function fetchLog(finished) {
+                me.ui.updateSettings.showUpdateProgress();
+
+                me.server.getAvailableUpdates(function (result) {
+                    me.ui.updateSettings.hideUpdateProgress();
+                    if (result.error) {
+                        var message = me.getMessageFromError(result.error);
+                        me.ui.updateSettings.showLogError(message);
+                    }
+                    else {
+                        if (result.data.length > 0) {
+                            me.ui.updateSettings.hideError();
+                            me.ui.updateSettings.display(result);
                         }
                     }
 

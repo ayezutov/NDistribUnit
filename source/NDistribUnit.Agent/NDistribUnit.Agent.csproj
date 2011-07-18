@@ -60,6 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\NDistribUnit.Common\Properties\AssemblyInfoInc.cs">
+      <Link>Properties\AssemblyInfoInc.cs</Link>
+    </Compile>
     <Compile Include="AgentProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -84,4 +87,12 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Import Project="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.targets" />
+  <Target Name="BeforeBuild">
+    <PropertyGroup>
+      <OutputPath>$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Agent\</OutputPath>
+      <OutDir>$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Agent\</OutDir>
+    </PropertyGroup>
+    <Message Text="OutputPath: $(OutputPath)" Importance="high" />
+  </Target>
 </Project>
