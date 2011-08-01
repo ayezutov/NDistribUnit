@@ -164,7 +164,7 @@ namespace NDistribUnit.Server.Services
             var physicalPathToFile =
                 Path.Combine(
                     Path.Combine(Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().CodeBase).AbsolutePath),
-                                 "../../dashboard"), fileName);
+                                 "dashboard"), fileName);
             var response = WebOperationContext.Current.OutgoingResponse;
 
             if (!File.Exists(physicalPathToFile))

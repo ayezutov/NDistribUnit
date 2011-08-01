@@ -1,7 +1,7 @@
 using NDistribUnit.Client.Configuration;
 using NUnit.Framework;
 
-namespace NDistribUnit.Common.Tests.Client.Options
+namespace NDistribUnit.Client.Tests.Configuration
 {
     [TestFixture]
     public class ClientParametersParserTests

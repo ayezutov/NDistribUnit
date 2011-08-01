@@ -63,10 +63,11 @@
   </PropertyGroup>
 
   <!-- Import the task -->
-  <UsingTask AssemblyFile="NDistribUnit.MSBuild.Extensions.dll" TaskName="NDistribUnit.MSBuild.Extensions.AssemblyVersion"/>
-  <UsingTask AssemblyFile="NDistribUnit.MSBuild.Extensions.dll" TaskName="NDistribUnit.MSBuild.Extensions.RemoveFoldersOfAssemblyVersionPattern"/>
+  <UsingTask AssemblyFile="NDistribUnit.MSBuild.Extensions.dll" TaskName="NDistribUnit.MSBuild.Extensions.AssemblyVersionTask"/>
+  <UsingTask AssemblyFile="NDistribUnit.MSBuild.Extensions.dll" TaskName="NDistribUnit.MSBuild.Extensions.RemoveFoldersOfAssemblyVersionPatternTask"/>
+  <UsingTask AssemblyFile="NDistribUnit.MSBuild.Extensions.dll" TaskName="NDistribUnit.MSBuild.Extensions.HashCalculatorTask"/>
 
-  <!-- Re-define CoreCompileDependsOn to ensure the assemblyinfo files are updated before compilation. -->
+	<!-- Re-define CoreCompileDependsOn to ensure the assemblyinfo files are updated before compilation. -->
   <PropertyGroup>
     <BuildDependsOn>
       UpdateAssemblyInfoFiles;
@@ -81,12 +82,12 @@
     <ItemGroup>
       <AssemblyInfoFiles Include="@(Compile)" Condition="'%(Filename)'=='AssemblyInfoInc'"/>
     </ItemGroup>
-    <RemoveFoldersOfAssemblyVersionPattern 
+    <RemoveFoldersOfAssemblyVersionPatternTask 
       Path="$(SolutionDir)builds\$(Configuration)"
       FoldersCountToLeave="2"
       Condition="$(DefineConstants.Contains('FIRSTPROJECTINSOLUTION'))">
-    </RemoveFoldersOfAssemblyVersionPattern>
-    <AssemblyVersion AssemblyInfoFiles="@(AssemblyInfoFiles)"
+    </RemoveFoldersOfAssemblyVersionPatternTask>
+    <AssemblyVersionTask AssemblyInfoFiles="@(AssemblyInfoFiles)"
                   AssemblyMajorVersion="$(AssemblyMajorVersion)"
                   AssemblyMinorVersion="$(AssemblyMinorVersion)"
                   AssemblyBuildNumber="$(AssemblyBuildNumber)"
@@ -120,13 +121,14 @@
       <Output TaskParameter="MaxAssemblyVersion" PropertyName="MaxAssemblyVersion"/>
       <Output TaskParameter="MaxAssemblyFileVersion" PropertyName="MaxAssemblyFileVersion"/>
       <Output TaskParameter="BuiltVersion" PropertyName="BuiltVersion"/>
-    </AssemblyVersion>
+    </AssemblyVersionTask>
     <Message Text="First project in solution is defined" Condition="$(DefineConstants.Contains('FIRSTPROJECTINSOLUTION'))"/>
-    <AssemblyVersion AssemblyInfoFiles="@(AssemblyInfoFiles)"
+    <AssemblyVersionTask AssemblyInfoFiles="@(AssemblyInfoFiles)"
                   Action="GetVersionFromAttribute"
                   Condition="!($(DefineConstants.Contains('FIRSTPROJECTINSOLUTION')))">
       <Output TaskParameter="BuiltVersion" PropertyName="BuiltVersion"/>
-    </AssemblyVersion>
+    </AssemblyVersionTask>
     <Message Importance="high" Text="Assembly version is $(BuiltVersion)" />
-  </Target>
+  
+</Target>
 </Project>

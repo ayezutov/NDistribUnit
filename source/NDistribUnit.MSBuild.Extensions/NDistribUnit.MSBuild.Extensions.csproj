@@ -30,12 +30,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MsBuild Task|AnyCPU'">
+    <OutputPath>bin\MsBuild Task\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
-    <Reference Include="MSBuild.ExtensionPack, Version=4.0.0.0, Culture=neutral, PublicKeyToken=10d297e8e737fe34, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\_dependencies\MSBuildExtensionPack_4.0.3.0\MSBuild.ExtensionPack.dll</HintPath>
+    <Reference Include="MSBuild.ExtensionPack">
+      <HintPath>..\_dependencies\MSBuildExtensionPack_4.0.3.0\MSBuild.ExtensionPack.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,19 +48,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\NDistribUnit.Common\HashChecks\DirectoryHash.cs">
+      <Link>LinkedItems\HashChecks\DirectoryHash.cs</Link>
+    </Compile>
+    <Compile Include="..\NDistribUnit.Common\HashChecks\ErrorLevel.cs">
+      <Link>LinkedItems\HashChecks\ErrorLevel.cs</Link>
+    </Compile>
+    <Compile Include="..\NDistribUnit.Common\HashChecks\HashValidationException.cs">
+      <Link>LinkedItems\HashChecks\HashValidationException.cs</Link>
+    </Compile>
     <Compile Include="AssemblyInfoWrapper.cs" />
-    <Compile Include="AssemblyVersion.cs" />
+    <Compile Include="AssemblyVersionTask.cs" />
+    <Compile Include="HashCalculatorTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RemoveFoldersOfAssemblyVersionPattern.cs" />
+    <Compile Include="RemoveFoldersOfAssemblyVersionPatternTask.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NDistribUnit.MSBuild.Extensions.targets">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy $(TargetDir)$(TargetName).* $(SolutionDir)..\_dependencies\MSBuildExtensionPack_4.0.3.0\ /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetDir)NDistribUnit.*" "$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\" /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

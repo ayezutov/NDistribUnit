@@ -60,24 +60,6 @@ namespace NDistribUnit.Server.Communication
             ExposeDashboard();
             ExposeTestRunner();
             ConnectionsTracker.Start();
-//            for (int i = 0; i < 10; i++)
-//            {
-//                var announcementClient = new AnnouncementClient(new UdpAnnouncementEndpoint());
-//                foreach (ServiceEndpoint endpoint in testRunnerService.Description.Endpoints)
-//                {
-//                    EndpointDiscoveryMetadata metadata = EndpointDiscoveryMetadata.
-//                        FromServiceEndpoint(endpoint);
-//                    try
-//                    {
-//                        announcementClient.AnnounceOnline(metadata);
-//                        log.Success("Successfully announced!");
-//                    }
-//                    catch(Exception ex)
-//                    {
-//                        log.Error("Announcing error!", ex);
-//                    }
-//                }
-//            }
         }
 
         private void ExposeTestRunner()

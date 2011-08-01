@@ -40,6 +40,9 @@
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MsBuild Task|AnyCPU'">
+    <OutputPath>bin\MsBuild Task\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
       <HintPath>..\_dependencies\Autofac-2.4.4.705-NET40\Autofac.dll</HintPath>
@@ -94,12 +97,16 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Import Project="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.targets" />
-  <Target Name="BeforeBuild">
-    <PropertyGroup>
-      <OutputPath>$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Client\</OutputPath>
-      <OutDir>$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Client\</OutDir>
-    </PropertyGroup>
-    <Message Text="OutputPath: $(OutputPath)" Importance="high" />
-  </Target>
+  <Import  Condition="'$(Configuration)'!='MsBuild Task'" Project="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.targets" />
+	<Target Name="AfterBuild">
+		<ItemGroup>
+			<FilesInOutputDirExcludes Include="$(OutDir)\**\*vshost*.*" />
+			<FilesInOutputDirExcludes Include="$(OutDir)\*.tmp" />
+			<FilesInOutputDirExcludes Include="$(OutDir)\*.xml" />
+			<FilesInOutputDirExcludes Include="$(OutDir)\*.lnk" />
+			<FilesInOutputDirExcludes Include="$(OutDir)\*.pdb" />
+			<FilesInOutputDir Include="$(OutDir)\**\*.*" Exclude="@(FilesInOutputDirExcludes)" />
+		</ItemGroup>
+		<Copy SourceFiles="@(FilesInOutputDir)" DestinationFiles="@(FilesInOutputDir->'$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Client\%(RecursiveDir)%(Filename)%(Extension)')"/>
+	</Target>
 </Project>

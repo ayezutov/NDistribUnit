@@ -46,6 +46,9 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MsBuild Task|AnyCPU'">
+    <OutputPath>bin\MsBuild Task\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
       <HintPath>..\_dependencies\Autofac-2.4.4.705-NET40\Autofac.dll</HintPath>
@@ -92,34 +95,81 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="dashboard\images\content_bg.gif" />
+    <Content Include="dashboard\images\agent.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\content_bg.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="dashboard\images\home.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="dashboard\images\home.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dashboard\images\icons\Point Black.png" />
-    <Content Include="dashboard\images\icons\Point Black10x10.png" />
-    <Content Include="dashboard\images\icons\Point Blue.png" />
-    <Content Include="dashboard\images\icons\Point Blue10x10.png" />
-    <Content Include="dashboard\images\icons\Point Gray Question.png" />
-    <Content Include="dashboard\images\icons\Point Gray.png" />
-    <Content Include="dashboard\images\icons\Point Gray10x10.png" />
-    <Content Include="dashboard\images\icons\Point Green.png" />
-    <Content Include="dashboard\images\icons\Point Green10x10.png" />
-    <Content Include="dashboard\images\icons\Point Light Red.png" />
-    <Content Include="dashboard\images\icons\Point Light Red10x10.png" />
-    <Content Include="dashboard\images\icons\Point Orange.png" />
-    <Content Include="dashboard\images\icons\Point Orange10x10.png" />
-    <Content Include="dashboard\images\icons\Point Pink.png" />
-    <Content Include="dashboard\images\icons\Point Pink10x10.png" />
-    <Content Include="dashboard\images\icons\Point Red.png" />
-    <Content Include="dashboard\images\icons\Point Red10x10.png" />
-    <Content Include="dashboard\images\icons\Point White.png" />
-    <Content Include="dashboard\images\icons\Point White10x10.png" />
-    <Content Include="dashboard\images\icons\Point Yellow.png" />
-    <Content Include="dashboard\images\icons\Point Yellow10x10.png" />
+    <Content Include="dashboard\images\icons\Point Black.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Black10x10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Blue.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Blue10x10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Gray Question.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Gray.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Gray10x10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Green.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Green10x10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Light Red.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Light Red10x10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Orange.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Orange10x10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Pink.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Pink10x10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Red.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Red10x10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point White.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point White10x10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Yellow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\icons\Point Yellow10x10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="dashboard\images\info.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -153,14 +203,28 @@
     <Content Include="dashboard\images\resizer_bg.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="dashboard\images\resizer_vertical_bg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\server.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="dashboard\images\settings.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="dashboard\images\settings_bg.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dashboard\images\syncing.gif" />
+    <Content Include="dashboard\images\syncing.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="dashboard\images\tests_bg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\toggler_bg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\images\toggler_vertical_bg.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="dashboard\index.html">
@@ -170,18 +234,24 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="dashboard\scripts\jquery-jquery-tmpl\jquery.tmpl.js" />
-    <Content Include="dashboard\scripts\jquery-jquery-tmpl\jquery.tmpl.min.js" />
+    <Content Include="dashboard\scripts\jquery-jquery-tmpl\jquery.tmpl.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="dashboard\scripts\jquery-jquery-tmpl\jquery.tmplPlus.js" />
     <Content Include="dashboard\scripts\jquery-jquery-tmpl\jquery.tmplplus.min.js" />
     <Content Include="dashboard\scripts\jquery-jtemplates.js" />
     <Content Include="dashboard\scripts\jquery-ui-1.8.9.custom.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dashboard\scripts\jquery.animate-colors-min.js" />
+    <Content Include="dashboard\scripts\jquery.animate-colors-min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="dashboard\scripts\jquery.history.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dashboard\scripts\jquery.layout-latest.js" />
+    <Content Include="dashboard\scripts\jquery.layout-latest.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="dashboard\scripts\jquery.layout.1.2.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -250,13 +320,21 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="dashboard\scripts\json2.js" />
-    <Content Include="dashboard\scripts\NDistribUnit.Dashboard.Dispatcher.js" />
+    <Content Include="dashboard\scripts\NDistribUnit.Dashboard.Dispatcher.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="dashboard\scripts\NDistribUnit.Dashboard.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dashboard\scripts\NDistribUnit.Dashboard.Server.js" />
-    <Content Include="dashboard\scripts\NDistribUnit.Dashboard.UI.js" />
-    <Content Include="dashboard\scripts\NDistribUnit.Helpers.js" />
+    <Content Include="dashboard\scripts\NDistribUnit.Dashboard.Server.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\NDistribUnit.Dashboard.UI.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dashboard\scripts\NDistribUnit.Helpers.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="dashboard\styles\NDistribUnit.Dashboard.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -275,12 +353,23 @@
     <VisualStudio>
     </VisualStudio>
   </ProjectExtensions>
-  <Import Project="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.targets" />
-  <Target Name="BeforeBuild">
-    <PropertyGroup>
-      <OutputPath>$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Server\</OutputPath>
-      <OutDir>$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Server\</OutDir>
-    </PropertyGroup>
-    <Message Text="OutputPath: $(OutputPath)" Importance="high" />
+  <Import Condition="'$(Configuration)'!='MsBuild Task'" Project="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.targets" />
+  <!--  <Target Name="BeforeBuild">-->
+  <!--    <PropertyGroup>-->
+  <!--      <OutputPath>$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Server\</OutputPath>-->
+  <!--      <OutDir></OutDir>-->
+  <!--    </PropertyGroup>-->
+  <!--    <Message Text="OutputPath: $(OutputPath)" Importance="high" />-->
+  <!--  </Target>-->
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <FilesInOutputDirExcludes Include="$(OutDir)\**\*vshost*.*" />
+      <FilesInOutputDirExcludes Include="$(OutDir)\*.tmp" />
+      <FilesInOutputDirExcludes Include="$(OutDir)\*.xml" />
+      <FilesInOutputDirExcludes Include="$(OutDir)\*.lnk" />
+      <FilesInOutputDirExcludes Include="$(OutDir)\*.pdb" />
+      <FilesInOutputDir Include="$(OutDir)\**\*.*" Exclude="@(FilesInOutputDirExcludes)" />
+    </ItemGroup>
+    <Copy SourceFiles="@(FilesInOutputDir)" DestinationFiles="@(FilesInOutputDir->'$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Server\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 </Project>

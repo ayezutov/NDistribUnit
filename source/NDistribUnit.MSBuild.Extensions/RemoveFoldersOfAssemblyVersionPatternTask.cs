@@ -1,12 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using System.Linq;
 
 namespace NDistribUnit.MSBuild.Extensions
 {
-    public class RemoveFoldersOfAssemblyVersionPattern: Task
+	[LoadInSeparateAppDomain]
+    public class RemoveFoldersOfAssemblyVersionPatternTask : AppDomainIsolatedTask
     {
         public static Regex VersionPattern = new Regex(@"^(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)$", RegexOptions.Compiled);
 

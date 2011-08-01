@@ -14,24 +14,16 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MsBuild Task|AnyCPU'">
+    <OutputPath>bin\MsBuild Task\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,12 +35,49 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\NDistribUnit.Common\ConsoleProcessing\Options\ConsoleOption.cs">
+      <Link>LinkedItems\ConsoleProcessing\ConsoleOption.cs</Link>
+    </Compile>
+    <Compile Include="..\NDistribUnit.Common\ConsoleProcessing\Options\ConsoleOptionMatchDescription.cs">
+      <Link>LinkedItems\ConsoleProcessing\ConsoleOptionMatchDescription.cs</Link>
+    </Compile>
+    <Compile Include="..\NDistribUnit.Common\ConsoleProcessing\Options\ConsoleParametersParser.cs">
+      <Link>LinkedItems\ConsoleProcessing\ConsoleParametersParser.cs</Link>
+    </Compile>
+    <Compile Include="..\NDistribUnit.Common\HashChecks\DirectoryHash.cs">
+      <Link>LinkedItems\HashChecks\DirectoryHash.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\NDistribUnit.Common\HashChecks\ErrorLevel.cs">
+      <Link>LinkedItems\HashChecks\ErrorLevel.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\NDistribUnit.Common\HashChecks\HashValidationException.cs">
+      <Link>LinkedItems\HashChecks\HashValidationException.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\NDistribUnit.Common\Logging\ConsoleLog.cs">
+      <Link>LinkedItems\Logging\ConsoleLog.cs</Link>
+    </Compile>
+    <Compile Include="..\NDistribUnit.Common\Logging\ILog.cs">
+      <Link>LinkedItems\Logging\ILog.cs</Link>
+    </Compile>
+    <Compile Include="..\NDistribUnit.Common\Logging\LoggingUtility.cs">
+      <Link>LinkedItems\Logging\LoggingUtility.cs</Link>
+    </Compile>
     <Compile Include="..\NDistribUnit.Common\Properties\AssemblyInfoInc.cs">
       <Link>Properties\AssemblyInfoInc.cs</Link>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="..\NDistribUnit.Common\Updating\BootstrapperParameters.cs">
+      <Link>LinkedItems\BootstrapperParameters.cs</Link>
+    </Compile>
+    <Compile Include="..\NDistribUnit.Common\Updating\VersionDirectoryFinder.cs">
+      <Link>LinkedItems\VersionDirectoryFinder.cs</Link>
+    </Compile>
+    <Compile Include="BootstrapperProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -57,4 +86,14 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Import Condition="'$(Configuration)'!='MsBuild Task'" Project="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.targets" />
+  <UsingTask Condition="'$(Configuration)'!='MsBuild Task'" AssemblyFile="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.dll" TaskName="NDistribUnit.MSBuild.Extensions.HashCalculatorTask" />
+  <Target Name="AfterBuild" Condition="'$(Configuration)'!='MsBuild Task'">
+    <HashCalculatorTask Path="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)" FilesWithAnyContents="@(FilesWithAnyContent)" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)builds\$(Configuration)\Server.exe" /Y
+copy "$(TargetPath)" "$(SolutionDir)builds\$(Configuration)\Agent.exe" /Y
+copy "$(TargetPath)" "$(SolutionDir)builds\$(Configuration)\Client.exe" /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>

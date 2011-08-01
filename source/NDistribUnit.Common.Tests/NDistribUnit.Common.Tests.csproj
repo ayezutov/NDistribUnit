@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MsBuild Task|AnyCPU'">
+    <OutputPath>bin\MsBuild Task\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.5.9.10348, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -57,23 +60,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client\Options\ClientParametersParserTests.cs" />
     <Compile Include="Collections\RollingListTests.cs" />
+    <Compile Include="FileSystem\DirectoryHashTests.cs" />
     <Compile Include="Logging\RollingLogTests.cs" />
     <Compile Include="Options\ConsoleParametersParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NDistribUnit.Client\NDistribUnit.Client.csproj">
-      <Project>{EA43284E-A328-4F06-9527-30DE52C37546}</Project>
-      <Name>NDistribUnit.Client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NDistribUnit.Common\NDistribUnit.Common.csproj">
       <Project>{B060BDAC-E277-42BB-871C-320D6D8C5CA7}</Project>
       <Name>NDistribUnit.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Client\Options\" />
     <Folder Include="Communication\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

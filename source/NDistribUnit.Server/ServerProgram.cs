@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using Autofac;
 using Autofac.Core;
 using NDistribUnit.Common.Communication;
@@ -9,6 +11,7 @@ using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.ConnectionTracking.Discovery;
 using NDistribUnit.Common.Server.Options;
 using NDistribUnit.Common.ServiceContracts;
+using NDistribUnit.Common.Updating;
 using NDistribUnit.Server.Communication;
 using NDistribUnit.Server.Services;
 
@@ -16,15 +19,19 @@ namespace NDistribUnit.Server
 {
     internal class ServerProgram
     {
-        private readonly ILog log;
+    	private readonly BootstrapperParameters bootstrapperParameters;
+    	private readonly ILog log;
+    	private DirectoryMonitor directoryMonitor;
 
-        private static int Main(string[] args)
+    	private static int Main(string[] args)
         {
+			
             var builder = new ContainerBuilder();
             builder.RegisterType<ServerProgram>();
             builder.Register(c => new RollingLog(1000)).InstancePerLifetimeScope();
             builder.Register(c => new CombinedLog(new ConsoleLog(), c.Resolve<RollingLog>())).As<ILog>().InstancePerLifetimeScope();
             builder.Register(c => ServerParameters.Parse(args)).InstancePerLifetimeScope();
+            builder.Register(c => BootstrapperParameters.Parse(args)).InstancePerLifetimeScope();
             builder.RegisterType<TestRunnerServer>().InstancePerLifetimeScope();
             builder.RegisterType<DashboardService>().InstancePerLifetimeScope();
 
@@ -49,8 +56,7 @@ namespace NDistribUnit.Server
                 builder.Register(c => new AnnouncementConnectionsTracker<ITestRunnerAgent>(new AnnouncementConnectionsTrackerOptions()
                 {
                     Scope =
-                        new Uri(
-                        "http://hubwoo.com/trr-odc"),
+                        new Uri("http://hubwoo.com/trr-odc"),
                     PingIntervalInMiliseconds
                         = 5000
                 }, c.Resolve<ILog>()))
@@ -76,16 +82,27 @@ namespace NDistribUnit.Server
         private ServerParameters Options { get; set; }
         private ServerHost ServerHost { get; set; }
 
-        public ServerProgram(ServerParameters options, ServerHost serverHost, ILog log)
+        public ServerProgram(ServerParameters options, ServerHost serverHost, BootstrapperParameters bootstrapperParameters, ILog log)
         {
-            this.log = log;
+        	this.bootstrapperParameters = bootstrapperParameters;
+        	this.log = log;
             Options = options;
             ServerHost = serverHost;
         }
 
         private int Run()
         {
-            log.BeginActivity("Server is starting...");
+			if (!bootstrapperParameters.AllParametersAreFilled)
+			{
+				log.Error("This programm cannot be launched directly");
+				return 2;
+			}
+
+        	directoryMonitor = new DirectoryMonitor(log, Path.GetDirectoryName(bootstrapperParameters.BootstrapperFile));
+			//directoryMonitor.UpdatePossibilityDetected += 
+			directoryMonitor.Start();
+
+        	log.BeginActivity("Server is starting...");
             ServerHost.Start();
             log.EndActivity("Server was started. Please press <Enter> to exit");
             Console.ReadLine();
