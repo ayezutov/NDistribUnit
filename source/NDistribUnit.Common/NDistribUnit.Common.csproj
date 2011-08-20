@@ -118,7 +118,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceContracts\IDashboardService.cs" />
     <Compile Include="Updating\BootstrapperParameters.cs" />
-    <Compile Include="Updating\DirectoryMonitor.cs" />
+    <Compile Include="Updating\IUpdater.cs" />
+    <Compile Include="Updating\UpdatesAvailabilityMonitor.cs" />
+    <Compile Include="Updating\ServerUpdater.cs" />
     <Compile Include="Updating\VersionDirectoryFinder.cs" />
   </ItemGroup>
   <ItemGroup>

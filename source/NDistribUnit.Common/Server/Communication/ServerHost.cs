@@ -2,13 +2,13 @@ using System;
 using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Description;
-using System.ServiceModel.Discovery;
 using System.ServiceModel.Web;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
+using NDistribUnit.Server.Communication;
 using NDistribUnit.Server.Services;
 
-namespace NDistribUnit.Server.Communication
+namespace NDistribUnit.Common.Server.Communication
 {
     /// <summary>
     /// This class manages all the service-related aspects of the NDistribUnit server

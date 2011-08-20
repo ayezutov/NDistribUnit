@@ -135,29 +135,40 @@ namespace NDistribUnit.Common.HashChecks
 		/// <returns></returns>
 		public void Validate()
 		{
-			var original = LoadFromFile(fileName);
-			if (original == null)
-				throw new HashValidationException(new []{string.Format("File '{0}' was not found in '{1}'", fileName, rootDirectory.FullName)});
-
-			ValidateHashFileIntegrity(original);
-
-			var current = Calculate(rootDirectory);
-
-			var result = new List<string>();
-			foreach (var orig in original)
+			try
 			{
-				var recalculated = current.FirstOrDefault(cur => cur.Item1.Equals(orig.Item1, StringComparison.OrdinalIgnoreCase));
-				if (recalculated == null)
-					result.Add(string.Format("File {0} is absent", orig.Item1));
-				else if (!string.IsNullOrEmpty(orig.Item2) && !recalculated.Item2.Equals(orig.Item2))
-					result.Add(string.Format("The hash '{1}' of file '{0}' doesn't match the saved '{2}'",
-																	  recalculated.Item1, recalculated.Item2, orig.Item2));
+				var original = LoadFromFile(fileName);
+				if (original == null)
+					throw new HashValidationException(new[]
+					                                  	{
+					                                  		string.Format("File '{0}' was not found in '{1}'", fileName,
+					                                  		              rootDirectory.FullName)
+					                                  	});
+
+				ValidateHashFileIntegrity(original);
+
+				var current = Calculate(rootDirectory);
+
+				var result = new List<string>();
+				foreach (var orig in original)
+				{
+					var recalculated = current.FirstOrDefault(cur => cur.Item1.Equals(orig.Item1, StringComparison.OrdinalIgnoreCase));
+					if (recalculated == null)
+						result.Add(string.Format("File {0} is absent", orig.Item1));
+					else if (!string.IsNullOrEmpty(orig.Item2) && !recalculated.Item2.Equals(orig.Item2))
+						result.Add(string.Format("The hash '{1}' of file '{0}' doesn't match the saved '{2}'",
+						                         recalculated.Item1, recalculated.Item2, orig.Item2));
+				}
+
+				if (result.Count == 0)
+					return;
+				throw new HashValidationException(result);
 			}
-
-			if (result.Count == 0)
-				return;
-
-			throw new HashValidationException(result);
+			catch(IOException ex)
+			{
+				throw new HashValidationException(ex.Message);
+			}
+			
 		}
 
 		private void ValidateHashFileIntegrity(IList<Tuple<string, string>> loadedHash)

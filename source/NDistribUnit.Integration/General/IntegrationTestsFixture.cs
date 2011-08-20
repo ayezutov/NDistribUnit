@@ -7,6 +7,7 @@ using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.Communication.ConnectionTracking.Announcement;
 using NDistribUnit.Common.Communication.ConnectionTracking.Discovery;
 using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.Server.Communication;
 using NDistribUnit.Common.Server.ConnectionTracking.Discovery;
 using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Server.Communication;

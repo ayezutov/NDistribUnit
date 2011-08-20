@@ -2,6 +2,7 @@
 using System.ServiceModel;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Retrying;
+using NDistribUnit.Common.Server.Communication;
 using NDistribUnit.Server.Communication;
 using System.Linq;
 

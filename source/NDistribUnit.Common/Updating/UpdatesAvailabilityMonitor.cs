@@ -10,37 +10,23 @@ namespace NDistribUnit.Common.Updating
 	/// <summary>
 	/// Monitors the directory to see, if a newer version of the program was placed besides
 	/// </summary>
-	public class DirectoryMonitor
+	public class UpdatesAvailabilityMonitor
 	{
 		private readonly string path;
-		private readonly FileSystemWatcher fileSystemWatcher;
+		private FileSystemWatcher fileSystemWatcher;
 		private readonly Timer timer;
 		private readonly Regex versionPattern = new Regex(@"(?<=[\\\/])(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)(?=([\\\/]|$))", RegexOptions.Compiled);
 		private readonly ILog log;
+		private readonly IUpdater updater;
 
 		/// <summary>
-		/// Occurs when update possibility is detected.
+		/// Initializes a new instance of the <see cref="UpdatesAvailabilityMonitor"/> class.
 		/// </summary>
-		public event Action UpdatePossibilityDetected;
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="DirectoryMonitor"/> class.
-		/// </summary>
-		public DirectoryMonitor(ILog log, string path)
+		public UpdatesAvailabilityMonitor(ILog log, IUpdater updater, BootstrapperParameters bootstrapperParameters)
 		{
-			this.path = path;
+			path = Path.GetDirectoryName(bootstrapperParameters.BootstrapperFile);
 			this.log = log;
-
-
-			fileSystemWatcher = new FileSystemWatcher(path)
-			{
-				IncludeSubdirectories = true,
-				EnableRaisingEvents = false,
-				NotifyFilter = NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.Size
-			};
-			fileSystemWatcher.Changed += FileSystemWatcherChanged;
-			fileSystemWatcher.Created += FileSystemWatcherChanged;
-			fileSystemWatcher.Renamed += FileSystemWatcherChanged;
+			this.updater = updater;
 
 			timer = new Timer(SomeFileWasChangedAfterWait);
 		}
@@ -50,22 +36,30 @@ namespace NDistribUnit.Common.Updating
 		/// </summary>
 		public void Start()
 		{
-			fileSystemWatcher.EnableRaisingEvents = true;
+			fileSystemWatcher = new FileSystemWatcher(path)
+			{
+				IncludeSubdirectories = true,
+				EnableRaisingEvents = true,
+				NotifyFilter = NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.Size
+			};
+			fileSystemWatcher.Changed += FileSystemWatcherChanged;
+			fileSystemWatcher.Created += FileSystemWatcherChanged;
+			fileSystemWatcher.Renamed += FileSystemWatcherChanged;
 		}
 
 		private void SomeFileWasChangedAfterWait(object state)
 		{
 			var finder = new VersionDirectoryFinder(log);
-			var versionDirectory = finder.GetVersionDirectory(Path.GetDirectoryName(path));
+
+			DirectoryInfo versionDirectory = finder.GetVersionDirectory(path);
+			
 			if (versionDirectory == null)
 				return;
 
-			var lastVersion = new Version(versionDirectory.Name);
-			if (lastVersion > Assembly.GetExecutingAssembly().GetName().Version)
-			{
-				var method = UpdatePossibilityDetected;
-				if (method != null)
-					method();
+			if (IsVersionHigherThanCurrent(versionDirectory.Name) && updater != null)
+			{ 
+				log.Success(string.Format("Updating to version: {0}", versionDirectory.Name));
+				updater.PerformUpdate();
 			}
 		}
 
@@ -74,11 +68,19 @@ namespace NDistribUnit.Common.Updating
 			var versionString = GetVersionString(e.FullPath);
 			if (string.IsNullOrEmpty(versionString))
 				return;
+
+			if (IsVersionHigherThanCurrent(versionString))
+			{
+				timer.Change(1000, Timeout.Infinite);
+			}
+		}
+
+		private static bool IsVersionHigherThanCurrent(string versionString)
+		{
 			var version = new Version(versionString);
 			var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
-			if (currentVersion < version)
-				timer.Change(500, Timeout.Infinite);
+			return currentVersion < version;
 		}
 
 		private string GetVersionString(string fullPath)
