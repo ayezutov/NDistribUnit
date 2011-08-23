@@ -10,6 +10,7 @@ using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.Communication;
 using NDistribUnit.Common.Server.ConnectionTracking.Discovery;
 using NDistribUnit.Common.ServiceContracts;
+using NDistribUnit.Common.Updating;
 using NDistribUnit.Server.Communication;
 using NDistribUnit.Server.Services;
 
@@ -26,6 +27,7 @@ namespace NDistribUnit.Integration.Tests.General
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<ConsoleLog>().As<ILog>();
+            builder.RegisterType<UpdateSource>().As<IUpdateSource>();
             builder.Register(c => new ServerHost(9098, 9099,
                 c.Resolve<TestRunnerServer>(),
                 c.Resolve<DashboardService>(),
@@ -60,7 +62,7 @@ namespace NDistribUnit.Integration.Tests.General
                     .As<IConnectionsTracker<ITestRunnerAgent>>();
             }
 
-            builder.Register(c => new ServerConnectionsTracker(c.Resolve<IConnectionsTracker<ITestRunnerAgent>>(), c.Resolve<ILog>()));
+            builder.Register(c => new ServerConnectionsTracker(c.Resolve<IConnectionsTracker<ITestRunnerAgent>>(), c.Resolve<IUpdateSource>(), c.Resolve<ILog>()));
             builder.Register(c => new TestRunnerAgentService(c.Resolve<ILog>(), "Agent #1", null));
             builder.Register(c => new AgentHost(c.Resolve<TestRunnerAgentService>(), new IAgentExternalModule[]
                                                     {

@@ -18,7 +18,7 @@ namespace NDistribUnit.Bootstrapper
 			string assemblyFile = Assembly.GetEntryAssembly().Location;
 			string assemblyFolder = Path.GetDirectoryName(assemblyFile);
 			string assemblyFileName = Path.GetFileNameWithoutExtension(assemblyFile);
-
+			
 			var versionDirectory = new VersionDirectoryFinder(log).GetVersionDirectory(assemblyFolder);
 
 			if (versionDirectory == null)
@@ -43,7 +43,8 @@ namespace NDistribUnit.Bootstrapper
 					                                 new BootstrapperParameters
 					                                 	{
 					                                 		BootstrapperFile = assemblyFile,
-					                                 		ConfigurationFile = assemblyFile + ".config"
+					                                 		ConfigurationFile = assemblyFile + ".config",
+															IsDebug = Debugger.IsAttached
 					                                 	}.ToString())
 				}.Start();
 		}

@@ -9,6 +9,7 @@ using NDistribUnit.Common.Agent;
 using NDistribUnit.Common.Agent.ExternalModules;
 using NDistribUnit.Common.Agent.Naming;
 using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.Updating;
 
 namespace NDistribUnit.Agent
 {
@@ -17,7 +18,9 @@ namespace NDistribUnit.Agent
     /// </summary>
     public class AgentProgram
     {
-        private readonly ILog log;
+    	private readonly BootstrapperParameters bootstrapperParameters;
+    	private readonly UpdatesAvailabilityMonitor updatesAvailabilityMonitor;
+    	private readonly ILog log;
 
         /// <summary>
         ///  The host, which enables all communication services
@@ -28,14 +31,18 @@ namespace NDistribUnit.Agent
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<AgentProgram>();
+			builder.RegisterType<UpdatesAvailabilityMonitor>();
+			builder.RegisterType<AgentUpdater>().As<IUpdater>();
             builder.Register(c => new RollingLog(1000)).InstancePerLifetimeScope();
             builder.Register(c => new CombinedLog(new ConsoleLog(), c.Resolve<RollingLog>())).As<ILog>();
             builder.Register(c => new AgentHost(new TestRunnerAgentService(c.Resolve<ILog>(), string.Format("{0} #{1:000}", Environment.MachineName, InstanceNumberSearcher.Number), c.Resolve<RollingLog>()), new IAgentExternalModule[]
                                                                                           {
                                                                                               new DiscoveryModule(new Uri("http://hubwoo.com/trr-odc")),
                                                                                               new AnnouncementModule(TimeSpan.FromSeconds(15), new Uri("http://hubwoo.com/trr-odc"), c.Resolve<ILog>())
-                                                                                          }, c.Resolve<ILog>()));
+                                                                                          }, c.Resolve<ILog>())).InstancePerLifetimeScope();
             builder.Register(c => AgentConsoleParameters.Parse(args)).InstancePerLifetimeScope();
+			builder.Register(c => BootstrapperParameters.Parse(args)).InstancePerLifetimeScope();
+			
             var container = builder.Build();
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             return container.Resolve<AgentProgram>().Run();
@@ -46,20 +53,32 @@ namespace NDistribUnit.Agent
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Initializes a new instance of an agent program
-        /// </summary>
-        /// <param name="agentHost"></param>
-        /// <param name="log"></param>
-        public AgentProgram(AgentHost agentHost, ILog log)
+		/// <summary>
+		/// Initializes a new instance of an agent program
+		/// </summary>
+		/// <param name="agentHost">The agent host.</param>
+		/// <param name="bootstrapperParameters">The bootstrapper parameters.</param>
+		/// <param name="updatesAvailabilityMonitor">The updates availability monitor.</param>
+		/// <param name="log">The log.</param>
+        public AgentProgram(AgentHost agentHost, BootstrapperParameters bootstrapperParameters, UpdatesAvailabilityMonitor updatesAvailabilityMonitor, ILog log)
         {
-            this.log = log;
+			this.bootstrapperParameters = bootstrapperParameters;
+			this.updatesAvailabilityMonitor = updatesAvailabilityMonitor;
+			this.log = log;
             AgentHost = agentHost;
         }
 
 
         private int Run()
         {
+			if (!bootstrapperParameters.AllParametersAreFilled)
+			{
+				log.Error("This programm cannot be launched directly");
+				return 2;
+			}
+
+			updatesAvailabilityMonitor.Start();
+
             try
             {
                 log.BeginActivity("Starting agent...");

@@ -11,6 +11,7 @@ namespace NDistribUnit.Common.Updating
 	{
 		private const string bootstrapperFileKeyName = "bootstrapperFile";
 		private const string configurationFileKeyName = "configurationFile";
+		private const string isDebugKeyName = "isDebug";
 
 		/// <summary>
 		/// Gets or sets the boot strapper path.
@@ -27,6 +28,14 @@ namespace NDistribUnit.Common.Updating
 		/// The coniguration file.
 		/// </value>
 		public string ConfigurationFile { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this instance is debug.
+		/// </summary>
+		/// <value>
+		///   <c>true</c> if this instance is debug; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsDebug { get; set; }
 
 		/// <summary>
 		/// Gets a value indicating whether [all parameters are filled].
@@ -50,7 +59,8 @@ namespace NDistribUnit.Common.Updating
 			new ConsoleParametersParser
 				{
 					{bootstrapperFileKeyName, (string bootstrapperFile) => result.BootstrapperFile = bootstrapperFile},
-					{configurationFileKeyName, (string configurationFile) => result.ConfigurationFile = configurationFile}
+					{configurationFileKeyName, (string configurationFile) => result.ConfigurationFile = configurationFile},
+					{isDebugKeyName, (bool isDebug) => result.IsDebug = isDebug}
 				}.Parse(arguments);
 
 			return result;
@@ -64,8 +74,9 @@ namespace NDistribUnit.Common.Updating
 		/// </returns>
 		public override string ToString()
 		{
-			return string.Format("/{0}:{1} /{2}:{3}", bootstrapperFileKeyName, BootstrapperFile, 
-				configurationFileKeyName, ConfigurationFile);
+			return string.Format("/{0}:{1} /{2}:{3}{4}", bootstrapperFileKeyName, BootstrapperFile, 
+				configurationFileKeyName, ConfigurationFile,
+				!IsDebug ? string.Empty : string.Format(" /{0}:{1}", isDebugKeyName, IsDebug.ToString()));
 		}
 	}
 }

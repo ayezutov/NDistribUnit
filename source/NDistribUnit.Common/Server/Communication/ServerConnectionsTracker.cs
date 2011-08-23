@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.ServiceModel;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
+using NDistribUnit.Common.Updating;
 
 namespace NDistribUnit.Server.Communication
 {
@@ -17,23 +19,26 @@ namespace NDistribUnit.Server.Communication
     {
         private readonly ILog log;
         private readonly IConnectionsTracker<ITestRunnerAgent> connectionsTracker;
+    	private readonly IUpdateSource updateSource;
 
-        /// <summary>
+    	/// <summary>
         /// Gets the list of agents
         /// </summary>
         public IList<AgentInformation> Agents { get; private set; }
 
-        /// <summary>
-        /// Initializes a new instance of a connection tracker
-        /// </summary>
-        /// <param name="connectionsTracker"></param>
-        /// <param name="log"></param>
-        public ServerConnectionsTracker(IConnectionsTracker<ITestRunnerAgent> connectionsTracker, ILog log)
+		/// <summary>
+		/// Initializes a new instance of a connection tracker
+		/// </summary>
+		/// <param name="connectionsTracker">The connections tracker.</param>
+		/// <param name="updateSource">The update source.</param>
+		/// <param name="log">The log.</param>
+        public ServerConnectionsTracker(IConnectionsTracker<ITestRunnerAgent> connectionsTracker, IUpdateSource updateSource, ILog log)
         {
             this.log = log;
             Agents = new List<AgentInformation>();
             this.connectionsTracker = connectionsTracker;
-            this.connectionsTracker.EndpointConnected += OnEndpointConnected;
+			this.updateSource = updateSource;
+			this.connectionsTracker.EndpointConnected += OnEndpointConnected;
             this.connectionsTracker.EndpointDisconnected += OnEndpointDisconnected;
             this.connectionsTracker.EndpointSuccessfulPing += OnEndpointSuccessfulPing;
         }
@@ -57,23 +62,27 @@ namespace NDistribUnit.Server.Communication
                 var savedAgent = FindAgentByName(e.EndpointInfo.Name);
                 if (savedAgent == null)
                 {
-                    var agentWithSameAddress =
-                        Agents.FirstOrDefault(a => a.Endpoint.Address.Equals(e.EndpointInfo.Endpoint.Address));
+					savedAgent = Agents.FirstOrDefault(a => a.Endpoint.Address.Equals(e.EndpointInfo.Endpoint.Address));
 
-                    if (agentWithSameAddress != null)
+					if (savedAgent != null)
                     {
-                        agentWithSameAddress.LastStatusUpdate = DateTime.UtcNow;
-                        agentWithSameAddress.Name = e.EndpointInfo.Name;
-                        agentWithSameAddress.State = AgentState.Connected;
+						savedAgent.LastStatusUpdate = DateTime.UtcNow;
+						savedAgent.Name = e.EndpointInfo.Name;
+						savedAgent.State = AgentState.Connected;
                     }
+					else
+                    {
 
-                    Agents.Add(new AgentInformation
-                                   {
-                                       Endpoint = e.EndpointInfo.Endpoint,
-                                       LastStatusUpdate = DateTime.UtcNow,
-                                       State = AgentState.Connected,
-                                       Name = e.EndpointInfo.Name
-                                   });
+						savedAgent = new AgentInformation
+                    	            	{
+                    	            		Endpoint = e.EndpointInfo.Endpoint,
+                    	            		LastStatusUpdate = DateTime.UtcNow,
+                    	            		State = AgentState.Connected,
+                    	            		Name = e.EndpointInfo.Name
+                    	            	};
+
+						Agents.Add(savedAgent);
+                    }
                 }
                 else
                 {
@@ -84,6 +93,28 @@ namespace NDistribUnit.Server.Communication
                     savedAgent.LastStatusUpdate = DateTime.UtcNow;
                     savedAgent.Endpoint = e.EndpointInfo.Endpoint;
                 }
+
+				try
+				{
+					var testRunnerAgent = savedAgent.GetNetTcpChannel<ITestRunnerAgent>();
+					var agentVersion = testRunnerAgent.GetVersion();
+					var currentVersion = Assembly.GetEntryAssembly().GetName().Version;
+
+					if (agentVersion < currentVersion)
+					{
+						var zippedVersionFolder = updateSource.GetZippedVersionFolder(currentVersion);
+						if (zippedVersionFolder != null)
+						{
+							testRunnerAgent.ReceiveUpdatePackage(currentVersion, zippedVersionFolder);
+							savedAgent.State = AgentState.Updating;
+						}
+					}
+				}
+				catch(CommunicationException ex)
+				{
+					log.Error("Error while trying to check version or apply updates", ex);
+					savedAgent.State = AgentState.Error;
+				}
             }
             return;
         }

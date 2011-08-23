@@ -44,8 +44,8 @@ namespace NDistribUnit.Common.Agent
 
             log.BeginActivity(string.Format("Starting agent {1} on '{0}'...", baseAddress, TestRunner.Name));
             TestRunnerHost = new ServiceHost(TestRunner, baseAddress);
-            Endpoint = TestRunnerHost.AddServiceEndpoint(typeof (ITestRunnerAgent), new NetTcpBinding(), "");
-
+			Endpoint = TestRunnerHost.AddServiceEndpoint(typeof(ITestRunnerAgent), new NetTcpBinding("NDistribUnit.Default"), "");
+        	TestRunnerHost.Description.Behaviors.Find<ServiceDebugBehavior>().IncludeExceptionDetailInFaults = true;
             log.BeginActivity("Starting external modules...");
             foreach (var module in modules)
             {

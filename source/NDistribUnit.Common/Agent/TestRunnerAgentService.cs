@@ -1,9 +1,13 @@
 using System;
+using System.IO;
+using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using Ionic.Zip;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
+using NDistribUnit.Common.Updating;
 
 namespace NDistribUnit.Common.Agent
 {
@@ -56,8 +60,52 @@ namespace NDistribUnit.Common.Agent
             return logStorage.GetEntries(lastFetchedEntryId, maxItemsCount);
         }
 
+		/// <summary>
+		/// Receives the update pakage.
+		/// </summary>
+		/// <param name="version"></param>
+		/// <param name="packageZip">The package zip.</param>
+    	public void ReceiveUpdatePackage(Version version, byte[] packageZip)
+    	{
+    		// if folder exists and is valid
+			// exit
 
-        /// <summary>
+			// lock machine for updating this folder
+
+			// if folder exists and is valid
+			// exit
+
+			var directory = new DirectoryInfo(Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().CodeBase).AbsolutePath));
+
+			while (directory != null && !VersionDirectoryFinder.VersionPattern.IsMatch(directory.Name))
+			{
+				directory = directory.Parent;
+			}
+
+			if (directory == null)
+				return;
+
+    		using (var zipStream = new MemoryStream(packageZip))
+    		{
+    			var zipFile = ZipFile.Read(zipStream);
+    			var targetDir = directory.Parent.FullName;
+				if (!Directory.Exists(targetDir))
+					Directory.CreateDirectory(targetDir);
+				zipFile.ExtractAll(targetDir, ExtractExistingFileAction.OverwriteSilently);
+    		}
+    	}
+
+		/// <summary>
+		/// Gets the version.
+		/// </summary>
+		/// <returns></returns>
+    	public Version GetVersion()
+    	{
+    		return Assembly.GetEntryAssembly().GetName().Version;
+    	}
+
+
+    	/// <summary>
         /// Pings the tracking side
         /// </summary>
         /// <param name="pingInterval"></param>

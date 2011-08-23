@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.ServiceModel;
 using System.ServiceModel.Discovery;
+using NDistribUnit.Common.ServiceContracts;
 
 namespace NDistribUnit.Common.DataContracts
 {
@@ -43,5 +45,15 @@ namespace NDistribUnit.Common.DataContracts
             get { return Endpoint.Address.ToString(); }
             set { throw new NotSupportedException(); }
         }
+
+		/// <summary>
+		/// Gets the net TCP channel.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+    	public T GetNetTcpChannel<T>()
+    	{
+			return ChannelFactory<T>.CreateChannel(new NetTcpBinding("NDistribUnit.Default"), Endpoint.Address);
+    	}
     }
 }

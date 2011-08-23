@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Autofac;
 using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.Communication.ConnectionTracking.Announcement;
@@ -47,6 +48,9 @@ namespace NDistribUnit.Server
 				return 2;
 			}
 
+			if (bootstrapperParameters.IsDebug && !Debugger.IsAttached)
+				Debugger.Launch();
+
 			updatesMonitor.Start();
 
 			log.BeginActivity("Server is starting...");
@@ -66,11 +70,10 @@ namespace NDistribUnit.Server
 			builder.Register(c => BootstrapperParameters.Parse(args)).InstancePerLifetimeScope();
 			builder.RegisterType<TestRunnerServer>().InstancePerLifetimeScope();
 			builder.RegisterType<DashboardService>().InstancePerLifetimeScope();
+			builder.RegisterType<ServerConnectionsTracker>().InstancePerLifetimeScope();
 			builder.RegisterType<UpdatesAvailabilityMonitor>();
-			builder.Register(
-				c => new ServerConnectionsTracker(
-				     	c.Resolve<IConnectionsTracker<ITestRunnerAgent>>(),
-				     	c.Resolve<ILog>())).InstancePerLifetimeScope();
+			builder.RegisterType<UpdateSource>().As<IUpdateSource>();
+			builder.RegisterType<ServerUpdater>().As<IUpdater>();
 			builder.Register(
 				c =>
 				new ServerHost(c.Resolve<ServerParameters>().DashboardPort,
@@ -80,7 +83,6 @@ namespace NDistribUnit.Server
 				               c.Resolve<ServerConnectionsTracker>(),
 				               c.Resolve<ILog>()
 					)).InstancePerLifetimeScope();
-			builder.Register(c => new ServerUpdater(c.Resolve<ServerHost>(), c.Resolve<BootstrapperParameters>())).As<IUpdater>();
 #pragma warning disable 162
 // ReSharper disable HeuristicUnreachableCode
 // ReSharper disable RedundantIfElseBlock

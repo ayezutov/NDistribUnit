@@ -13,6 +13,10 @@ namespace NDistribUnit.Common.Updating
 	public class VersionDirectoryFinder
 	{
 		private ILog log;
+		/// <summary>
+		/// 
+		/// </summary>
+		public static readonly Regex VersionPattern = new Regex(@"(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)", RegexOptions.Compiled);
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="VersionDirectoryFinder"/> class.
@@ -30,14 +34,12 @@ namespace NDistribUnit.Common.Updating
 		/// <returns></returns>
 		public DirectoryInfo GetVersionDirectory(string directoryName)
 		{
-			var versionPattern = new Regex(@"(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)");
-
 			var directory = new DirectoryInfo(directoryName);
 			if (!directory.Exists)
 				throw new InvalidOperationException();
 
 			var subDirectories = (from subDir in directory.GetDirectories()
-			                      let match = versionPattern.Match(subDir.Name)
+			                      let match = VersionPattern.Match(subDir.Name)
 			                      where match.Success
 			                      orderby
 			                      	int.Parse(match.Groups["major"].Value),

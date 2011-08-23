@@ -18,6 +18,16 @@
         /// <summary>
         /// The agent is not connecterd anymore
         /// </summary>
-        Disconnected
+        Disconnected,
+
+		/// <summary>
+		/// An exception was thrown, when trying to communicate with that agent last time
+		/// </summary>
+    	Error,
+
+		/// <summary>
+		/// The agent is beeing updated
+		/// </summary>
+    	Updating
     }
 }

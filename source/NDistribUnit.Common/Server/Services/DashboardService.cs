@@ -110,7 +110,7 @@ namespace NDistribUnit.Server.Services
             if (agent == null)
                 return new LogEntry[0];
 
-            LogEntry[] result = ChannelFactory<ITestRunnerAgent>.CreateChannel(new NetTcpBinding(), agent.Endpoint.Address)
+            LogEntry[] result = agent.GetNetTcpChannel<ITestRunnerAgent>()
                 .GetLog(maxItemsCount, lastFetchedEntryId);
             return result;
         }

@@ -1,3 +1,4 @@
+using System;
 using System.ServiceModel;
 using NDistribUnit.Common.Logging;
 
@@ -25,5 +26,20 @@ namespace NDistribUnit.Common.ServiceContracts
         /// <returns></returns>
         [OperationContract]
         LogEntry[] GetLog(int maxItemsCount, int? lastFetchedEntryId);
+
+    	/// <summary>
+    	/// Receives the update pakage.
+    	/// </summary>
+    	/// <param name="version"></param>
+    	/// <param name="packageZip">The package zip.</param>
+    	[OperationContract]
+    	void ReceiveUpdatePackage(Version version, byte[] packageZip);
+
+		/// <summary>
+		/// Gets the version.
+		/// </summary>
+		/// <returns></returns>
+		[OperationContract]
+    	Version GetVersion();
     }
 }

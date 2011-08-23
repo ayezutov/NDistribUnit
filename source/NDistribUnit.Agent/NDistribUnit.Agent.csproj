@@ -97,7 +97,11 @@
 			<FilesInOutputDirExcludes Include="$(OutDir)\*.tmp" />
 			<FilesInOutputDirExcludes Include="$(OutDir)\*.xml" />
 			<FilesInOutputDirExcludes Include="$(OutDir)\*.lnk" />
+		</ItemGroup>
+		<ItemGroup Condition="'$(Configuration)' != 'Debug'">
 			<FilesInOutputDirExcludes Include="$(OutDir)\*.pdb" />
+		</ItemGroup>
+		<ItemGroup>
 			<FilesInOutputDir Include="$(OutDir)\**\*.*" Exclude="@(FilesInOutputDirExcludes)" />
 		</ItemGroup>
 		<Copy SourceFiles="@(FilesInOutputDir)" DestinationFiles="@(FilesInOutputDir->'$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Agent\%(RecursiveDir)%(Filename)%(Extension)')"/>
