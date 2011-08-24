@@ -28,7 +28,7 @@ namespace NDistribUnit.Common.Agent
         /// <param name="testRunner">The test runner.</param>
         /// <param name="modules">The agents' external modules.</param>
         /// <param name="log">The log.</param>
-        public AgentHost(TestRunnerAgentService testRunner, IEnumerable<IAgentExternalModule> modules, ILog log)
+        public AgentHost(TestRunnerAgent testRunner, IEnumerable<IAgentExternalModule> modules, ILog log)
         {
             TestRunner = testRunner;
             this.modules = modules;
@@ -63,7 +63,7 @@ namespace NDistribUnit.Common.Agent
         /// <value>
         /// The test runner.
         /// </value>
-        public TestRunnerAgentService TestRunner { get; set; }
+        public TestRunnerAgent TestRunner { get; set; }
 
         /// <summary>
         /// Stops all agent's services

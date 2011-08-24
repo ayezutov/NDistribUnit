@@ -105,7 +105,7 @@ namespace NDistribUnit.Common.HashChecks
 
 		private string GetFileHash(FileInfo file)
 		{
-			using (var fileStream = new FileStream(file.FullName, FileMode.Open))
+			using (var fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read))
 			{
 				var provider = new SHA1CryptoServiceProvider();
 				byte[] hashArray = provider.ComputeHash(fileStream);
@@ -209,7 +209,7 @@ namespace NDistribUnit.Common.HashChecks
 				return null;
 
 			var result = new List<Tuple<string, string>>();
-			using (var reader = new StreamReader(new FileStream(fullFileName, FileMode.Open)))
+			using (var reader = new StreamReader(new FileStream(fullFileName, FileMode.Open, FileAccess.Read)))
 			{
 				while (!reader.EndOfStream)
 				{

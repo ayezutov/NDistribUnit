@@ -1,13 +1,12 @@
-using System;
-using System.Diagnostics;
 using NDistribUnit.Common.Server.Communication;
+using NDistribUnit.Common.Updating.Updaters;
 
 namespace NDistribUnit.Common.Updating
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	public class ServerUpdater : IUpdater
+	public class ServerUpdater : UpdaterBase
 	{
 		private readonly ServerHost serverHost;
 		private readonly BootstrapperParameters bootstrapperParameters;
@@ -26,21 +25,13 @@ namespace NDistribUnit.Common.Updating
 		/// <summary>
 		/// Performs the update.
 		/// </summary>
-		public void PerformUpdate()
+		public override void PerformUpdate()
 		{
-			var bootstrapperProcess = new Process
-				{
-					StartInfo = new ProcessStartInfo
-					            	{
-					            		FileName = bootstrapperParameters.BootstrapperFile,
-					            		Arguments = "/restart"
-					            	}
-				};
 			//TODO: Save server's state here
 			//serverHost.SaveState();
 			serverHost.Close();
-			bootstrapperProcess.Start();
-			Environment.Exit(0);
+
+			Restart(bootstrapperParameters);
 		}
 	}
 }

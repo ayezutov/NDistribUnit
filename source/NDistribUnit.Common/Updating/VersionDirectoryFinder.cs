@@ -59,11 +59,35 @@ namespace NDistribUnit.Common.Updating
 				}
 				catch (HashValidationException ex)
 				{
-					log.Warning(string.Format("Error, when trying to validate the directory '{0}':", subDirectory.FullName));
-					log.Warning(ex.Message);
+					log.Info(string.Format("Error, when trying to validate the directory '{0}':", subDirectory.FullName));
+					log.Info(ex.Message);
 				}
 			}
 			return null;
+		}
+
+		/// <summary>
+		/// Gets the version directory.
+		/// </summary>
+		/// <param name="directoryName">Name of the directory.</param>
+		/// <param name="version">The version.</param>
+		public DirectoryInfo GetVersionDirectory(string directoryName, Version version)
+		{
+			var versionDirectory = new DirectoryInfo(directoryName).GetDirectories().FirstOrDefault(directory => VersionPattern.IsMatch(directory.Name) && new Version(directory.Name) == version);
+
+			if (versionDirectory == null)
+				return null;
+
+			try
+			{
+				new DirectoryHash(versionDirectory.FullName).Validate();
+				return versionDirectory;
+			}
+			catch(HashValidationException)
+			{
+				return null;
+			}
+			
 		}
 	}
 }

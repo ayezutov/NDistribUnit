@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.ServiceModel;
-using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
@@ -50,7 +49,13 @@ namespace NDistribUnit.Server.Communication
                  var savedAgent = FindAgentByName(e.EndpointInfo.Name);
                  if (savedAgent != null)
                  {
-                     savedAgent.LastStatusUpdate = DateTime.UtcNow;
+					 if (e.Version > savedAgent.Version)
+					 {
+					 	savedAgent.Version = e.Version;
+						 if (savedAgent.State == AgentState.Updating)
+							 savedAgent.State = AgentState.Connected;
+					 }
+                 	savedAgent.LastStatusUpdate = DateTime.UtcNow;
                  }
             }
         }
@@ -59,67 +64,87 @@ namespace NDistribUnit.Server.Communication
         {
             lock (Agents)
             {
-                var savedAgent = FindAgentByName(e.EndpointInfo.Name);
-                if (savedAgent == null)
-                {
-					savedAgent = Agents.FirstOrDefault(a => a.Endpoint.Address.Equals(e.EndpointInfo.Endpoint.Address));
-
-					if (savedAgent != null)
-                    {
-						savedAgent.LastStatusUpdate = DateTime.UtcNow;
-						savedAgent.Name = e.EndpointInfo.Name;
-						savedAgent.State = AgentState.Connected;
-                    }
-					else
-                    {
-
-						savedAgent = new AgentInformation
-                    	            	{
-                    	            		Endpoint = e.EndpointInfo.Endpoint,
-                    	            		LastStatusUpdate = DateTime.UtcNow,
-                    	            		State = AgentState.Connected,
-                    	            		Name = e.EndpointInfo.Name
-                    	            	};
-
-						Agents.Add(savedAgent);
-                    }
-                }
-                else
-                {
-                    if (savedAgent.State == AgentState.Disconnected)
-                    {
-                        savedAgent.State = AgentState.Connected;
-                    }
-                    savedAgent.LastStatusUpdate = DateTime.UtcNow;
-                    savedAgent.Endpoint = e.EndpointInfo.Endpoint;
-                }
-
-				try
-				{
-					var testRunnerAgent = savedAgent.GetNetTcpChannel<ITestRunnerAgent>();
-					var agentVersion = testRunnerAgent.GetVersion();
-					var currentVersion = Assembly.GetEntryAssembly().GetName().Version;
-
-					if (agentVersion < currentVersion)
-					{
-						var zippedVersionFolder = updateSource.GetZippedVersionFolder(currentVersion);
-						if (zippedVersionFolder != null)
-						{
-							testRunnerAgent.ReceiveUpdatePackage(currentVersion, zippedVersionFolder);
-							savedAgent.State = AgentState.Updating;
-						}
-					}
-				}
-				catch(CommunicationException ex)
-				{
-					log.Error("Error while trying to check version or apply updates", ex);
-					savedAgent.State = AgentState.Error;
-				}
+            	var agent = AddAgentToList(e);
+            	UpdateAgentIfRequired(agent);
             }
-            return;
+        	return;
         }
 
-        private void OnEndpointDisconnected(object sender, EndpointConnectionChangedEventArgs e)
+    	private void UpdateAgentIfRequired(AgentInformation agent)
+    	{
+    		try
+    		{
+    			var agentVersion = agent.Version;
+    			var currentVersion = Assembly.GetEntryAssembly().GetName().Version;
+
+    			if (agentVersion < currentVersion)
+    			{
+    				var zippedVersionFolder = updateSource.GetZippedVersionFolder(currentVersion);
+    				if (zippedVersionFolder != null)
+    				{
+    					agent.State = AgentState.Updating;
+    					new Action(() =>
+    					           	{
+    					           		var testRunnerAgent = agent.GetNetTcpChannel<ITestRunnerAgent>();
+    					           		testRunnerAgent.ReceiveUpdatePackage(new UpdatePackage
+    					           		                                     	{
+    					           		                                     		IsAvailable = true,
+																					Version = currentVersion,
+																					UpdateZipBytes = zippedVersionFolder
+    					           		                                     	});
+    					           	}).BeginInvoke(null, null);
+    				}
+    			}
+    		}
+    		catch (CommunicationException ex)
+    		{
+    			log.Error("Error while trying to check version or apply updates", ex);
+    			agent.State = AgentState.Error;
+    		}
+    	}
+
+    	private AgentInformation AddAgentToList(EndpointConnectionChangedEventArgs e)
+    	{
+    		var savedAgent = FindAgentByName(e.EndpointInfo.Name);
+    		if (savedAgent == null)
+    		{
+    			savedAgent = Agents.FirstOrDefault(a => a.Endpoint.Address.Equals(e.EndpointInfo.Endpoint.Address));
+
+    			if (savedAgent != null)
+    			{
+    				savedAgent.LastStatusUpdate = DateTime.UtcNow;
+    				savedAgent.Name = e.EndpointInfo.Name;
+    				savedAgent.State = AgentState.Connected;
+    				savedAgent.Version = e.EndpointInfo.Version;
+    			}
+    			else
+    			{
+    				savedAgent = new AgentInformation
+    				             	{
+    				             		Endpoint = e.EndpointInfo.Endpoint,
+    				             		LastStatusUpdate = DateTime.UtcNow,
+    				             		State = AgentState.Connected,
+    				             		Name = e.EndpointInfo.Name,
+    				             		Version = e.EndpointInfo.Version
+    				             	};
+
+    				Agents.Add(savedAgent);
+    			}
+    		}
+    		else
+    		{
+    			if (savedAgent.State == AgentState.Disconnected)
+    			{
+    				savedAgent.State = AgentState.Connected;
+    			}
+    			savedAgent.LastStatusUpdate = DateTime.UtcNow;
+    			savedAgent.Endpoint = e.EndpointInfo.Endpoint;
+    			savedAgent.Version = e.EndpointInfo.Version;
+    		}
+    		return savedAgent;
+    	}
+
+    	private void OnEndpointDisconnected(object sender, EndpointConnectionChangedEventArgs e)
         {
             lock (Agents)
             {

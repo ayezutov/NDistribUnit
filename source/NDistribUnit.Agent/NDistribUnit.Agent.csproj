@@ -28,6 +28,7 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Debug\NDistribUnit.Agent.XML</DocumentationFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -90,20 +91,20 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-	<Import Condition="'$(Configuration)'!='MsBuild Task'" Project="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.targets" />
-	<Target Name="AfterBuild">
-		<ItemGroup>
-			<FilesInOutputDirExcludes Include="$(OutDir)\**\*vshost*.*" />
-			<FilesInOutputDirExcludes Include="$(OutDir)\*.tmp" />
-			<FilesInOutputDirExcludes Include="$(OutDir)\*.xml" />
-			<FilesInOutputDirExcludes Include="$(OutDir)\*.lnk" />
-		</ItemGroup>
-		<ItemGroup Condition="'$(Configuration)' != 'Debug'">
-			<FilesInOutputDirExcludes Include="$(OutDir)\*.pdb" />
-		</ItemGroup>
-		<ItemGroup>
-			<FilesInOutputDir Include="$(OutDir)\**\*.*" Exclude="@(FilesInOutputDirExcludes)" />
-		</ItemGroup>
-		<Copy SourceFiles="@(FilesInOutputDir)" DestinationFiles="@(FilesInOutputDir->'$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Agent\%(RecursiveDir)%(Filename)%(Extension)')"/>
-	</Target>
+  <Import Condition="'$(Configuration)'!='MsBuild Task'" Project="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.targets" />
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <FilesInOutputDirExcludes Include="$(OutDir)\**\*vshost*.*" />
+      <FilesInOutputDirExcludes Include="$(OutDir)\*.tmp" />
+      <FilesInOutputDirExcludes Include="$(OutDir)\*.xml" />
+      <FilesInOutputDirExcludes Include="$(OutDir)\*.lnk" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' != 'Debug'">
+      <FilesInOutputDirExcludes Include="$(OutDir)\*.pdb" />
+    </ItemGroup>
+    <ItemGroup>
+      <FilesInOutputDir Include="$(OutDir)\**\*.*" Exclude="@(FilesInOutputDirExcludes)" />
+    </ItemGroup>
+    <Copy SourceFiles="@(FilesInOutputDir)" DestinationFiles="@(FilesInOutputDir->'$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Agent\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
 </Project>

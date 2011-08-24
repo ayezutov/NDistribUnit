@@ -38,7 +38,15 @@ namespace NDistribUnit.Common.Communication.ConnectionTracking
         /// </value>
         public string Name { get; set; }
 
-        private bool Equals(EndpointInformation other)
+		/// <summary>
+		/// Gets or sets the version.
+		/// </summary>
+		/// <value>
+		/// The version.
+		/// </value>
+    	public Version Version { get; set; }
+
+    	private bool Equals(EndpointInformation other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;

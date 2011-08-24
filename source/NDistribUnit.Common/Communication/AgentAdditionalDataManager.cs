@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Xml.Linq;
 using NDistribUnit.Common.Agent;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace NDistribUnit.Common.Communication.ConnectionTracking
     {
         private const string agentInfoElementName = "agentInfo";
         private const string agentNameElementName = "agentName";
+        private const string versionElementName = "agentVersion";
 
         /// <summary>
         /// Gets the additional information.
@@ -22,7 +24,9 @@ namespace NDistribUnit.Common.Communication.ConnectionTracking
         /// <returns></returns>
         private static XElement GetAdditionalInformation(AgentHost agentHost)
          {
-             return new XElement(agentInfoElementName, new XElement(agentNameElementName, agentHost.TestRunner.Name));
+             return new XElement(agentInfoElementName, 
+				 new XElement(agentNameElementName, agentHost.TestRunner.Name),
+				 new XElement(versionElementName, Assembly.GetEntryAssembly().GetName().Version.ToString()));
          }
 
         /// <summary>
@@ -43,17 +47,33 @@ namespace NDistribUnit.Common.Communication.ConnectionTracking
         /// <returns></returns>
         public static string GetAgentName(IEnumerable<XElement> extensions)
         {
-            XElement infoElement = extensions.FirstOrDefault(e => e.Name == agentInfoElementName);
-
-            if (infoElement == null)
-                return null;
-
-            var agentNameElement = infoElement.Element(XName.Get(agentNameElementName));
-
-            if(agentNameElement == null)
-                return null;
-
-            return agentNameElement.Value;
+        	return GetAgentInfoNode(extensions, agentNameElementName);
         }
+
+		/// <summary>
+		/// Gets the agent version.
+		/// </summary>
+		/// <param name="extensions">The extensions.</param>
+		/// <returns></returns>
+		public static Version GetAgentVersion(IEnumerable<XElement> extensions)
+		{
+			var version = GetAgentInfoNode(extensions, versionElementName);
+			return version == null ? null : new Version(version);
+		}
+
+    	private static string GetAgentInfoNode(IEnumerable<XElement> extensions, string elementName)
+    	{
+    		XElement infoElement = extensions.FirstOrDefault(e => e.Name == agentInfoElementName);
+
+    		if (infoElement == null)
+    			return null;
+
+    		var element = infoElement.Element(XName.Get(elementName));
+
+    		if (element == null)
+    			return null;
+
+    		return element.Value;
+    	}
     }
 }

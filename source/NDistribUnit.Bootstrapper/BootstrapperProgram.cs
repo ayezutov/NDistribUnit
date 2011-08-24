@@ -37,16 +37,24 @@ namespace NDistribUnit.Bootstrapper
 				throw new InvalidOperationException(string.Format("There is more than 1 file with 'exe' extension inside '{0}'",
 				                                                  exeDirectory.FullName));
 
-			new Process
-				{
-					StartInfo = new ProcessStartInfo(files[0].FullName,
-					                                 new BootstrapperParameters
-					                                 	{
-					                                 		BootstrapperFile = assemblyFile,
-					                                 		ConfigurationFile = assemblyFile + ".config",
-															IsDebug = Debugger.IsAttached
-					                                 	}.ToString())
-				}.Start();
+			try
+			{
+				new Process
+					{
+						StartInfo = new ProcessStartInfo(files[0].FullName,
+						                                 new BootstrapperParameters
+						                                 	{
+						                                 		BootstrapperFile = assemblyFile,
+						                                 		ConfigurationFile = assemblyFile + ".config",
+						                                 		IsDebug = Debugger.IsAttached
+						                                 	}.ToString())
+					}.Start();
+			}
+			catch(Exception ex)
+			{
+				log.Error("Unable to start target process. It is possible, that user cancelled process elevation.", ex);
+				Console.ReadLine();
+			}
 		}
 	}
 }

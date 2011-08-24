@@ -30,16 +30,8 @@ namespace NDistribUnit.Common.ServiceContracts
     	/// <summary>
     	/// Receives the update pakage.
     	/// </summary>
-    	/// <param name="version"></param>
-    	/// <param name="packageZip">The package zip.</param>
+    	/// <param name="updatePackage"></param>
     	[OperationContract]
-    	void ReceiveUpdatePackage(Version version, byte[] packageZip);
-
-		/// <summary>
-		/// Gets the version.
-		/// </summary>
-		/// <returns></returns>
-		[OperationContract]
-    	Version GetVersion();
+    	void ReceiveUpdatePackage(UpdatePackage updatePackage);
     }
 }

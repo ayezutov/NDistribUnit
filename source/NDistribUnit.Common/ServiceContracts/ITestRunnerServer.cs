@@ -1,4 +1,5 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.ServiceModel;
 
 namespace NDistribUnit.Common.ServiceContracts
 {
@@ -13,5 +14,13 @@ namespace NDistribUnit.Common.ServiceContracts
         /// </summary>
         [OperationContract]
         void RunTests();
+
+		/// <summary>
+		/// Gets the update if available.
+		/// </summary>
+		/// <param name="version">The version.</param>
+		/// <returns></returns>
+		[OperationContract]
+    	UpdatePackage GetUpdatePackage(Version version);
     }
 }

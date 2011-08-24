@@ -59,7 +59,8 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
                         if (EndpointSuccessfulPing != null)
                             EndpointSuccessfulPing(this, new EndpointConnectionChangedEventArgs
                                                              {
-                                                                 EndpointInfo = endpointInformation
+                                                                 EndpointInfo = endpointInformation,
+																 Version = result.Version
                                                              });
                     }
                     else
@@ -75,18 +76,20 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
             }
         }
 
-        /// <summary>
-        /// Adds the endpoint for tracking.
-        /// </summary>
-        /// <param name="endpoint">The endpoint.</param>
-        /// <param name="agentName">Name of the agent.</param>
-        protected void AddEndpointForTracking(EndpointDiscoveryMetadata endpoint, string agentName = null)
+		/// <summary>
+		/// Adds the endpoint for tracking.
+		/// </summary>
+		/// <param name="endpoint">The endpoint.</param>
+		/// <param name="agentName">Name of the agent.</param>
+		/// <param name="version">The version.</param>
+        protected void AddEndpointForTracking(EndpointDiscoveryMetadata endpoint, string agentName = null, Version version = null)
         {
             var endpointInformation = new EndpointInformation
                                           {
                                               Endpoint = endpoint,
                                               LastStatusUpdateTime = DateTime.UtcNow,
-                                              Name = agentName ?? AgentAdditionalDataManager.GetAgentName(endpoint.Extensions)
+                                              Name = agentName ?? AgentAdditionalDataManager.GetAgentName(endpoint.Extensions),
+											  Version = version ?? AgentAdditionalDataManager.GetAgentVersion(endpoint.Extensions)
                                           };
             lock (endpoints)
             {
@@ -103,11 +106,14 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
                     endpointInformation.Pingable = ChannelFactory<TIEndpoint>.CreateChannel(new NetTcpBinding(),
                                                                                             endpoint.Address);
                     endpointInformation.PingTimer = new Timer(OnEndpointPing, endpointInformation,
-                                                              0,
-                                                              Timeout.Infinite);
+                                                              0, Timeout.Infinite);
 
                     if (EndpointConnected != null)
-                        EndpointConnected(this, new EndpointConnectionChangedEventArgs { EndpointInfo = endpointInformation });
+                        EndpointConnected(this, new EndpointConnectionChangedEventArgs
+                                                	{
+                                                		EndpointInfo = endpointInformation,
+														Version = endpointInformation.Version
+                                                	});
                 }
             }
         }
@@ -126,7 +132,11 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
             }
 
             if (EndpointDisconnected != null)
-                EndpointDisconnected(this, new EndpointConnectionChangedEventArgs { EndpointInfo = endpointInformation});
+                EndpointDisconnected(this, new EndpointConnectionChangedEventArgs
+                                           	{
+                                           		EndpointInfo = endpointInformation,
+												Version = endpointInformation.Version
+                                           	});
         }
 
         /// <summary>

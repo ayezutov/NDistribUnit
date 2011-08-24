@@ -47,6 +47,14 @@ namespace NDistribUnit.Common.DataContracts
         }
 
 		/// <summary>
+		/// Gets or sets the version.
+		/// </summary>
+		/// <value>
+		/// The version.
+		/// </value>
+    	public Version Version { get; set; }
+
+    	/// <summary>
 		/// Gets the net TCP channel.
 		/// </summary>
 		/// <typeparam name="T"></typeparam>

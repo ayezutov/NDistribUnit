@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.ServiceModel.Discovery;
 using System.Threading;
 using System.Xml.Linq;

@@ -33,7 +33,7 @@ namespace NDistribUnit.Integration.Tests.General
                 c.Resolve<DashboardService>(),
                 c.Resolve<ServerConnectionsTracker>(),
                 c.Resolve<ILog>()));
-            builder.Register(c => new TestRunnerServer());
+            builder.RegisterType<TestRunnerServer>();
             builder.Register(c => new DashboardService(c.Resolve<ServerConnectionsTracker>(), new RollingLog(5)));
 
             if (connectionsTrackerType == typeof(DiscoveryConnectionsTracker<>))
@@ -63,8 +63,10 @@ namespace NDistribUnit.Integration.Tests.General
             }
 
             builder.Register(c => new ServerConnectionsTracker(c.Resolve<IConnectionsTracker<ITestRunnerAgent>>(), c.Resolve<IUpdateSource>(), c.Resolve<ILog>()));
-            builder.Register(c => new TestRunnerAgentService(c.Resolve<ILog>(), "Agent #1", null));
-            builder.Register(c => new AgentHost(c.Resolve<TestRunnerAgentService>(), new IAgentExternalModule[]
+            builder.Register(c => new TestRunnerAgent(c.Resolve<ILog>(), "Agent #1", 
+				null,
+				c.Resolve<UpdateReceiver>()));
+            builder.Register(c => new AgentHost(c.Resolve<TestRunnerAgent>(), new IAgentExternalModule[]
                                                     {
                                                         new DiscoveryModule(new Uri("http://ndistribunit.com/tests")),
                                                         new AnnouncementModule(TimeSpan.FromMilliseconds(200), new Uri("http://ndistribunit.com/tests"), c.Resolve<ILog>()), 
@@ -85,7 +87,10 @@ namespace NDistribUnit.Integration.Tests.General
             if (agentName != null)
             {
                 var builder = new ContainerBuilder();
-                builder.Register(c => new TestRunnerAgentService(c.Resolve<ILog>(), agentName, null));
+                builder.Register(c => new TestRunnerAgent(c.Resolve<ILog>(), 
+					agentName, 
+					null,
+					c.Resolve<UpdateReceiver>()));
                 builder.Update(container);
             }
             var agent = new AgentWrapper(container.Resolve<AgentHost>());

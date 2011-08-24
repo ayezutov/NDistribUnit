@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using NDistribUnit.Common.Agent;
+using NDistribUnit.Common.Updating.Updaters;
 
 namespace NDistribUnit.Common.Updating
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	public class AgentUpdater: IUpdater
+	public class AgentUpdater: UpdaterBase
 	{
 		private readonly AgentHost host;
 		private readonly BootstrapperParameters bootstrapperParameters;
@@ -26,23 +27,13 @@ namespace NDistribUnit.Common.Updating
 		/// <summary>
 		/// Performs the update.
 		/// </summary>
-		public void PerformUpdate()
+		public override void PerformUpdate()
 		{
-			var bootstrapperProcess = new Process
-			{
-				StartInfo = new ProcessStartInfo
-				{
-					FileName = bootstrapperParameters.BootstrapperFile,
-					Arguments = "/restart"
-				}
-			};
 			//TODO: Save agent's state here
 			//host.SaveState();
 			host.Stop();
-			bootstrapperProcess.Start();
-			Environment.Exit(0);
 
-
+			Restart(bootstrapperParameters);
 		}
 	}
 }

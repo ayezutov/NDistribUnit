@@ -1,0 +1,389 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="NDistribUnit.Common.Agent.AgentHost" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAEACAAACAAAFAACAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Agent\AgentHost.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.Agent.TestRunnerAgentService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAEAACIQAIAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Agent\TestRunnerAgentService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NDistribUnit.Common.Agent.ExternalModules.AnnouncementModule" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACIMACAAAAAgCACAAAAAAAAAIABABAAAAAA=</HashCode>
+      <FileName>Agent\ExternalModules\AnnouncementModule.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NDistribUnit.Common.Agent.ExternalModules.DiscoveryModule" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAACAAAAAgAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Agent\ExternalModules\DiscoveryModule.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NDistribUnit.Common.Agent.Naming.InstanceNumberSearcher" Collapsed="true">
+    <Position X="14" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAEAAAAQAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Agent\Naming\InstanceNumberSearcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Agent.Options.AgentConsoleParameters" Collapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Agent\Options\AgentConsoleParameters.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.Collections.RollingList&lt;TValue&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAgAAARAACCAAAAQAAAAEAAAEAAACAIAABAA=</HashCode>
+      <FileName>Collections\RollingList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NDistribUnit.Common.Collections.RollingListItem&lt;TValue&gt;" Collapsed="true">
+    <Position X="15.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Collections\RollingListItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.Communication.ConnectionTracking.AgentAdditionalDataManager" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAgAAAAAAAABAAAACAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Communication\AgentAdditionalDataManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.Communication.ConnectionTracking.EndpointConnectionChangedEventArgs" Collapsed="true">
+    <Position X="7" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Server\ConnectionTracking\EndpointConnectionChangedEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.Communication.ConnectionTracking.EndpointInformation" Collapsed="true">
+    <Position X="8.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAgEAAAAQAAABAAIAAAAAAAAIAAAA=</HashCode>
+      <FileName>Server\ConnectionTracking\EndpointInformation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.Communication.WcfUtilities" Collapsed="true">
+    <Position X="8.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Communication\WcfUtilities.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.ConsoleProcessing.Options.ConsoleOption" Collapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ConsoleProcessing\Options\ConsoleOption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.ConsoleProcessing.Options.ConsoleParametersParser" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgAAAAAASAAAAACAAAAAAAAgAAAAAEAAAAAAAIAAA=</HashCode>
+      <FileName>ConsoleProcessing\Options\ConsoleParametersParser.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NDistribUnit.Common.Console.Options.OptionMatchDescription" Collapsed="true">
+    <Position X="7" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAQAAAAAAAAAAAAAgAAAAAQ=</HashCode>
+      <FileName>ConsoleProcessing\Options\ConsoleOptionMatchDescription.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.DataContracts.AgentInformation" Collapsed="true">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAQAAAAAAAACAAAAhAAAAAA=</HashCode>
+      <FileName>DataContracts\AgentInformation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.DataContracts.PingResult" Collapsed="true">
+    <Position X="8.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAQA=</HashCode>
+      <FileName>DataContracts\PingResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.DataContracts.ProjectDescription" Collapsed="true">
+    <Position X="10.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataContracts\ProjectDescription.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.EventArgs&lt;T&gt;" Collapsed="true">
+    <Position X="10.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>EventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.HashChecks.DirectoryHash" Collapsed="true">
+    <Position X="14" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAABKAAAACAAQAAAAAISgCAAAAAEAAAAAAEAA=</HashCode>
+      <FileName>HashChecks\DirectoryHash.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.HashChecks.HashValidationException" Collapsed="true">
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAIAAAAAA=</HashCode>
+      <FileName>HashChecks\HashValidationException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.Logging.CombinedLog" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEQAAAgAAABAAAgAAAAAAAAAAAEIAAAA=</HashCode>
+      <FileName>Logging\CombinedLog.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NDistribUnit.Common.Logging.ConsoleLog" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAQAAAgAAABAAAgAAAAAAAAAAAEIAAAA=</HashCode>
+      <FileName>Logging\ConsoleLog.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NDistribUnit.Common.Logging.LogEntry" Collapsed="true">
+    <Position X="15.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAACAAAAAAAAAAAAAAAAAQBAIAAACAA=</HashCode>
+      <FileName>Logging\LogEntry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.Logging.LoggingUtility" Collapsed="true">
+    <Position X="5.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logging\LoggingUtility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.Logging.RollingLog" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAARAAAgAAABAQggAAAAAAAAAAAEIAAAA=</HashCode>
+      <FileName>Logging\RollingLog.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NDistribUnit.Common.Retrying.Retry" Collapsed="true">
+    <Position X="12.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Retrying\Retry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Server.Communication.ServerConnectionsTracker" Collapsed="true">
+    <Position X="7" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACQACAAAEAAAAEACAEAAAAAAAAAIAAAAAAAEAA=</HashCode>
+      <FileName>Server\Communication\ServerConnectionsTracker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.Server.Communication.ServerHost" Collapsed="true">
+    <Position X="8.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQACAAACAAAAAIKAAAAAABAAAgQBAAAAGAAAg=</HashCode>
+      <FileName>Server\Communication\ServerHost.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.Communication.ConnectionTracking.Announcement.AnnouncementConnectionsTracker&lt;TIEndpoint&gt;" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAACAABAAAAAAAAAAAAAAAAgAAIAAAACAAAAA=</HashCode>
+      <FileName>Server\ConnectionTracking\Announcement\AnnouncementConnectionsTracker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.Communication.ConnectionTracking.Announcement.AnnouncementConnectionsTrackerOptions" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Server\ConnectionTracking\Announcement\AnnouncementConnectionsTrackerOptions.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NDistribUnit.Common.Server.ConnectionTracking.ConnectionsTrackerBase&lt;TIEndpoint&gt;" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAACQAQABAABAACAAMBAAAQAAAIAQAAAAAAAA=</HashCode>
+      <FileName>Server\ConnectionTracking\ConnectionsTrackerBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NDistribUnit.Common.Server.ConnectionTracking.Discovery.DiscoveryConnectionsTracker&lt;TIEndpoint&gt;" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AUBIAAAAACAAAAACAAAAAAEAAAAAAAAAIAAAEAAAAEA=</HashCode>
+      <FileName>Server\ConnectionTracking\Discovery\DiscoveryConnectionsTracker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.Communication.ConnectionTracking.Discovery.DiscoveryOptions" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAACAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Server\ConnectionTracking\Discovery\DiscoveryOptions.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NDistribUnit.Common.Server.Options.ServerParameters" Collapsed="true">
+    <Position X="10.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAggAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Server\Options\ServerParameters.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Server.Services.DashboardService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgBEBAAAACCAEAAABAAAAAAAQAEACAAAA=</HashCode>
+      <FileName>Server\Services\DashboardService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NDistribUnit.Server.Services.TestRunnerServer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Server\Services\TestRunnerServer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NDistribUnit.Common.Updating.BootstrapperParameters" Collapsed="true">
+    <Position X="15.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAQAAAAAAEAABAAABEAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Updating\BootstrapperParameters.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.Updating.ServerUpdater" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAEgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Updating\ServerUpdater.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NDistribUnit.Common.Updating.UpdatesAvailabilityMonitor" Collapsed="true">
+    <Position X="5.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAACACAAAEAAAAACCAAAAAAAAEABACAAIAAAAAE=</HashCode>
+      <FileName>Updating\UpdatesAvailabilityMonitor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NDistribUnit.Common.Updating.VersionDirectoryFinder" Collapsed="true">
+    <Position X="7" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Updating\VersionDirectoryFinder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="NDistribUnit.Common.Agent.IAgentExternalModule" Collapsed="true">
+    <Position X="5.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAACAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Agent\ExternalModules\IAgentExternalModule.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="NDistribUnit.Common.Communication.ConnectionTracking.IConnectionsTracker&lt;TIEndpoint&gt;" Collapsed="true">
+    <Position X="7" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAIAAAAQAAAIAQAAAAAAAA=</HashCode>
+      <FileName>Server\ConnectionTracking\IConnectionsTracker.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="NDistribUnit.Common.Communication.ConnectionTracking.IConnectionsTrackerOptions" Collapsed="true">
+    <Position X="8.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Server\ConnectionTracking\IConnectionsTrackerOptions.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="NDistribUnit.Common.ServiceContracts.IDashboardService" Collapsed="true">
+    <Position X="10.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABEBAAAACAAAAAABAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>ServiceContracts\IDashboardService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="NDistribUnit.Common.ServiceContracts.IPingable" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ServiceContracts\IPingable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="NDistribUnit.Common.ServiceContracts.ITestRunnerAgent" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ServiceContracts\ITestRunnerAgent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="NDistribUnit.Common.ServiceContracts.ITestRunnerServer" Collapsed="true">
+    <Position X="14" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ServiceContracts\ITestRunnerServer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="NDistribUnit.Common.Updating.IUpdater" Collapsed="true">
+    <Position X="15.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Updating\IUpdater.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="NDistribUnit.Common.Logging.ILog" Collapsed="true">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAgAAABAAAgAAAAAAAAAAAEIAAAA=</HashCode>
+      <FileName>Logging\ILog.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="NDistribUnit.Common.DataContracts.AgentState" Collapsed="true">
+    <Position X="5.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAQAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>DataContracts\AgentState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NDistribUnit.Common.HashChecks.ErrorLevel" Collapsed="true">
+    <Position X="7" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAABAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>HashChecks\ErrorLevel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NDistribUnit.Common.Logging.LogEntryType" Collapsed="true">
+    <Position X="8.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAQAAAAAAABABAgAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Logging\LogEntryType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

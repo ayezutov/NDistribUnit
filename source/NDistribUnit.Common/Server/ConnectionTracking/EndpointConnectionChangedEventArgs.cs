@@ -11,5 +11,13 @@ namespace NDistribUnit.Common.Communication.ConnectionTracking
         /// The endpoint, which state was changed
         /// </summary>
         public EndpointInformation EndpointInfo { get; set; }
+
+		/// <summary>
+		/// Gets or sets the version.
+		/// </summary>
+		/// <value>
+		/// The version.
+		/// </value>
+    	public Version Version { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using NDistribUnit.Common.ConsoleProcessing.Options;
 
 namespace NDistribUnit.Common.Updating
@@ -46,6 +47,19 @@ namespace NDistribUnit.Common.Updating
 		public bool AllParametersAreFilled
 		{
 			get { return !string.IsNullOrEmpty(BootstrapperFile) && !string.IsNullOrEmpty(ConfigurationFile); }
+		}
+
+		/// <summary>
+		/// Gets the root folder.
+		/// </summary>
+		public string RootFolder
+		{
+			get
+			{
+				return !string.IsNullOrEmpty(BootstrapperFile) 
+					? Path.GetDirectoryName(BootstrapperFile) 
+					: null;
+			}
 		}
 
 		/// <summary>

@@ -1,4 +1,6 @@
-﻿namespace NDistribUnit.Common.DataContracts
+﻿using System;
+
+namespace NDistribUnit.Common.DataContracts
 {
     /// <summary>
     /// The result of a ping operation
@@ -20,5 +22,13 @@
         /// The state of the agent.
         /// </value>
         public AgentState AgentState { get; set; }
+
+		/// <summary>
+		/// Gets or sets the version.
+		/// </summary>
+		/// <value>
+		/// The version.
+		/// </value>
+    	public Version Version { get; set; }
     }
 }

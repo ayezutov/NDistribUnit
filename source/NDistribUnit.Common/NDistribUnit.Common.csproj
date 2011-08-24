@@ -76,7 +76,7 @@
     <Compile Include="Agent\ExternalModules\IAgentExternalModule.cs" />
     <Compile Include="Agent\Naming\InstanceNumberSearcher.cs" />
     <Compile Include="Agent\Options\AgentConsoleParameters.cs" />
-    <Compile Include="Agent\TestRunnerAgentService.cs" />
+    <Compile Include="Agent\TestRunnerAgent.cs" />
     <Compile Include="Communication\AgentAdditionalDataManager.cs" />
     <Compile Include="DataContracts\PingResult.cs" />
     <Compile Include="EventArgs.cs" />
@@ -120,12 +120,16 @@
     <Compile Include="ConsoleProcessing\Options\ConsoleOption.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceContracts\IDashboardService.cs" />
-    <Compile Include="Updating\AgentUpdater.cs" />
+    <Compile Include="ServiceContracts\UpdatePackage.cs" />
+    <Compile Include="Updating\UpdateReceiver.cs" />
+    <Compile Include="Updating\Updaters\AgentUpdater.cs" />
     <Compile Include="Updating\BootstrapperParameters.cs" />
-    <Compile Include="Updating\IUpdater.cs" />
+    <Compile Include="Updating\Updaters\ClientUpdater.cs" />
+    <Compile Include="Updating\Updaters\IUpdater.cs" />
     <Compile Include="Updating\IUpdateSource.cs" />
+    <Compile Include="Updating\Updaters\UpdaterBase.cs" />
     <Compile Include="Updating\UpdatesAvailabilityMonitor.cs" />
-    <Compile Include="Updating\ServerUpdater.cs" />
+    <Compile Include="Updating\Updaters\ServerUpdater.cs" />
     <Compile Include="Updating\UpdateSource.cs" />
     <Compile Include="Updating\VersionDirectoryFinder.cs" />
   </ItemGroup>
