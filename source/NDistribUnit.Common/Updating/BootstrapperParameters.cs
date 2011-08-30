@@ -31,14 +31,6 @@ namespace NDistribUnit.Common.Updating
 		public string ConfigurationFile { get; set; }
 
 		/// <summary>
-		/// Gets or sets a value indicating whether this instance is debug.
-		/// </summary>
-		/// <value>
-		///   <c>true</c> if this instance is debug; otherwise, <c>false</c>.
-		/// </value>
-		public bool IsDebug { get; set; }
-
-		/// <summary>
 		/// Gets a value indicating whether [all parameters are filled].
 		/// </summary>
 		/// <value>
@@ -73,8 +65,7 @@ namespace NDistribUnit.Common.Updating
 			new ConsoleParametersParser
 				{
 					{bootstrapperFileKeyName, (string bootstrapperFile) => result.BootstrapperFile = bootstrapperFile},
-					{configurationFileKeyName, (string configurationFile) => result.ConfigurationFile = configurationFile},
-					{isDebugKeyName, (bool isDebug) => result.IsDebug = isDebug}
+					{configurationFileKeyName, (string configurationFile) => result.ConfigurationFile = configurationFile}
 				}.Parse(arguments);
 
 			return result;
@@ -88,9 +79,23 @@ namespace NDistribUnit.Common.Updating
 		/// </returns>
 		public override string ToString()
 		{
-			return string.Format("/{0}:{1} /{2}:{3}{4}", bootstrapperFileKeyName, BootstrapperFile, 
-				configurationFileKeyName, ConfigurationFile,
-				!IsDebug ? string.Empty : string.Format(" /{0}:{1}", isDebugKeyName, IsDebug.ToString()));
+			return string.Format("/{0}:{1} /{2}:{3}", bootstrapperFileKeyName, BootstrapperFile, 
+				configurationFileKeyName, ConfigurationFile);
+		}
+
+		/// <summary>
+		/// Toes the array.
+		/// </summary>
+		/// <returns></returns>
+		public string[] ToArray()
+		{
+			
+			return new string[]
+			       	{
+			       		string.Format("/{0}:{1}", bootstrapperFileKeyName, BootstrapperFile),
+						string.Format("/{0}:{1}", configurationFileKeyName, ConfigurationFile)
+			       	};
+
 		}
 	}
 }

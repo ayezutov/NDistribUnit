@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Autofac;
+using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.Communication.ConnectionTracking.Announcement;
 using NDistribUnit.Common.Communication.ConnectionTracking.Discovery;
+using NDistribUnit.Common.ConsoleProcessing;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.Communication;
 using NDistribUnit.Common.Server.ConnectionTracking.Discovery;
@@ -16,7 +17,7 @@ using NDistribUnit.Server.Services;
 
 namespace NDistribUnit.Server
 {
-	internal class ServerProgram
+	internal class ServerProgram: GeneralProgram
 	{
 		private static int Main(string[] args)
 		{
@@ -27,7 +28,6 @@ namespace NDistribUnit.Server
 		}
 
 		private readonly BootstrapperParameters bootstrapperParameters;
-		private readonly UpdatesAvailabilityMonitor updatesMonitor;
 		private readonly ILog log;
 		private readonly ServerHost serverHost;
 
@@ -44,36 +44,38 @@ namespace NDistribUnit.Server
 		{
 			if (!bootstrapperParameters.AllParametersAreFilled)
 			{
-				log.Error("This programm cannot be launched directly");
-				return 2;
+				log.Error("This program cannot be launched directly");
+				return (int)ReturnCodes.CannotLaunchBootstrappedApplicationDirectly;
 			}
 
-			if (bootstrapperParameters.IsDebug && !Debugger.IsAttached)
-				Debugger.Launch();
+			//serverHost.LoadState();
 
 			updatesMonitor.Start();
-
+			
 			log.BeginActivity("Server is starting...");
+			
 			serverHost.Start();
-			log.EndActivity("Server was started. Please press <Enter> to exit");
-			Console.ReadLine();
-			return 0;
+			log.EndActivity(@"Server was started. Please type ""exit"" and press <Enter> to exit");
+
+			var returnCode = WaitAndGetReturnCode();
+
+			//serverHost.SaveState();
+			updatesMonitor.Stop();
+			serverHost.Close();
+
+			return returnCode;
 		}
 
 		private static void RegisterDependencies(IEnumerable<string> args, ContainerBuilder builder)
 		{
+			RegisterCommonDependencies(builder);
 			builder.RegisterType<ServerProgram>();
-			builder.Register(c => new RollingLog(1000)).InstancePerLifetimeScope();
-			builder.Register(c => new CombinedLog(new ConsoleLog(), c.Resolve<RollingLog>()))
-				.As<ILog>().InstancePerLifetimeScope();
 			builder.Register(c => ServerParameters.Parse(args)).InstancePerLifetimeScope();
 			builder.Register(c => BootstrapperParameters.Parse(args)).InstancePerLifetimeScope();
 			builder.RegisterType<TestRunnerServer>().InstancePerLifetimeScope();
 			builder.RegisterType<DashboardService>().InstancePerLifetimeScope();
 			builder.RegisterType<ServerConnectionsTracker>().InstancePerLifetimeScope();
-			builder.RegisterType<UpdatesAvailabilityMonitor>();
 			builder.RegisterType<UpdateSource>().As<IUpdateSource>();
-			builder.RegisterType<ServerUpdater>().As<IUpdater>();
 			builder.Register(
 				c =>
 				new ServerHost(c.Resolve<ServerParameters>().DashboardPort,

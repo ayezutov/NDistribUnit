@@ -35,6 +35,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\NDistribUnit.Common\Communication\ReturnCodes.cs">
+      <Link>LinkedItems\ReturnCodes.cs</Link>
+    </Compile>
     <Compile Include="..\NDistribUnit.Common\ConsoleProcessing\Options\ConsoleOption.cs">
       <Link>LinkedItems\ConsoleProcessing\ConsoleOption.cs</Link>
     </Compile>
@@ -77,7 +80,6 @@
     <Compile Include="BootstrapperProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -88,12 +90,19 @@
   -->
   <Import Condition="'$(Configuration)'!='MsBuild Task'" Project="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.targets" />
   <UsingTask Condition="'$(Configuration)'!='MsBuild Task'" AssemblyFile="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.dll" TaskName="NDistribUnit.MSBuild.Extensions.HashCalculatorTask" />
+  <UsingTask Condition="'$(Configuration)'!='MsBuild Task'" AssemblyFile="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.dll" TaskName="NDistribUnit.MSBuild.Extensions.CopyResourcesTask" />
   <Target Name="AfterBuild" Condition="'$(Configuration)'!='MsBuild Task'">
+	  <ItemGroup>
+		  <FilesWithAnyContent Include="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Server\NDistribUnit.Server.exe.config"/> 
+		  <FilesWithAnyContent Include="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Agent\NDistribUnit.Agent.exe.config"/> 
+		  <FilesWithAnyContent Include="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Client\NDistribUnit.Client.exe.config"/> 
+	  </ItemGroup>
     <HashCalculatorTask Path="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)" FilesWithAnyContents="@(FilesWithAnyContent)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SolutionDir)builds\$(Configuration)\Server.exe" ContinueOnError="true" OverwriteReadOnlyFiles="true" />
+    <CopyResourcesTask SourceFiles="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Server\NDistribUnit.Server.exe" TargetFiles="$(SolutionDir)builds\$(Configuration)\Server.exe" ContinueOnError="true" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SolutionDir)builds\$(Configuration)\Agent.exe" ContinueOnError="true" OverwriteReadOnlyFiles="true" />
+    <CopyResourcesTask SourceFiles="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Agent\NDistribUnit.Agent.exe" TargetFiles="$(SolutionDir)builds\$(Configuration)\Agent.exe" ContinueOnError="true" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SolutionDir)builds\$(Configuration)\Client.exe" ContinueOnError="true" OverwriteReadOnlyFiles="true" />
+    <CopyResourcesTask SourceFiles="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Client\NDistribUnit.Client.exe" TargetFiles="$(SolutionDir)builds\$(Configuration)\Client.exe" ContinueOnError="true" />
   </Target>
-  <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)builds\$(Configuration)\Server.exe" /Y
-copy "$(TargetPath)" "$(SolutionDir)builds\$(Configuration)\Agent.exe" /Y
-copy "$(TargetPath)" "$(SolutionDir)builds\$(Configuration)\Client.exe" /Y</PostBuildEvent>
-  </PropertyGroup>
 </Project>

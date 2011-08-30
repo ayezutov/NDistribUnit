@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NDistribUnit.Common.ConsoleProcessing.Options;
 
@@ -40,7 +41,23 @@ namespace NDistribUnit.Client.Configuration
         /// </summary>
         private List<ConsoleOption> UnknownOption { get; set; }
 
-        /// <summary>
+    	/// <summary>
+    	/// Gets or sets the server URI.
+    	/// </summary>
+    	/// <value>
+    	/// The server URI.
+    	/// </value>
+    	public Uri ServerUri { get; set; }
+
+		/// <summary>
+		/// Gets or sets the tests configuration.
+		/// </summary>
+		/// <value>
+		/// The tests configuration.
+		/// </value>
+    	public string Configuration { get; set; }
+
+    	/// <summary>
         /// Parses the command line returning a typed 
         /// options object
         /// </summary>
@@ -53,7 +70,11 @@ namespace NDistribUnit.Client.Configuration
                 {
                     {"xml", (string xmlFileName) => result.XmlFileName = xmlFileName, false },
                     {"noshadow", (bool noShadow) => result.NoShadow = noShadow, true },
-                    {ConsoleOption.UnnamedOptionName, (string assembly) => result.AssembliesToTest.Add(assembly), false}
+                    {"configuration", (string configuration) => result.Configuration = configuration, false },
+					{"server", (string testServerUri) => result.ServerUri = Uri.IsWellFormedUriString(testServerUri, UriKind.Absolute) 
+						? new Uri(testServerUri)
+						: null, false},
+                    {ConsoleOption.UnnamedOptionName, (string assembly) => result.AssembliesToTest.Add(assembly), false},
                 };
 
             result.UnknownOption.AddRange(set.Parse(arguments));

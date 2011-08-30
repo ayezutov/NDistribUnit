@@ -30,7 +30,7 @@ namespace NDistribUnit.Common.Updating
 			using (var zipFile = new ZipFile())
 			{
 				zipFile.AddDirectory(directory.FullName, directory.Name);
-				zipFile.AddSelectedFiles("*.exe", directory.Parent.FullName, "", false);
+				//zipFile.AddSelectedFiles("*.exe", directory.Parent.FullName, "", false);
 				using (var stream = new MemoryStream())
 				{
 					zipFile.Save(stream);

@@ -110,7 +110,14 @@ namespace NDistribUnit.Common.Logging
             AddItem(LogEntryType.Error, message, exception);
         }
 
-        /// <summary>
+		/// <summary>
+		/// Logs some debugging information
+		/// </summary>
+		/// <param name="message">The message.</param>
+    	public void Debug(string message)
+    	{}
+
+    	/// <summary>
         /// Gets the saved entries
         /// </summary>
         /// <param name="lastFetchedEntryId">The starting id of some entry. Use "0" if you want to start with the very beginning</param>

@@ -32,6 +32,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MsBuild Task|AnyCPU'">
     <OutputPath>bin\MsBuild Task\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build.Framework" />
@@ -46,6 +47,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Vestris.ResourceLib">
+      <HintPath>..\_dependencies\Vestris.ResourceLib\1.2\Bin\Release\Vestris.ResourceLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\NDistribUnit.Common\HashChecks\DirectoryHash.cs">
@@ -59,6 +63,7 @@
     </Compile>
     <Compile Include="AssemblyInfoWrapper.cs" />
     <Compile Include="AssemblyVersionTask.cs" />
+    <Compile Include="CopyResourcesTask.cs" />
     <Compile Include="HashCalculatorTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoveFoldersOfAssemblyVersionPatternTask.cs" />
@@ -72,7 +77,9 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)NDistribUnit.*" "$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\" /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetDir)NDistribUnit.*" "$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\" /Y
+xcopy "$(TargetDir)Vestris.ResourceLib.dll" "$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\" /Y
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

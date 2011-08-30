@@ -88,7 +88,7 @@ namespace NDistribUnit.Common.Agent
             return new PingResult { 
 				AgentState = AgentState.Connected, 
 				EndpointName = Name, 
-				Version = Assembly.GetEntryAssembly().GetName().Version};
+				Version = Assembly.GetExecutingAssembly().GetName().Version};
         }
 
         /// <summary>

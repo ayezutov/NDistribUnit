@@ -49,6 +49,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Vestris.ResourceLib">
+      <HintPath>..\_dependencies\Vestris.ResourceLib\1.2\Bin\Release\Vestris.ResourceLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Communication\AnnouncementConnectionTrackersStateTests.cs" />
@@ -72,6 +75,11 @@
       <Project>{91A452A1-4EBC-42C6-A724-F3BFF3A66EAF}</Project>
       <Name>NDistribUnit.Server</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\NDistribUnit.Common.Tests\App.config">
+      <Link>App.config</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

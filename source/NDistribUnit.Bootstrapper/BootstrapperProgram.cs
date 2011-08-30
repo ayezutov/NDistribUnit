@@ -1,24 +1,37 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
-using NDistribUnit.Common.HashChecks;
+using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Updating;
 
 namespace NDistribUnit.Bootstrapper
 {
+	[Serializable]
 	internal class BootstrapperProgram
 	{
+		private readonly string[] args;
+		private ConsoleLog log;
+		private AppDomain domain;
+
 		private static void Main(string[] args)
 		{
-			var log = new ConsoleLog();
+			new BootstrapperProgram(args).Run();
+		}
+
+		private BootstrapperProgram(string[] args)
+		{
+			this.args = args;
+			log = new ConsoleLog();
+		}
+
+		private void Run()
+		{
 			string assemblyFile = Assembly.GetEntryAssembly().Location;
 			string assemblyFolder = Path.GetDirectoryName(assemblyFile);
 			string assemblyFileName = Path.GetFileNameWithoutExtension(assemblyFile);
-			
+
 			var versionDirectory = new VersionDirectoryFinder(log).GetVersionDirectory(assemblyFolder);
 
 			if (versionDirectory == null)
@@ -39,20 +52,31 @@ namespace NDistribUnit.Bootstrapper
 
 			try
 			{
-				new Process
-					{
-						StartInfo = new ProcessStartInfo(files[0].FullName,
-						                                 new BootstrapperParameters
-						                                 	{
-						                                 		BootstrapperFile = assemblyFile,
-						                                 		ConfigurationFile = assemblyFile + ".config",
-						                                 		IsDebug = Debugger.IsAttached
-						                                 	}.ToString())
-					}.Start();
+				var fileToRun = files[0].FullName;
+
+				domain = AppDomain.CreateDomain(AppDomain.CurrentDomain.FriendlyName + "_bootstrapped",
+				                                    AppDomain.CurrentDomain.Evidence,
+				                                    new AppDomainSetup
+				                                    	{
+				                                    		ConfigurationFile = fileToRun + ".config"
+				                                    	});
+
+				var newArgs = new List<string>(args);
+				newArgs.AddRange(new BootstrapperParameters
+				                 	{
+				                 		BootstrapperFile = assemblyFile,
+				                 		ConfigurationFile = assemblyFile + ".config"
+				                 	}.ToArray());
+				var returnValue = domain.ExecuteAssembly(fileToRun, newArgs.ToArray());
+				AppDomain.Unload(domain);
+				if (returnValue == (int)ReturnCodes.RestartDueToAvailableUpdate)
+				{
+					Main(args);
+				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
-				log.Error("Unable to start target process. It is possible, that user cancelled process elevation.", ex);
+				log.Error("Unable to start target process.", ex);
 				Console.ReadLine();
 			}
 		}

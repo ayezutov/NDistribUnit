@@ -16,7 +16,7 @@ namespace NDistribUnit.Common.Updating
 		/// <summary>
 		/// 
 		/// </summary>
-		public static readonly Regex VersionPattern = new Regex(@"(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)", RegexOptions.Compiled);
+		public static readonly Regex VersionPattern = new Regex(@"^(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)$", RegexOptions.Compiled);
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="VersionDirectoryFinder"/> class.

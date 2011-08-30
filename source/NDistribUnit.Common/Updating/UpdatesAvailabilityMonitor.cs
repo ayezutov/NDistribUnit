@@ -13,21 +13,25 @@ namespace NDistribUnit.Common.Updating
 	public class UpdatesAvailabilityMonitor
 	{
 		private readonly string path;
+		private Guid guid = Guid.NewGuid();
 		private FileSystemWatcher fileSystemWatcher;
 		private readonly Timer timer;
 		private readonly Regex versionPattern = new Regex(@"(?<=[\\\/])(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)(?=([\\\/]|$))", RegexOptions.Compiled);
 		private readonly ILog log;
-		private readonly IUpdater updater;
+
+		/// <summary>
+		/// Occurs when an update is available.
+		/// </summary>
+		public event Action UpdateAvailable;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="UpdatesAvailabilityMonitor"/> class.
 		/// </summary>
-		public UpdatesAvailabilityMonitor(ILog log, IUpdater updater, BootstrapperParameters bootstrapperParameters)
+		public UpdatesAvailabilityMonitor(ILog log, BootstrapperParameters bootstrapperParameters)
 		{
 			path = Path.GetDirectoryName(bootstrapperParameters.BootstrapperFile);
 			this.log = log;
-			this.updater = updater;
-
+			
 			timer = new Timer(SomeFileWasChangedAfterWait);
 		}
 
@@ -56,10 +60,10 @@ namespace NDistribUnit.Common.Updating
 			if (versionDirectory == null)
 				return;
 
-			if (IsVersionHigherThanCurrent(versionDirectory.Name) && updater != null)
-			{ 
-				log.Success(string.Format("Updating to version: {0}", versionDirectory.Name));
-				updater.PerformUpdate();
+			if (IsVersionHigherThanCurrent(versionDirectory.Name) && UpdateAvailable != null)
+			{
+				log.Success(string.Format("Updating to version: {0}, Thread: {1}, Guid: {2}", versionDirectory.Name, Thread.CurrentThread.ManagedThreadId, guid));
+				UpdateAvailable();
 			}
 		}
 
@@ -87,6 +91,15 @@ namespace NDistribUnit.Common.Updating
 		{
 			var match = versionPattern.Match(fullPath.Replace(path, string.Empty));
 			return match.Success ? match.Value : null;
+		}
+
+		/// <summary>
+		/// Stops this instance.
+		/// </summary>
+		public void Stop()
+		{
+			fileSystemWatcher.EnableRaisingEvents = false;
+			fileSystemWatcher.Dispose();
 		}
 	}
 }

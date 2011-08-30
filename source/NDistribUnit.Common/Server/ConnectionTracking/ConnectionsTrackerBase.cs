@@ -48,10 +48,17 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
             {
                 try
                 {
-                    log.Info(string.Format("{0}: Pinging {1} at {2}", guid, endpointInformation.Name,
+                    log.Debug(string.Format("{0}: Pinging {1} at {2}", guid, endpointInformation.Name,
                                            endpointInformation.Endpoint.Address));
-                    endpointInformation.PingTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                    var result = endpointInformation.Pingable.Ping(TimeSpan.FromMilliseconds(options.PingIntervalInMiliseconds));
+					try
+					{
+						endpointInformation.PingTimer.Change(Timeout.Infinite, Timeout.Infinite);
+					}
+					catch(ObjectDisposedException)
+					{
+						return;
+					}
+                	var result = endpointInformation.Pingable.Ping(TimeSpan.FromMilliseconds(options.PingIntervalInMiliseconds));
                     if (result.EndpointName.Equals(endpointInformation.Name))
                     {
                         endpointInformation.PingTimer.Change(options.PingIntervalInMiliseconds, Timeout.Infinite);
@@ -94,11 +101,19 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
             lock (endpoints)
             {
                 log.Info(string.Format("{1}: Got: {0}", endpoint.Address, guid));
-                var savedEndpoint = endpoints.FirstOrDefault(e => e.Equals(endpointInformation));
-                if (savedEndpoint == null || !savedEndpoint.Endpoint.Address.Equals(endpoint.Address))
+                var endpointWithSameName = endpoints.FirstOrDefault(e => e.Equals(endpointInformation));
+                var endpointWithSameAddress = endpoints.FirstOrDefault(e => 
+					e.Endpoint.Address.Equals(endpointInformation.Endpoint.Address) && !e.Endpoint.Equals(endpointInformation));
+
+				if (endpointWithSameAddress != null)
+				{
+					RemoveEndpointFromTracking(endpointWithSameAddress);
+				}
+
+				if (endpointWithSameName == null || !endpointWithSameName.Endpoint.Address.Equals(endpoint.Address))
                 {
-                    if (savedEndpoint != null)
-                        RemoveEndpointFromTracking(savedEndpoint);
+                    if (endpointWithSameName != null)
+                        RemoveEndpointFromTracking(endpointWithSameName);
 
                     log.Info(string.Format("{1}: New endpoint was detected: {0}", endpoint.Address, guid));
                     endpoints.Add(endpointInformation);
@@ -108,17 +123,22 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
                     endpointInformation.PingTimer = new Timer(OnEndpointPing, endpointInformation,
                                                               0, Timeout.Infinite);
 
-                    if (EndpointConnected != null)
-                        EndpointConnected(this, new EndpointConnectionChangedEventArgs
-                                                	{
-                                                		EndpointInfo = endpointInformation,
-														Version = endpointInformation.Version
-                                                	});
+                    OnEndPointConnected(endpointInformation);
                 }
             }
         }
 
-        private void RemoveEndpointFromTracking(EndpointInformation endpointInformation)
+    	private void OnEndPointConnected(EndpointInformation endpointInformation)
+    	{
+    		if (EndpointConnected != null)
+    			EndpointConnected(this, new EndpointConnectionChangedEventArgs
+    			                        	{
+    			                        		EndpointInfo = endpointInformation,
+    			                        		Version = endpointInformation.Version
+    			                        	});
+    	}
+
+    	private void RemoveEndpointFromTracking(EndpointInformation endpointInformation)
         {
             log.Info(string.Format("{1}: Endpoint was disconnected: {0}", endpointInformation.Endpoint.Address, guid));
             lock (endpoints)
@@ -131,15 +151,20 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
                 endpoints.Remove(endpointInformation);
             }
 
-            if (EndpointDisconnected != null)
-                EndpointDisconnected(this, new EndpointConnectionChangedEventArgs
-                                           	{
-                                           		EndpointInfo = endpointInformation,
-												Version = endpointInformation.Version
-                                           	});
+            OnEndPointDisconnected(endpointInformation);
         }
 
-        /// <summary>
+    	private void OnEndPointDisconnected(EndpointInformation endpointInformation)
+    	{
+    		if (EndpointDisconnected != null)
+    			EndpointDisconnected(this, new EndpointConnectionChangedEventArgs
+    			                           	{
+    			                           		EndpointInfo = endpointInformation,
+    			                           		Version = endpointInformation.Version
+    			                           	});
+    	}
+
+    	/// <summary>
         /// Event, which is fired, whenever a new endpoint is connected
         /// </summary>
         public event EventHandler<EndpointConnectionChangedEventArgs> EndpointConnected;

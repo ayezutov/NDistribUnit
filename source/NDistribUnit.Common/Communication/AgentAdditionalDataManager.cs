@@ -26,7 +26,7 @@ namespace NDistribUnit.Common.Communication.ConnectionTracking
          {
              return new XElement(agentInfoElementName, 
 				 new XElement(agentNameElementName, agentHost.TestRunner.Name),
-				 new XElement(versionElementName, Assembly.GetEntryAssembly().GetName().Version.ToString()));
+				 new XElement(versionElementName, Assembly.GetExecutingAssembly().GetName().Version.ToString()));
          }
 
         /// <summary>

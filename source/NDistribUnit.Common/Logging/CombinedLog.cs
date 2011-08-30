@@ -112,5 +112,19 @@ namespace NDistribUnit.Common.Logging
                 logger.Error(message, exception);
             }
         }
+
+		/// <summary>
+		/// Logs some debugging information
+		/// </summary>
+		/// <param name="message">The message.</param>
+    	public void Debug(string message)
+    	{
+#if DEBUG
+			foreach (var logger in logs)
+			{
+				logger.Debug(message);
+			}
+#endif
+    	}
     }
 }

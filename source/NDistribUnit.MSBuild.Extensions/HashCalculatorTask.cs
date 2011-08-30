@@ -34,6 +34,12 @@ namespace NDistribUnit.MSBuild.Extensions
 		/// </value>
 		public ITaskItem[] FilesWithAnyContents { get; set; }
 
+		/// <summary>
+		/// Runs the task.
+		/// </summary>
+		/// <returns>
+		/// true if successful; otherwise, false.
+		/// </returns>
 		public override bool Execute()
 		{
 			IList<string> filesToIgnore = null;

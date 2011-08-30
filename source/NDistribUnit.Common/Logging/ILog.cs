@@ -56,5 +56,11 @@ namespace NDistribUnit.Common.Logging
         /// <param name="message">The error message</param>
         /// <param name="exception">The exception, which caused the error</param>
         void Error(string message, Exception exception);
+
+		/// <summary>
+		/// Logs some debugging information
+		/// </summary>
+		/// <param name="message">The message.</param>
+		void Debug(string message);
     }
 }

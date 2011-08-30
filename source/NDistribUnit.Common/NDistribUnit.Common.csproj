@@ -43,6 +43,9 @@
     <OutputPath>bin\MsBuild Task\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\_dependencies\Autofac-2.4.4.705-NET40\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>..\_dependencies\DotNetZipLib-DevKit-v1.9\zip-v1.9\Release\Ionic.Zip.dll</HintPath>
     </Reference>
@@ -78,6 +81,8 @@
     <Compile Include="Agent\Options\AgentConsoleParameters.cs" />
     <Compile Include="Agent\TestRunnerAgent.cs" />
     <Compile Include="Communication\AgentAdditionalDataManager.cs" />
+    <Compile Include="Communication\ReturnCodes.cs" />
+    <Compile Include="ConsoleProcessing\GeneralProgram.cs" />
     <Compile Include="DataContracts\PingResult.cs" />
     <Compile Include="EventArgs.cs" />
     <Compile Include="Collections\RollingList.cs" />
@@ -122,18 +127,15 @@
     <Compile Include="ServiceContracts\IDashboardService.cs" />
     <Compile Include="ServiceContracts\UpdatePackage.cs" />
     <Compile Include="Updating\UpdateReceiver.cs" />
-    <Compile Include="Updating\Updaters\AgentUpdater.cs" />
     <Compile Include="Updating\BootstrapperParameters.cs" />
-    <Compile Include="Updating\Updaters\ClientUpdater.cs" />
-    <Compile Include="Updating\Updaters\IUpdater.cs" />
     <Compile Include="Updating\IUpdateSource.cs" />
-    <Compile Include="Updating\Updaters\UpdaterBase.cs" />
     <Compile Include="Updating\UpdatesAvailabilityMonitor.cs" />
-    <Compile Include="Updating\Updaters\ServerUpdater.cs" />
     <Compile Include="Updating\UpdateSource.cs" />
     <Compile Include="Updating\VersionDirectoryFinder.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Updating\Updaters\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
   </ItemGroup>

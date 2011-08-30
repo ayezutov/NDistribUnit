@@ -82,7 +82,18 @@ namespace NDistribUnit.Common.Logging
             WriteToConsole(System.Console.Error, ConsoleColor.Red, "Error:", message, exception);
         }
 
-        private static void WriteToConsole(TextWriter writer, ConsoleColor color, string prefix, string message, Exception exception)
+		/// <summary>
+		/// Logs some debugging information
+		/// </summary>
+		/// <param name="message">The message.</param>
+    	public void Debug(string message)
+    	{
+			#if DEBUG
+			WriteToConsole(System.Console.Out, ConsoleColor.Gray, "Debug:", message, null);
+			#endif
+    	}
+
+    	private static void WriteToConsole(TextWriter writer, ConsoleColor color, string prefix, string message, Exception exception)
         {
             if (exception != null)
             {

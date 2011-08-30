@@ -60,7 +60,7 @@ namespace NDistribUnit.Common.Agent.ExternalModules
         {
             lock (this)
             {
-                log.Info(string.Format("Ping received: {0}, Ping interval: {1}", endpointDiscoveryMetadata.Address, eventArgs.Data));
+                log.Debug(string.Format("Ping received: {0}, Ping interval: {1}", endpointDiscoveryMetadata.Address, eventArgs.Data));
                 var timeoutBeforeAnnouncement = eventArgs.Data.Add(TimeSpan.FromSeconds(2));
                 if (timeoutBeforeAnnouncement < defaultPingInterval)
                     timeoutBeforeAnnouncement = defaultPingInterval;

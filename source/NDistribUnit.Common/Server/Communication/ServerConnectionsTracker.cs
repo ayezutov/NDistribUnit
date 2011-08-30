@@ -75,7 +75,7 @@ namespace NDistribUnit.Server.Communication
     		try
     		{
     			var agentVersion = agent.Version;
-    			var currentVersion = Assembly.GetEntryAssembly().GetName().Version;
+    			var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
     			if (agentVersion < currentVersion)
     			{

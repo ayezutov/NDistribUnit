@@ -34,6 +34,9 @@ namespace NDistribUnit.Integration.Tests.General
                 c.Resolve<ServerConnectionsTracker>(),
                 c.Resolve<ILog>()));
             builder.RegisterType<TestRunnerServer>();
+            builder.RegisterType<UpdateReceiver>();
+            builder.RegisterType<VersionDirectoryFinder>();
+			builder.RegisterType<BootstrapperParameters>();
             builder.Register(c => new DashboardService(c.Resolve<ServerConnectionsTracker>(), new RollingLog(5)));
 
             if (connectionsTrackerType == typeof(DiscoveryConnectionsTracker<>))
