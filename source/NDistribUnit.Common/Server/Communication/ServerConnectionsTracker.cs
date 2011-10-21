@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.ServiceModel;
+using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication.ConnectionTracking;
+using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
+using NDistribUnit.Common.Extensions;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Common.Updating;
 
-namespace NDistribUnit.Server.Communication
+namespace NDistribUnit.Common.Server.Communication
 {
     /// <summary>
     /// Tracks connections on NDistribUnit server. It always has a list of agents with actual statuses.
@@ -19,25 +21,33 @@ namespace NDistribUnit.Server.Communication
         private readonly ILog log;
         private readonly IConnectionsTracker<ITestRunnerAgent> connectionsTracker;
     	private readonly IUpdateSource updateSource;
+        private readonly IVersionProvider versionProvider;
 
-    	/// <summary>
+        /// <summary>
         /// Gets the list of agents
         /// </summary>
         public IList<AgentInformation> Agents { get; private set; }
 
 		/// <summary>
-		/// Initializes a new instance of a connection tracker
+		/// Occurs when agent state changed.
 		/// </summary>
-		/// <param name="connectionsTracker">The connections tracker.</param>
-		/// <param name="updateSource">The update source.</param>
-		/// <param name="log">The log.</param>
-        public ServerConnectionsTracker(IConnectionsTracker<ITestRunnerAgent> connectionsTracker, IUpdateSource updateSource, ILog log)
+    	public event EventHandler<EventArgs> AgentStateChanged;
+
+        /// <summary>
+        /// Initializes a new instance of a connection tracker
+        /// </summary>
+        /// <param name="connectionsTracker">The connections tracker.</param>
+        /// <param name="updateSource">The update source.</param>
+        /// <param name="versionProvider">The version provider.</param>
+        /// <param name="log">The log.</param>
+        public ServerConnectionsTracker(IConnectionsTracker<ITestRunnerAgent> connectionsTracker, IUpdateSource updateSource, IVersionProvider versionProvider, ILog log)
         {
             this.log = log;
             Agents = new List<AgentInformation>();
             this.connectionsTracker = connectionsTracker;
 			this.updateSource = updateSource;
-			this.connectionsTracker.EndpointConnected += OnEndpointConnected;
+            this.versionProvider = versionProvider;
+            this.connectionsTracker.EndpointConnected += OnEndpointConnected;
             this.connectionsTracker.EndpointDisconnected += OnEndpointDisconnected;
             this.connectionsTracker.EndpointSuccessfulPing += OnEndpointSuccessfulPing;
         }
@@ -75,7 +85,7 @@ namespace NDistribUnit.Server.Communication
     		try
     		{
     			var agentVersion = agent.Version;
-    			var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+    			var currentVersion = versionProvider.GetVersion();
 
     			if (agentVersion < currentVersion)
     			{
@@ -123,11 +133,11 @@ namespace NDistribUnit.Server.Communication
     				             	{
     				             		Endpoint = e.EndpointInfo.Endpoint,
     				             		LastStatusUpdate = DateTime.UtcNow,
-    				             		State = AgentState.Connected,
     				             		Name = e.EndpointInfo.Name,
     				             		Version = e.EndpointInfo.Version
     				             	};
-
+    				savedAgent.StateChanged += OnAgentStateChanged;
+    				savedAgent.State = AgentState.Connected;
     				Agents.Add(savedAgent);
     			}
     		}
@@ -142,6 +152,12 @@ namespace NDistribUnit.Server.Communication
     			savedAgent.Version = e.EndpointInfo.Version;
     		}
     		return savedAgent;
+    	}
+
+    	private void OnAgentStateChanged(AgentState arg1, AgentState arg2)
+    	{
+			if (arg2 == AgentState.Connected)
+    			AgentStateChanged.SafeInvoke(this);
     	}
 
     	private void OnEndpointDisconnected(object sender, EndpointConnectionChangedEventArgs e)
@@ -177,5 +193,14 @@ namespace NDistribUnit.Server.Communication
         {
             connectionsTracker.Stop();
         }
+
+		/// <summary>
+		/// Grabs a free agent and moves it to the busy state.
+		/// </summary>
+		/// <returns></returns>
+    	public AgentInformation GrabFreeAgent()
+		{
+			return null;
+		}
     }
 }

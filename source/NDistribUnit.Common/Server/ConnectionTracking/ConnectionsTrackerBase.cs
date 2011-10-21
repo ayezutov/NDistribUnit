@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.ServiceModel;
 using System.ServiceModel.Discovery;
 using System.Threading;
+using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
@@ -27,16 +28,17 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
         /// </summary>
         protected readonly Guid guid = Guid.NewGuid();
         private readonly IList<EndpointInformation> endpoints = new List<EndpointInformation>();
-        private readonly IConnectionsTrackerOptions options;
+        ///
+        protected readonly IConnectionsHostOptions ConnectionsHostOptions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConnectionsTrackerBase&lt;TIEndpoint&gt;"/> class.
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="log">The log.</param>
-        protected ConnectionsTrackerBase(IConnectionsTrackerOptions options, ILog log)
+        protected ConnectionsTrackerBase(IConnectionsHostOptions options, ILog log)
         {
-            this.options = options;
+            ConnectionsHostOptions = options;
             this.log = log;
         }
 
@@ -58,10 +60,10 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
 					{
 						return;
 					}
-                	var result = endpointInformation.Pingable.Ping(TimeSpan.FromMilliseconds(options.PingIntervalInMiliseconds));
+                	var result = endpointInformation.Pingable.Ping(TimeSpan.FromMilliseconds(ConnectionsHostOptions.PingIntervalInMiliseconds));
                     if (result.EndpointName.Equals(endpointInformation.Name))
                     {
-                        endpointInformation.PingTimer.Change(options.PingIntervalInMiliseconds, Timeout.Infinite);
+                        endpointInformation.PingTimer.Change(ConnectionsHostOptions.PingIntervalInMiliseconds, Timeout.Infinite);
                         endpointInformation.LastStatusUpdateTime = DateTime.UtcNow;
                         if (EndpointSuccessfulPing != null)
                             EndpointSuccessfulPing(this, new EndpointConnectionChangedEventArgs
@@ -138,7 +140,7 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
     			                        	});
     	}
 
-    	private void RemoveEndpointFromTracking(EndpointInformation endpointInformation)
+        private void RemoveEndpointFromTracking(EndpointInformation endpointInformation)
         {
             log.Info(string.Format("{1}: Endpoint was disconnected: {0}", endpointInformation.Endpoint.Address, guid));
             lock (endpoints)

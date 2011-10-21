@@ -1,4 +1,5 @@
 using System;
+using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Logging;
 using NUnit.Framework;
 using System.Linq;

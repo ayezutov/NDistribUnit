@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Reflection;
 using System.ServiceModel.Discovery;
 using System.Threading;
-using System.Xml.Linq;
+using NDistribUnit.Common.Common.Communication;
+using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.Logging;
 
@@ -15,23 +15,25 @@ namespace NDistribUnit.Common.Agent.ExternalModules
     public class AnnouncementModule: IAgentExternalModule
     {
         private AnnouncementClient client;
-        private TimeSpan defaultPingInterval;
+        private TimeSpan announcementInterval;
         private readonly Uri scope;
         private readonly ILog log;
+        private readonly IVersionProvider versionProvider;
         private Timer announcementTimer;
         private EndpointDiscoveryMetadata endpointDiscoveryMetadata;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AnnouncementModule"/> class.
         /// </summary>
-        /// <param name="defaultPingInterval">The default ping interval.</param>
-        /// <param name="scope"></param>
-        /// <param name="log"></param>
-        public AnnouncementModule(TimeSpan defaultPingInterval, Uri scope, ILog log)
+        /// <param name="options">The options.</param>
+        /// <param name="log">The log.</param>
+        /// <param name="versionProvider">The version provider.</param>
+        public AnnouncementModule(AgentConfiguration options, ILog log, IVersionProvider versionProvider)
         {
-            this.defaultPingInterval = defaultPingInterval;
-            this.scope = scope;
+            announcementInterval = options.AnnouncementInterval;
+            scope = options.Scope;
             this.log = log;
+            this.versionProvider = versionProvider;
             announcementTimer = new Timer(o=>Announce(), null, Timeout.Infinite, Timeout.Infinite);
         }
 
@@ -52,7 +54,7 @@ namespace NDistribUnit.Common.Agent.ExternalModules
 
             if (!endpointDiscoveryMetadata.Scopes.Contains(scope))
                 endpointDiscoveryMetadata.Scopes.Add(scope);
-            AgentAdditionalDataManager.Add(endpointDiscoveryMetadata.Extensions, host);
+            AgentAdditionalDataManager.Add(endpointDiscoveryMetadata.Extensions, host, versionProvider);
             Announce();
         }
 
@@ -62,8 +64,8 @@ namespace NDistribUnit.Common.Agent.ExternalModules
             {
                 log.Debug(string.Format("Ping received: {0}, Ping interval: {1}", endpointDiscoveryMetadata.Address, eventArgs.Data));
                 var timeoutBeforeAnnouncement = eventArgs.Data.Add(TimeSpan.FromSeconds(2));
-                if (timeoutBeforeAnnouncement < defaultPingInterval)
-                    timeoutBeforeAnnouncement = defaultPingInterval;
+                if (timeoutBeforeAnnouncement < announcementInterval)
+                    timeoutBeforeAnnouncement = announcementInterval;
 
                 announcementTimer.Change((int)timeoutBeforeAnnouncement.TotalMilliseconds, Timeout.Infinite);
             }
@@ -81,7 +83,7 @@ namespace NDistribUnit.Common.Agent.ExternalModules
                     log.Info(string.Format("Announcing endpoint {0}", endpointDiscoveryMetadata.Address));
                     client.AnnounceOnline(endpointDiscoveryMetadata);
 
-                    announcementTimer.Change((int)defaultPingInterval.TotalMilliseconds, Timeout.Infinite);
+                    announcementTimer.Change((int)announcementInterval.TotalMilliseconds, Timeout.Infinite);
                 }
             }
         }

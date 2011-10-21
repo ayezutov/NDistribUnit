@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
+using System.IO;
 using Autofac;
+using Autofac.Core;
+using NDistribUnit.Common.Common.ConsoleProcessing;
+using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication;
-using NDistribUnit.Common.Communication.ConnectionTracking;
-using NDistribUnit.Common.Communication.ConnectionTracking.Announcement;
-using NDistribUnit.Common.Communication.ConnectionTracking.Discovery;
 using NDistribUnit.Common.ConsoleProcessing;
+using NDistribUnit.Common.Dependencies;
 using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.Server;
 using NDistribUnit.Common.Server.Communication;
-using NDistribUnit.Common.Server.ConnectionTracking.Discovery;
-using NDistribUnit.Common.Server.Options;
-using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Common.Updating;
-using NDistribUnit.Server.Communication;
-using NDistribUnit.Server.Services;
 
 namespace NDistribUnit.Server
 {
@@ -21,10 +20,24 @@ namespace NDistribUnit.Server
 	{
 		private static int Main(string[] args)
 		{
-			var builder = new ContainerBuilder();
-			RegisterDependencies(args, builder);
-			var container = builder.Build();
-			return container.Resolve<ServerProgram>().Run();
+            try
+            {
+                var builder = new ContainerBuilder();
+                Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                builder.RegisterInstance(configuration);
+
+                var serverSettings = configuration.GetSection("settings") as ServerConfiguration;
+                Debug.Assert(serverSettings != null);
+                builder.RegisterType<ServerProgram>();
+                builder.RegisterModule(new ServerDependenciesModule(serverSettings, args, configuration));
+                IContainer container = builder.Build();
+                return container.Resolve<ServerProgram>().Run();
+            }
+            catch (DependencyResolutionException ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
 		}
 
 		private readonly BootstrapperParameters bootstrapperParameters;
@@ -32,7 +45,7 @@ namespace NDistribUnit.Server
 		private readonly ServerHost serverHost;
 
 		public ServerProgram(ServerHost serverHost, BootstrapperParameters bootstrapperParameters,
-		                     UpdatesAvailabilityMonitor updatesMonitor, ILog log)
+		                     UpdatesMonitor updatesMonitor, ILog log)
 		{
 			this.bootstrapperParameters = bootstrapperParameters;
 			this.updatesMonitor = updatesMonitor;
@@ -42,12 +55,11 @@ namespace NDistribUnit.Server
 
 		private int Run()
 		{
-			if (!bootstrapperParameters.AllParametersAreFilled)
+            if (!bootstrapperParameters.AllParametersAreFilled)
 			{
 				log.Error("This program cannot be launched directly");
 				return (int)ReturnCodes.CannotLaunchBootstrappedApplicationDirectly;
 			}
-
 			//serverHost.LoadState();
 
 			updatesMonitor.Start();
@@ -64,54 +76,6 @@ namespace NDistribUnit.Server
 			serverHost.Close();
 
 			return returnCode;
-		}
-
-		private static void RegisterDependencies(IEnumerable<string> args, ContainerBuilder builder)
-		{
-			RegisterCommonDependencies(builder);
-			builder.RegisterType<ServerProgram>();
-			builder.Register(c => ServerParameters.Parse(args)).InstancePerLifetimeScope();
-			builder.Register(c => BootstrapperParameters.Parse(args)).InstancePerLifetimeScope();
-			builder.RegisterType<TestRunnerServer>().InstancePerLifetimeScope();
-			builder.RegisterType<DashboardService>().InstancePerLifetimeScope();
-			builder.RegisterType<ServerConnectionsTracker>().InstancePerLifetimeScope();
-			builder.RegisterType<UpdateSource>().As<IUpdateSource>();
-			builder.Register(
-				c =>
-				new ServerHost(c.Resolve<ServerParameters>().DashboardPort,
-				               c.Resolve<ServerParameters>().TestRunnerPort,
-				               c.Resolve<TestRunnerServer>(),
-				               c.Resolve<DashboardService>(),
-				               c.Resolve<ServerConnectionsTracker>(),
-				               c.Resolve<ILog>()
-					)).InstancePerLifetimeScope();
-#pragma warning disable 162
-// ReSharper disable HeuristicUnreachableCode
-// ReSharper disable RedundantIfElseBlock
-			if (false)
-			{
-				builder.Register(c => new DiscoveryConnectionsTracker<ITestRunnerAgent>(
-				                      	new DiscoveryOptions
-				                      		{
-				                      			Scope = new Uri("http://hubwoo.com/trr-odc"),
-				                      			DiscoveryIntervalInMiliseconds = 20000,
-				                      			PingIntervalInMiliseconds = 5000
-				                      		}, c.Resolve<ILog>()))
-					.As<IConnectionsTracker<ITestRunnerAgent>>();
-			}
-			else
-			{
-				builder.Register(c => new AnnouncementConnectionsTracker<ITestRunnerAgent>(
-				                      	new AnnouncementConnectionsTrackerOptions
-				                      		{
-				                      			Scope = new Uri("http://hubwoo.com/trr-odc"),
-				                      			PingIntervalInMiliseconds = 5000
-				                      		}, c.Resolve<ILog>()))
-					.As<IConnectionsTracker<ITestRunnerAgent>>();
-			}
-// ReSharper restore RedundantIfElseBlock
-// ReSharper restore HeuristicUnreachableCode
-#pragma warning restore 162
 		}
 	}
 }

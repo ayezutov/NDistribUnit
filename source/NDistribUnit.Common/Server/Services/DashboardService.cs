@@ -7,13 +7,15 @@ using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using NDistribUnit.Common.Common.Logging;
+using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.Server.Communication;
 using NDistribUnit.Common.ServiceContracts;
-using NDistribUnit.Server.Communication;
 using System.Linq;
 
-namespace NDistribUnit.Server.Services
+namespace NDistribUnit.Common.Server.Services
 {
     /// <summary>
     /// The service, which allows a web-based status tracking of the server
@@ -74,7 +76,7 @@ namespace NDistribUnit.Server.Services
                                {
                                    Name = "BDB Nightly",
                                    UniqueIdentifier = Guid.NewGuid().ToString()
-                               },
+                               }
                        };
         }
 

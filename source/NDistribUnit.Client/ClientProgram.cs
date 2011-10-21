@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Reflection;
 using System.ServiceModel;
-using System.Threading.Tasks;
 using Autofac;
 using NDistribUnit.Client.Configuration;
+using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Communication;
+using NDistribUnit.Common.Dependencies;
 using NDistribUnit.Common.Logging;
-using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Common.Updating;
 
 namespace NDistribUnit.Client
@@ -17,22 +16,18 @@ namespace NDistribUnit.Client
 	public class ClientProgram
 	{
 		private readonly ClientParameters options;
-		private readonly UpdateReceiver updateReceiver;
 		private readonly BootstrapperParameters bootstrapperParameters;
+		private readonly TestRunnerClient testRunnerClient;
 		private readonly ILog log;
 
 		static int Main(string[] args)
 		{
-			var builder = new ContainerBuilder();
-			builder.RegisterType<ClientProgram>();
-			builder.RegisterType<UpdateReceiver>();
-			builder.RegisterType<VersionDirectoryFinder>();
-			builder.Register(c => BootstrapperParameters.Parse(args)).InstancePerLifetimeScope();
-			builder.RegisterType<ConsoleLog>().As<ILog>();
-			builder.Register(c => ClientParameters.Parse(args)).InstancePerLifetimeScope();
-
+		    var builder = new ContainerBuilder();
+		    builder.Register(c => ClientParameters.Parse(args)).InstancePerLifetimeScope();
+		    builder.RegisterType<ClientProgram>();
+            builder.RegisterModule(new ClientDependenciesModule());
+            builder.RegisterModule(new CommonDependenciesModule(args));
 			var container = builder.Build();
-
 			return container.Resolve<ClientProgram>().Run();
 		}
 
@@ -40,14 +35,14 @@ namespace NDistribUnit.Client
 		/// Initializes a new instance of the <see cref="ClientProgram"/> class.
 		/// </summary>
 		/// <param name="options">Options, which were provided through command line</param>
-		/// <param name="updateReceiver">The update receiver.</param>
 		/// <param name="bootstrapperParameters">The bootstrapper parameters.</param>
+		/// <param name="testRunnerClient">The client.</param>
 		/// <param name="log">The log.</param>
-		public ClientProgram(ClientParameters options, UpdateReceiver updateReceiver, BootstrapperParameters bootstrapperParameters, ILog log)
+		public ClientProgram(ClientParameters options, BootstrapperParameters bootstrapperParameters, TestRunnerClient testRunnerClient, ILog log)
 		{
 			this.options = options;
-			this.updateReceiver = updateReceiver;
 			this.bootstrapperParameters = bootstrapperParameters;
+			this.testRunnerClient = testRunnerClient;
 			this.log = log;
 		}
 
@@ -79,43 +74,19 @@ namespace NDistribUnit.Client
 				return (int) ReturnCodes.IncompleteParameterList;
 			}
 
-			var waitingForTestsToCompleteTask = new Task(() =>
-			         	{
 
-			         		
-			         		log.BeginActivity("Doing some work");
-			         		log.EndActivity("Finished doing work");
-			         	});
-			
-			var updateTask = new Task(()=>
-				{
-					try
-						{
-							log.Info("Checking for updates...");
-							
-							var channel = ChannelFactory<ITestRunnerServer>
-									.CreateChannel(new NetTcpBinding("NDistribUnit.Default"),
-										new EndpointAddress(string.Format("net.tcp://{0}:{1}", Environment.MachineName, 8009)));
-
-							
-							var updateResult = channel.GetUpdatePackage(Assembly.GetEntryAssembly().GetName().Version);
-							log.Info(updateReceiver.SaveUpdatePackage(updateResult)
-							         	? string.Format("Update was received: {0}", updateResult.Version)
-							         	: "No updates available");
-						}
-						catch (CommunicationException ex)
-						{
-							log.Error("Error while trying to get the update", ex);
-						}
-				});
-
-			waitingForTestsToCompleteTask.Start();
-			updateTask.Start();
-
-			Task.WaitAll(waitingForTestsToCompleteTask, updateTask);
+			try
+			{
+				testRunnerClient.Run();
+			}
+			catch(CommunicationException e)
+			{
+				log.Error("Server seems to be unreachable", e);
+				return (int)ReturnCodes.IncompleteParameterList;
+			}
 			
             Console.ReadLine();
             return 0;
         }
-	}
+		}
 }

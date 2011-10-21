@@ -35,46 +35,46 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\NDistribUnit.Common\Communication\ReturnCodes.cs">
+    <Compile Include="..\NDistribUnit.Common\Common\Communication\ReturnCodes.cs">
       <Link>LinkedItems\ReturnCodes.cs</Link>
     </Compile>
-    <Compile Include="..\NDistribUnit.Common\ConsoleProcessing\Options\ConsoleOption.cs">
+    <Compile Include="..\NDistribUnit.Common\Common\ConsoleProcessing\Options\ConsoleOption.cs">
       <Link>LinkedItems\ConsoleProcessing\ConsoleOption.cs</Link>
     </Compile>
-    <Compile Include="..\NDistribUnit.Common\ConsoleProcessing\Options\ConsoleOptionMatchDescription.cs">
+    <Compile Include="..\NDistribUnit.Common\Common\ConsoleProcessing\Options\ConsoleOptionMatchDescription.cs">
       <Link>LinkedItems\ConsoleProcessing\ConsoleOptionMatchDescription.cs</Link>
     </Compile>
-    <Compile Include="..\NDistribUnit.Common\ConsoleProcessing\Options\ConsoleParametersParser.cs">
+    <Compile Include="..\NDistribUnit.Common\Common\ConsoleProcessing\Options\ConsoleParametersParser.cs">
       <Link>LinkedItems\ConsoleProcessing\ConsoleParametersParser.cs</Link>
     </Compile>
-    <Compile Include="..\NDistribUnit.Common\HashChecks\DirectoryHash.cs">
-      <Link>LinkedItems\HashChecks\DirectoryHash.cs</Link>
+    <Compile Include="..\NDistribUnit.Common\Common\HashChecking\DirectoryHash.cs">
+      <Link>LinkedItems\HashChecking\DirectoryHash.cs</Link>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="..\NDistribUnit.Common\HashChecks\ErrorLevel.cs">
-      <Link>LinkedItems\HashChecks\ErrorLevel.cs</Link>
+    <Compile Include="..\NDistribUnit.Common\Common\HashChecking\ErrorLevel.cs">
+      <Link>LinkedItems\HashChecking\ErrorLevel.cs</Link>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="..\NDistribUnit.Common\HashChecks\HashValidationException.cs">
-      <Link>LinkedItems\HashChecks\HashValidationException.cs</Link>
+    <Compile Include="..\NDistribUnit.Common\Common\HashChecking\HashValidationException.cs">
+      <Link>LinkedItems\HashChecking\HashValidationException.cs</Link>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="..\NDistribUnit.Common\Logging\ConsoleLog.cs">
+    <Compile Include="..\NDistribUnit.Common\Common\Logging\ConsoleLog.cs">
       <Link>LinkedItems\Logging\ConsoleLog.cs</Link>
     </Compile>
-    <Compile Include="..\NDistribUnit.Common\Logging\ILog.cs">
+    <Compile Include="..\NDistribUnit.Common\Common\Logging\ILog.cs">
       <Link>LinkedItems\Logging\ILog.cs</Link>
     </Compile>
-    <Compile Include="..\NDistribUnit.Common\Logging\LoggingUtility.cs">
+    <Compile Include="..\NDistribUnit.Common\Common\Logging\LoggingUtility.cs">
       <Link>LinkedItems\Logging\LoggingUtility.cs</Link>
     </Compile>
     <Compile Include="..\NDistribUnit.Common\Properties\AssemblyInfoInc.cs">
       <Link>Properties\AssemblyInfoInc.cs</Link>
     </Compile>
-    <Compile Include="..\NDistribUnit.Common\Updating\BootstrapperParameters.cs">
+    <Compile Include="..\NDistribUnit.Common\Common\Updating\BootstrapperParameters.cs">
       <Link>LinkedItems\BootstrapperParameters.cs</Link>
     </Compile>
-    <Compile Include="..\NDistribUnit.Common\Updating\VersionDirectoryFinder.cs">
+    <Compile Include="..\NDistribUnit.Common\Common\Updating\VersionDirectoryFinder.cs">
       <Link>LinkedItems\VersionDirectoryFinder.cs</Link>
     </Compile>
     <Compile Include="BootstrapperProgram.cs" />
@@ -92,11 +92,11 @@
   <UsingTask Condition="'$(Configuration)'!='MsBuild Task'" AssemblyFile="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.dll" TaskName="NDistribUnit.MSBuild.Extensions.HashCalculatorTask" />
   <UsingTask Condition="'$(Configuration)'!='MsBuild Task'" AssemblyFile="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.dll" TaskName="NDistribUnit.MSBuild.Extensions.CopyResourcesTask" />
   <Target Name="AfterBuild" Condition="'$(Configuration)'!='MsBuild Task'">
-	  <ItemGroup>
-		  <FilesWithAnyContent Include="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Server\NDistribUnit.Server.exe.config"/> 
-		  <FilesWithAnyContent Include="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Agent\NDistribUnit.Agent.exe.config"/> 
-		  <FilesWithAnyContent Include="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Client\NDistribUnit.Client.exe.config"/> 
-	  </ItemGroup>
+    <ItemGroup>
+      <FilesWithAnyContent Include="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Server\NDistribUnit.Server.exe.config" />
+      <FilesWithAnyContent Include="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Agent\NDistribUnit.Agent.exe.config" />
+      <FilesWithAnyContent Include="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Client\NDistribUnit.Client.exe.config" />
+    </ItemGroup>
     <HashCalculatorTask Path="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)" FilesWithAnyContents="@(FilesWithAnyContent)" />
     <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SolutionDir)builds\$(Configuration)\Server.exe" ContinueOnError="true" OverwriteReadOnlyFiles="true" />
     <CopyResourcesTask SourceFiles="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Server\NDistribUnit.Server.exe" TargetFiles="$(SolutionDir)builds\$(Configuration)\Server.exe" ContinueOnError="true" />

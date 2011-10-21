@@ -71,7 +71,6 @@
       <Link>Properties\AssemblyInfoInc.cs</Link>
     </Compile>
     <Compile Include="ClientProgram.cs" />
-    <Compile Include="Configuration\ClientParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -97,20 +96,20 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Import  Condition="'$(Configuration)'!='MsBuild Task'" Project="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.targets" />
-	<Target Name="AfterBuild">
-		<ItemGroup>
-			<FilesInOutputDirExcludes Include="$(OutDir)\**\*vshost*.*" />
-			<FilesInOutputDirExcludes Include="$(OutDir)\*.tmp" />
-			<FilesInOutputDirExcludes Include="$(OutDir)\*.xml" />
-			<FilesInOutputDirExcludes Include="$(OutDir)\*.lnk" />
-		</ItemGroup>
-		<ItemGroup Condition="'$(Configuration)' != 'Debug'">
-			<FilesInOutputDirExcludes Include="$(OutDir)\*.pdb" />
-		</ItemGroup>
-		<ItemGroup>
-			<FilesInOutputDir Include="$(OutDir)\**\*.*" Exclude="@(FilesInOutputDirExcludes)" />
-		</ItemGroup>
-		<Copy SourceFiles="@(FilesInOutputDir)" DestinationFiles="@(FilesInOutputDir->'$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Client\%(RecursiveDir)%(Filename)%(Extension)')"/>
-	</Target>
+  <Import Condition="'$(Configuration)'!='MsBuild Task'" Project="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.targets" />
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <FilesInOutputDirExcludes Include="$(OutDir)\**\*vshost*.*" />
+      <FilesInOutputDirExcludes Include="$(OutDir)\*.tmp" />
+      <FilesInOutputDirExcludes Include="$(OutDir)\*.xml" />
+      <FilesInOutputDirExcludes Include="$(OutDir)\*.lnk" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' != 'Debug'">
+      <FilesInOutputDirExcludes Include="$(OutDir)\*.pdb" />
+    </ItemGroup>
+    <ItemGroup>
+      <FilesInOutputDir Include="$(OutDir)\**\*.*" Exclude="@(FilesInOutputDirExcludes)" />
+    </ItemGroup>
+    <Copy SourceFiles="@(FilesInOutputDir)" DestinationFiles="@(FilesInOutputDir->'$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Client\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
 </Project>

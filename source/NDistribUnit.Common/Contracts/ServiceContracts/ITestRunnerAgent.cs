@@ -1,0 +1,37 @@
+using System.ServiceModel;
+using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.ServiceContracts;
+
+namespace NDistribUnit.Common.Contracts.ServiceContracts
+{
+    /// <summary>
+    /// A contract for communicating from server to agents
+    /// </summary>
+    [ServiceContract]
+    public interface ITestRunnerAgent: IPingable
+    {
+        /// <summary>
+        /// Runs tests on agent
+        /// </summary>
+        /// <param name="callbackValue"></param>
+        /// <returns></returns>
+        [OperationContract]
+        bool RunTests(string callbackValue);
+
+        /// <summary>
+        /// Gets the log.
+        /// </summary>
+        /// <param name="maxItemsCount">The max items count.</param>
+        /// <param name="lastFetchedEntryId">The last fetched entry id.</param>
+        /// <returns></returns>
+        [OperationContract]
+        LogEntry[] GetLog(int maxItemsCount, int? lastFetchedEntryId);
+
+    	/// <summary>
+    	/// Receives the update pakage.
+    	/// </summary>
+    	/// <param name="updatePackage"></param>
+    	[OperationContract]
+    	void ReceiveUpdatePackage(UpdatePackage updatePackage);
+    }
+}

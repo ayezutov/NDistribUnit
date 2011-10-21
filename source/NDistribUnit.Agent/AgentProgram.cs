@@ -1,57 +1,47 @@
 ﻿using System;
+using System.Configuration;
 using Autofac;
-using NDistribUnit.Agent.Options;
 using NDistribUnit.Common.Agent;
-using NDistribUnit.Common.Agent.ExternalModules;
 using NDistribUnit.Common.Agent.Naming;
+using NDistribUnit.Common.Common.ConsoleProcessing;
+using NDistribUnit.Common.Common.Logging;
+using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.ConsoleProcessing;
+using NDistribUnit.Common.Dependencies;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Updating;
 
 namespace NDistribUnit.Agent
 {
-	/// <summary>
-	/// The entry point into agent's console application
-	/// </summary>
+    /// <summary>
+    /// The entry point into agent's console application
+    /// </summary>
 	public class AgentProgram: GeneralProgram
 	{
-		private readonly BootstrapperParameters bootstrapperParameters;
-		private readonly ILog log;
-
-		/// <summary>
-		///  The host, which enables all communication services
-		/// </summary>
-		public AgentHost AgentHost { get; set; }
-
-		private static int Main(string[] args)
+		private static int Main()
 		{
-			var builder = new ContainerBuilder();
-			builder.RegisterType<AgentProgram>();
-			builder.Register(c => new AgentHost(
-			                      	new TestRunnerAgent(c.Resolve<ILog>(),
-			                      	                           string.Format("{0} #{1:000}", Environment.MachineName, InstanceNumberSearcher.Number),
-			                      	                           c.Resolve<RollingLog>(),
-															   c.Resolve<UpdateReceiver>()
-															   ), new IAgentExternalModule[]
-			                      	                                                     	{
-			                      	                                                     		new DiscoveryModule(new Uri("http://hubwoo.com/trr-odc")),
-			                      	                                                     		new AnnouncementModule(TimeSpan.FromSeconds(15),
-			                      	                                                     			new Uri("http://hubwoo.com/trr-odc"),
-			                      	                                                     			c.Resolve<ILog>())
-			                      	                                                     	}, c.Resolve<ILog>()))
-																							.InstancePerLifetimeScope();
-			builder.Register(c => AgentConsoleParameters.Parse(args)).InstancePerLifetimeScope();
-			builder.Register(c => BootstrapperParameters.Parse(args)).InstancePerLifetimeScope();
+		    var configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+		    var agentConfiguration = configuration.GetSection("settings") as AgentConfiguration;
+		    agentConfiguration.AgentName = string.Format("{0} #{1:000}", Environment.MachineName,
+		                                                 InstanceNumberSearcher.Number);
 
-			RegisterCommonDependencies(builder);
-
-			var container = builder.Build();
-			return container.Resolve<AgentProgram>().Run();
+		    var builder = new ContainerBuilder();
+		    builder.RegisterType<AgentProgram>();
+		    builder.RegisterModule(new AgentDependenciesModule(agentConfiguration));
+		    return builder.Build().Resolve<AgentProgram>().Run();
 		}
 
+        private readonly BootstrapperParameters bootstrapperParameters;
+        private readonly ILog log;
 
-		/// <summary>
+	    /// <summary>
+	    ///  The host, which enables all communication services
+	    /// </summary>
+	    public AgentHost AgentHost { get; set; }
+
+
+	    /// <summary>
 		/// Initializes a new instance of an agent program
 		/// </summary>
 		/// <param name="agentHost">The agent host.</param>
@@ -59,7 +49,7 @@ namespace NDistribUnit.Agent
 		/// <param name="updatesMonitor">The updates availability monitor.</param>
 		/// <param name="log">The log.</param>
 		public AgentProgram(AgentHost agentHost, BootstrapperParameters bootstrapperParameters,
-		                    UpdatesAvailabilityMonitor updatesMonitor, ILog log)
+		                    UpdatesMonitor updatesMonitor, ILog log)
 		{
 			this.bootstrapperParameters = bootstrapperParameters;
 			this.updatesMonitor = updatesMonitor;
@@ -70,7 +60,8 @@ namespace NDistribUnit.Agent
 
 		private int Run()
 		{
-			if (!bootstrapperParameters.AllParametersAreFilled)
+
+		    if (!bootstrapperParameters.AllParametersAreFilled)
 			{
 				log.Error("This programm cannot be launched directly");
 				return (int)ReturnCodes.CannotLaunchBootstrappedApplicationDirectly;

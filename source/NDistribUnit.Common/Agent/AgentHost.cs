@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using NDistribUnit.Common.Communication;
+using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
 

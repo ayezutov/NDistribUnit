@@ -72,10 +72,7 @@
       <Name>NDistribUnit.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Client\Options\" />
-    <Folder Include="Communication\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>

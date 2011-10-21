@@ -54,6 +54,7 @@
       <HintPath>..\_dependencies\Autofac-2.4.4.705-NET40\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -81,7 +82,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="app.manifest" />
     <None Include="dashboard\scripts\jquery.treeview\.gitignore" />
     <None Include="dashboard\scripts\jquery.treeview\.project" />
@@ -366,14 +369,14 @@
       <FilesInOutputDirExcludes Include="$(OutDir)\**\*vshost*.*" />
       <FilesInOutputDirExcludes Include="$(OutDir)\*.tmp" />
       <FilesInOutputDirExcludes Include="$(OutDir)\*.xml" />
-      <FilesInOutputDirExcludes Include="$(OutDir)\*.lnk" />      
+      <FilesInOutputDirExcludes Include="$(OutDir)\*.lnk" />
     </ItemGroup>
-	  <ItemGroup Condition="'$(Configuration)' != 'Debug'">
-		  <FilesInOutputDirExcludes Include="$(OutDir)\*.pdb" />
-	  </ItemGroup>
-	  <ItemGroup>
-		  <FilesInOutputDir Include="$(OutDir)\**\*.*" Exclude="@(FilesInOutputDirExcludes)" />
-	  </ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' != 'Debug'">
+      <FilesInOutputDirExcludes Include="$(OutDir)\*.pdb" />
+    </ItemGroup>
+    <ItemGroup>
+      <FilesInOutputDir Include="$(OutDir)\**\*.*" Exclude="@(FilesInOutputDirExcludes)" />
+    </ItemGroup>
     <Copy SourceFiles="@(FilesInOutputDir)" DestinationFiles="@(FilesInOutputDir->'$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Server\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 </Project>

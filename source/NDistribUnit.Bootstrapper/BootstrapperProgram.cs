@@ -58,7 +58,8 @@ namespace NDistribUnit.Bootstrapper
 				                                    AppDomain.CurrentDomain.Evidence,
 				                                    new AppDomainSetup
 				                                    	{
-				                                    		ConfigurationFile = fileToRun + ".config"
+				                                    		ConfigurationFile = fileToRun + ".config",
+                                                            ApplicationBase = Path.GetDirectoryName(fileToRun),
 				                                    	});
 
 				var newArgs = new List<string>(args);
@@ -69,10 +70,8 @@ namespace NDistribUnit.Bootstrapper
 				                 	}.ToArray());
 				var returnValue = domain.ExecuteAssembly(fileToRun, newArgs.ToArray());
 				AppDomain.Unload(domain);
-				if (returnValue == (int)ReturnCodes.RestartDueToAvailableUpdate)
-				{
-					Main(args);
-				}
+			    if (returnValue == (int) ReturnCodes.RestartDueToAvailableUpdate)
+			        Main(args);
 			}
 			catch (Exception ex)
 			{

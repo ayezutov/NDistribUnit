@@ -52,14 +52,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\NDistribUnit.Common\HashChecks\DirectoryHash.cs">
-      <Link>LinkedItems\HashChecks\DirectoryHash.cs</Link>
+    <Compile Include="..\NDistribUnit.Common\Common\HashChecking\DirectoryHash.cs">
+      <Link>LinkedItems\HashChecking\DirectoryHash.cs</Link>
     </Compile>
-    <Compile Include="..\NDistribUnit.Common\HashChecks\ErrorLevel.cs">
-      <Link>LinkedItems\HashChecks\ErrorLevel.cs</Link>
+    <Compile Include="..\NDistribUnit.Common\Common\HashChecking\ErrorLevel.cs">
+      <Link>LinkedItems\HashChecking\ErrorLevel.cs</Link>
     </Compile>
-    <Compile Include="..\NDistribUnit.Common\HashChecks\HashValidationException.cs">
-      <Link>LinkedItems\HashChecks\HashValidationException.cs</Link>
+    <Compile Include="..\NDistribUnit.Common\Common\HashChecking\HashValidationException.cs">
+      <Link>LinkedItems\HashChecking\HashValidationException.cs</Link>
     </Compile>
     <Compile Include="AssemblyInfoWrapper.cs" />
     <Compile Include="AssemblyVersionTask.cs" />

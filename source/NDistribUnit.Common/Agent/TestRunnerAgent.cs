@@ -1,14 +1,11 @@
 using System;
-using System.IO;
-using System.Reflection;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.Threading;
-using Ionic.Zip;
+using NDistribUnit.Common.Common.Logging;
+using NDistribUnit.Common.Common.Updating;
+using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
-using NDistribUnit.Common.Updating;
 
 namespace NDistribUnit.Common.Agent
 {
@@ -20,21 +17,24 @@ namespace NDistribUnit.Common.Agent
     {
         private readonly ILog log;
     	private readonly RollingLog logStorage;
-		private readonly UpdateReceiver updateReceiver;
+		private readonly IUpdateReceiver updateReceiver;
+        private readonly IVersionProvider versionProvider;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="TestRunnerAgent"/> class.
-		/// </summary>
-		/// <param name="log">The log.</param>
-		/// <param name="name">The name of the agent.</param>
-		/// <param name="logStorage">The log storage.</param>
-		/// <param name="updateReceiver">The update receiver.</param>
-        public TestRunnerAgent(ILog log, string name, RollingLog logStorage, UpdateReceiver updateReceiver)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestRunnerAgent"/> class.
+        /// </summary>
+        /// <param name="log">The log.</param>
+        /// <param name="logStorage">The log storage.</param>
+        /// <param name="updateReceiver">The update receiver.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="versionProvider">The version provider.</param>
+        public TestRunnerAgent(ILog log, RollingLog logStorage, IUpdateReceiver updateReceiver, AgentConfiguration configuration, IVersionProvider versionProvider)
         {
             this.log = log;
 			this.logStorage = logStorage;
     		this.updateReceiver = updateReceiver;
-    		Name = name;
+            this.versionProvider = versionProvider;
+            Name = configuration.AgentName;
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace NDistribUnit.Common.Agent
             return new PingResult { 
 				AgentState = AgentState.Connected, 
 				EndpointName = Name, 
-				Version = Assembly.GetExecutingAssembly().GetName().Version};
+				Version = versionProvider.GetVersion()};
         }
 
         /// <summary>

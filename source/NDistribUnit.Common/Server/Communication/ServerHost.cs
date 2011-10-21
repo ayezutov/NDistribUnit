@@ -1,12 +1,10 @@
 using System;
-using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.ServiceModel.Web;
 using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.Server.Services;
 using NDistribUnit.Common.ServiceContracts;
-using NDistribUnit.Server.Communication;
-using NDistribUnit.Server.Services;
 
 namespace NDistribUnit.Common.Server.Communication
 {
@@ -22,7 +20,6 @@ namespace NDistribUnit.Common.Server.Communication
         private ServiceHost testRunnerService;
 
         private readonly DashboardService dashboard;
-        private readonly ILog log;
         private readonly TestRunnerServer testRunner;
 
         /// <summary>
@@ -36,20 +33,18 @@ namespace NDistribUnit.Common.Server.Communication
         /// <summary>
         /// Creates a new server instance, which exposes dashboard and test runner at given ports
         /// </summary>
-        /// <param name="dashboardPort">The port for dashboard</param>
-        /// <param name="testRunnerPort">The port for test runner</param>
+        /// <param name="configuration">The configuration.</param>
         /// <param name="testRunner">The test runner instance</param>
         /// <param name="dashboard">The dashboard instance</param>
-        /// <param name="conenctionsTracker">The connection tracker for the host</param>
+        /// <param name="connectionsTracker">The connection tracker for the host</param>
         /// <param name="log">The logger</param>
-        public ServerHost(int dashboardPort, int testRunnerPort, TestRunnerServer testRunner, DashboardService dashboard, ServerConnectionsTracker conenctionsTracker, ILog log)
+        public ServerHost(ServerConfiguration configuration, TestRunnerServer testRunner, DashboardService dashboard, ServerConnectionsTracker connectionsTracker, ILog log)
         {
-            this.dashboardPort = dashboardPort;
-            this.testRunnerPort = testRunnerPort;
+            dashboardPort = configuration.DashboardPort;
+            testRunnerPort = configuration.TestRunnerPort;
             this.testRunner = testRunner;
             this.dashboard = dashboard;
-            this.log = log;
-            ConnectionsTracker = conenctionsTracker;
+            ConnectionsTracker = connectionsTracker;
         }
 
         /// <summary>
@@ -71,9 +66,9 @@ namespace NDistribUnit.Common.Server.Communication
 
         private void ExposeDashboard()
         {
-            dashboardService = new ServiceHost(dashboard, new Uri(Path.Combine(string.Format("http://{0}:{1}", Environment.MachineName, dashboardPort))));
+            dashboardService = new ServiceHost(dashboard, new Uri(string.Format("http://{0}:{1}", Environment.MachineName, dashboardPort)));
             dashboardService.AddServiceEndpoint(typeof(IDashboardService), new WebHttpBinding(), "")
-                .Behaviors.Add(new WebHttpBehavior(){DefaultOutgoingResponseFormat = WebMessageFormat.Json, DefaultOutgoingRequestFormat = WebMessageFormat.Json});
+                .Behaviors.Add(new WebHttpBehavior {DefaultOutgoingResponseFormat = WebMessageFormat.Json, DefaultOutgoingRequestFormat = WebMessageFormat.Json});
             dashboardService.Open();
         }
 
