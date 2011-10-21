@@ -9,7 +9,7 @@ using NDistribUnit.Common.Extensions;
 
 namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
 {
-    internal class TestingConnectionTracker: IConnectionsTracker<ITestRunnerAgent>
+    internal class TestingConnectionTracker: INetworkExplorer<ITestRunnerAgent>
     {
         public event EventHandler<EndpointConnectionChangedEventArgs> EndpointConnected;
         public event EventHandler<EndpointConnectionChangedEventArgs> EndpointSuccessfulPing;

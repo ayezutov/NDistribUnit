@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ServiceModel;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Retrying;
 using NDistribUnit.Common.Server.Communication;

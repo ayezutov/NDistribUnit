@@ -7,7 +7,9 @@ using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Logging;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
@@ -25,6 +27,7 @@ namespace NDistribUnit.Common.Server.Services
     {
         private readonly ServerConnectionsTracker connectionsTracker;
         private readonly RollingLog log;
+        private readonly IConnectionProvider connectionProvider;
 
         private static readonly IDictionary<string, string> allowed =
             new Dictionary<string, string>
@@ -43,10 +46,14 @@ namespace NDistribUnit.Common.Server.Services
         /// </summary>
         /// <param name="connectionsTracker">The <see cref="ServerConnectionsTracker">connections tracker</see> for the server</param>
         /// <param name="log">The log to display for requests</param>
-        public DashboardService(ServerConnectionsTracker connectionsTracker, RollingLog log)
+        /// <param name="connectionProvider">The connection provider.</param>
+        public DashboardService(ServerConnectionsTracker connectionsTracker, 
+            RollingLog log,
+            IConnectionProvider connectionProvider)
         {
             this.connectionsTracker = connectionsTracker;
             this.log = log;
+            this.connectionProvider = connectionProvider;
         }
 
         /// <summary>
@@ -112,7 +119,7 @@ namespace NDistribUnit.Common.Server.Services
             if (agent == null)
                 return new LogEntry[0];
 
-            LogEntry[] result = agent.GetNetTcpChannel<ITestRunnerAgent>()
+            LogEntry[] result = connectionProvider.GetConnection<ITestRunnerAgent>(agent.Endpoint.Address)
                 .GetLog(maxItemsCount, lastFetchedEntryId);
             return result;
         }

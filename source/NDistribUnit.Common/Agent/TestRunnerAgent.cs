@@ -86,7 +86,6 @@ namespace NDistribUnit.Common.Agent
                 @event(this, new EventArgs<TimeSpan>(pingInterval));
 
             return new PingResult { 
-				AgentState = AgentState.Connected, 
 				EndpointName = Name, 
 				Version = versionProvider.GetVersion()};
         }

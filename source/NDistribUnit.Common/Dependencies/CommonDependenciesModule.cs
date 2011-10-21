@@ -1,6 +1,8 @@
 using System;
 using Autofac;
+using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Logging;
+using NDistribUnit.Common.Common.Networking;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Logging;
@@ -43,6 +45,7 @@ namespace NDistribUnit.Common.Dependencies
                 c => new CombinedLog(c.Resolve<ConsoleLog>(), c.Resolve<RollingLog>()))
                 .As<ILog>()
                 .SingleInstance();
+            builder.RegisterType<RealConnectionProvider>().As<IConnectionProvider>().InstancePerLifetimeScope();
         }
     }
 }

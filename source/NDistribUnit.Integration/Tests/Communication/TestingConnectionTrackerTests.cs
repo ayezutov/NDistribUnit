@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace NDistribUnit.Integration.Tests.Tests.Communication
 {
-    [TestFixture]
+    [TestFixture, Explicit]
     public class TestingConnectionTrackerTests : ConnectionTrackersStateTestsBase
     {
         protected override void ConfigureSystem(NDistribUnitTestSystem system)

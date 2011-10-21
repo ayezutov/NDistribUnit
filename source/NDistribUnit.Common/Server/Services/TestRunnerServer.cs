@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Reflection;
 using System.ServiceModel;
 using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Updating;
-using NDistribUnit.Common.Communication;
-using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Server.ConnectionTracking;
 using NDistribUnit.Common.ServiceContracts;
@@ -21,6 +18,7 @@ namespace NDistribUnit.Common.Server.Services
     {
     	private readonly IUpdateSource updateSource;
         private readonly IVersionProvider versionProvider;
+        private readonly IConnectionProvider connectionProvider;
         private readonly PingableCollection<TestClientDescriptor> clientRunners;
 
         /// <summary>
@@ -29,10 +27,12 @@ namespace NDistribUnit.Common.Server.Services
         /// <param name="updateSource">The update source.</param>
         /// <param name="options">The options.</param>
         /// <param name="versionProvider">The version provider.</param>
-    	public TestRunnerServer(IUpdateSource updateSource, IConnectionsHostOptions options, IVersionProvider versionProvider)
+        /// <param name="connectionProvider">The connection provider.</param>
+    	public TestRunnerServer(IUpdateSource updateSource, IConnectionsHostOptions options, IVersionProvider versionProvider, IConnectionProvider connectionProvider)
 		{
 			this.updateSource = updateSource;
             this.versionProvider = versionProvider;
+            this.connectionProvider = connectionProvider;
             clientRunners = new PingableCollection<TestClientDescriptor>(options);
 			clientRunners.Removed += OnClientRemoved;
 		}
@@ -48,7 +48,7 @@ namespace NDistribUnit.Common.Server.Services
     	/// <param name="run"></param>
     	public TestRun RunTests(TestRun run)
     	{
-			var client = OperationContext.Current.GetCallbackChannel<ITestRunnerClient>();
+    	    var client = connectionProvider.GetCurrentCallback<ITestRunnerClient>();
 
             if (run == null)
 			{

@@ -1,5 +1,6 @@
 using System;
 using NDistribUnit.Common.Common.Updating;
+using NDistribUnit.Common.Retrying;
 using NDistribUnit.Common.ServiceContracts;
 
 namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
@@ -19,13 +20,10 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
 
         public bool HasReceivedUpdate(Version version = null)
         {
-            if (updatePackage == null)
-                return false;
-
-            if (version == null)
-                return updatePackage != null;
-
-            return version == updatePackage.Version;
+            return Retry.While(() => (version == null && updatePackage != null)
+                                     ||
+                                     (version != null && updatePackage != null &&
+                                      updatePackage.Version.Equals(version)), 10);
         }
     }
 }

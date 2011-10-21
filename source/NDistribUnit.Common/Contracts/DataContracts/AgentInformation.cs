@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using System.ServiceModel;
 using System.ServiceModel.Discovery;
-using System.Threading;
+using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Extensions;
-using NDistribUnit.Common.ServiceContracts;
 
-namespace NDistribUnit.Common.DataContracts
+namespace NDistribUnit.Common.Contracts.DataContracts
 {
     /// <summary>
     /// Holds information about an agent
@@ -72,17 +70,5 @@ namespace NDistribUnit.Common.DataContracts
 		/// The version.
 		/// </value>
     	public Version Version { get; set; }
-
-    	/// <summary>
-		/// Gets the net TCP channel.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-    	public T GetNetTcpChannel<T>()
-    	{
-			return ChannelFactory<T>.CreateChannel(new NetTcpBinding("NDistribUnit.Default"), Endpoint.Address);
-    	}
-
-		
     }
 }

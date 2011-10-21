@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using NDistribUnit.Integration.Tests.Infrastructure;
 using NUnit.Framework;
 

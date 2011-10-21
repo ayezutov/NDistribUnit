@@ -72,7 +72,7 @@ namespace NDistribUnit.Common.Dependencies
 
             foreach (ConnectionTrackerElement connectionTracker in ServerConfiguration.ConnectionTrackers)
             {
-                builder.RegisterType(connectionTracker.Type).As<IConnectionsTracker<ITestRunnerAgent>>();
+                builder.RegisterType(connectionTracker.Type).As<INetworkExplorer<ITestRunnerAgent>>();
                 if (!string.IsNullOrEmpty(connectionTracker.SectionName))
                 {
                     ConfigurationSection section = Configuration.GetSection(connectionTracker.SectionName);

@@ -8,7 +8,7 @@ namespace NDistribUnit.Common.Server.ConnectionTracking.Announcement
     /// <summary>
     /// The connections tracker, which is based on announcement mechanism
     /// </summary>
-    public class AnnouncementConnectionTracker<TIEndpoint>: ConnectionsTrackerBase<TIEndpoint> where TIEndpoint : IPingable
+    public class AnnouncementConnectionTracker<TIEndpoint>: NetworkExplorerBase<TIEndpoint> where TIEndpoint : IPingable
     {
         private AnnouncementService announcementService;
         private ServiceHost announcementServiceHost;

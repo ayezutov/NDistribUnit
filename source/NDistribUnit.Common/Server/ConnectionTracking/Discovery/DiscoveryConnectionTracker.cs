@@ -9,7 +9,7 @@ namespace NDistribUnit.Common.Server.ConnectionTracking.Discovery
     /// A connection tracker, which relies on discovery mechanism
     /// </summary>
     /// <typeparam name="TIEndpoint"></typeparam>
-    public class DiscoveryConnectionTracker<TIEndpoint> : ConnectionsTrackerBase<TIEndpoint> where TIEndpoint : IPingable
+    public class DiscoveryConnectionTracker<TIEndpoint> : NetworkExplorerBase<TIEndpoint> where TIEndpoint : IPingable
     {
         private readonly DiscoveryConnectionTrackerOptions options;
         private readonly IConnectionsHostOptions connectionsHostOptions;

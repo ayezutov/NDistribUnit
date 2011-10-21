@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Web;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
 

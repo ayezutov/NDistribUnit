@@ -49,7 +49,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
             currentBuilder.RegisterInstance(serverConfiguration).As<IConnectionsHostOptions>().AsSelf();
             currentBuilder.RegisterModule(new AgentDependenciesModule(agentConfiguration));
             currentBuilder.RegisterModule(new ServerDependenciesModule(serverConfiguration, commandLineArgs));
-            currentBuilder.RegisterModule<TestingDefaultDependencies>();
+            currentBuilder.RegisterModule(new TestingDefaultDependencies(this));
 
             dependenciesContainer = currentBuilder.Build();
             currentBuilder = new ContainerBuilder();

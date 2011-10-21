@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication.ConnectionTracking;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Extensions;
@@ -19,9 +21,10 @@ namespace NDistribUnit.Common.Server.Communication
     public class ServerConnectionsTracker
     {
         private readonly ILog log;
-        private readonly IConnectionsTracker<ITestRunnerAgent> connectionsTracker;
+        private readonly INetworkExplorer<ITestRunnerAgent> networkExplorer;
     	private readonly IUpdateSource updateSource;
         private readonly IVersionProvider versionProvider;
+        private readonly IConnectionProvider connectionProvider;
 
         /// <summary>
         /// Gets the list of agents
@@ -36,20 +39,27 @@ namespace NDistribUnit.Common.Server.Communication
         /// <summary>
         /// Initializes a new instance of a connection tracker
         /// </summary>
-        /// <param name="connectionsTracker">The connections tracker.</param>
+        /// <param name="networkExplorer">The connections tracker.</param>
         /// <param name="updateSource">The update source.</param>
         /// <param name="versionProvider">The version provider.</param>
+        /// <param name="connectionProvider">The connection provider.</param>
         /// <param name="log">The log.</param>
-        public ServerConnectionsTracker(IConnectionsTracker<ITestRunnerAgent> connectionsTracker, IUpdateSource updateSource, IVersionProvider versionProvider, ILog log)
+        public ServerConnectionsTracker(
+            INetworkExplorer<ITestRunnerAgent> networkExplorer, 
+            IUpdateSource updateSource, 
+            IVersionProvider versionProvider, 
+            IConnectionProvider connectionProvider,
+            ILog log)
         {
             this.log = log;
             Agents = new List<AgentInformation>();
-            this.connectionsTracker = connectionsTracker;
+            this.networkExplorer = networkExplorer;
 			this.updateSource = updateSource;
             this.versionProvider = versionProvider;
-            this.connectionsTracker.EndpointConnected += OnEndpointConnected;
-            this.connectionsTracker.EndpointDisconnected += OnEndpointDisconnected;
-            this.connectionsTracker.EndpointSuccessfulPing += OnEndpointSuccessfulPing;
+            this.connectionProvider = connectionProvider;
+            this.networkExplorer.EndpointConnected += OnEndpointConnected;
+            this.networkExplorer.EndpointDisconnected += OnEndpointDisconnected;
+            this.networkExplorer.EndpointSuccessfulPing += OnEndpointSuccessfulPing;
         }
 
         private void OnEndpointSuccessfulPing(object sender, EndpointConnectionChangedEventArgs e)
@@ -95,7 +105,7 @@ namespace NDistribUnit.Common.Server.Communication
     					agent.State = AgentState.Updating;
     					new Action(() =>
     					           	{
-    					           		var testRunnerAgent = agent.GetNetTcpChannel<ITestRunnerAgent>();
+                                        var testRunnerAgent = connectionProvider.GetConnection<ITestRunnerAgent>(agent.Endpoint.Address);
     					           		testRunnerAgent.ReceiveUpdatePackage(new UpdatePackage
     					           		                                     	{
     					           		                                     		IsAvailable = true,
@@ -183,7 +193,7 @@ namespace NDistribUnit.Common.Server.Communication
         /// </summary>
         public void Start()
         {
-            connectionsTracker.Start();
+            networkExplorer.Start();
         }
 
         /// <summary>
@@ -191,7 +201,7 @@ namespace NDistribUnit.Common.Server.Communication
         /// </summary>
         public void Stop()
         {
-            connectionsTracker.Stop();
+            networkExplorer.Stop();
         }
 
 		/// <summary>

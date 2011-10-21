@@ -83,7 +83,9 @@
     <Compile Include="Client\ClientParameters.cs" />
     <Compile Include="Client\ClientRunner.cs" />
     <Compile Include="Common\Communication\AgentAdditionalDataManager.cs" />
+    <Compile Include="Common\Networking\IConnectionProvider.cs" />
     <Compile Include="Common\Communication\PingableCollection.cs" />
+    <Compile Include="Common\Networking\RealConnectionProvider.cs" />
     <Compile Include="Common\Communication\ReturnCodes.cs" />
     <Compile Include="Common\Communication\ZipSource.cs" />
     <Compile Include="Common\ConsoleProcessing\GeneralProgram.cs" />
@@ -107,12 +109,12 @@
     <Compile Include="Common\Updating\IVersionProvider.cs" />
     <Compile Include="Server\ConnectionTrackerElement.cs" />
     <Compile Include="Server\ConnectionTracking\Announcement\AnnouncementConnectionTracker.cs" />
-    <Compile Include="Server\ConnectionTracking\ConnectionsTrackerBase.cs" />
+    <Compile Include="Server\ConnectionTracking\NetworkExplorerBase.cs" />
     <Compile Include="Server\ConnectionTracking\Discovery\DiscoveryConnectionTracker.cs" />
     <Compile Include="Server\ConnectionTracking\Discovery\DiscoveryConnectionTrackerOptions.cs" />
     <Compile Include="Server\ConnectionTracking\EndpointConnectionChangedEventArgs.cs" />
     <Compile Include="Server\ConnectionTracking\EndpointInformation.cs" />
-    <Compile Include="Server\ConnectionTracking\IConnectionsTracker.cs" />
+    <Compile Include="Server\ConnectionTracking\INetworkExplorer.cs" />
     <Compile Include="Server\ConnectionTracking\IConnectionsHostOptions.cs" />
     <Compile Include="Contracts\DataContracts\AgentInformation.cs" />
     <Compile Include="Contracts\DataContracts\AgentState.cs" />
@@ -134,7 +136,7 @@
     <Compile Include="Server\TestExecution\TestUnit.cs" />
     <Compile Include="Server\TestExecution\TestUnitsCollection.cs" />
     <Compile Include="Contracts\ServiceContracts\IPingable.cs" />
-    <Compile Include="Common\Communication\WcfUtilities.cs" />
+    <Compile Include="Common\Networking\WcfUtilities.cs" />
     <Compile Include="Contracts\DataContracts\ProjectDescription.cs" />
     <Compile Include="Contracts\ServiceContracts\ITestRunnerAgent.cs" />
     <Compile Include="Contracts\ServiceContracts\ITestRunnerServer.cs" />
