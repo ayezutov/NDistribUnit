@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Autofac;
+using NDistribUnit.Client.Configuration;
 using NDistribUnit.Common.Agent;
 using NDistribUnit.Common.Dependencies;
 using NDistribUnit.Common.Server;
@@ -21,6 +22,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
         private readonly ServerConfiguration serverConfiguration;
         private AgentConfiguration agentConfiguration;
         private IList<ILifetimeScope> scopes = new List<ILifetimeScope>();
+        private ClientParameters clientParameters;
 
         public void EnablePortsOpening()
         {
@@ -41,14 +43,20 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
                                          Scope = new Uri(DefaultScope),
                                          AnnouncementInterval = TimeSpan.FromMilliseconds(1000)
                                      };
+            clientParameters = new ClientParameters
+                                   {
+                                       Configuration = "Debug"
+                                   };
 
             currentBuilder = new ContainerBuilder();
             var commandLineArgs = new string[0];
             currentBuilder.RegisterInstance(this);
             currentBuilder.RegisterModule(new CommonDependenciesModule(commandLineArgs));
             currentBuilder.RegisterInstance(serverConfiguration).As<IConnectionsHostOptions>().AsSelf();
+            currentBuilder.RegisterInstance(clientParameters);
             currentBuilder.RegisterModule(new AgentDependenciesModule(agentConfiguration));
             currentBuilder.RegisterModule(new ServerDependenciesModule(serverConfiguration, commandLineArgs));
+            currentBuilder.RegisterModule(new ClientDependenciesModule());
             currentBuilder.RegisterModule(new TestingDefaultDependencies(this));
 
             dependenciesContainer = currentBuilder.Build();

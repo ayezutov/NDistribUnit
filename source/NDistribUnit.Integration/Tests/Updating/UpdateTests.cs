@@ -98,7 +98,7 @@ namespace NDistribUnit.Integration.Tests.Tests.Updating
                 .OfVersion(Version.Parse("1.9.0.0"))
                 .StartClient();
 
-            Assert.That(client.HasReceivedUpdate(Version.Parse("2.0.0.0")));
+            Assert.That(client.UpdateReceiver.HasReceivedUpdate(Version.Parse("2.0.0.0")));
         }
     }
 }

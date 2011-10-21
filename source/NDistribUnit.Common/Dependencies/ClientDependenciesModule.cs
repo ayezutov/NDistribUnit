@@ -1,7 +1,5 @@
 ﻿using Autofac;
-using NDistribUnit.Common.Common.Updating;
-using NDistribUnit.Common.Logging;
-using NDistribUnit.Common.Updating;
+using NDistribUnit.Common.Client;
 
 namespace NDistribUnit.Common.Dependencies
 {
@@ -17,9 +15,9 @@ namespace NDistribUnit.Common.Dependencies
         /// registered.</param>
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<UpdateReceiver>();
-            builder.RegisterType<VersionDirectoryFinder>();
-            builder.RegisterType<ConsoleLog>().As<ILog>();
+            builder
+                .RegisterType<TestRunnerClient>()
+                .As<ITestRunnerClient>();
         }
     }
 }
