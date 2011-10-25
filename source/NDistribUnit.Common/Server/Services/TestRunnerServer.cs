@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Common.Communication;
@@ -46,7 +47,7 @@ namespace NDistribUnit.Common.Server.Services
     	/// Runs tests from client
     	/// </summary>
     	/// <param name="run"></param>
-    	public TestRun RunTests(TestRun run)
+    	public TestRun StartRunningTests(TestRun run)
     	{
     	    var client = connectionProvider.GetCurrentCallback<ITestRunnerClient>();
 
@@ -71,13 +72,13 @@ namespace NDistribUnit.Common.Server.Services
 //    			return run;
 //    		}
 
-			client.NotifyTestCompleted(new TestResult("No test was found with the id={0}"));
+			client.NotifyTestProgressChanged(new TestResult("No test was found with the id={0}"), true);
     		return run;
     	}
 
     	private void StartTestRun(TestClientDescriptor testClientDescriptor)
     	{
-    		throw new NotImplementedException();
+            testClientDescriptor.Client.NotifyTestProgressChanged(new TestResult("Completed"), true);
     	}
 
     	/// <summary>
@@ -101,5 +102,27 @@ namespace NDistribUnit.Common.Server.Services
 						Version = currentVersion
 			       	};
     	}
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class TestsToRun
+    {
+        /// <summary>
+        /// Gets or sets the categories to include.
+        /// </summary>
+        /// <value>
+        /// The include categories.
+        /// </value>
+        public IList<string> IncludeCategories { get; set; }
+
+        /// <summary>
+        /// Gets or sets the categories to include.
+        /// </summary>
+        /// <value>
+        /// The include categories.
+        /// </value>
+        public IList<string> ExcludeCategories { get; set; }
     }
 }

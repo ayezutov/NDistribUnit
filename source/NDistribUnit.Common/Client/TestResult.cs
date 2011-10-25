@@ -7,13 +7,15 @@ namespace NDistribUnit.Common.Client
 	/// </summary>
 	public class TestResult
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="TestResult"/> class.
-		/// </summary>
-		/// <param name="message">The message.</param>
+        private readonly string message;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestResult"/> class.
+        /// </summary>
+        /// <param name="message">The message.</param>
 		public TestResult(string message)
 		{
-			throw new NotImplementedException();
+		    this.message = message;
 		}
 	}
 }

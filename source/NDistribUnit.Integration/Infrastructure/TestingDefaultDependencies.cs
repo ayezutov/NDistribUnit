@@ -2,12 +2,14 @@ using System;
 using System.ServiceModel;
 using Autofac;
 using NDistribUnit.Common.Agent;
+using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Networking;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.Server.Communication;
+using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Common.Updating;
 using NDistribUnit.Integration.Tests.Infrastructure.Entities;
 using NDistribUnit.Integration.Tests.Infrastructure.Stubs;
@@ -52,17 +54,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
 
             builder.RegisterInstance(updateSource.Object).As<IUpdateSource>();
 
-            var connectionProviderMock = repo.Create<IConnectionProvider>();
-            connectionProviderMock
-                .Setup(cp => cp.GetConnection<ITestRunnerAgent>(It.IsAny<EndpointAddress>()))
-                .Returns((EndpointAddress address) =>
-                             {
-                                 AgentWrapper agentWrapper = controller.Agents
-                                     .FirstOrDefault(a => a.TestRunner.Name.Equals(address.Uri.AbsolutePath.Trim('/')));
-
-                                 return agentWrapper == null ? null : agentWrapper.TestRunner;
-                             });
-            builder.Register(c => connectionProviderMock.Object).As<IConnectionProvider>().InstancePerLifetimeScope();
+            builder.RegisterType<TestConnectionProvider>().As<IConnectionProvider>().SingleInstance();
         }
 
         internal static void RegisterHosts(ContainerBuilder builder)
@@ -72,7 +64,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
 
             builder.RegisterType<ServerWrapper>();
             builder.RegisterType<AgentWrapper>();
-            builder.RegisterType<RealConnectionProvider>().As<IConnectionProvider>().InstancePerLifetimeScope();
+            builder.RegisterType<RealConnectionProvider>().As<IConnectionProvider>().SingleInstance();
         }
     }
 }

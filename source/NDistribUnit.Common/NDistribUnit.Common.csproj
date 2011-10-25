@@ -81,8 +81,10 @@
     <Compile Include="Agent\Naming\InstanceNumberSearcher.cs" />
     <Compile Include="Agent\TestRunnerAgent.cs" />
     <Compile Include="Client\ClientParameters.cs" />
-    <Compile Include="Client\ClientRunner.cs" />
-    <Compile Include="Common\Communication\AgentAdditionalDataManager.cs" />
+    <Compile Include="Client\TestResult.cs" />
+    <Compile Include="Client\ITestRunnerClient.cs" />
+    <Compile Include="Client\TestRunnerClient.cs" />
+    <Compile Include="Common\Communication\AdditionalDataManager.cs" />
     <Compile Include="Common\Networking\IConnectionProvider.cs" />
     <Compile Include="Common\Communication\PingableCollection.cs" />
     <Compile Include="Common\Networking\RealConnectionProvider.cs" />

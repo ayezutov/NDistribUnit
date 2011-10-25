@@ -43,6 +43,14 @@ namespace NDistribUnit.Common.Agent
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets the name.
+        /// </summary>
+        public Version Version
+        {
+            get { return versionProvider.GetVersion(); }
+        }
+
+        /// <summary>
         /// Runs tests on agent
         /// </summary>
         /// <param name="callbackValue"></param>
@@ -87,7 +95,7 @@ namespace NDistribUnit.Common.Agent
 
             return new PingResult { 
 				EndpointName = Name, 
-				Version = versionProvider.GetVersion()};
+				Version = Version};
         }
 
         /// <summary>

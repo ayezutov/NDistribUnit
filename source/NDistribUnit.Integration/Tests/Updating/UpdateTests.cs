@@ -96,9 +96,41 @@ namespace NDistribUnit.Integration.Tests.Tests.Updating
 
             var client = system
                 .OfVersion(Version.Parse("1.9.0.0"))
-                .StartClient();
+                .GetClient();
+            client.RunEmptyTest();
 
             Assert.That(client.UpdateReceiver.HasReceivedUpdate(Version.Parse("2.0.0.0")));
+        }
+
+
+        [Test]
+        public void ClientReceivesNoUpdateIfOfLowerVersionOnServer()
+        {
+            var server = system
+                .OfVersion(Version.Parse("1.8.0.0"))
+                .StartServer();
+
+            var client = system
+                .OfVersion(Version.Parse("1.9.0.0"))
+                .GetClient();
+            client.RunEmptyTest();
+
+            Assert.That(client.UpdateReceiver.HasReceivedUpdate(), Is.False);
+        }
+
+        [Test]
+        public void ClientReceivesNoUpdateIfOfSameVersionOnServer()
+        {
+            var server = system
+                .OfVersion(Version.Parse("1.9.0.0"))
+                .StartServer();
+
+            var client = system
+                .OfVersion(Version.Parse("1.9.0.0"))
+                .GetClient();
+            client.RunEmptyTest();
+
+            Assert.That(client.UpdateReceiver.HasReceivedUpdate(), Is.False);
         }
     }
 }

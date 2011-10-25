@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.ServiceModel.Discovery;
 using System.Threading;
 using NDistribUnit.Common.Common.Communication;
-using NDistribUnit.Common.Common.Updating;
-using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.Logging;
 
 namespace NDistribUnit.Common.Agent.ExternalModules
@@ -18,7 +16,6 @@ namespace NDistribUnit.Common.Agent.ExternalModules
         private TimeSpan announcementInterval;
         private readonly Uri scope;
         private readonly ILog log;
-        private readonly IVersionProvider versionProvider;
         private Timer announcementTimer;
         private EndpointDiscoveryMetadata endpointDiscoveryMetadata;
 
@@ -27,13 +24,11 @@ namespace NDistribUnit.Common.Agent.ExternalModules
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="log">The log.</param>
-        /// <param name="versionProvider">The version provider.</param>
-        public AnnouncementModule(AgentConfiguration options, ILog log, IVersionProvider versionProvider)
+        public AnnouncementModule(AgentConfiguration options, ILog log)
         {
             announcementInterval = options.AnnouncementInterval;
             scope = options.Scope;
             this.log = log;
-            this.versionProvider = versionProvider;
             announcementTimer = new Timer(o=>Announce(), null, Timeout.Infinite, Timeout.Infinite);
         }
 
@@ -54,7 +49,7 @@ namespace NDistribUnit.Common.Agent.ExternalModules
 
             if (!endpointDiscoveryMetadata.Scopes.Contains(scope))
                 endpointDiscoveryMetadata.Scopes.Add(scope);
-            AgentAdditionalDataManager.Add(endpointDiscoveryMetadata.Extensions, host, versionProvider);
+            AdditionalDataManager.Add(endpointDiscoveryMetadata.Extensions, host);
             Announce();
         }
 

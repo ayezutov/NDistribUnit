@@ -1,7 +1,6 @@
 using System;
 using System.ServiceModel.Discovery;
 using NDistribUnit.Common.Common.Communication;
-using NDistribUnit.Common.Common.Updating;
 
 namespace NDistribUnit.Common.Agent.ExternalModules
 {
@@ -10,18 +9,15 @@ namespace NDistribUnit.Common.Agent.ExternalModules
     /// </summary>
     public class DiscoveryModule : IAgentExternalModule
     {
-        private readonly IVersionProvider versionProvider;
         private readonly Uri scope;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DiscoveryModule"/> class.
         /// </summary>
         /// <param name="options">The options.</param>
-        /// <param name="versionProvider">The version provider.</param>
-        public DiscoveryModule(AgentConfiguration options, IVersionProvider versionProvider)
+        public DiscoveryModule(AgentConfiguration options)
         {
-            this.versionProvider = versionProvider;
-            this.scope = options.Scope;
+            scope = options.Scope;
         }
 
         /// <summary>
@@ -35,7 +31,7 @@ namespace NDistribUnit.Common.Agent.ExternalModules
             {
                 agentTestRunnerDiscoveryBehavior = new EndpointDiscoveryBehavior();
                 host.Endpoint.Behaviors.Add(agentTestRunnerDiscoveryBehavior);
-                AgentAdditionalDataManager.Add(agentTestRunnerDiscoveryBehavior.Extensions, host, versionProvider);
+                AdditionalDataManager.Add(agentTestRunnerDiscoveryBehavior.Extensions, host);
             }
             agentTestRunnerDiscoveryBehavior.Scopes.Add(scope);
             

@@ -32,7 +32,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
             return agent;
         }
 
-        public ClientWrapper StartClient()
+        public ClientWrapper GetClient()
         {
             return controller.GetClient();
         }

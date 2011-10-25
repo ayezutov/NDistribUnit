@@ -24,6 +24,8 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
         private IList<ILifetimeScope> scopes = new List<ILifetimeScope>();
         private ClientParameters clientParameters;
 
+        public ServerWrapper Server { get; private set; }
+
         public void EnablePortsOpening()
         {
             TestingDefaultDependencies.RegisterHosts(currentBuilder);
@@ -45,7 +47,8 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
                                      };
             clientParameters = new ClientParameters
                                    {
-                                       Configuration = "Debug"
+                                       Configuration = "Debug",
+                                       ServerUri = new Uri("test://server")
                                    };
 
             currentBuilder = new ContainerBuilder();
@@ -79,9 +82,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
 
         public ServerWrapper GetServer()
         {
-            var server = GetContainer().Resolve<ServerWrapper>();
-
-            return server;
+            return Server = GetContainer().Resolve<ServerWrapper>();
         }
 
         private ILifetimeScope GetContainer()

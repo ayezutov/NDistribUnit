@@ -15,6 +15,7 @@ namespace NDistribUnit.Common.Client
         /// Notifies that the test has completed.
         /// </summary>
         /// <param name="result">The result.</param>
-        void NotifyTestCompleted(TestResult result);
+        /// <param name="isCompleted"></param>
+        void NotifyTestProgressChanged(TestResult result, bool isCompleted);
     }
 }

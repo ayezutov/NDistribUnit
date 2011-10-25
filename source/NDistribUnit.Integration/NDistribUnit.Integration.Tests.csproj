@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infrastructure\Entities\ClientWrapper.cs" />
+    <Compile Include="Infrastructure\Stubs\TestConnectionProvider.cs" />
     <Compile Include="Infrastructure\Stubs\TestUpdateReceiver.cs" />
     <Compile Include="Infrastructure\NDistribUnitTestSystemController.cs" />
     <Compile Include="Infrastructure\Stubs\TestingConnectionTracker.cs" />

@@ -16,7 +16,7 @@ namespace NDistribUnit.Common.ServiceContracts
     	/// </summary>
     	/// <param name="run"></param>
     	[OperationContract]
-		TestRun RunTests(TestRun run);
+		TestRun StartRunningTests(TestRun run);
 
 		/// <summary>
 		/// Gets the update if available.

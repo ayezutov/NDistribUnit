@@ -17,7 +17,7 @@ namespace NDistribUnit.Common.Dependencies
         {
             builder
                 .RegisterType<TestRunnerClient>()
-                .As<ITestRunnerClient>();
+                .As<ITestRunnerClient>().AsSelf();
         }
     }
 }

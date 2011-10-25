@@ -1,4 +1,3 @@
-using System;
 using NDistribUnit.Common.Client;
 using NDistribUnit.Integration.Tests.Infrastructure.Stubs;
 
@@ -12,7 +11,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// <value>
         /// The test runnner.
         /// </value>
-        public ITestRunnerClient TestRunnner { get; private set; }
+        public TestRunnerClient TestRunnner { get; private set; }
 
         public TestUpdateReceiver UpdateReceiver { get; private set; }
 
@@ -21,10 +20,15 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// </summary>
         /// <param name="testRunnner">The test runnner.</param>
         /// <param name="updateReceiver">The update receiver.</param>
-        public ClientWrapper(ITestRunnerClient testRunnner, TestUpdateReceiver updateReceiver)
+        public ClientWrapper(TestRunnerClient testRunnner, TestUpdateReceiver updateReceiver)
         {
             TestRunnner = testRunnner;
             UpdateReceiver = updateReceiver;
+        }
+
+        public void RunEmptyTest()
+        {
+            TestRunnner.Run();
         }
     }
 }

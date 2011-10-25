@@ -15,13 +15,14 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
     /// </summary>
     public class ServerWrapper: IDisposable
     {
-        private readonly TestRunnerServer testRunner;
         private readonly ServerConnectionsTracker serverConnectionsTracker;
         private ServerHost ServerHost { get; set; }
-        
+
+        public TestRunnerServer TestRunner { get; set; }
+
         public ServerWrapper(TestRunnerServer testRunner, ServerConnectionsTracker serverConnectionsTracker, ServerHost serverHost = null)
         {
-            this.testRunner = testRunner;
+            TestRunner = testRunner;
             this.serverConnectionsTracker = serverConnectionsTracker;
             ServerHost = serverHost;
         }

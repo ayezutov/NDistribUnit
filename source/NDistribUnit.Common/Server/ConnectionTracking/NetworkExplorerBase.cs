@@ -97,8 +97,8 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
                                           {
                                               Endpoint = endpoint,
                                               LastStatusUpdateTime = DateTime.UtcNow,
-                                              Name = agentName ?? AgentAdditionalDataManager.GetAgentName(endpoint.Extensions),
-											  Version = version ?? AgentAdditionalDataManager.GetAgentVersion(endpoint.Extensions)
+                                              Name = agentName ?? AdditionalDataManager.GetName(endpoint.Extensions),
+											  Version = version ?? AdditionalDataManager.GetVersion(endpoint.Extensions)
                                           };
             lock (endpoints)
             {
