@@ -47,6 +47,21 @@ namespace NDistribUnit.Common.Extensions
 		/// <summary>
 		/// Invokes the event safely.
 		/// </summary>
+		/// <typeparam name="TData">The type of the data.</typeparam>
+		/// <param name="event">The @event.</param>
+		/// <param name="sender">The sender.</param>
+		/// <param name="data">The data.</param>
+		public static void SafeInvokeAsync<TData>(this EventHandler<EventArgs<TData>> @event, object sender, TData data)
+		{
+			var local = @event;
+
+			if (local != null)
+				local.BeginInvoke(sender, new EventArgs<TData>(data), null, null);
+		}
+
+		/// <summary>
+		/// Invokes the event safely.
+		/// </summary>
 		/// <param name="event">The @event.</param>
 		/// <param name="sender">The sender.</param>
 		public static void SafeInvoke(this EventHandler @event, object sender)

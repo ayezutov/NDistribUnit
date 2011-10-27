@@ -1,6 +1,7 @@
 using System;
+using NDistribUnit.Common.TestExecution.Configuration;
 
-namespace NDistribUnit.Common.DataContracts
+namespace NDistribUnit.Common.Contracts.DataContracts
 {
 	/// <summary>
 	/// 
@@ -8,13 +9,36 @@ namespace NDistribUnit.Common.DataContracts
 	[Serializable]
 	public class TestRun
 	{
-		/// <summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestRun"/> class.
+        /// </summary>
+        /// <param name="id">The id.</param>
+	    public TestRun(Guid id)
+	    {
+	        Id = id;
+	    }
+
+	    /// <summary>
+        /// Initializes a new instance of the <see cref="TestRun"/> class.
+        /// </summary>
+	    public TestRun(): this(Guid.NewGuid())
+	    {}
+
+	    /// <summary>
 		/// Gets or sets the id.
 		/// </summary>
 		/// <value>
 		/// The id.
 		/// </value>
 		public Guid Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the parameters.
+        /// </summary>
+        /// <value>
+        /// The parameters.
+        /// </value>
+	    public TestRunParameters Parameters { get; set; }
 
 		/// <summary>
 		/// Equalses the specified other.

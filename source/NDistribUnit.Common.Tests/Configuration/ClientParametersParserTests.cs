@@ -96,5 +96,21 @@ namespace NDistribUnit.Client.Tests.Configuration
 
             Assert.That(parameters.ExcludeCategories, Is.EquivalentTo(new string[0]));
         }
+
+        [Test]
+        public void AliasIsParsed()
+        {
+            ClientParameters parameters = ClientParameters.Parse(new[] { "/noshadow", "/alias:O2I-UI-Tests-v.12-b.64.00"});
+
+            Assert.That(parameters.Alias, Is.EqualTo("O2I-UI-Tests-v.12-b.64.00"));
+        }
+
+        [Test]
+        public void AliasIsNullByDefault()
+        {
+            ClientParameters parameters = ClientParameters.Parse(new[] { "/noshadow"});
+
+            Assert.That(parameters.Alias, Is.Null);
+        }
     }
 }

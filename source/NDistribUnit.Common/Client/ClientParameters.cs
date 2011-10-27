@@ -79,6 +79,7 @@ namespace NDistribUnit.Common.Client
 						: null, false},
 					{"include", (string includes) => result.IncludeCategories = ParseCategories(includes) },
 					{"exclude", (string excludes) => result.ExcludeCategories = ParseCategories(excludes) },
+					{"alias", (string alias) => result.Alias = alias },
 						
                     {ConsoleOption.UnnamedOptionName, (string assembly) => result.AssembliesToTest.Add(assembly), false},
                 };
@@ -86,6 +87,14 @@ namespace NDistribUnit.Common.Client
             result.UnknownOption.AddRange(set.Parse(arguments));
             return result;
         }
+
+        /// <summary>
+        /// Gets or sets the alias.
+        /// </summary>
+        /// <value>
+        /// The alias.
+        /// </value>
+        public string Alias { get; set; }
 
         private static string[] ParseCategories(string categories)
         {

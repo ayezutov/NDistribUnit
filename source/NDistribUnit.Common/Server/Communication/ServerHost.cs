@@ -2,6 +2,7 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.ServiceModel.Web;
+using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.Services;
 using NDistribUnit.Common.ServiceContracts;

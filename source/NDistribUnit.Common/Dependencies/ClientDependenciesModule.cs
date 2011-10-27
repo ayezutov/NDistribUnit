@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using NDistribUnit.Common.Client;
+using NDistribUnit.Common.TestExecution.Configuration;
 
 namespace NDistribUnit.Common.Dependencies
 {
@@ -18,6 +19,9 @@ namespace NDistribUnit.Common.Dependencies
             builder
                 .RegisterType<TestRunnerClient>()
                 .As<ITestRunnerClient>().AsSelf();
+            builder
+                .RegisterType<TestRunParametersFileReader>()
+                .As<ITestRunParametersFileReader>();
         }
     }
 }

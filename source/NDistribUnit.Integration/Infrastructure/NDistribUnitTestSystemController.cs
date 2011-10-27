@@ -48,8 +48,9 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
             clientParameters = new ClientParameters
                                    {
                                        Configuration = "Debug",
-                                       ServerUri = new Uri("test://server")
+                                       ServerUri = new Uri("test://server"),
                                    };
+            clientParameters.AssembliesToTest.Add("test://ndistribunit.org/project.nunit");
 
             currentBuilder = new ContainerBuilder();
             var commandLineArgs = new string[0];

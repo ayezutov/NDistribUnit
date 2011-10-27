@@ -6,6 +6,7 @@ using NDistribUnit.Common.Server;
 using NDistribUnit.Common.Server.Communication;
 using NDistribUnit.Common.Server.ConnectionTracking;
 using NDistribUnit.Common.Server.Services;
+using NDistribUnit.Common.TestExecution.Preparation;
 using NDistribUnit.Common.Updating;
 
 namespace NDistribUnit.Common.Dependencies
@@ -67,6 +68,7 @@ namespace NDistribUnit.Common.Dependencies
             builder.RegisterType<DashboardService>().InstancePerLifetimeScope();
             builder.RegisterType<ServerConnectionsTracker>().InstancePerLifetimeScope();
             builder.RegisterType<UpdateSource>().As<IUpdateSource>();
+            builder.RegisterType<TestRunRequestsStorage>().InstancePerLifetimeScope();
             builder.RegisterType<ServerHost>().InstancePerLifetimeScope();
             builder.RegisterModule(new CommonDependenciesModule(CommandLineArgs));
 

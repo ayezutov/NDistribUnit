@@ -4,9 +4,12 @@ using System.ServiceModel;
 using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Updating;
+using NDistribUnit.Common.Contracts.DataContracts;
+using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Server.ConnectionTracking;
 using NDistribUnit.Common.ServiceContracts;
+using NDistribUnit.Common.TestExecution.Preparation;
 using NDistribUnit.Common.Updating;
 
 namespace NDistribUnit.Common.Server.Services
@@ -20,7 +23,8 @@ namespace NDistribUnit.Common.Server.Services
     	private readonly IUpdateSource updateSource;
         private readonly IVersionProvider versionProvider;
         private readonly IConnectionProvider connectionProvider;
-        private readonly PingableCollection<TestClientDescriptor> clientRunners;
+        private readonly TestRunRequestsStorage requests;
+        private readonly PingableCollection<TestRunRequest> clients;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestRunnerServer"/> class.
@@ -29,56 +33,58 @@ namespace NDistribUnit.Common.Server.Services
         /// <param name="options">The options.</param>
         /// <param name="versionProvider">The version provider.</param>
         /// <param name="connectionProvider">The connection provider.</param>
-    	public TestRunnerServer(IUpdateSource updateSource, IConnectionsHostOptions options, IVersionProvider versionProvider, IConnectionProvider connectionProvider)
+        /// <param name="requests">The storage.</param>
+    	public TestRunnerServer(IUpdateSource updateSource, 
+            IConnectionsHostOptions options, 
+            IVersionProvider versionProvider, 
+            IConnectionProvider connectionProvider,
+            TestRunRequestsStorage requests)
 		{
 			this.updateSource = updateSource;
             this.versionProvider = versionProvider;
             this.connectionProvider = connectionProvider;
-            clientRunners = new PingableCollection<TestClientDescriptor>(options);
-			clientRunners.Removed += OnClientRemoved;
+            this.requests = requests;
+            clients = new PingableCollection<TestRunRequest>(options);
+			clients.Removed += OnClientRemoved;
 		}
 
-    	private void OnClientRemoved(object sender, EventArgs<TestClientDescriptor> e)
+    	private void OnClientRemoved(object sender, EventArgs<TestRunRequest> e)
     	{
     		e.Data.RemoveClient();
     	}
 
-    	/// <summary>
-    	/// Runs tests from client
-    	/// </summary>
-    	/// <param name="run"></param>
-    	public TestRun StartRunningTests(TestRun run)
+        /// <summary>
+        /// Runs tests from client
+        /// </summary>
+        /// <param name="run"></param>
+        public void StartRunningTests(TestRun run)
     	{
     	    var client = connectionProvider.GetCurrentCallback<ITestRunnerClient>();
 
             if (run == null)
-			{
-				run = new TestRun { Id = Guid.NewGuid() };
-				var testClient = new TestClientDescriptor(run, client);
-				clientRunners.Add(testClient);
-				StartTestRun(testClient);
-				return run;
-			}
-			
-//			if (runState.IsCompleted(run))
-//			{
-//				client.NotifyTestCompleted(runState.GetResults(run.Id));
-//				return run;
-//			}
-//    		
-//			if (runState.IsPending(run))
-//    		{ 
-//    			clientRunners.Replace(new TestClient(savedRun, client));
-//    			return run;
-//    		}
+                throw new ArgumentNullException("run");
 
-			client.NotifyTestProgressChanged(new TestResult("No test was found with the id={0}"), true);
-    		return run;
-    	}
+            #region Stub for the future
+            //          var runState = GetStateBytestRun();
+            //          if (runState != null){
 
-    	private void StartTestRun(TestClientDescriptor testClientDescriptor)
-    	{
-            testClientDescriptor.Client.NotifyTestProgressChanged(new TestResult("Completed"), true);
+            //			if (runState.IsCompleted(run))
+            //			{
+            //				client.NotifyTestCompleted(runState.GetResults(run.Id), );
+            //				return run;
+            //			}
+            //    		
+            //			if (runState.IsPending(run))
+            //    		{ 
+            //    			clientRunners.Replace(new TestClient(savedRun, client));
+            //    			return run;
+            //    		}
+            //          }
+            #endregion
+
+            var request = new TestRunRequest(run, client);
+			clients.Add(request);
+            requests.Add(request);
     	}
 
     	/// <summary>

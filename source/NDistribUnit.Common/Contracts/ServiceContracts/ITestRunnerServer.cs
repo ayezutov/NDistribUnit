@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ServiceModel;
 using NDistribUnit.Common.Client;
-using NDistribUnit.Common.DataContracts;
+using NDistribUnit.Common.Contracts.DataContracts;
+using NDistribUnit.Common.ServiceContracts;
 
-namespace NDistribUnit.Common.ServiceContracts
+namespace NDistribUnit.Common.Contracts.ServiceContracts
 {
     /// <summary>
     /// Contract, which is used by client to connect to server
@@ -11,12 +12,12 @@ namespace NDistribUnit.Common.ServiceContracts
     [ServiceContract(CallbackContract = typeof(ITestRunnerClient))]
     public interface ITestRunnerServer
     {
-    	/// <summary>
-    	/// Runs tests from client
-    	/// </summary>
-    	/// <param name="run"></param>
-    	[OperationContract]
-		TestRun StartRunningTests(TestRun run);
+        /// <summary>
+        /// Runs tests from client
+        /// </summary>
+        /// <param name="run"></param>
+        [OperationContract]
+		void StartRunningTests(TestRun run);
 
 		/// <summary>
 		/// Gets the update if available.

@@ -1,5 +1,5 @@
 ﻿using System;
-using NDistribUnit.Common.DataContracts;
+using NDistribUnit.Common.Contracts.DataContracts;
 
 namespace NDistribUnit.Common.TestExecution
 {

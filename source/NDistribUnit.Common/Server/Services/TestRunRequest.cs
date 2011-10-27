@@ -1,21 +1,23 @@
 using System;
 using NDistribUnit.Common.Client;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.ServiceContracts;
+using NDistribUnit.Common.TestExecution.Preparation;
 
 namespace NDistribUnit.Common.Server.Services
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	public class TestClientDescriptor: IPingable
+	public class TestRunRequest: IPingable
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="TestClientDescriptor"/> class.
+		/// Initializes a new instance of the <see cref="TestRunRequest"/> class.
 		/// </summary>
 		/// <param name="testRun">The test run.</param>
 		/// <param name="client">The client.</param>
-		public TestClientDescriptor(TestRun testRun, ITestRunnerClient client)
+		public TestRunRequest(TestRun testRun, ITestRunnerClient client)
 		{
 			TestRun = testRun;
 			Client = client;
@@ -34,7 +36,15 @@ namespace NDistribUnit.Common.Server.Services
 		/// </summary>
 		public ITestRunnerClient Client { get; private set; }
 
-		/// <summary>
+        /// <summary>
+        /// Gets or sets the status.
+        /// </summary>
+        /// <value>
+        /// The status.
+        /// </value>
+	    public TestRunRequestStatus Status { get; set; }
+
+	    /// <summary>
 		/// Pings the tracking side
 		/// </summary>
 		/// <param name="pingInterval"></param>
@@ -53,5 +63,14 @@ namespace NDistribUnit.Common.Server.Services
 		{
 			Client = null;
 		}
+
+        /// <summary>
+        /// Sets the client.
+        /// </summary>
+        /// <param name="client">The client.</param>
+	    public void SetClient(ITestRunnerClient client)
+	    {
+	        Client = client;
+	    }
 	}
 }
