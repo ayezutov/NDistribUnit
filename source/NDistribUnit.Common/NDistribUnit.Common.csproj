@@ -134,9 +134,9 @@
     <Compile Include="Server\Services\DashboardService.cs" />
     <Compile Include="Server\Services\TestClientDescriptor.cs" />
     <Compile Include="Server\Services\TestRunnerServer.cs" />
-    <Compile Include="Server\TestExecution\TestManager.cs" />
-    <Compile Include="Server\TestExecution\TestUnit.cs" />
-    <Compile Include="Server\TestExecution\TestUnitsCollection.cs" />
+    <Compile Include="TestExecution\TestManager.cs" />
+    <Compile Include="TestExecution\TestUnit.cs" />
+    <Compile Include="TestExecution\TestUnitsCollection.cs" />
     <Compile Include="Contracts\ServiceContracts\IPingable.cs" />
     <Compile Include="Common\Networking\WcfUtilities.cs" />
     <Compile Include="Contracts\DataContracts\ProjectDescription.cs" />

@@ -34,8 +34,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{58E2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDistribUnit.MSBuild.Extensions", "NDistribUnit.MSBuild.Extensions\NDistribUnit.MSBuild.Extensions.csproj", "{9C53A9EB-9CE9-4ED9-944A-68D9CB4B844D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDistribUnit.Client.Tests", "NDistribUnit.Client.Tests\NDistribUnit.Client.Tests.csproj", "{10082BDC-CC29-4E06-86E5-080746C7BD38}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -161,18 +159,6 @@ Global
 		{9C53A9EB-9CE9-4ED9-944A-68D9CB4B844D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C53A9EB-9CE9-4ED9-944A-68D9CB4B844D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{9C53A9EB-9CE9-4ED9-944A-68D9CB4B844D}.Release|x86.ActiveCfg = Release|Any CPU
-		{10082BDC-CC29-4E06-86E5-080746C7BD38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10082BDC-CC29-4E06-86E5-080746C7BD38}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{10082BDC-CC29-4E06-86E5-080746C7BD38}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{10082BDC-CC29-4E06-86E5-080746C7BD38}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{10082BDC-CC29-4E06-86E5-080746C7BD38}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{10082BDC-CC29-4E06-86E5-080746C7BD38}.MsBuild Task|Any CPU.ActiveCfg = MsBuild Task|Any CPU
-		{10082BDC-CC29-4E06-86E5-080746C7BD38}.MsBuild Task|Mixed Platforms.ActiveCfg = MsBuild Task|Any CPU
-		{10082BDC-CC29-4E06-86E5-080746C7BD38}.MsBuild Task|x86.ActiveCfg = MsBuild Task|Any CPU
-		{10082BDC-CC29-4E06-86E5-080746C7BD38}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{10082BDC-CC29-4E06-86E5-080746C7BD38}.Release|Any CPU.Build.0 = Release|Any CPU
-		{10082BDC-CC29-4E06-86E5-080746C7BD38}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{10082BDC-CC29-4E06-86E5-080746C7BD38}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -186,7 +172,6 @@ Global
 		{4ECA0DB7-1527-405A-BD64-45CD0559EBC9} = {37BB1319-1D9E-48A9-B649-F0FA1B5DDD41}
 		{5B6FAB51-B99B-4D78-B08A-D701BE9CAEF3} = {37BB1319-1D9E-48A9-B649-F0FA1B5DDD41}
 		{EE0C9A0F-FE91-4D4B-8550-355B11A44DED} = {37BB1319-1D9E-48A9-B649-F0FA1B5DDD41}
-		{10082BDC-CC29-4E06-86E5-080746C7BD38} = {37BB1319-1D9E-48A9-B649-F0FA1B5DDD41}
 		{9C53A9EB-9CE9-4ED9-944A-68D9CB4B844D} = {58E2CADD-EA84-4E39-909C-725A089227A0}
 	EndGlobalSection
 EndGlobal

@@ -1,7 +1,7 @@
 ﻿using System;
 using NDistribUnit.Common.DataContracts;
 
-namespace NDistribUnit.Common.Server.TestExecution
+namespace NDistribUnit.Common.TestExecution
 {
 	/// <summary>
 	/// Represents the smallest piece of work, which can be run by an agent

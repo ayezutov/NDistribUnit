@@ -1,4 +1,4 @@
-using NDistribUnit.Client.Configuration;
+using NDistribUnit.Common.Client;
 using NUnit.Framework;
 
 namespace NDistribUnit.Client.Tests.Configuration
@@ -63,6 +63,38 @@ namespace NDistribUnit.Client.Tests.Configuration
             Assert.That(parameters.AssembliesToTest, Is.EquivalentTo(new[] { "some.tests.assembly.dll", "some.tests.assembly23.dll" }));
             Assert.That(parameters.XmlFileName, Is.EqualTo("xml.file"));
             Assert.That(parameters.NoShadow, Is.True);
+        }
+
+        [Test]
+        public void IncludeCategoriesAreParsedCorrectly()
+        {
+            ClientParameters parameters = ClientParameters.Parse(new[] { "/noshadow", "/xml:xml.file", "some.tests.assembly23.dll", "some.tests.assembly.dll", "/include:Cat1, Another Category,SomeCategory," });
+
+            Assert.That(parameters.IncludeCategories, Is.EquivalentTo(new[] { "Cat1","Another Category","SomeCategory" }));
+        }
+
+        [Test]
+        public void ExcludeCategoriesAreParsedCorrectly()
+        {
+            ClientParameters parameters = ClientParameters.Parse(new[] { "/noshadow", "/xml:xml.file", "some.tests.assembly23.dll", "some.tests.assembly.dll", "/exclude:Cat1, Another Category,SomeCategory," });
+
+            Assert.That(parameters.ExcludeCategories, Is.EquivalentTo(new[] { "Cat1","Another Category","SomeCategory" }));
+        }
+
+        [Test]
+        public void IncludeCategoriesAreEmptyIfNotProvided()
+        {
+            ClientParameters parameters = ClientParameters.Parse(new[] { "/noshadow", "/xml:xml.file", "some.tests.assembly23.dll", "some.tests.assembly.dll"});
+
+            Assert.That(parameters.IncludeCategories, Is.EquivalentTo(new string[0]));
+        }
+
+        [Test]
+        public void ExcludeCategorieAreEmptyIfNotProvided()
+        {
+            ClientParameters parameters = ClientParameters.Parse(new[] { "/noshadow", "/xml:xml.file", "some.tests.assembly23.dll", "some.tests.assembly.dll"});
+
+            Assert.That(parameters.ExcludeCategories, Is.EquivalentTo(new string[0]));
         }
     }
 }

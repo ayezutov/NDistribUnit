@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ServiceModel;
 using Autofac;
-using NDistribUnit.Client.Configuration;
 using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Dependencies;

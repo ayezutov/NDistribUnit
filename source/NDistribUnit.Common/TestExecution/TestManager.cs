@@ -1,8 +1,8 @@
 ﻿using System;
-using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Server.Communication;
+using NDistribUnit.Common.Server.TestExecution;
 
-namespace NDistribUnit.Common.Server.TestExecution
+namespace NDistribUnit.Common.TestExecution
 {
 	/// <summary>
 	/// 

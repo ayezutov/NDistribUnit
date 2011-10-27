@@ -2,7 +2,6 @@ using System;
 using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
-using NDistribUnit.Client.Configuration;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.DataContracts;

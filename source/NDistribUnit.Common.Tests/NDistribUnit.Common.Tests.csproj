@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\RollingListTests.cs" />
+    <Compile Include="Configuration\ClientParametersParserTests.cs" />
     <Compile Include="FileSystem\DirectoryHashTests.cs" />
     <Compile Include="Logging\RollingLogTests.cs" />
     <Compile Include="Options\ConsoleParametersParserTest.cs" />

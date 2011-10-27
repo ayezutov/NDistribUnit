@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using NDistribUnit.Common.ConsoleProcessing.Options;
+using System.Linq;
 
-namespace NDistribUnit.Client.Configuration
+namespace NDistribUnit.Common.Client
 {
     /// <summary>
     /// Holds all the parsed command line parameters for NDistribUnit client
@@ -17,6 +18,8 @@ namespace NDistribUnit.Client.Configuration
             AssembliesToTest = new List<string>();
             UnknownOption = new List<ConsoleOption>();
             NoShadow = false;
+            IncludeCategories = new string[0];
+            ExcludeCategories = new string[0];
         }
 
         /// <summary>
@@ -72,13 +75,37 @@ namespace NDistribUnit.Client.Configuration
                     {"noshadow", (bool noShadow) => result.NoShadow = noShadow, true },
                     {"configuration", (string configuration) => result.Configuration = configuration, false },
 					{"server", (string testServerUri) => result.ServerUri = Uri.IsWellFormedUriString(testServerUri, UriKind.Absolute) 
-						? new Uri(testServerUri)
+                        ? new Uri(testServerUri)
 						: null, false},
+					{"include", (string includes) => result.IncludeCategories = ParseCategories(includes) },
+					{"exclude", (string excludes) => result.ExcludeCategories = ParseCategories(excludes) },
+						
                     {ConsoleOption.UnnamedOptionName, (string assembly) => result.AssembliesToTest.Add(assembly), false},
                 };
 
             result.UnknownOption.AddRange(set.Parse(arguments));
             return result;
         }
+
+        private static string[] ParseCategories(string categories)
+        {
+            return categories.Split(new []{','}, StringSplitOptions.RemoveEmptyEntries).Select(category => category.Trim()).ToArray();
+        }
+
+        /// <summary>
+        /// Gets or sets the categories to exclude.
+        /// </summary>
+        /// <value>
+        /// The exclude categories.
+        /// </value>
+        public string[] ExcludeCategories { get; set; }
+
+        /// <summary>
+        /// Gets or sets the categories to include.
+        /// </summary>
+        /// <value>
+        /// The include categories.
+        /// </value>
+        public string[] IncludeCategories { get; set; }
     }
 }
