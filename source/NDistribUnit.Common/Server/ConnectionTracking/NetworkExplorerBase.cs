@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Discovery;
 using System.Threading;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Communication.ConnectionTracking;
+using NDistribUnit.Common.Extensions;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
-using System.Linq;
 
 namespace NDistribUnit.Common.Server.ConnectionTracking
 {
@@ -16,7 +17,7 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
     /// The base class for connection trackers
     /// </summary>
     /// <typeparam name="TIEndpoint">The type of the I endpoint.</typeparam>
-    public abstract class NetworkExplorerBase<TIEndpoint>: INetworkExplorer<TIEndpoint> where TIEndpoint : IPingable 
+    public abstract class NetworkExplorerBase<TIEndpoint> : INetworkExplorer<TIEndpoint> where TIEndpoint : IPingable
     {
         /// <summary>
         /// The log
@@ -27,7 +28,9 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
         /// The unique identifier of that instance
         /// </summary>
         protected readonly Guid guid = Guid.NewGuid();
+
         private readonly IList<EndpointInformation> endpoints = new List<EndpointInformation>();
+
         ///
         protected readonly IConnectionsHostOptions ConnectionsHostOptions;
 
@@ -51,25 +54,28 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
                 try
                 {
                     log.Debug(string.Format("{0}: Pinging {1} at {2}", guid, endpointInformation.Name,
-                                           endpointInformation.Endpoint.Address));
-					try
-					{
-						endpointInformation.PingTimer.Change(Timeout.Infinite, Timeout.Infinite);
-					}
-					catch(ObjectDisposedException)
-					{
-						return;
-					}
-                	var result = endpointInformation.Pingable.Ping(TimeSpan.FromMilliseconds(ConnectionsHostOptions.PingIntervalInMiliseconds));
+                                            endpointInformation.Endpoint.Address));
+                    try
+                    {
+                        endpointInformation.PingTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        return;
+                    }
+                    var result =
+                        endpointInformation.Pingable.Ping(
+                            TimeSpan.FromMilliseconds(ConnectionsHostOptions.PingIntervalInMiliseconds));
                     if (result.EndpointName.Equals(endpointInformation.Name))
                     {
-                        endpointInformation.PingTimer.Change(ConnectionsHostOptions.PingIntervalInMiliseconds, Timeout.Infinite);
+                        endpointInformation.PingTimer.Change(ConnectionsHostOptions.PingIntervalInMiliseconds,
+                                                             Timeout.Infinite);
                         endpointInformation.LastStatusUpdateTime = DateTime.UtcNow;
                         if (EndpointSuccessfulPing != null)
                             EndpointSuccessfulPing(this, new EndpointConnectionChangedEventArgs
                                                              {
                                                                  EndpointInfo = endpointInformation,
-																 Version = result.Version
+                                                                 Version = result.Version
                                                              });
                     }
                     else
@@ -85,34 +91,37 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
             }
         }
 
-		/// <summary>
-		/// Adds the endpoint for tracking.
-		/// </summary>
-		/// <param name="endpoint">The endpoint.</param>
-		/// <param name="agentName">Name of the agent.</param>
-		/// <param name="version">The version.</param>
-        protected void AddEndpointForTracking(EndpointDiscoveryMetadata endpoint, string agentName = null, Version version = null)
+        /// <summary>
+        /// Adds the endpoint for tracking.
+        /// </summary>
+        /// <param name="endpoint">The endpoint.</param>
+        /// <param name="agentName">Name of the agent.</param>
+        /// <param name="version">The version.</param>
+        protected void AddEndpointForTracking(EndpointDiscoveryMetadata endpoint, string agentName = null,
+                                              Version version = null)
         {
             var endpointInformation = new EndpointInformation
                                           {
                                               Endpoint = endpoint,
                                               LastStatusUpdateTime = DateTime.UtcNow,
                                               Name = agentName ?? AdditionalDataManager.GetName(endpoint.Extensions),
-											  Version = version ?? AdditionalDataManager.GetVersion(endpoint.Extensions)
+                                              Version = version ?? AdditionalDataManager.GetVersion(endpoint.Extensions)
                                           };
             lock (endpoints)
             {
                 log.Info(string.Format("{1}: Got: {0}", endpoint.Address, guid));
                 var endpointWithSameName = endpoints.FirstOrDefault(e => e.Equals(endpointInformation));
-                var endpointWithSameAddress = endpoints.FirstOrDefault(e => 
-					e.Endpoint.Address.Equals(endpointInformation.Endpoint.Address) && !e.Endpoint.Equals(endpointInformation));
+                var endpointWithSameAddress = endpoints.FirstOrDefault(e =>
+                                                                       e.Endpoint.Address.Equals(
+                                                                           endpointInformation.Endpoint.Address) &&
+                                                                       !e.Endpoint.Equals(endpointInformation));
 
-				if (endpointWithSameAddress != null)
-				{
-					RemoveEndpointFromTracking(endpointWithSameAddress);
-				}
+                if (endpointWithSameAddress != null)
+                {
+                    RemoveEndpointFromTracking(endpointWithSameAddress);
+                }
 
-				if (endpointWithSameName == null || !endpointWithSameName.Endpoint.Address.Equals(endpoint.Address))
+                if (endpointWithSameName == null || !endpointWithSameName.Endpoint.Address.Equals(endpoint.Address))
                 {
                     if (endpointWithSameName != null)
                         RemoveEndpointFromTracking(endpointWithSameName);
@@ -125,20 +134,14 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
                     endpointInformation.PingTimer = new Timer(OnEndpointPing, endpointInformation,
                                                               0, Timeout.Infinite);
 
-                    OnEndPointConnected(endpointInformation);
+                    EndpointConnected.SafeInvoke(this, new EndpointConnectionChangedEventArgs
+                                                           {
+                                                               EndpointInfo = endpointInformation,
+                                                               Version = endpointInformation.Version
+                                                           });
                 }
             }
         }
-
-    	private void OnEndPointConnected(EndpointInformation endpointInformation)
-    	{
-    		if (EndpointConnected != null)
-    			EndpointConnected(this, new EndpointConnectionChangedEventArgs
-    			                        	{
-    			                        		EndpointInfo = endpointInformation,
-    			                        		Version = endpointInformation.Version
-    			                        	});
-    	}
 
         private void RemoveEndpointFromTracking(EndpointInformation endpointInformation)
         {
@@ -153,20 +156,13 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
                 endpoints.Remove(endpointInformation);
             }
 
-            OnEndPointDisconnected(endpointInformation);
+            EndpointDisconnected.SafeInvoke(this, new EndpointConnectionChangedEventArgs
+            {
+                EndpointInfo = endpointInformation,
+                Version = endpointInformation.Version
+            });
         }
-
-    	private void OnEndPointDisconnected(EndpointInformation endpointInformation)
-    	{
-    		if (EndpointDisconnected != null)
-    			EndpointDisconnected(this, new EndpointConnectionChangedEventArgs
-    			                           	{
-    			                           		EndpointInfo = endpointInformation,
-    			                           		Version = endpointInformation.Version
-    			                           	});
-    	}
-
-    	/// <summary>
+        /// <summary>
         /// Event, which is fired, whenever a new endpoint is connected
         /// </summary>
         public event EventHandler<EndpointConnectionChangedEventArgs> EndpointConnected;

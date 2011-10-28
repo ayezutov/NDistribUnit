@@ -20,6 +20,7 @@ namespace NDistribUnit.Common.Client
             NoShadow = false;
             IncludeCategories = new string[0];
             ExcludeCategories = new string[0];
+            TimeoutPeriod = TimeSpan.FromHours(5);
         }
 
         /// <summary>
@@ -116,5 +117,13 @@ namespace NDistribUnit.Common.Client
         /// The include categories.
         /// </value>
         public string[] IncludeCategories { get; set; }
+
+        /// <summary>
+        /// Gets or sets the timeout period.
+        /// </summary>
+        /// <value>
+        /// The timeout period.
+        /// </value>
+        public TimeSpan TimeoutPeriod { get; set; }
     }
 }

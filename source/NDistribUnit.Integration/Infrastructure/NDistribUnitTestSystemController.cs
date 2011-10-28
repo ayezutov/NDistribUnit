@@ -49,6 +49,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
                                    {
                                        Configuration = "Debug",
                                        ServerUri = new Uri("test://server"),
+                                       TimeoutPeriod = TimeSpan.FromSeconds(1)
                                    };
             clientParameters.AssembliesToTest.Add("test://ndistribunit.org/project.nunit");
 

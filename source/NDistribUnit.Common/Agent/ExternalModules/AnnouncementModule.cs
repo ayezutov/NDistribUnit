@@ -29,7 +29,6 @@ namespace NDistribUnit.Common.Agent.ExternalModules
             announcementInterval = options.AnnouncementInterval;
             scope = options.Scope;
             this.log = log;
-            announcementTimer = new Timer(o=>Announce(), null, Timeout.Infinite, Timeout.Infinite);
         }
 
 
@@ -39,18 +38,22 @@ namespace NDistribUnit.Common.Agent.ExternalModules
         /// <param name="host">The host.</param>
         public void Start(AgentHost host)
         {
-            client = new AnnouncementClient(new UdpAnnouncementEndpoint());
-            client.Open();
-            host.TestRunner.PingReceived += PingReceived;
-            
-            endpointDiscoveryMetadata = EndpointDiscoveryMetadata.FromServiceEndpoint(host.Endpoint);
+            lock (this)
+            {
+                client = new AnnouncementClient(new UdpAnnouncementEndpoint());
+                client.Open();
+                host.TestRunner.PingReceived += PingReceived;
 
-            Debug.Assert(endpointDiscoveryMetadata != null);
+                endpointDiscoveryMetadata = EndpointDiscoveryMetadata.FromServiceEndpoint(host.Endpoint);
+                announcementTimer = new Timer(o => Announce(), null, Timeout.Infinite, Timeout.Infinite);
 
-            if (!endpointDiscoveryMetadata.Scopes.Contains(scope))
-                endpointDiscoveryMetadata.Scopes.Add(scope);
-            AdditionalDataManager.Add(endpointDiscoveryMetadata.Extensions, host);
-            Announce();
+                Debug.Assert(endpointDiscoveryMetadata != null);
+
+                if (!endpointDiscoveryMetadata.Scopes.Contains(scope))
+                    endpointDiscoveryMetadata.Scopes.Add(scope);
+                AdditionalDataManager.Add(endpointDiscoveryMetadata.Extensions, host);
+                new Action(Announce).BeginInvoke(null, null);
+            }
         }
 
         private void PingReceived(object sender, EventArgs<TimeSpan> eventArgs)
@@ -106,12 +109,7 @@ namespace NDistribUnit.Common.Agent.ExternalModules
         /// <param name="host">The host.</param>
         public void Abort(AgentHost host)
         {
-            lock (this)
-            {
-                client.Close();
-                if (announcementTimer != null)
-                    announcementTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            }
+            Stop(host);
         }
     }
 }

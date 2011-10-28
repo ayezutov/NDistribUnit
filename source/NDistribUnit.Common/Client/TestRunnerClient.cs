@@ -112,7 +112,7 @@ namespace NDistribUnit.Common.Client
                                                        });
             try
             {
-                Task.WaitAll(testRunningTask, updateTask);
+                Task.WaitAll(new []{testRunningTask, updateTask}, options.TimeoutPeriod);
             }
             catch (AggregateException ex)
             {
@@ -120,6 +120,11 @@ namespace NDistribUnit.Common.Client
                 {
                     log.Error("Error:", innerException);
                 }
+                throw;
+            }
+            catch(Exception ex)
+            {
+                log.Error("Error while running tests", ex);
                 throw;
             }
             SaveResult();

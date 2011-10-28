@@ -65,7 +65,9 @@ namespace NDistribUnit.Integration.Tests.Tests.Communication
 
             Assert.That(server.HasAConnected(agent));
 
+            Console.WriteLine("Shutting down...");
             agent.ShutDownInExpectedWay();
+            Console.WriteLine("Shut down already");
 
             Assert.That(server.HasADisconnected(agent));
         }
