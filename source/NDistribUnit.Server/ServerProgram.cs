@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Configuration;
 using System.Diagnostics;
-using System.IO;
 using Autofac;
 using Autofac.Core;
 using NDistribUnit.Common.Common.ConsoleProcessing;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication;
-using NDistribUnit.Common.ConsoleProcessing;
 using NDistribUnit.Common.Dependencies;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server;
@@ -24,8 +22,6 @@ namespace NDistribUnit.Server
             {
                 var builder = new ContainerBuilder();
                 Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                builder.RegisterInstance(configuration);
-
                 var serverSettings = configuration.GetSection("settings") as ServerConfiguration;
                 Debug.Assert(serverSettings != null);
                 builder.RegisterType<ServerProgram>();
@@ -36,6 +32,12 @@ namespace NDistribUnit.Server
             catch (DependencyResolutionException ex)
             {
                 Console.WriteLine(ex.Message);
+                throw;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
                 throw;
             }
 		}

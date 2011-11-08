@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Threading;
 using Ionic.Zip;
+using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Common.Updating;
 
@@ -13,16 +14,19 @@ namespace NDistribUnit.Common.Common.Updating
 	{
 		private readonly VersionDirectoryFinder finder;
 		private readonly BootstrapperParameters parameters;
+	    private readonly ZipSource zip;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="UpdateReceiver"/> class.
-		/// </summary>
-		/// <param name="finder">The finder.</param>
-		/// <param name="parameters">The parameters.</param>
-		public UpdateReceiver(VersionDirectoryFinder finder, BootstrapperParameters parameters)
+	    /// <summary>
+        /// Initializes a new instance of the <see cref="UpdateReceiver"/> class.
+        /// </summary>
+        /// <param name="finder">The finder.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <param name="zip">The zip.</param>
+		public UpdateReceiver(VersionDirectoryFinder finder, BootstrapperParameters parameters, ZipSource zip)
 		{
 			this.finder = finder;
 			this.parameters = parameters;
+            this.zip = zip;
 		}
 
 		/// <summary>
@@ -47,14 +51,11 @@ namespace NDistribUnit.Common.Common.Updating
 				 if (versionDirectory != null)
 					 return false;
 
-				 using (var zipStream = new MemoryStream(package.UpdateZipBytes))
-				 {
-					 var zipFile = ZipFile.Read(zipStream);
-					 var targetDir = parameters.RootFolder;
-					 if (!Directory.Exists(targetDir))
-						 Directory.CreateDirectory(targetDir);
-					 zipFile.ExtractAll(targetDir, ExtractExistingFileAction.OverwriteSilently);
-				 }
+                 var targetDir = parameters.RootFolder;
+                 if (!Directory.Exists(targetDir))
+                     Directory.CreateDirectory(targetDir);
+
+                 zip.UnpackFolder(package.UpdateZipBytes, targetDir);
 
 			 	return true;
 			 }

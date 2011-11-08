@@ -36,11 +36,11 @@ namespace NDistribUnit.Common.Agent
         /// <value>
         ///   The announcement interval.
         /// </value>
-        [ConfigurationProperty("announcementIntervalInMilliseconds", IsRequired = true)]
+        [ConfigurationProperty("announcementInterval", IsRequired = true)]
         public TimeSpan AnnouncementInterval
         {
-            get { return TimeSpan.FromMilliseconds((int)base["announcementIntervalInMilliseconds"]); }
-            set { base["announcementIntervalInMilliseconds"] = value.Milliseconds; }
+            get { return (TimeSpan)base["announcementInterval"]; }
+            set { base["announcementInterval"] = value; }
         }
 
         /// <summary>

@@ -6,6 +6,8 @@ using NDistribUnit.Common.Common.Networking;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.TestExecution;
+using NDistribUnit.Common.TestExecution.Storage;
 using NDistribUnit.Common.Updating;
 
 namespace NDistribUnit.Common.Dependencies
@@ -37,15 +39,19 @@ namespace NDistribUnit.Common.Dependencies
             builder.RegisterType<UpdatesMonitor>();
             builder.RegisterType<VersionDirectoryFinder>();
             builder.RegisterType<CurrentAssemblyVersionProvider>().As<IVersionProvider>();
-            builder.RegisterType<UpdateReceiver>();
+            builder.RegisterType<UpdateReceiver>().As<IUpdateReceiver>().AsSelf();
             builder.RegisterType<ZipSource>();
+            builder.RegisterType<ProjectPackager>().As<IProjectPackager>();
             builder.Register(c => new RollingLog(c.Resolve<LogConfiguration>().RollingLogItemsCount));
             builder.RegisterType<ConsoleLog>();
             builder.Register(
-                c => new CombinedLog(c.Resolve<ConsoleLog>(), c.Resolve<RollingLog>()))
+                c => new CombinedLog(c.Resolve<ConsoleLog>(), c.Resolve<RollingLog>(), c.Resolve<WindowsLog>()))
                 .As<ILog>()
                 .SingleInstance();
             builder.RegisterType<RealConnectionProvider>().As<IConnectionProvider>().InstancePerLifetimeScope();
+
+            builder.RegisterType<ProjectsStorage>().As<IProjectsStorage>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<NUnitInitializer>().As<ITestSystemInitializer>().InstancePerLifetimeScope();
         }
     }
 }

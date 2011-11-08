@@ -67,11 +67,16 @@
     <Compile Include="Options\ConsoleParametersParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestExecution\Configuration\TestRunParametersXmlReaderTests.cs" />
+    <Compile Include="TestExecution\TestsRetrieverTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NDistribUnit.Common\NDistribUnit.Common.csproj">
       <Project>{B060BDAC-E277-42BB-871C-320D6D8C5CA7}</Project>
       <Name>NDistribUnit.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NDistribUnit.SampleTestAssembly\NDistribUnit.SampleTestAssembly.csproj">
+      <Project>{83494149-0503-437E-8208-D91AFC60CD1F}</Project>
+      <Name>NDistribUnit.SampleTestAssembly</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

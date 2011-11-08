@@ -59,7 +59,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
             currentBuilder.RegisterModule(new CommonDependenciesModule(commandLineArgs));
             currentBuilder.RegisterInstance(serverConfiguration).As<IConnectionsHostOptions>().AsSelf();
             currentBuilder.RegisterInstance(clientParameters);
-            currentBuilder.RegisterModule(new AgentDependenciesModule(agentConfiguration));
+            currentBuilder.RegisterModule(new AgentDependenciesModule(agentConfiguration, commandLineArgs));
             currentBuilder.RegisterModule(new ServerDependenciesModule(serverConfiguration, commandLineArgs));
             currentBuilder.RegisterModule(new ClientDependenciesModule());
             currentBuilder.RegisterModule(new TestingDefaultDependencies(this));

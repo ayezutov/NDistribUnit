@@ -21,6 +21,7 @@ namespace NDistribUnit.Common.Server.Communication
         private ServiceHost testRunnerService;
 
         private readonly DashboardService dashboard;
+        private readonly ILog log;
         private readonly TestRunnerServer testRunner;
 
         /// <summary>
@@ -45,6 +46,7 @@ namespace NDistribUnit.Common.Server.Communication
             testRunnerPort = configuration.TestRunnerPort;
             this.testRunner = testRunner;
             this.dashboard = dashboard;
+            this.log = log;
             ConnectionsTracker = connectionsTracker;
         }
 
@@ -60,8 +62,10 @@ namespace NDistribUnit.Common.Server.Communication
 
         private void ExposeTestRunner()
         {
-            testRunnerService = new ServiceHost(testRunner, new Uri(string.Format("net.tcp://{0}:{1}", Environment.MachineName, testRunnerPort)));
-            testRunnerService.AddServiceEndpoint(typeof(ITestRunnerServer), new NetTcpBinding(), "");
+            var baseAddress = new Uri(string.Format("net.tcp://{0}:{1}", Environment.MachineName, testRunnerPort));
+            log.Info(string.Format("Starting server at {0}", baseAddress));
+            testRunnerService = new ServiceHost(testRunner, baseAddress);
+            testRunnerService.AddServiceEndpoint(typeof(ITestRunnerServer), new NetTcpBinding("NDistribUnit.Default"), "");
             testRunnerService.Open();
         }
 

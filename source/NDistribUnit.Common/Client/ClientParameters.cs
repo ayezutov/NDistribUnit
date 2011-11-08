@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using NDistribUnit.Common.ConsoleProcessing.Options;
-using System.Linq;
 
 namespace NDistribUnit.Common.Client
 {
     /// <summary>
     /// Holds all the parsed command line parameters for NDistribUnit client
     /// </summary>
+    [Serializable]
     public class ClientParameters
     {
         /// <summary>
@@ -16,10 +16,10 @@ namespace NDistribUnit.Common.Client
         public ClientParameters()
         {
             AssembliesToTest = new List<string>();
-            UnknownOption = new List<ConsoleOption>();
+            UnknownOptions = new List<ConsoleOption>();
             NoShadow = false;
-            IncludeCategories = new string[0];
-            ExcludeCategories = new string[0];
+            IncludeCategories = null;
+            ExcludeCategories = null;
             TimeoutPeriod = TimeSpan.FromHours(5);
         }
 
@@ -43,7 +43,7 @@ namespace NDistribUnit.Common.Client
         /// <summary>
         /// A collection of all unknown options, which were detected during parsing
         /// </summary>
-        private List<ConsoleOption> UnknownOption { get; set; }
+        private List<ConsoleOption> UnknownOptions { get; set; }
 
     	/// <summary>
     	/// Gets or sets the server URI.
@@ -78,14 +78,14 @@ namespace NDistribUnit.Common.Client
 					{"server", (string testServerUri) => result.ServerUri = Uri.IsWellFormedUriString(testServerUri, UriKind.Absolute) 
                         ? new Uri(testServerUri)
 						: null, false},
-					{"include", (string includes) => result.IncludeCategories = ParseCategories(includes) },
-					{"exclude", (string excludes) => result.ExcludeCategories = ParseCategories(excludes) },
+					{"include", (string includes) => result.IncludeCategories = includes },
+					{"exclude", (string excludes) => result.ExcludeCategories = excludes },
 					{"alias", (string alias) => result.Alias = alias },
 						
                     {ConsoleOption.UnnamedOptionName, (string assembly) => result.AssembliesToTest.Add(assembly), false},
                 };
 
-            result.UnknownOption.AddRange(set.Parse(arguments));
+            result.UnknownOptions.AddRange(set.Parse(arguments));
             return result;
         }
 
@@ -97,18 +97,13 @@ namespace NDistribUnit.Common.Client
         /// </value>
         public string Alias { get; set; }
 
-        private static string[] ParseCategories(string categories)
-        {
-            return categories.Split(new []{','}, StringSplitOptions.RemoveEmptyEntries).Select(category => category.Trim()).ToArray();
-        }
-
         /// <summary>
         /// Gets or sets the categories to exclude.
         /// </summary>
         /// <value>
         /// The exclude categories.
         /// </value>
-        public string[] ExcludeCategories { get; set; }
+        public string ExcludeCategories { get; set; }
 
         /// <summary>
         /// Gets or sets the categories to include.
@@ -116,7 +111,7 @@ namespace NDistribUnit.Common.Client
         /// <value>
         /// The include categories.
         /// </value>
-        public string[] IncludeCategories { get; set; }
+        public string IncludeCategories { get; set; }
 
         /// <summary>
         /// Gets or sets the timeout period.

@@ -70,7 +70,7 @@ namespace NDistribUnit.Client.Tests.Configuration
         {
             ClientParameters parameters = ClientParameters.Parse(new[] { "/noshadow", "/xml:xml.file", "some.tests.assembly23.dll", "some.tests.assembly.dll", "/include:Cat1, Another Category,SomeCategory," });
 
-            Assert.That(parameters.IncludeCategories, Is.EquivalentTo(new[] { "Cat1","Another Category","SomeCategory" }));
+            Assert.That(parameters.IncludeCategories, Is.EqualTo("Cat1, Another Category,SomeCategory,"));
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace NDistribUnit.Client.Tests.Configuration
         {
             ClientParameters parameters = ClientParameters.Parse(new[] { "/noshadow", "/xml:xml.file", "some.tests.assembly23.dll", "some.tests.assembly.dll", "/exclude:Cat1, Another Category,SomeCategory," });
 
-            Assert.That(parameters.ExcludeCategories, Is.EquivalentTo(new[] { "Cat1","Another Category","SomeCategory" }));
+            Assert.That(parameters.ExcludeCategories, Is.EqualTo("Cat1, Another Category,SomeCategory,"));
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace NDistribUnit.Client.Tests.Configuration
         {
             ClientParameters parameters = ClientParameters.Parse(new[] { "/noshadow", "/xml:xml.file", "some.tests.assembly23.dll", "some.tests.assembly.dll"});
 
-            Assert.That(parameters.IncludeCategories, Is.EquivalentTo(new string[0]));
+            Assert.That(parameters.IncludeCategories, Is.Null);
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace NDistribUnit.Client.Tests.Configuration
         {
             ClientParameters parameters = ClientParameters.Parse(new[] { "/noshadow", "/xml:xml.file", "some.tests.assembly23.dll", "some.tests.assembly.dll"});
 
-            Assert.That(parameters.ExcludeCategories, Is.EquivalentTo(new string[0]));
+            Assert.That(parameters.ExcludeCategories, Is.Null);
         }
 
         [Test]

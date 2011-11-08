@@ -19,17 +19,27 @@ namespace NDistribUnit.Agent
     /// </summary>
 	public class AgentProgram: GeneralProgram
 	{
-		private static int Main()
+		private static int Main(string[] args)
 		{
 		    var configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 		    var agentConfiguration = configuration.GetSection("settings") as AgentConfiguration;
-		    agentConfiguration.AgentName = string.Format("{0} #{1:000}", Environment.MachineName,
+            if (agentConfiguration != null)
+		        agentConfiguration.AgentName = string.Format("{0} #{1:000}", Environment.MachineName,
 		                                                 InstanceNumberSearcher.Number);
 
 		    var builder = new ContainerBuilder();
 		    builder.RegisterType<AgentProgram>();
-		    builder.RegisterModule(new AgentDependenciesModule(agentConfiguration));
-		    return builder.Build().Resolve<AgentProgram>().Run();
+		    builder.RegisterModule(new AgentDependenciesModule(agentConfiguration, args));
+		    var container = builder.Build();
+		    try
+            {
+                return container.Resolve<AgentProgram>().Run();
+            }
+            catch(Exception ex)
+            {
+                container.Resolve<ConsoleLog>().Error("Error while running agent", ex);
+                throw;
+            }
 		}
 
         private readonly BootstrapperParameters bootstrapperParameters;

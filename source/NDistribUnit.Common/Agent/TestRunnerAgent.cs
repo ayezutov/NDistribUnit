@@ -1,11 +1,14 @@
 using System;
 using System.ServiceModel;
+using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
+using NDistribUnit.Common.TestExecution;
+using TestResult = NDistribUnit.Common.Contracts.DataContracts.TestResult;
 
 namespace NDistribUnit.Common.Agent
 {
@@ -19,6 +22,8 @@ namespace NDistribUnit.Common.Agent
     	private readonly RollingLog logStorage;
 		private readonly IUpdateReceiver updateReceiver;
         private readonly IVersionProvider versionProvider;
+        private readonly IConnectionProvider connectionProvider;
+        private readonly NDistribUnitTestRunner runner;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestRunnerAgent"/> class.
@@ -28,12 +33,23 @@ namespace NDistribUnit.Common.Agent
         /// <param name="updateReceiver">The update receiver.</param>
         /// <param name="configuration">The configuration.</param>
         /// <param name="versionProvider">The version provider.</param>
-        public TestRunnerAgent(ILog log, RollingLog logStorage, IUpdateReceiver updateReceiver, AgentConfiguration configuration, IVersionProvider versionProvider)
+        /// <param name="connectionProvider">The connection provider.</param>
+        /// <param name="runner">The runner.</param>
+        public TestRunnerAgent(
+            ILog log, 
+            RollingLog logStorage, 
+            IUpdateReceiver updateReceiver, 
+            AgentConfiguration configuration, 
+            IVersionProvider versionProvider, 
+            IConnectionProvider connectionProvider, 
+            NDistribUnitTestRunner runner)
         {
             this.log = log;
 			this.logStorage = logStorage;
     		this.updateReceiver = updateReceiver;
             this.versionProvider = versionProvider;
+            this.connectionProvider = connectionProvider;
+            this.runner = runner;
             Name = configuration.AgentName;
         }
 
@@ -53,12 +69,15 @@ namespace NDistribUnit.Common.Agent
         /// <summary>
         /// Runs tests on agent
         /// </summary>
-        /// <param name="callbackValue"></param>
+        /// <param name="test"></param>
         /// <returns></returns>
-        public bool RunTests(string callbackValue)
+        public TestResult RunTests(TestUnit test)
         {
-            log.Info(string.Format("Run Tests command Received: {0}", callbackValue));
-            return true;
+            log.Info(string.Format("Run Tests command Received: {0}", test));
+
+            var dataSource = connectionProvider.GetCurrentCallback<IAgentDataSource>();
+
+            return runner.Run(test, dataSource);
         }
 
         /// <summary>

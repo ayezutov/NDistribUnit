@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using NDistribUnit.Common.Client;
+using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution.Configuration;
 
 namespace NDistribUnit.Common.Dependencies
@@ -16,6 +17,7 @@ namespace NDistribUnit.Common.Dependencies
         /// registered.</param>
         protected override void Load(ContainerBuilder builder)
         {
+            builder.Register(c => new WindowsLog("Client")).InstancePerLifetimeScope();
             builder
                 .RegisterType<TestRunnerClient>()
                 .As<ITestRunnerClient>().AsSelf();

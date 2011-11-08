@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.Threading;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Extensions;
+using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.ConnectionTracking;
 using NDistribUnit.Common.ServiceContracts;
 using System.Linq;
@@ -20,7 +21,8 @@ namespace NDistribUnit.Common.Common.Communication
 	public class PingableCollection<TPingable>: ICollection<TPingable> where TPingable: IPingable
 	{
 		private readonly IConnectionsHostOptions options;
-		readonly SynchronizedCollection<PingableMetadata> metadatas = new SynchronizedCollection<PingableMetadata>();
+	    private readonly ILog log;
+	    readonly SynchronizedCollection<PingableMetadata> metadatas = new SynchronizedCollection<PingableMetadata>();
 
 	    /// <summary>
 	    /// Occurs when an item is removed.
@@ -63,16 +65,18 @@ namespace NDistribUnit.Common.Common.Communication
 			}
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="PingableCollection&lt;TPingable&gt;"/> class.
-		/// </summary>
-		/// <param name="options">The options.</param>
-		public PingableCollection(IConnectionsHostOptions options)
-		{
-			this.options = options;
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PingableCollection&lt;TPingable&gt;"/> class.
+        /// </summary>
+        /// <param name="options">The options.</param>
+        /// <param name="log">The log.</param>
+		public PingableCollection(IConnectionsHostOptions options, ILog log)
+        {
+            this.options = options;
+            this.log = log;
+        }
 
-		/// <summary>
+	    /// <summary>
 		/// Adds the specified item. After adding pinging is started.
 		/// </summary>
 		/// <param name="item">The item.</param>
@@ -214,8 +218,9 @@ namespace NDistribUnit.Common.Common.Communication
 
 	            SuccessfullyPinged.SafeInvoke(this, new Tuple<TPingable, PingResult>(metadata.Item, result));
 	        }
-	        catch (CommunicationException)
+	        catch (Exception ex)
 	        {
+                log.Error("Error while pinging", ex);
 	            Remove(metadata);
 	        }
 	    }

@@ -31,14 +31,14 @@ namespace NDistribUnit.Common.Contracts.DataContracts
     			var oldState = state;
     			state = value;
 				if (oldState != state)
-					StateChanged.SafeInvoke(state, oldState);
+					StateChanged.SafeInvoke(this, oldState);
     		}
     	}
 
 		/// <summary>
 		/// Occurs when the state is changed.
 		/// </summary>
-    	public event Action<AgentState, AgentState> StateChanged;
+    	public event EventHandler<EventArgs<AgentState>> StateChanged;
 
     	/// <summary>
         /// Last date and time, when the agent was updated

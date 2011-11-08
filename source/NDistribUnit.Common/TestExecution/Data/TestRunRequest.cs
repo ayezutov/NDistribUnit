@@ -3,9 +3,8 @@ using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.ServiceContracts;
-using NDistribUnit.Common.TestExecution.Preparation;
 
-namespace NDistribUnit.Common.Server.Services
+namespace NDistribUnit.Common.TestExecution.Data
 {
 	/// <summary>
 	/// 
@@ -21,6 +20,7 @@ namespace NDistribUnit.Common.Server.Services
 		{
 			TestRun = testRun;
 			Client = client;
+		    RequestTime = DateTime.UtcNow;
 		}
 
 		/// <summary>
@@ -44,6 +44,14 @@ namespace NDistribUnit.Common.Server.Services
         /// </value>
 	    public TestRunRequestStatus Status { get; set; }
 
+        /// <summary>
+        /// Gets or sets the request time.
+        /// </summary>
+        /// <value>
+        /// The request time.
+        /// </value>
+	    public DateTime RequestTime { get; private set; }
+
 	    /// <summary>
 		/// Pings the tracking side
 		/// </summary>
@@ -53,7 +61,9 @@ namespace NDistribUnit.Common.Server.Services
 		/// </returns>
 		public PingResult Ping(TimeSpan pingInterval)
 		{
-			return Client.Ping(pingInterval);
+            if (Client != null)
+			    return Client.Ping(pingInterval);
+	        return null;
 		}
 
 		/// <summary>

@@ -2,6 +2,8 @@
 using Autofac;
 using NDistribUnit.Common.Agent;
 using NDistribUnit.Common.Agent.ExternalModules;
+using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.TestExecution.Storage;
 
 namespace NDistribUnit.Common.Dependencies
 {
@@ -9,12 +11,16 @@ namespace NDistribUnit.Common.Dependencies
     /// </summary>
     public class AgentDependenciesModule : Module
     {
+        private readonly string[] args;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AgentDependenciesModule"/> class.
         /// </summary>
         /// <param name="agentConfiguration">The agent configuration.</param>
-        public AgentDependenciesModule(AgentConfiguration agentConfiguration)
+        /// <param name="args"></param>
+        public AgentDependenciesModule(AgentConfiguration agentConfiguration, string[] args)
         {
+            this.args = args;
             AgentConfiguration = agentConfiguration;
         }
 
@@ -31,8 +37,10 @@ namespace NDistribUnit.Common.Dependencies
             builder.RegisterType<AnnouncementModule>().As<IAgentExternalModule>();
             builder.RegisterType<TestRunnerAgent>().InstancePerLifetimeScope();
             builder.RegisterType<AgentHost>().InstancePerLifetimeScope();
-
-            builder.RegisterModule(new CommonDependenciesModule(Environment.GetCommandLineArgs()));
+            builder.RegisterType<NDistribUnitTestRunner>().InstancePerLifetimeScope();
+            builder.RegisterType<NativeRunnerCache>().As<INativeRunnerCache>().InstancePerLifetimeScope();
+            builder.Register(c => new WindowsLog("Agent")).InstancePerLifetimeScope();
+            builder.RegisterModule(new CommonDependenciesModule(args));
         }
 
         /// <summary>

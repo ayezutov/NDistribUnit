@@ -78,13 +78,17 @@
     <Compile Include="Agent\ExternalModules\AnnouncementModule.cs" />
     <Compile Include="Agent\ExternalModules\DiscoveryModule.cs" />
     <Compile Include="Agent\ExternalModules\IAgentExternalModule.cs" />
+    <Compile Include="Agent\INativeRunnerCache.cs" />
     <Compile Include="Agent\Naming\InstanceNumberSearcher.cs" />
+    <Compile Include="Agent\NativeRunnerCache.cs" />
+    <Compile Include="Agent\NDistribUnitTestRunner.cs" />
     <Compile Include="Agent\TestRunnerAgent.cs" />
     <Compile Include="Client\ClientParameters.cs" />
-    <Compile Include="Client\TestResult.cs" />
+    <Compile Include="Contracts\DataContracts\TestResult.cs" />
     <Compile Include="Client\ITestRunnerClient.cs" />
     <Compile Include="Client\TestRunnerClient.cs" />
     <Compile Include="Common\Communication\AdditionalDataManager.cs" />
+    <Compile Include="Common\Logging\WindowsLog.cs" />
     <Compile Include="Common\Networking\IConnectionProvider.cs" />
     <Compile Include="Common\Communication\PingableCollection.cs" />
     <Compile Include="Common\Networking\RealConnectionProvider.cs" />
@@ -132,15 +136,29 @@
     <Compile Include="Server\Communication\ServerHost.cs" />
     <Compile Include="Server\ServerConfiguration.cs" />
     <Compile Include="Server\Services\DashboardService.cs" />
-    <Compile Include="Server\Services\TestRunRequest.cs" />
+    <Compile Include="TestExecution\Configuration\FailureMessageType.cs" />
+    <Compile Include="TestExecution\Configuration\TestRunFailureSpecialHandling.cs" />
+    <Compile Include="TestExecution\Data\TestRunRequest.cs" />
     <Compile Include="Server\Services\TestRunnerServer.cs" />
     <Compile Include="TestExecution\Configuration\ITestRunParametersFileReader.cs" />
     <Compile Include="TestExecution\Configuration\TestRunParameters.cs" />
     <Compile Include="TestExecution\Configuration\TestRunParametersFileReader.cs" />
     <Compile Include="TestExecution\Configuration\TestRunParametersXmlReader.cs" />
-    <Compile Include="TestExecution\Preparation\TestRunRequestsStorage.cs" />
-    <Compile Include="TestExecution\Preparation\TestRunRequestStatus.cs" />
+    <Compile Include="TestExecution\IAgentDataSource.cs" />
+    <Compile Include="TestExecution\ITestsRetriever.cs" />
+    <Compile Include="TestExecution\ITestsScheduler.cs" />
+    <Compile Include="TestExecution\Storage\IProjectPackager.cs" />
+    <Compile Include="TestExecution\Storage\IRequestsStorage.cs" />
+    <Compile Include="TestExecution\Storage\ProjectPackager.cs" />
+    <Compile Include="TestExecution\Storage\RequestsStorage.cs" />
+    <Compile Include="TestExecution\Data\TestRunRequestStatus.cs" />
+    <Compile Include="TestExecution\Storage\IProjectsStorage.cs" />
+    <Compile Include="TestExecution\Storage\ProjectsStorage.cs" />
     <Compile Include="TestExecution\TestManager.cs" />
+    <Compile Include="TestExecution\PackedProject.cs" />
+    <Compile Include="TestExecution\TestsRetriever.cs" />
+    <Compile Include="TestExecution\NUnitInitializer.cs" />
+    <Compile Include="TestExecution\TestsScheduler.cs" />
     <Compile Include="TestExecution\TestUnit.cs" />
     <Compile Include="TestExecution\TestUnitCollection.cs" />
     <Compile Include="Contracts\ServiceContracts\IPingable.cs" />
@@ -162,12 +180,25 @@
     <Compile Include="Common\Updating\UpdateSource.cs" />
     <Compile Include="Common\Updating\VersionDirectoryFinder.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NDistribUnit.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\_dependencies\NUnit-2.5.9.10348\src\ClientUtilities\util\nunit.util.dll.csproj">
+      <Project>{61CE9CE5-943E-44D4-A381-814DC1406767}</Project>
+      <Name>nunit.util.dll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\_dependencies\NUnit-2.5.9.10348\src\NUnitCore\core\nunit.core.dll.csproj">
+      <Project>{EBD43A7F-AFCA-4281-BB53-5CDD91F966A3}</Project>
+      <Name>nunit.core.dll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\_dependencies\NUnit-2.5.9.10348\src\NUnitCore\interfaces\nunit.core.interfaces.dll.csproj">
+      <Project>{435428F8-5995-4CE4-8022-93D595A8CC0F}</Project>
+      <Name>nunit.core.interfaces.dll</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

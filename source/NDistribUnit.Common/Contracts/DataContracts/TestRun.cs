@@ -1,4 +1,5 @@
 using System;
+using NDistribUnit.Common.Client;
 using NDistribUnit.Common.TestExecution.Configuration;
 
 namespace NDistribUnit.Common.Contracts.DataContracts
@@ -40,7 +41,23 @@ namespace NDistribUnit.Common.Contracts.DataContracts
         /// </value>
 	    public TestRunParameters Parameters { get; set; }
 
-		/// <summary>
+        /// <summary>
+        /// Gets or sets the options.
+        /// </summary>
+        /// <value>
+        /// The options.
+        /// </value>
+	    public ClientParameters TestOptions { get; set; }
+
+        /// <summary>
+        /// Gets the alias.
+        /// </summary>
+	    public string Alias
+	    {
+            get { return TestOptions.Alias; }
+	    }
+
+	    /// <summary>
 		/// Equalses the specified other.
 		/// </summary>
 		/// <param name="other">The other.</param>

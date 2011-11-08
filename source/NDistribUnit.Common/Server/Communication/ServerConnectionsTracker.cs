@@ -31,10 +31,15 @@ namespace NDistribUnit.Common.Server.Communication
         /// </summary>
         public IList<AgentInformation> Agents { get; private set; }
 
-		/// <summary>
+        /// <summary>
 		/// Occurs when agent state changed.
 		/// </summary>
-    	public event EventHandler<EventArgs> AgentStateChanged;
+    	public event EventHandler<EventArgs<AgentInformation>> AgentFreed;
+
+        /// <summary>
+        /// Occurs when agent was disconnected
+        /// </summary>
+        public event EventHandler<EventArgs<AgentInformation>> AgentDisconnected;
 
         /// <summary>
         /// Initializes a new instance of a connection tracker
@@ -134,8 +139,8 @@ namespace NDistribUnit.Common.Server.Communication
     			{
     				savedAgent.LastStatusUpdate = DateTime.UtcNow;
     				savedAgent.Name = e.EndpointInfo.Name;
-    				savedAgent.State = AgentState.Connected;
-    				savedAgent.Version = e.EndpointInfo.Version;
+    			    savedAgent.Version = e.EndpointInfo.Version;
+    			    savedAgent.State = AgentState.Connected;
     			}
     			else
     			{
@@ -164,10 +169,13 @@ namespace NDistribUnit.Common.Server.Communication
     		return savedAgent;
     	}
 
-    	private void OnAgentStateChanged(AgentState arg1, AgentState arg2)
+    	private void OnAgentStateChanged(object sender, EventArgs<AgentState> oldState)
     	{
-			if (arg2 == AgentState.Connected)
-    			AgentStateChanged.SafeInvoke(this);
+    	    var agent = (AgentInformation)sender;
+			if (agent.State == AgentState.Connected && oldState.Data != AgentState.Connected)
+    			AgentFreed.SafeInvoke(this, agent);
+            else if (agent.State == AgentState.Disconnected && oldState.Data != AgentState.Disconnected)
+    			AgentDisconnected.SafeInvoke(this, agent);
     	}
 
     	private void OnEndpointDisconnected(object sender, EndpointConnectionChangedEventArgs e)
@@ -204,13 +212,13 @@ namespace NDistribUnit.Common.Server.Communication
             networkExplorer.Stop();
         }
 
-		/// <summary>
-		/// Grabs a free agent and moves it to the busy state.
-		/// </summary>
-		/// <returns></returns>
-    	public AgentInformation GrabFreeAgent()
-		{
-			return null;
-		}
+        /// <summary>
+        /// Moves to busy.
+        /// </summary>
+        /// <param name="agent">The agent.</param>
+        public void MarkBusy(AgentInformation agent)
+        {
+            agent.State = AgentState.Busy;
+        }
     }
 }

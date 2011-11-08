@@ -1,8 +1,11 @@
+using System;
+
 namespace NDistribUnit.Common.ConsoleProcessing.Options
 {
     /// <summary>
     /// Describes a single parsed console option
     /// </summary>
+    [Serializable]
     public class ConsoleOption
     {
         /// <summary>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using System.Linq;
 
 namespace NDistribUnit.Common.TestExecution.Configuration
 {
@@ -38,49 +40,28 @@ namespace NDistribUnit.Common.TestExecution.Configuration
         /// </value>
         [XmlElement("maximumAgentsCount")]
         public int MaximumAgentsCount { get; set; }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class TestRunFailureSpecialHandling
-    {
-        /// <summary>
-        /// Gets or sets the failure message.
-        /// </summary>
-        /// <value>
-        /// The failure message.
-        /// </value>
-        [XmlAttribute("message")]
-        public string FailureMessage { get; set; }
 
         /// <summary>
-        /// Gets or sets the type of the failure message.
+        /// Gets the special handling.
         /// </summary>
-        /// <value>
-        /// The type of the failure message.
-        /// </value>
-        [XmlAttribute("messageType")]
-        public FailureMessageType FailureMessageType { get; set; }
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        public TestRunFailureSpecialHandling GetSpecialHandling(Exception exception)
+        {
+            return SpecialHandlings.FirstOrDefault(h =>
+                                                       {
+                                                           if (h.FailureMessageType == FailureMessageType.ContainsText)
+                                                               return exception.Message.Contains(h.FailureMessage) 
+                                                                   || exception.StackTrace.Contains(h.FailureMessage);
+                                                            if (h.FailureMessageType == FailureMessageType.Regex)
+                                                            {
+                                                                var regex = new Regex(h.FailureMessage);
+                                                                return regex.IsMatch(exception.Message) 
+                                                                    || regex.IsMatch(exception.StackTrace);
+                                                            }
 
-        /// <summary>
-        /// Gets or sets the retry count.
-        /// </summary>
-        /// <value>
-        /// The retry count.
-        /// </value>
-        [XmlAttribute("retryCount")]
-        public int RetryCount { get; set; }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public enum FailureMessageType
-    {
-        /// 
-        ContainsText,
-        /// 
-        Regex
+                                                           return false;
+                                                       });
+        }
     }
 }

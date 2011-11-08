@@ -40,7 +40,7 @@ namespace NDistribUnit.Bootstrapper
 				Console.ReadKey();
 				return;
 			}
-
+            
 			var exeDirectory = new DirectoryInfo(Path.Combine(versionDirectory.FullName, assemblyFileName));
 			var files = exeDirectory.GetFiles("*.exe");
 			if (files.Length == 0)
@@ -53,13 +53,14 @@ namespace NDistribUnit.Bootstrapper
 			try
 			{
 				var fileToRun = files[0].FullName;
-
-				domain = AppDomain.CreateDomain(AppDomain.CurrentDomain.FriendlyName + "_bootstrapped",
+			    var filePath = Path.GetDirectoryName(fileToRun);
+                
+			    domain = AppDomain.CreateDomain(AppDomain.CurrentDomain.FriendlyName + "_bootstrapped",
 				                                    AppDomain.CurrentDomain.Evidence,
 				                                    new AppDomainSetup
 				                                    	{
 				                                    		ConfigurationFile = fileToRun + ".config",
-                                                            ApplicationBase = Path.GetDirectoryName(fileToRun),
+                                                            ApplicationBase = filePath,
 				                                    	});
 
 				var newArgs = new List<string>(args);
@@ -75,7 +76,7 @@ namespace NDistribUnit.Bootstrapper
 			}
 			catch (Exception ex)
 			{
-				log.Error("Unable to start target process.", ex);
+				log.Error("An error occurred while running bootstrapped program", ex);
 				Console.ReadLine();
 			}
 		}

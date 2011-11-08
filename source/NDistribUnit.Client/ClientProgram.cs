@@ -2,6 +2,7 @@
 using System.ServiceModel;
 using Autofac;
 using NDistribUnit.Common.Client;
+using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Dependencies;
 using NDistribUnit.Common.Logging;
@@ -23,11 +24,23 @@ namespace NDistribUnit.Client
 		{
 		    var builder = new ContainerBuilder();
 		    builder.Register(c => ClientParameters.Parse(args)).InstancePerLifetimeScope();
+		    builder.Register(c => new LogConfiguration {RollingLogItemsCount = 1000}).InstancePerLifetimeScope();
 		    builder.RegisterType<ClientProgram>();
             builder.RegisterModule(new ClientDependenciesModule());
             builder.RegisterModule(new CommonDependenciesModule(args));
 			var container = builder.Build();
-			return container.Resolve<ClientProgram>().Run();
+            try
+            {
+                return container.Resolve<ClientProgram>().Run();
+            }
+            catch(Exception ex)
+            {
+                var log = container.Resolve<ConsoleLog>();
+                log.Error("Some error, while running tests", ex);
+                Console.WriteLine("Please press any key to continue");
+                Console.ReadKey();
+                return (int)ReturnCodes.UnhandledException;
+            }
 		}
 
 		/// <summary>
@@ -76,7 +89,7 @@ namespace NDistribUnit.Client
 
 			try
 			{
-				testRunnerClient.Run();
+			    testRunnerClient.Run();
 			}
 			catch(CommunicationException e)
 			{

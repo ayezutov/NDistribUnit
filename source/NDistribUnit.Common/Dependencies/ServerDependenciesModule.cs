@@ -1,12 +1,15 @@
 using System.Configuration;
 using Autofac;
+using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.Contracts.ServiceContracts;
+using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server;
 using NDistribUnit.Common.Server.Communication;
 using NDistribUnit.Common.Server.ConnectionTracking;
 using NDistribUnit.Common.Server.Services;
-using NDistribUnit.Common.TestExecution.Preparation;
+using NDistribUnit.Common.TestExecution;
+using NDistribUnit.Common.TestExecution.Storage;
 using NDistribUnit.Common.Updating;
 
 namespace NDistribUnit.Common.Dependencies
@@ -65,12 +68,18 @@ namespace NDistribUnit.Common.Dependencies
             builder.RegisterInstance(ServerConfiguration.LogConfiguration);
 
             builder.RegisterType<TestRunnerServer>().InstancePerLifetimeScope();
+            builder.RegisterType<TestUnitCollection>().InstancePerLifetimeScope();
             builder.RegisterType<DashboardService>().InstancePerLifetimeScope();
             builder.RegisterType<ServerConnectionsTracker>().InstancePerLifetimeScope();
             builder.RegisterType<UpdateSource>().As<IUpdateSource>();
-            builder.RegisterType<TestRunRequestsStorage>().InstancePerLifetimeScope();
+            builder.RegisterType<RequestsStorage>().As<IRequestsStorage>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<TestsRetriever>().As<ITestsRetriever>();
+            builder.RegisterType<TestsScheduler>().As<ITestsScheduler>().InstancePerLifetimeScope();
+            builder.RegisterType<TestManager>().InstancePerLifetimeScope();
             builder.RegisterType<ServerHost>().InstancePerLifetimeScope();
+            builder.Register(c => new WindowsLog("Server")).InstancePerLifetimeScope(); ;
             builder.RegisterModule(new CommonDependenciesModule(CommandLineArgs));
+
 
             foreach (ConnectionTrackerElement connectionTracker in ServerConfiguration.ConnectionTrackers)
             {

@@ -1,22 +1,25 @@
 using System.ServiceModel;
+using NDistribUnit.Common.Client;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
+using NDistribUnit.Common.TestExecution;
 
 namespace NDistribUnit.Common.Contracts.ServiceContracts
 {
     /// <summary>
     /// A contract for communicating from server to agents
     /// </summary>
-    [ServiceContract]
+    [ServiceContract(CallbackContract = typeof(IAgentDataSource))]
     public interface ITestRunnerAgent: IPingable
     {
         /// <summary>
         /// Runs tests on agent
         /// </summary>
-        /// <param name="callbackValue"></param>
+        /// <param name="test"></param>
         /// <returns></returns>
         [OperationContract]
-        bool RunTests(string callbackValue);
+        TestResult RunTests(TestUnit test);
 
         /// <summary>
         /// Gets the log.

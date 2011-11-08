@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using Ionic.Zip;
+using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Communication;
 
 namespace NDistribUnit.Common.Updating
@@ -36,7 +37,7 @@ namespace NDistribUnit.Common.Updating
 				directory = directory.Parent;
 			}
 
-			return zip.GetZippedBytes(directory);
+			return zip.GetPackedFolder(directory);
 		}
 	}
 }

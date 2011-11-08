@@ -3,6 +3,7 @@ using System.IO;
 using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
+using Ionic.Zip;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Contracts.DataContracts;
@@ -10,7 +11,10 @@ using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
+using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.Configuration;
+using NDistribUnit.Common.TestExecution.Storage;
+using NUnit.Util;
 
 namespace NDistribUnit.Common.Client
 {
@@ -24,9 +28,11 @@ namespace NDistribUnit.Common.Client
         private readonly IConnectionProvider connectionProvider;
         private readonly IVersionProvider versionProvider;
         private readonly ITestRunParametersFileReader parametersReader;
+        private readonly IProjectPackager packager;
         private readonly ILog log;
         private TestResult result;
         private Semaphore testCompleted;
+        private TestRun testRun;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestRunnerClient"/> class.
@@ -36,12 +42,14 @@ namespace NDistribUnit.Common.Client
         /// <param name="connectionProvider">The connection provider.</param>
         /// <param name="versionProvider">The version provider.</param>
         /// <param name="parametersReader">The file reader.</param>
+        /// <param name="packager">The packager.</param>
         /// <param name="log">The log.</param>
         public TestRunnerClient(ClientParameters options,
                                 IUpdateReceiver updateReceiver,
                                 IConnectionProvider connectionProvider,
                                 IVersionProvider versionProvider,
                                 ITestRunParametersFileReader parametersReader,
+                                IProjectPackager packager,
                                 ILog log)
         {
             this.options = options;
@@ -49,6 +57,7 @@ namespace NDistribUnit.Common.Client
             this.connectionProvider = connectionProvider;
             this.versionProvider = versionProvider;
             this.parametersReader = parametersReader;
+            this.packager = packager;
             this.log = log;
             testCompleted = new Semaphore(0,1);
         }
@@ -63,6 +72,22 @@ namespace NDistribUnit.Common.Client
             this.result = result;
             if (isCompleted)
                 testCompleted.Release();
+        }
+
+        /// <summary>
+        /// Gets the project.
+        /// </summary>
+        /// <param name="testRunId">The test run id.</param>
+        /// <returns></returns>
+        public PackedProject GetPackedProject(Guid testRunId)
+        {
+            if (testRun == null)
+                throw new InvalidOperationException("Can't load any project from that client, as it is not initialized yet");
+
+            if (testRun.Id != testRunId)
+                throw new ArgumentException("The identifier should be of the client, which issued the test request", "testRunId");
+
+            return new PackedProject(packager.GetPackage(testRun.TestOptions.AssembliesToTest));
         }
 
         /// <summary>
@@ -82,24 +107,27 @@ namespace NDistribUnit.Common.Client
         /// </summary>
         public void Run()
         {
-            var server = connectionProvider.GetDuplexConnection<ITestRunnerServer, TestRunnerClient>(
+            var server = connectionProvider.GetDuplexConnection<ITestRunnerServer, ITestRunnerClient>(
                 this, new EndpointAddress(options.ServerUri));
 
-            var run = new TestRun(); //TODO: load saved state here
+            testRun = new TestRun
+                          {
+                              TestOptions = options
+                          }; //TODO: load saved state here
 
-            if (options.AssembliesToTest == null || options.AssembliesToTest.Count != 1 || Path.GetExtension(options.AssembliesToTest[0]) != ".nunit")
+            if (options.AssembliesToTest == null || options.AssembliesToTest.Count != 1 /*|| !NUnitProject.IsNUnitProjectFile(options.AssembliesToTest[0])*/)
                 throw new InvalidOperationException("Please specify single NUnit project file");
 
             string parametersFileName = Path.ChangeExtension(options.AssembliesToTest[0], ".ndistribunit");
 
-            run.Parameters = File.Exists(parametersFileName)
+            testRun.Parameters = File.Exists(parametersFileName)
                                  ? parametersReader.Read(parametersFileName)
                                  : TestRunParameters.Default;
 
             
             var testRunningTask = Task.Factory.StartNew(() =>
                                                             {
-                                                                server.StartRunningTests(run);
+                                                                server.StartRunningTests(testRun);
                                                                 testCompleted.WaitOne();
                                                             });
 
