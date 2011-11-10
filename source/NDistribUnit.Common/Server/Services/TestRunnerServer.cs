@@ -6,6 +6,7 @@ using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
+using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.ConnectionTracking;
 using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Common.TestExecution;
@@ -26,6 +27,7 @@ namespace NDistribUnit.Common.Server.Services
         private readonly IConnectionProvider connectionProvider;
         private readonly TestManager manager;
         private readonly RequestsStorage requests;
+        private readonly ILog log;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestRunnerServer"/> class.
@@ -35,18 +37,21 @@ namespace NDistribUnit.Common.Server.Services
         /// <param name="connectionProvider">The connection provider.</param>
         /// <param name="manager">The manager.</param>
         /// <param name="requests">The storage.</param>
-    	public TestRunnerServer(IUpdateSource updateSource, 
+        /// <param name="log">The log.</param>
+    	public TestRunnerServer(
+            IUpdateSource updateSource, 
             IVersionProvider versionProvider, 
             IConnectionProvider connectionProvider,
             TestManager manager,
-            RequestsStorage requests)
+            RequestsStorage requests,
+            ILog log)
 		{
 			this.updateSource = updateSource;
             this.versionProvider = versionProvider;
             this.connectionProvider = connectionProvider;
             this.manager = manager;
             this.requests = requests;
-			
+            this.log = log;
 		}
         
         /// <summary>
@@ -55,6 +60,7 @@ namespace NDistribUnit.Common.Server.Services
         /// <param name="run"></param>
         public void StartRunningTests(TestRun run)
     	{
+            log.BeginActivity(string.Format("Test was started: {0} ({1})", run.Id, run.TestOptions.AssembliesToTest[0]));
     	    var client = connectionProvider.GetCurrentCallback<ITestRunnerClient>();
 
             if (run == null)

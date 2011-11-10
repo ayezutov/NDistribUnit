@@ -7,10 +7,12 @@ namespace NDistribUnit.Common.TestExecution
 	/// <summary>
 	/// 
 	/// </summary>
-	public class TestUnitCollection
+	public class TestUnitsCollection
 	{
-
-        private readonly object syncObject = new object();
+        /// <summary>
+        /// The synchronization object, which is used for thread safe access to that collection
+        /// </summary>
+	    public readonly object SyncObject = new object();
         private readonly List<TestUnit> available = new List<TestUnit>();
         private readonly List<TestUnit> running = new List<TestUnit>();
 
@@ -42,7 +44,7 @@ namespace NDistribUnit.Common.TestExecution
         /// <param name="testUnit">The test unit.</param>
 	    public void Add(TestUnit testUnit)
 	    {
-	        lock (syncObject)
+	        lock (SyncObject)
 	        {
 	            available.Add(testUnit);
 	        }
@@ -55,7 +57,7 @@ namespace NDistribUnit.Common.TestExecution
         /// <param name="testUnit">The test unit.</param>
         public void MarkRunning(TestUnit testUnit)
         {
-            lock (syncObject)
+            lock (SyncObject)
             {
                 if (running.Contains(testUnit))
                     return;
@@ -72,5 +74,13 @@ namespace NDistribUnit.Common.TestExecution
         /// <param name="test">The test.</param>
 	    public void MarkCompleted(TestUnit test)
 	    {}
+
+        /// <summary>
+        /// Gets the available.
+        /// </summary>
+	    public List<TestUnit> GetAvailable()
+	    {
+	        return available;
+	    }
 	}
 }

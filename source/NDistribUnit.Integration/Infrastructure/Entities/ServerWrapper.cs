@@ -6,6 +6,7 @@ using NDistribUnit.Common.Retrying;
 using NDistribUnit.Common.Server.Communication;
 using System.Linq;
 using NDistribUnit.Common.Server.Services;
+using NDistribUnit.Common.TestExecution;
 
 namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
 {
@@ -16,14 +17,27 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
     public class ServerWrapper: IDisposable
     {
         private readonly ServerConnectionsTracker serverConnectionsTracker;
+        private readonly TestAgentsCollection agents;
         private ServerHost ServerHost { get; set; }
 
         public TestRunnerServer TestRunner { get; set; }
 
-        public ServerWrapper(TestRunnerServer testRunner, ServerConnectionsTracker serverConnectionsTracker, ServerHost serverHost = null)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerWrapper"/> class.
+        /// </summary>
+        /// <param name="testRunner">The test runner.</param>
+        /// <param name="serverConnectionsTracker">The server connections tracker.</param>
+        /// <param name="agents">The agents.</param>
+        /// <param name="serverHost">The server host.</param>
+        public ServerWrapper(
+            TestRunnerServer testRunner, 
+            ServerConnectionsTracker serverConnectionsTracker, 
+            TestAgentsCollection agents,
+            ServerHost serverHost = null)
         {
             TestRunner = testRunner;
             this.serverConnectionsTracker = serverConnectionsTracker;
+            this.agents = agents;
             ServerHost = serverHost;
         }
 
@@ -62,7 +76,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
             return Retry.While(
                  () =>
                  {
-                     AgentInformation found = serverConnectionsTracker.Agents.FirstOrDefault(a => a.Name.Equals(agentName) && (address == null || a.Endpoint.Address.Equals(address)));
+                     AgentInformation found = agents.GetBy(agentName, address);
                      return found != null && found.State != AgentState.Disconnected;
                  }, 500);
         }
@@ -85,8 +99,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
             return Retry.While(
                 () =>
                 {
-                    AgentInformation found = serverConnectionsTracker.Agents.FirstOrDefault(
-                        a => a.Name.Equals(agentName));
+                    AgentInformation found = agents.GetBy(agentName);
                     return found == null || found.State == AgentState.Disconnected;
                 }, 500);
         }
@@ -114,7 +127,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// </returns>
         public bool HasNoConnectedAgents()
         {
-            return !Retry.While(() => serverConnectionsTracker.Agents.Count != 0, 500);
+            return !Retry.While(() => agents.Count != 0, 500);
         }
     }
 }

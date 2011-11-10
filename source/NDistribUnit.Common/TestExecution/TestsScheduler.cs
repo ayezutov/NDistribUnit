@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using NDistribUnit.Common.Contracts.DataContracts;
-using NDistribUnit.Common.Server.Communication;
 using NDistribUnit.Common.TestExecution.Configuration;
+using NDistribUnit.Common.TestExecution.Exceptions;
+using System.Linq;
 
 namespace NDistribUnit.Common.TestExecution
 {
@@ -11,17 +11,17 @@ namespace NDistribUnit.Common.TestExecution
     /// </summary>
     public class TestsScheduler : ITestsScheduler
     {
-        private IList<AgentInformation> agents;
-        private TestUnitCollection tests;
+        private readonly TestAgentsCollection agents;
+        private readonly TestUnitsCollection tests;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestsScheduler"/> class.
         /// </summary>
-        /// <param name="connectionsTracker">The connections tracker.</param>
+        /// <param name="agents">The agents.</param>
         /// <param name="tests">The tests.</param>
-        public TestsScheduler(ServerConnectionsTracker connectionsTracker, TestUnitCollection tests)
+        public TestsScheduler(TestAgentsCollection agents, TestUnitsCollection tests)
         {
-            agents = connectionsTracker.Agents;
+            this.agents = agents;
             this.tests = tests;
         }
 
@@ -32,7 +32,17 @@ namespace NDistribUnit.Common.TestExecution
         /// <returns></returns>
         public AgentInformation GetAgentForTest(TestUnit test)
         {
-            
+            lock (agents.SyncObject)
+            {
+                if (!agents.AreConnectedAvailable)
+                    throw new NoAvailableAgentsException();
+
+                var free = agents.GetFree();
+                if (free != null && free.Count != 0)
+                    return free[0];
+
+                return null;
+            }
         }
 
         /// <summary>
@@ -42,7 +52,11 @@ namespace NDistribUnit.Common.TestExecution
         /// <returns></returns>
         public TestUnit GetTestForAgent(AgentInformation agent)
         {
-            throw new NotImplementedException();
+            lock (tests.SyncObject)
+            {
+                var list = tests.GetAvailable();
+                return list.OrderBy(t => t.Request.RequestTime).FirstOrDefault();
+            }
         }
 
         /// <summary>
@@ -51,7 +65,25 @@ namespace NDistribUnit.Common.TestExecution
         /// <returns></returns>
         public Tuple<AgentInformation, TestUnit> GetAgentAndTest()
         {
-            throw new NotImplementedException();
+            lock (tests.SyncObject)
+            {
+                var availableTests = tests.GetAvailable();
+                if (availableTests.Count == 0)
+                    return null;
+
+                lock (agents.SyncObject)
+                {
+                    if (!agents.AreConnectedAvailable)
+                        throw new NoAvailableAgentsException();
+
+                    var freeAgents = agents.GetFree();
+
+                    if (freeAgents.Count == 0)
+                        return null;
+
+                    return new Tuple<AgentInformation, TestUnit>(freeAgents[0], availableTests[0]);
+                }
+            }
         }
 
         /// <summary>
@@ -61,8 +93,6 @@ namespace NDistribUnit.Common.TestExecution
         /// <param name="agent">The agent.</param>
         /// <param name="handling">The handling.</param>
         public void ProcessSpecialHandling(TestUnit test, AgentInformation agent, TestRunFailureSpecialHandling handling)
-        {
-            throw new NotImplementedException();
-        }
+        {}
     }
 }

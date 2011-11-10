@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using NDistribUnit.Common.Client;
+using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.Storage;
 using NUnit.Core;
@@ -17,6 +18,7 @@ namespace NDistribUnit.Common.Agent
         private readonly IProjectsStorage projects;
         private readonly INativeRunnerCache runnerCache;
         private readonly ITestSystemInitializer initializer;
+        private readonly ILog log;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NDistribUnitTestRunner"/> class.
@@ -24,14 +26,17 @@ namespace NDistribUnit.Common.Agent
         /// <param name="projects">The storage.</param>
         /// <param name="runnerCache">The cash.</param>
         /// <param name="initializer">The initializer.</param>
+        /// <param name="log">The log.</param>
         public NDistribUnitTestRunner(
             IProjectsStorage projects,
             INativeRunnerCache runnerCache,
-            ITestSystemInitializer initializer)
+            ITestSystemInitializer initializer, 
+            ILog log)
         {
             this.projects = projects;
             this.runnerCache = runnerCache;
             this.initializer = initializer;
+            this.log = log;
         }
 
         /// <summary>
@@ -45,9 +50,11 @@ namespace NDistribUnit.Common.Agent
             var project = projects.GetProject(test.Request.TestRun);
             if (project == null)
             {
+                log.Info("Sending a request for project files...");
                 PackedProject packedProject = dataSource.GetPackedProject(test.Request.TestRun);
                 if (packedProject == null)
                     return CreateInvalidTestResult(test);
+                log.Info("Storing project...");
                 project = projects.Store(test.Request.TestRun, packedProject);
             }
 

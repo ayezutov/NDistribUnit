@@ -106,6 +106,7 @@
     <Compile Include="Common\HashChecking\ErrorLevel.cs" />
     <Compile Include="Common\HashChecking\HashValidationException.cs" />
     <Compile Include="Agent\AgentConfiguration.cs" />
+    <Compile Include="Contracts\ServiceContracts\IRemoteParticle.cs" />
     <Compile Include="Dependencies\AgentDependenciesModule.cs" />
     <Compile Include="Dependencies\ClientDependenciesModule.cs" />
     <Compile Include="Dependencies\CommonDependenciesModule.cs" />
@@ -144,9 +145,11 @@
     <Compile Include="TestExecution\Configuration\TestRunParameters.cs" />
     <Compile Include="TestExecution\Configuration\TestRunParametersFileReader.cs" />
     <Compile Include="TestExecution\Configuration\TestRunParametersXmlReader.cs" />
+    <Compile Include="TestExecution\Exceptions\NoAvailableAgentsException.cs" />
     <Compile Include="TestExecution\IAgentDataSource.cs" />
     <Compile Include="TestExecution\ITestsRetriever.cs" />
     <Compile Include="TestExecution\ITestsScheduler.cs" />
+    <Compile Include="TestExecution\NUnitTestsFilter.cs" />
     <Compile Include="TestExecution\Storage\IProjectPackager.cs" />
     <Compile Include="TestExecution\Storage\IRequestsStorage.cs" />
     <Compile Include="TestExecution\Storage\ProjectPackager.cs" />
@@ -154,13 +157,14 @@
     <Compile Include="TestExecution\Data\TestRunRequestStatus.cs" />
     <Compile Include="TestExecution\Storage\IProjectsStorage.cs" />
     <Compile Include="TestExecution\Storage\ProjectsStorage.cs" />
+    <Compile Include="TestExecution\TestAgentsCollection.cs" />
     <Compile Include="TestExecution\TestManager.cs" />
     <Compile Include="TestExecution\PackedProject.cs" />
     <Compile Include="TestExecution\TestsRetriever.cs" />
     <Compile Include="TestExecution\NUnitInitializer.cs" />
     <Compile Include="TestExecution\TestsScheduler.cs" />
     <Compile Include="TestExecution\TestUnit.cs" />
-    <Compile Include="TestExecution\TestUnitCollection.cs" />
+    <Compile Include="TestExecution\TestUnitsCollection.cs" />
     <Compile Include="Contracts\ServiceContracts\IPingable.cs" />
     <Compile Include="Common\Networking\WcfUtilities.cs" />
     <Compile Include="Contracts\DataContracts\ProjectDescription.cs" />
@@ -200,6 +204,7 @@
       <Name>nunit.core.interfaces.dll</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

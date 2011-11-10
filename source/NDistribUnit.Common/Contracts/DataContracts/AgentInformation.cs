@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using System.ServiceModel.Discovery;
+using System.ServiceModel;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Extensions;
 
@@ -12,12 +12,7 @@ namespace NDistribUnit.Common.Contracts.DataContracts
     [DataContract]
     public class AgentInformation
     {
-        /// <summary>
-        /// The endpoint information, which can be used to connect to the agent
-        /// </summary>
-        public EndpointDiscoveryMetadata Endpoint { get; set; }
-
-    	private AgentState state;
+        private AgentState state;
 
     	/// <summary>
         /// The state of the agent
@@ -52,15 +47,20 @@ namespace NDistribUnit.Common.Contracts.DataContracts
         [DataMember]
         public string Name { get; set; }
 
-        
+
+        /// <summary>
+        /// The friendly name of the agent
+        /// </summary>
+        public EndpointAddress Address { get; set; }
+
         /// <summary>
         /// The friendly name of the agent
         /// </summary>
         [DataMember]
-        public string Address
+        public string AddressName
         {
-            get { return Endpoint.Address.ToString(); }
-            set { throw new NotSupportedException(); }
+            get { return Address.ToString(); }
+            set { throw new NotImplementedException(); }
         }
 
 		/// <summary>

@@ -1,10 +1,10 @@
 ﻿using System;
-using NDistribUnit.Common.Client;
+using System.ServiceModel;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
+using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
-using NDistribUnit.Common.Server.Communication;
 using NDistribUnit.Common.TestExecution.Data;
 using NDistribUnit.Common.TestExecution.Storage;
 
@@ -15,8 +15,8 @@ namespace NDistribUnit.Common.TestExecution
     /// </summary>
 	public class TestManager: IAgentDataSource
 	{
-		private readonly ServerConnectionsTracker agents;
-		private readonly TestUnitCollection tests;
+		private readonly TestAgentsCollection agents;
+		private readonly TestUnitsCollection tests;
 	    private readonly IRequestsStorage requests;
         private readonly IProjectsStorage projects;
         private readonly ILog log;
@@ -40,8 +40,8 @@ namespace NDistribUnit.Common.TestExecution
         /// <param name="testsRetriever">The tests parser.</param>
         /// <param name="scheduler">The scheduler.</param>
         /// <param name="connectionProvider">The connection provider.</param>
-	    public TestManager(ServerConnectionsTracker agents, 
-            TestUnitCollection tests, 
+	    public TestManager(TestAgentsCollection agents, 
+            TestUnitsCollection tests, 
             IRequestsStorage requests,
             IProjectsStorage projects,
             ILog log, 
@@ -113,8 +113,8 @@ namespace NDistribUnit.Common.TestExecution
                            {
                                try
                                {
-                                   var result = connectionProvider.GetDuplexConnection<ITestRunnerAgent, IAgentDataSource>(this, agent.Endpoint.Address)
-                                       .RunTests(test);
+                                   var testRunnerAgent = connectionProvider.GetDuplexConnection<ITestRunnerAgent, IAgentDataSource>(this, agent.Address);
+                                   var result = testRunnerAgent.RunTests(test);
 
                                    if (result.IsFailure)
                                    {
@@ -128,9 +128,16 @@ namespace NDistribUnit.Common.TestExecution
                                    test.Results.Add(result);
                                    tests.MarkCompleted(test);
                                }
+                               catch (CommunicationException ex)
+                               {
+                                   log.Error("Exception while running test", ex);
+                                   agent.State = AgentState.Ready;
+                                   tests.Add(test);
+                               }
                                catch (Exception ex)
                                {
                                    log.Error("Exception while running test", ex);
+                                   agent.State = AgentState.Error;
                                    tests.Add(test);
                                }
                            }).BeginInvoke(null, null);
@@ -166,7 +173,9 @@ namespace NDistribUnit.Common.TestExecution
 
             try
             {
+                log.BeginActivity("Parsing project into separate test units");
                 tests.AddRange(testsRetriever.Get(project, request));
+                log.EndActivity("Finished parsing project into separate test units");
             }
             catch(Exception ex)
             {

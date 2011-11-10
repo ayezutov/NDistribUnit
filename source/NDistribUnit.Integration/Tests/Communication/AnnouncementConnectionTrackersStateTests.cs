@@ -12,7 +12,7 @@ namespace NDistribUnit.Integration.Tests.Tests.Communication
         {
             system
                 .ActAsRealSystemWithOpeningPorts()
-                .SetConnectionsTracker<AnnouncementConnectionTracker<ITestRunnerAgent>>();
+                .SetConnectionsTracker<AnnouncementConnectionTracker<IRemoteParticle>>();
         }
     }
 }

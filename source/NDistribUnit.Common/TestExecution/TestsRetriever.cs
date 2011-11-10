@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution.Data;
 using NDistribUnit.Common.TestExecution.Storage;
 
 using NUnit.Core;
-using NUnit.Core.Filters;
-using NUnit.Util;
 using System.Linq;
 
 namespace NDistribUnit.Common.TestExecution
@@ -17,14 +16,17 @@ namespace NDistribUnit.Common.TestExecution
     public class TestsRetriever : ITestsRetriever
     {
         private readonly ITestSystemInitializer initializer;
+        private readonly ILog log;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestsRetriever"/> class.
         /// </summary>
         /// <param name="initializer">The initializer.</param>
-        public TestsRetriever(ITestSystemInitializer initializer)
+        /// <param name="log">The log.</param>
+        public TestsRetriever(ITestSystemInitializer initializer, ILog log)
         {
             this.initializer = initializer;
+            this.log = log;
         }
 
         /// <summary>
@@ -60,26 +62,14 @@ namespace NDistribUnit.Common.TestExecution
 
         private static void Find(ITest test, ITestFilter filter, ICollection<ITest> result)
         {
-            System.Console.WriteLine(test.TestName.FullName);
-
             var ass = test as TestAssembly;
             var ns = test as NamespaceSuite;
-            var tf = test as TestFixture;
 
-            System.Console.WriteLine(tf);
-            if (ass == null && ns == null)
+            if (ass == null && ns == null && filter.Pass(test) && test.IsSuite &&
+                (test.Tests == null || test.Tests.Count == 0 || !((ITest) test.Tests[0]).IsSuite))
             {
-                if (filter.Pass(test))
-                {
-                    if (test.IsSuite)
-                    {
-                        if ((test.Tests == null || test.Tests.Count == 0 || !((ITest) test.Tests[0]).IsSuite))
-                        {
-                            result.Add(test);
-                            return;
-                        }
-                    }
-                }
+                result.Add(test);
+                return;
             }
             if (!test.IsSuite || test.Tests == null) return;
 
@@ -87,75 +77,6 @@ namespace NDistribUnit.Common.TestExecution
             {
                 Find(innerTest, filter, result);
             }
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class NUnitTestsFilter : ITestFilter
-    {
-        private readonly TestFilter filter;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NUnitTestsFilter"/> class.
-        /// </summary>
-        /// <param name="include">The include parameter.</param>
-        /// <param name="exclude">The exclude parameter.</param>
-        /// <param name="run">The run parameter.</param>
-        public NUnitTestsFilter(string include, string exclude, string run = null)
-        {
-            var filters = new List<TestFilter>();
-            
-            if (!string.IsNullOrEmpty(run))
-                filters.Add(new SimpleNameFilter(run));
-
-            if (!string.IsNullOrEmpty(include))
-                filters.Add(new CategoryExpression(include).Filter);
-
-            if (!string.IsNullOrEmpty(exclude))
-                filters.Add(new NotFilter(new CategoryExpression(exclude).Filter));
-
-            if (filters.Count == 0)
-                filter = TestFilter.Empty;
-            else if (filters.Count == 1)
-                filter = filters[0];
-            else
-                filter = new AndFilter(filters.ToArray());
-            
-            if (filter is NotFilter)
-                ((NotFilter)filter).TopLevel = true;
-        }
-
-        /// <summary>
-        /// Passes the specified test.
-        /// </summary>
-        /// <param name="test">The test.</param>
-        /// <returns></returns>
-        public bool Pass(ITest test)
-        {
-            return filter.Pass(test);
-        }
-
-        /// <summary>
-        /// Matches the specified test.
-        /// </summary>
-        /// <param name="test">The test.</param>
-        /// <returns></returns>
-        public bool Match(ITest test)
-        {
-            return filter.Match(test);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance is empty.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is empty; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsEmpty
-        {
-            get { return filter.IsEmpty; }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Contracts.DataContracts;
+using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.Data;
 using NDistribUnit.Common.TestExecution.Storage;
@@ -21,7 +22,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
         [SetUp]
         public void Init()
         {
-            retriever = new TestsRetriever(new NUnitInitializer());
+            retriever = new TestsRetriever(new NUnitInitializer(), new ConsoleLog());
             string targetAssembly = typeof(TestFixtureWithCategoriesOnTests).Assembly.Location;
             project = new TestProject(Path.GetDirectoryName(targetAssembly));
             request = new TestRunRequest(new TestRun

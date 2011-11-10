@@ -1,5 +1,6 @@
 using System;
 using System.ServiceModel.Discovery;
+using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
 
@@ -9,7 +10,7 @@ namespace NDistribUnit.Common.Server.ConnectionTracking.Discovery
     /// A connection tracker, which relies on discovery mechanism
     /// </summary>
     /// <typeparam name="TIEndpoint"></typeparam>
-    public class DiscoveryConnectionTracker<TIEndpoint> : NetworkExplorerBase<TIEndpoint> where TIEndpoint : IPingable
+    public class DiscoveryConnectionTracker<TIEndpoint> : NetworkExplorerBase<TIEndpoint> where TIEndpoint : class, IPingable
     {
         private readonly DiscoveryConnectionTrackerOptions options;
         private readonly IConnectionsHostOptions connectionsHostOptions;
@@ -25,8 +26,9 @@ namespace NDistribUnit.Common.Server.ConnectionTracking.Discovery
         /// <param name="options">The options for use while discovery</param>
         /// <param name="connectionsHostOptions">The pingable options.</param>
         /// <param name="log">The log.</param>
-        public DiscoveryConnectionTracker(DiscoveryConnectionTrackerOptions options, IConnectionsHostOptions connectionsHostOptions, ILog log)
-            : base(connectionsHostOptions, log)
+        /// <param name="connectionProvider">The connection provider.</param>
+        public DiscoveryConnectionTracker(DiscoveryConnectionTrackerOptions options, IConnectionsHostOptions connectionsHostOptions, ILog log, IConnectionProvider connectionProvider)
+            : base(connectionsHostOptions, log, connectionProvider)
         {
             this.options = options;
             this.connectionsHostOptions = connectionsHostOptions;

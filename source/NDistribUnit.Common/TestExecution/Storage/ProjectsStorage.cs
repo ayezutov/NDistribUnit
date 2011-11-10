@@ -21,6 +21,7 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// </summary>
         public const string UnpackedFolder = "unpacked";
 
+        private readonly string storageName;
         private readonly BootstrapperParameters parameters;
         private readonly ZipSource zip;
         private const string StorageFolderName = "_Storage";
@@ -30,10 +31,12 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectsStorage"/> class.
         /// </summary>
+        /// <param name="storageName">Name of the storage.</param>
         /// <param name="parameters">The parameters.</param>
-        /// <param name="zip"></param>
-        public ProjectsStorage(BootstrapperParameters parameters, ZipSource zip)
+        /// <param name="zip">The zip.</param>
+        public ProjectsStorage(string storageName, BootstrapperParameters parameters, ZipSource zip)
         {
+            this.storageName = storageName;
             this.parameters = parameters;
             this.zip = zip;
         }
@@ -65,8 +68,13 @@ namespace NDistribUnit.Common.TestExecution.Storage
         private string GetPathToProject(TestRun testRun)
         {
             if (string.IsNullOrEmpty(testRun.Alias))
-                return Path.Combine(RootPath, StorageFolderName, temporaryStorageFolderName, testRun.Id.ToString());
+                return Path.Combine(RootPath, GetStorageFolderName(), temporaryStorageFolderName, testRun.Id.ToString());
             return Path.Combine(RootPath, StorageFolderName, permanentStorageFolderName, testRun.Alias);
+        }
+
+        private string GetStorageFolderName()
+        {
+            return string.IsNullOrEmpty(storageName) ? StorageFolderName : string.Format("{0}.{1}", StorageFolderName, storageName);
         }
 
         /// <summary>

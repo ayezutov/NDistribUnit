@@ -50,7 +50,7 @@ namespace NDistribUnit.Common.Dependencies
                 .SingleInstance();
             builder.RegisterType<RealConnectionProvider>().As<IConnectionProvider>().InstancePerLifetimeScope();
 
-            builder.RegisterType<ProjectsStorage>().As<IProjectsStorage>().AsSelf().InstancePerLifetimeScope();
+            
             builder.RegisterType<NUnitInitializer>().As<ITestSystemInitializer>().InstancePerLifetimeScope();
         }
     }

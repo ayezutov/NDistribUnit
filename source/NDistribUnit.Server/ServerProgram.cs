@@ -16,6 +16,11 @@ namespace NDistribUnit.Server
 {
 	internal class ServerProgram: GeneralProgram
 	{
+        /// <summary>
+        /// Mains the specified args.
+        /// </summary>
+        /// <param name="args">The args.</param>
+        /// <returns></returns>
 		private static int Main(string[] args)
 		{
             try
@@ -36,7 +41,8 @@ namespace NDistribUnit.Server
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                var log = new ConsoleLog();
+                log.Error("Error while running program", ex);
                 Console.ReadLine();
                 throw;
             }

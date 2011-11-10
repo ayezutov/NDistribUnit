@@ -9,7 +9,7 @@ using NDistribUnit.Common.Extensions;
 
 namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
 {
-    internal class TestingConnectionTracker: INetworkExplorer<ITestRunnerAgent>
+    internal class TestingConnectionTracker: INetworkExplorer<IRemoteParticle>
     {
         public event EventHandler<EndpointConnectionChangedEventArgs> EndpointConnected;
         public event EventHandler<EndpointConnectionChangedEventArgs> EndpointSuccessfulPing;
@@ -82,7 +82,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
                                                   Version = agent.GetVersion(),
                                                   Endpoint = new EndpointDiscoveryMetadata
                                                                  {
-                                                                     Address = new EndpointAddress("http://testHostName.com/"+agent.TestRunner.Name)
+                                                                     Address = new EndpointAddress("http://testHostName.com/"+agent.TestRunner.Name+"/")
                                                                  }
                                               }
                        };

@@ -15,8 +15,8 @@ namespace NDistribUnit.Common.Agent
     /// <summary>
     /// The service, which is communicated, when the server calls he agent
     /// </summary>
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class TestRunnerAgent : ITestRunnerAgent
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Reentrant)]
+    public class TestRunnerAgent : ITestRunnerAgent, IRemoteParticle
     {
         private readonly ILog log;
     	private readonly RollingLog logStorage;

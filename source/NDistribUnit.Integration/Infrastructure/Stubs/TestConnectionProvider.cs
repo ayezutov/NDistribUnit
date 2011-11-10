@@ -3,7 +3,7 @@ using System.ServiceModel;
 using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Contracts.ServiceContracts;
-using NDistribUnit.Common.ServiceContracts;
+using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Integration.Tests.Infrastructure.Entities;
 
 namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
@@ -24,21 +24,21 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
 
         public TServiceContract GetCurrentCallback<TServiceContract>() where TServiceContract : class
         {
-            if (typeof(TServiceContract) == typeof(ITestRunnerClient))
-            {
-                return (TServiceContract)lastClient;
-            }
+            if (typeof (TServiceContract) == typeof (ITestRunnerClient))
+                return (TServiceContract) lastClient;
+            
             return null;
         }
 
         public TServiceContract GetConnection<TServiceContract>(EndpointAddress address) where TServiceContract : class
         {
-            if (typeof(TServiceContract) == typeof(ITestRunnerAgent))
+            if (typeof(TServiceContract) == typeof(IRemoteParticle))
             {
+                var name = address.Uri.AbsolutePath.Trim('/').Split('/')[0];
                 AgentWrapper agentWrapper = controller.Agents
-                    .FirstOrDefault(a => a.TestRunner.Name.Equals(address.Uri.AbsolutePath.Trim('/')));
+                    .FirstOrDefault(a => a.TestRunner.Name.Equals(name));
 
-                return (TServiceContract)(ITestRunnerAgent)(agentWrapper == null ? null : agentWrapper.TestRunner);
+                return (TServiceContract)(IRemoteParticle)(agentWrapper == null ? null : agentWrapper.TestRunner);
             }
             return null;
         }
@@ -52,7 +52,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
                 return (TServiceContract)(ITestRunnerServer)controller.Server.TestRunner;
             }
 
-            if (typeof(TServiceContract) == typeof(ITestRunnerAgent) && typeof(TCallbackType) == typeof(ITestRunnerServer))
+            if (typeof(TServiceContract) == typeof(ITestRunnerAgent) && typeof(TCallbackType) == typeof(IAgentDataSource))
             {
                 AgentWrapper agentWrapper = controller.Agents
                     .FirstOrDefault(a => a.TestRunner.Name.Equals(address.Uri.AbsolutePath.Trim('/')));

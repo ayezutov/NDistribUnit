@@ -5,6 +5,7 @@ using System.ServiceModel.Description;
 using NDistribUnit.Common.Common.Networking;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.ServiceContracts;
 
 namespace NDistribUnit.Common.Agent
 {
@@ -13,7 +14,13 @@ namespace NDistribUnit.Common.Agent
     /// </summary>
     public class AgentHost
     {
+        /// <summary>
+        /// The relative address of the IRemoteParticle interface (the non-duplex)
+        /// </summary>
+        public static readonly string RemoteParticleAddress = "remote";
+
         private readonly IEnumerable<IAgentExternalModule> modules;
+
         private ILog log;
         internal ServiceHost TestRunnerHost { get; set; }
 
@@ -45,6 +52,7 @@ namespace NDistribUnit.Common.Agent
             log.BeginActivity(string.Format("Starting agent {1} on '{0}'...", baseAddress, TestRunner.Name));
             TestRunnerHost = new ServiceHost(TestRunner, baseAddress);
 			Endpoint = TestRunnerHost.AddServiceEndpoint(typeof(ITestRunnerAgent), new NetTcpBinding("NDistribUnit.Default"), "");
+            TestRunnerHost.AddServiceEndpoint(typeof(IRemoteParticle), new NetTcpBinding("NDistribUnit.Default"), RemoteParticleAddress);
         	TestRunnerHost.Description.Behaviors.Find<ServiceDebugBehavior>().IncludeExceptionDetailInFaults = true;
             log.BeginActivity("Starting external modules...");
             foreach (var module in modules)

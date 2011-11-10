@@ -1,3 +1,4 @@
+using System.ServiceModel;
 using NDistribUnit.Common.Contracts.DataContracts;
 
 namespace NDistribUnit.Common.TestExecution
@@ -12,6 +13,7 @@ namespace NDistribUnit.Common.TestExecution
         /// </summary>
         /// <param name="testRun">The test run.</param>
         /// <returns></returns>
+        [OperationContract]
         PackedProject GetPackedProject(TestRun testRun);
     }
 }

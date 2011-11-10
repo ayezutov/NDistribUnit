@@ -9,6 +9,7 @@ namespace NDistribUnit.Common.TestExecution.Data
 	/// <summary>
 	/// 
 	/// </summary>
+	[Serializable]
 	public class TestRunRequest: IPingable
 	{
 		/// <summary>
@@ -19,7 +20,7 @@ namespace NDistribUnit.Common.TestExecution.Data
 		public TestRunRequest(TestRun testRun, ITestRunnerClient client)
 		{
 			TestRun = testRun;
-			Client = client;
+			this.client = client;
 		    RequestTime = DateTime.UtcNow;
 		}
 
@@ -31,12 +32,19 @@ namespace NDistribUnit.Common.TestExecution.Data
 		/// </value>
 		public TestRun TestRun { get; private set; }
 
-		/// <summary>
+        [NonSerialized]
+	    private ITestRunnerClient client;
+
+	    /// <summary>
 		/// Gets the client.
 		/// </summary>
-		public ITestRunnerClient Client { get; private set; }
+		
+        public ITestRunnerClient Client
+	    {
+	        get { return client; }
+	    }
 
-        /// <summary>
+	    /// <summary>
         /// Gets or sets the status.
         /// </summary>
         /// <value>
@@ -71,7 +79,7 @@ namespace NDistribUnit.Common.TestExecution.Data
 		/// </summary>
 		public void RemoveClient()
 		{
-			Client = null;
+			client = null;
 		}
 
         /// <summary>
@@ -80,7 +88,7 @@ namespace NDistribUnit.Common.TestExecution.Data
         /// <param name="client">The client.</param>
 	    public void SetClient(ITestRunnerClient client)
 	    {
-	        Client = client;
+	        this.client = client;
 	    }
 	}
 }

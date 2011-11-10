@@ -1,5 +1,6 @@
 ﻿using System.ServiceModel;
 using System.ServiceModel.Discovery;
+using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
 
@@ -8,7 +9,7 @@ namespace NDistribUnit.Common.Server.ConnectionTracking.Announcement
     /// <summary>
     /// The connections tracker, which is based on announcement mechanism
     /// </summary>
-    public class AnnouncementConnectionTracker<TIEndpoint>: NetworkExplorerBase<TIEndpoint> where TIEndpoint : IPingable
+    public class AnnouncementConnectionTracker<TIEndpoint>: NetworkExplorerBase<TIEndpoint> where TIEndpoint : class, IPingable
     {
         private AnnouncementService announcementService;
         private ServiceHost announcementServiceHost;
@@ -18,7 +19,8 @@ namespace NDistribUnit.Common.Server.ConnectionTracking.Announcement
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="log">The log.</param>
-        public AnnouncementConnectionTracker(IConnectionsHostOptions options, ILog log) : base(options, log)
+        /// <param name="connectionProvider">The connection provider.</param>
+        public AnnouncementConnectionTracker(IConnectionsHostOptions options, ILog log, IConnectionProvider connectionProvider) : base(options, log, connectionProvider)
         {
         }
 

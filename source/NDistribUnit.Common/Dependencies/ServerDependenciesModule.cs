@@ -1,5 +1,6 @@
 using System.Configuration;
 using Autofac;
+using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.Contracts.ServiceContracts;
@@ -68,7 +69,8 @@ namespace NDistribUnit.Common.Dependencies
             builder.RegisterInstance(ServerConfiguration.LogConfiguration);
 
             builder.RegisterType<TestRunnerServer>().InstancePerLifetimeScope();
-            builder.RegisterType<TestUnitCollection>().InstancePerLifetimeScope();
+            builder.RegisterType<TestUnitsCollection>().InstancePerLifetimeScope();
+            builder.RegisterType<TestAgentsCollection>().InstancePerLifetimeScope();
             builder.RegisterType<DashboardService>().InstancePerLifetimeScope();
             builder.RegisterType<ServerConnectionsTracker>().InstancePerLifetimeScope();
             builder.RegisterType<UpdateSource>().As<IUpdateSource>();
@@ -77,13 +79,13 @@ namespace NDistribUnit.Common.Dependencies
             builder.RegisterType<TestsScheduler>().As<ITestsScheduler>().InstancePerLifetimeScope();
             builder.RegisterType<TestManager>().InstancePerLifetimeScope();
             builder.RegisterType<ServerHost>().InstancePerLifetimeScope();
-            builder.Register(c => new WindowsLog("Server")).InstancePerLifetimeScope(); ;
+            builder.Register(c => new WindowsLog("Server")).InstancePerLifetimeScope();
             builder.RegisterModule(new CommonDependenciesModule(CommandLineArgs));
-
+            builder.Register(c=> new ProjectsStorage("Server", c.Resolve<BootstrapperParameters>(), c.Resolve<ZipSource>())).As<IProjectsStorage>().AsSelf().InstancePerLifetimeScope();
 
             foreach (ConnectionTrackerElement connectionTracker in ServerConfiguration.ConnectionTrackers)
             {
-                builder.RegisterType(connectionTracker.Type).As<INetworkExplorer<ITestRunnerAgent>>();
+                builder.RegisterType(connectionTracker.Type).As<INetworkExplorer<IRemoteParticle>>();
                 if (!string.IsNullOrEmpty(connectionTracker.SectionName))
                 {
                     ConfigurationSection section = Configuration.GetSection(connectionTracker.SectionName);

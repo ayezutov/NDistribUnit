@@ -7,6 +7,7 @@ using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using NDistribUnit.Common.Agent;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Contracts.DataContracts;
@@ -16,6 +17,7 @@ using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.Communication;
 using NDistribUnit.Common.ServiceContracts;
 using System.Linq;
+using NDistribUnit.Common.TestExecution;
 
 namespace NDistribUnit.Common.Server.Services
 {
@@ -25,7 +27,7 @@ namespace NDistribUnit.Common.Server.Services
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public class DashboardService : IDashboardService
     {
-        private readonly ServerConnectionsTracker connectionsTracker;
+        private readonly TestAgentsCollection agents;
         private readonly RollingLog log;
         private readonly IConnectionProvider connectionProvider;
 
@@ -44,14 +46,14 @@ namespace NDistribUnit.Common.Server.Services
         /// <summary>
         /// Initializes a new instance of dashboard service
         /// </summary>
-        /// <param name="connectionsTracker">The <see cref="ServerConnectionsTracker">connections tracker</see> for the server</param>
+        /// <param name="agents">The <see cref="ServerConnectionsTracker">connections tracker</see> for the server</param>
         /// <param name="log">The log to display for requests</param>
         /// <param name="connectionProvider">The connection provider.</param>
-        public DashboardService(ServerConnectionsTracker connectionsTracker, 
+        public DashboardService(TestAgentsCollection agents, 
             RollingLog log,
             IConnectionProvider connectionProvider)
         {
-            this.connectionsTracker = connectionsTracker;
+            this.agents = agents;
             this.log = log;
             this.connectionProvider = connectionProvider;
         }
@@ -93,7 +95,7 @@ namespace NDistribUnit.Common.Server.Services
         /// <returns></returns>
         public AgentInformation[] GetClientStatuses()
         {
-            return connectionsTracker.Agents.ToArray();
+            return agents.ToArray();
         }
 
         /// <summary>
@@ -114,12 +116,12 @@ namespace NDistribUnit.Common.Server.Services
         /// <returns></returns>
         public LogEntry[] GetAgentLog(string agentName, int maxItemsCount, int? lastFetchedEntryId = null)
         {
-            AgentInformation agent = connectionsTracker.Agents.FirstOrDefault(a => a.Name.Equals(agentName));
+            AgentInformation agent = agents.GetBy(agentName);
 
             if (agent == null)
                 return new LogEntry[0];
 
-            LogEntry[] result = connectionProvider.GetConnection<ITestRunnerAgent>(agent.Endpoint.Address)
+            LogEntry[] result = connectionProvider.GetConnection<IRemoteParticle>(new EndpointAddress(new Uri(agent.Address.Uri, AgentHost.RemoteParticleAddress)))
                 .GetLog(maxItemsCount, lastFetchedEntryId);
             return result;
         }

@@ -45,9 +45,9 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
         #region Configuration methods
 
         public NDistribUnitTestSystem SetConnectionsTracker<TTracker>()
-            where TTracker : INetworkExplorer<ITestRunnerAgent>
+            where TTracker : INetworkExplorer<IRemoteParticle>
         {
-            controller.Register<TTracker, INetworkExplorer<ITestRunnerAgent>>();
+            controller.Register<TTracker, INetworkExplorer<IRemoteParticle>>();
             return this;
         }
 

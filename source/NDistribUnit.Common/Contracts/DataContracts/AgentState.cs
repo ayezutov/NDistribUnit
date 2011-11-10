@@ -13,7 +13,7 @@
         /// <summary>
         /// The agent is connected and resides in idle state
         /// </summary>
-        Connected,
+        Ready,
 
         /// <summary>
         /// The agent is busy with some task

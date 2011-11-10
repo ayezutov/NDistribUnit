@@ -5,6 +5,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Discovery;
 using System.Threading;
+using NDistribUnit.Common.Agent;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.Extensions;
@@ -16,13 +17,15 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
     /// <summary>
     /// The base class for connection trackers
     /// </summary>
-    /// <typeparam name="TIEndpoint">The type of the I endpoint.</typeparam>
-    public abstract class NetworkExplorerBase<TIEndpoint> : INetworkExplorer<TIEndpoint> where TIEndpoint : IPingable
+    /// <typeparam name="TIEndpoint">The type of the endpoint.</typeparam>
+    public abstract class NetworkExplorerBase<TIEndpoint> : INetworkExplorer<TIEndpoint> where TIEndpoint : class, IPingable
     {
         /// <summary>
         /// The log
         /// </summary>
         protected ILog log;
+
+        private readonly IConnectionProvider connectionProvider;
 
         /// <summary>
         /// The unique identifier of that instance
@@ -39,10 +42,12 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="log">The log.</param>
-        protected NetworkExplorerBase(IConnectionsHostOptions options, ILog log)
+        /// <param name="connectionProvider">The connection provider.</param>
+        protected NetworkExplorerBase(IConnectionsHostOptions options, ILog log, IConnectionProvider connectionProvider)
         {
             ConnectionsHostOptions = options;
             this.log = log;
+            this.connectionProvider = connectionProvider;
         }
 
         private void OnEndpointPing(object state)
@@ -84,8 +89,9 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
                         AddEndpointForTracking(endpointInformation.Endpoint, result.EndpointName);
                     }
                 }
-                catch (CommunicationException)
+                catch (CommunicationException ex)
                 {
+                    log.Error("Error while pinging endpoint", ex);
                     RemoveEndpointFromTracking(endpointInformation);
                 }
             }
@@ -129,11 +135,16 @@ namespace NDistribUnit.Common.Server.ConnectionTracking
                     log.Info(string.Format("{1}: New endpoint was detected: {0}", endpoint.Address, guid));
                     endpoints.Add(endpointInformation);
 
-                    endpointInformation.Pingable = ChannelFactory<TIEndpoint>.CreateChannel(new NetTcpBinding(),
-                                                                                            endpoint.Address);
-                    endpointInformation.PingTimer = new Timer(OnEndpointPing, endpointInformation,
-                                                              0, Timeout.Infinite);
-
+                    try
+                    {
+                        endpointInformation.Pingable = connectionProvider.GetConnection<TIEndpoint>(new EndpointAddress(new Uri(endpoint.Address.Uri, AgentHost.RemoteParticleAddress)));
+                        endpointInformation.PingTimer = new Timer(OnEndpointPing, endpointInformation,
+                                                                  0, Timeout.Infinite);
+                    }
+                    catch(Exception ex)
+                    {
+                        log.Error("Error while creating pingable", ex);
+                    }
                     EndpointConnected.SafeInvoke(this, new EndpointConnectionChangedEventArgs
                                                            {
                                                                EndpointInfo = endpointInformation,
