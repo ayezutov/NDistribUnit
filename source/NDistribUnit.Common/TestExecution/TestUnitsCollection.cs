@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using NDistribUnit.Common.Extensions;
+using System.Linq;
+using NDistribUnit.Common.TestExecution.Data;
 
 namespace NDistribUnit.Common.TestExecution
 {
@@ -25,6 +27,11 @@ namespace NDistribUnit.Common.TestExecution
         /// Occurs when a test unit is moved to running collection
         /// </summary>
 	    public EventHandler<EventArgs<TestUnit>> RunningAdded;
+
+        /// <summary>
+        /// Occurrs, when a test run is finished
+        /// </summary>
+	    public EventHandler<EventArgs<TestRunRequest>> TestRequestFinished;
 
 	    /// <summary>
         /// Adds the range of test units into the collection.
@@ -73,7 +80,24 @@ namespace NDistribUnit.Common.TestExecution
         /// </summary>
         /// <param name="test">The test.</param>
 	    public void MarkCompleted(TestUnit test)
-	    {}
+        {
+            bool hasMoreTests = true;
+            lock (SyncObject)
+            {
+                available.Remove(test);
+                running.Remove(test);
+
+                Func<TestUnit, bool> belongsToSameTestRun = t => t.Request.TestRun.Id.Equals(test.Request.TestRun.Id);
+                if (!available.Any(belongsToSameTestRun) &&
+                    !running.Any(belongsToSameTestRun))
+                {
+                    hasMoreTests = false;
+                }
+            }
+
+            if (!hasMoreTests)
+                TestRequestFinished.SafeInvoke(this, test.Request);
+        }
 
         /// <summary>
         /// Gets the available.

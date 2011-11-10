@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution;
@@ -73,17 +75,50 @@ namespace NDistribUnit.Common.Agent
                                                          });
 
             ClientParameters testOptions = test.Request.TestRun.TestOptions;
-            NUnit.Core.TestResult testResult = nativeRunner.Run(new NullListener(),
-                                                                new NUnitTestsFilter(testOptions.IncludeCategories,
-                                                                                     testOptions.ExcludeCategories,
-                                                                                     test.UniqueTestId));
-
-            return MapResult(testResult, test);
+            try
+            {
+                NUnit.Core.TestResult testResult = nativeRunner.Run(new NullListener(),
+                                                                    new NUnitTestsFilter(testOptions.IncludeCategories,
+                                                                                         testOptions.ExcludeCategories,
+                                                                                         test.UniqueTestId));
+                return MapResult(testResult, test);
+            }
+            catch(Exception ex)
+            {
+                log.Error("Error while running test on agent", ex);
+                throw;
+            }
         }
 
         private TestResult MapResult(NUnit.Core.TestResult testResult, TestUnit test)
         {
-            throw new NotImplementedException();
+            var result = FindRequiredResult(testResult, test.UniqueTestId);
+
+            var mapSingleResult = new Func<NUnit.Core.TestResult, TestResult>(
+                nunit=> new TestResult
+                                    {
+                                        AssertCount = nunit.AssertCount,
+                                        Description = nunit.Description
+                                        Exception = nunit.
+                                    }
+                );
+
+            return new TestResult();
+        }
+
+        private NUnit.Core.TestResult FindRequiredResult(NUnit.Core.TestResult testResult, string testName)
+        {
+            if (testResult == null)
+                return null;
+
+            if (testResult.FullName.Equals(testName))
+                return testResult;
+
+            return (
+                from NUnit.Core.TestResult childResult 
+                    in testResult.Results 
+                    select FindRequiredResult(childResult, testName))
+                .FirstOrDefault(resultForTestName => resultForTestName != null);
         }
 
         private TestResult CreateInvalidTestResult(TestUnit test)
