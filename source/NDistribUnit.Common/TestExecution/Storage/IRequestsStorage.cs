@@ -21,12 +21,24 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// <param name="testRun">The test run.</param>
         /// <param name="client">The client.</param>
         /// <returns></returns>
-        TestRunRequest AddOrUpdate(TestRun testRun, ITestRunnerClient client);
+        TestRunRequest AddOrUpdate(TestRun testRun, IClient client);
 
         /// <summary>
         /// Removes the specified request.
         /// </summary>
         /// <param name="request">The request.</param>
-        void Remove(TestRunRequest request);
+        TestRunRequest Remove(TestRunRequest request);
+
+        /// <summary>
+        /// Removes the specified request.
+        /// </summary>
+        /// <param name="testRun"></param>
+        TestRunRequest RemoveBy(TestRun testRun);
+
+        /// <summary>
+        /// Removes the specified request.
+        /// </summary>
+        /// <param name="testRun"></param>
+        TestRunRequest GetBy(TestRun testRun);
     }
 }

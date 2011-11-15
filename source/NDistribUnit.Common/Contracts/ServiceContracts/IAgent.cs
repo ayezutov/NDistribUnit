@@ -8,7 +8,7 @@ namespace NDistribUnit.Common.Contracts.ServiceContracts
     /// A contract for communicating from server to agents
     /// </summary>
     [ServiceContract(CallbackContract = typeof(IAgentDataSource))]
-    public interface ITestRunnerAgent
+    public interface IAgent
     {
         /// <summary>
         /// Runs tests on agent

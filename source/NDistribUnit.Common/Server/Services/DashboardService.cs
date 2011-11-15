@@ -121,7 +121,7 @@ namespace NDistribUnit.Common.Server.Services
             if (agent == null)
                 return new LogEntry[0];
 
-            LogEntry[] result = connectionProvider.GetConnection<IRemoteParticle>(new EndpointAddress(new Uri(agent.Address.Uri, AgentHost.RemoteParticleAddress)))
+            LogEntry[] result = connectionProvider.GetConnection<IRemoteAppPart>(new EndpointAddress(new Uri(agent.Address.Uri, AgentHost.RemoteParticleAddress)))
                 .GetLog(maxItemsCount, lastFetchedEntryId);
             return result;
         }

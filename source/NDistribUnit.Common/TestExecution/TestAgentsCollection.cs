@@ -161,5 +161,14 @@ namespace NDistribUnit.Common.TestExecution
                 return agents.FindAll(a => a.State == AgentState.Ready);
             }
         }
+
+        /// <summary>
+        /// Marks the free.
+        /// </summary>
+        /// <param name="agent">The agent.</param>
+        public void MarkAsReady(AgentInformation agent)
+        {
+            agent.State = AgentState.Ready;
+        }
     }
 }

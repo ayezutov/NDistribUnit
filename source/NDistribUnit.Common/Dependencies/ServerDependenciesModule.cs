@@ -68,16 +68,18 @@ namespace NDistribUnit.Common.Dependencies
                 .AsSelf();
             builder.RegisterInstance(ServerConfiguration.LogConfiguration);
 
-            builder.RegisterType<TestRunnerServer>().InstancePerLifetimeScope();
+            builder.RegisterType<Server.Services.Server>().InstancePerLifetimeScope();
             builder.RegisterType<TestUnitsCollection>().InstancePerLifetimeScope();
             builder.RegisterType<TestAgentsCollection>().InstancePerLifetimeScope();
             builder.RegisterType<DashboardService>().InstancePerLifetimeScope();
             builder.RegisterType<ServerConnectionsTracker>().InstancePerLifetimeScope();
             builder.RegisterType<UpdateSource>().As<IUpdateSource>();
             builder.RegisterType<RequestsStorage>().As<IRequestsStorage>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<Reprocessor>().As<IReprocessor>().InstancePerLifetimeScope();
+            builder.Register(c => new ResultsStorage()).As<IResultsStorage>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<TestsRetriever>().As<ITestsRetriever>();
             builder.RegisterType<TestsScheduler>().As<ITestsScheduler>().InstancePerLifetimeScope();
-            builder.RegisterType<TestManager>().InstancePerLifetimeScope();
+            builder.RegisterType<ServerTestRunner>().InstancePerLifetimeScope();
             builder.RegisterType<ServerHost>().InstancePerLifetimeScope();
             builder.Register(c => new WindowsLog("Server")).InstancePerLifetimeScope();
             builder.RegisterModule(new CommonDependenciesModule(CommandLineArgs));
@@ -85,7 +87,7 @@ namespace NDistribUnit.Common.Dependencies
 
             foreach (ConnectionTrackerElement connectionTracker in ServerConfiguration.ConnectionTrackers)
             {
-                builder.RegisterType(connectionTracker.Type).As<INetworkExplorer<IRemoteParticle>>();
+                builder.RegisterType(connectionTracker.Type).As<INetworkExplorer<IRemoteAppPart>>();
                 if (!string.IsNullOrEmpty(connectionTracker.SectionName))
                 {
                     ConfigurationSection section = Configuration.GetSection(connectionTracker.SectionName);

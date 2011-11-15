@@ -17,7 +17,7 @@ namespace NDistribUnit.Common.TestExecution.Data
 		/// </summary>
 		/// <param name="testRun">The test run.</param>
 		/// <param name="client">The client.</param>
-		public TestRunRequest(TestRun testRun, ITestRunnerClient client)
+		public TestRunRequest(TestRun testRun, IClient client)
 		{
 			TestRun = testRun;
 			this.client = client;
@@ -33,13 +33,13 @@ namespace NDistribUnit.Common.TestExecution.Data
 		public TestRun TestRun { get; private set; }
 
         [NonSerialized]
-	    private ITestRunnerClient client;
+	    private IClient client;
 
 	    /// <summary>
 		/// Gets the client.
 		/// </summary>
 		
-        public ITestRunnerClient Client
+        public IClient Client
 	    {
 	        get { return client; }
 	    }
@@ -86,7 +86,7 @@ namespace NDistribUnit.Common.TestExecution.Data
         /// Sets the client.
         /// </summary>
         /// <param name="client">The client.</param>
-	    public void SetClient(ITestRunnerClient client)
+	    public void SetClient(IClient client)
 	    {
 	        this.client = client;
 	    }

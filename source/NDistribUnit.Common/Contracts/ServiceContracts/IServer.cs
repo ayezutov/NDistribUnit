@@ -9,8 +9,8 @@ namespace NDistribUnit.Common.Contracts.ServiceContracts
     /// <summary>
     /// Contract, which is used by client to connect to server
     /// </summary>
-    [ServiceContract(CallbackContract = typeof(ITestRunnerClient))]
-    public interface ITestRunnerServer
+    [ServiceContract(CallbackContract = typeof(IClient))]
+    public interface IServer
     {
         /// <summary>
         /// Runs tests from client

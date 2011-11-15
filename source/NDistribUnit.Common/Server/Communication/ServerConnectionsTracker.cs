@@ -21,7 +21,7 @@ namespace NDistribUnit.Common.Server.Communication
     public class ServerConnectionsTracker
     {
         private readonly ILog log;
-        private readonly INetworkExplorer<IRemoteParticle> networkExplorer;
+        private readonly INetworkExplorer<IRemoteAppPart> networkExplorer;
         private readonly IUpdateSource updateSource;
         private readonly IVersionProvider versionProvider;
         private readonly IConnectionProvider connectionProvider;
@@ -38,7 +38,7 @@ namespace NDistribUnit.Common.Server.Communication
         /// <param name="log">The log.</param>
         /// <param name="agents">The agents.</param>
         public ServerConnectionsTracker(
-            INetworkExplorer<IRemoteParticle> networkExplorer,
+            INetworkExplorer<IRemoteAppPart> networkExplorer,
             IUpdateSource updateSource,
             IVersionProvider versionProvider,
             IConnectionProvider connectionProvider,
@@ -102,7 +102,7 @@ namespace NDistribUnit.Common.Server.Communication
                                            try
                                            {
                                                var testRunnerAgent =
-                                                   connectionProvider.GetConnection<IRemoteParticle>(
+                                                   connectionProvider.GetConnection<IRemoteAppPart>(
                                                        new EndpointAddress(new Uri(agent.Address.Uri,
                                                                                    AgentHost.RemoteParticleAddress)));
                                                testRunnerAgent.ReceiveUpdatePackage(new UpdatePackage

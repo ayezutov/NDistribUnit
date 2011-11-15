@@ -11,3 +11,4 @@ _ReSharper.*
 /source/_dependencies/diagone-icons-by-yusuke-kamiyamane
 /source/builds
 /source/_dependencies/mono.cecil
+/source/_dependencies/NUnit-2.5.10.11092

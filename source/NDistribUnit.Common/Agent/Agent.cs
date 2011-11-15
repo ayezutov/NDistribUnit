@@ -16,17 +16,17 @@ namespace NDistribUnit.Common.Agent
     /// The service, which is communicated, when the server calls he agent
     /// </summary>
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    public class TestRunnerAgent : ITestRunnerAgent, IRemoteParticle
+    public class Agent : IAgent, IRemoteAppPart
     {
         private readonly ILog log;
     	private readonly RollingLog logStorage;
 		private readonly IUpdateReceiver updateReceiver;
         private readonly IVersionProvider versionProvider;
         private readonly IConnectionProvider connectionProvider;
-        private readonly NDistribUnitTestRunner runner;
+        private readonly AgentTestRunner runner;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestRunnerAgent"/> class.
+        /// Initializes a new instance of the <see cref="Agent"/> class.
         /// </summary>
         /// <param name="log">The log.</param>
         /// <param name="logStorage">The log storage.</param>
@@ -35,14 +35,14 @@ namespace NDistribUnit.Common.Agent
         /// <param name="versionProvider">The version provider.</param>
         /// <param name="connectionProvider">The connection provider.</param>
         /// <param name="runner">The runner.</param>
-        public TestRunnerAgent(
+        public Agent(
             ILog log, 
             RollingLog logStorage, 
             IUpdateReceiver updateReceiver, 
             AgentConfiguration configuration, 
             IVersionProvider versionProvider, 
             IConnectionProvider connectionProvider, 
-            NDistribUnitTestRunner runner)
+            AgentTestRunner runner)
         {
             this.log = log;
 			this.logStorage = logStorage;

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution.Data;
@@ -35,32 +34,39 @@ namespace NDistribUnit.Common.TestExecution
         /// <param name="project">The project.</param>
         /// <param name="request">The request.</param>
         /// <returns></returns>
-        public IEnumerable<TestUnit> Get(TestProject project, TestRunRequest request)
+        public IEnumerable<TestUnitWithMetadata> Get(TestProject project, TestRunRequest request)
         {
             initializer.Initialize();
 
-            var projectFileNameOnly = Path.GetFileName(request.TestRun.TestOptions.AssembliesToTest[0]);
+            var projectFileNameOnly = Path.GetFileName(request.TestRun.NUnitParameters.AssembliesToTest[0]);
             var projectFileNameMapped = Path.Combine(project.Path, projectFileNameOnly);
             
             var package = new TestPackage(projectFileNameMapped);
             var builder = new TestSuiteBuilder();
             
             var testSuite = builder.Build(package);
-            var filter = new NUnitTestsFilter(request.TestRun.TestOptions.IncludeCategories,
-                                 request.TestRun.TestOptions.ExcludeCategories);
+            var filter = new NUnitTestsFilter(request.TestRun.NUnitParameters.IncludeCategories,
+                                 request.TestRun.NUnitParameters.ExcludeCategories);
             
             return ToTestUnitList(testSuite, request, filter);
         }
 
-        private IEnumerable<TestUnit> ToTestUnitList(TestSuite testSuite, TestRunRequest request, ITestFilter filter)
+        private IEnumerable<TestUnitWithMetadata> ToTestUnitList(TestSuite testSuite, TestRunRequest request, ITestFilter filter)
         {
             var rawTestUnits = new List<ITest>();
             Find(testSuite, filter, rawTestUnits);
 
-            return rawTestUnits.Select(tu => new TestUnit(request, tu.TestName.FullName));
+            return rawTestUnits.Select(raw => new TestUnitWithMetadata(request.TestRun, raw.TestName.FullName));
         }
 
-        private static void Find(ITest test, ITestFilter filter, ICollection<ITest> result)
+        /// <summary>
+        /// Finds the specified test.
+        /// </summary>
+        /// <param name="test">The test.</param>
+        /// <param name="filter">The filter.</param>
+        /// <param name="result">The result.</param>
+        /// <param name="assemblyName">Name of the assembly, where the test belongs to.</param>
+        private static void Find(ITest test, ITestFilter filter, ICollection<ITest> result, string assemblyName = null)
         {
             var ass = test as TestAssembly;
             var ns = test as NamespaceSuite;
@@ -75,7 +81,7 @@ namespace NDistribUnit.Common.TestExecution
 
             foreach (ITest innerTest in test.Tests)
             {
-                Find(innerTest, filter, result);
+                Find(innerTest, filter, result, ass != null ? ass.TestName.FullName : null);
             }
         }
     }

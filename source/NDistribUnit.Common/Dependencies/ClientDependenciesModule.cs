@@ -19,8 +19,8 @@ namespace NDistribUnit.Common.Dependencies
         {
             builder.Register(c => new WindowsLog("Client")).InstancePerLifetimeScope();
             builder
-                .RegisterType<TestRunnerClient>()
-                .As<ITestRunnerClient>().AsSelf();
+                .RegisterType<Client.Client>()
+                .As<IClient>().AsSelf();
             builder
                 .RegisterType<TestRunParametersFileReader>()
                 .As<ITestRunParametersFileReader>();

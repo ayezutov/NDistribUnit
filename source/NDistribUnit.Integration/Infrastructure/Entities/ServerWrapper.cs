@@ -20,7 +20,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         private readonly TestAgentsCollection agents;
         private ServerHost ServerHost { get; set; }
 
-        public TestRunnerServer TestRunner { get; set; }
+        public Common.Server.Services.Server TestRunner { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServerWrapper"/> class.
@@ -30,7 +30,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// <param name="agents">The agents.</param>
         /// <param name="serverHost">The server host.</param>
         public ServerWrapper(
-            TestRunnerServer testRunner, 
+            Common.Server.Services.Server testRunner, 
             ServerConnectionsTracker serverConnectionsTracker, 
             TestAgentsCollection agents,
             ServerHost serverHost = null)

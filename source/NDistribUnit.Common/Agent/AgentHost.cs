@@ -35,7 +35,7 @@ namespace NDistribUnit.Common.Agent
         /// <param name="testRunner">The test runner.</param>
         /// <param name="modules">The agents' external modules.</param>
         /// <param name="log">The log.</param>
-        public AgentHost(TestRunnerAgent testRunner, IEnumerable<IAgentExternalModule> modules, ILog log)
+        public AgentHost(Agent testRunner, IEnumerable<IAgentExternalModule> modules, ILog log)
         {
             TestRunner = testRunner;
             this.modules = modules;
@@ -52,8 +52,8 @@ namespace NDistribUnit.Common.Agent
             log.BeginActivity(string.Format("Starting agent {1} on '{0}'...", baseAddress, TestRunner.Name));
             TestRunnerHost = new ServiceHost(TestRunner, baseAddress);
             
-			Endpoint = TestRunnerHost.AddServiceEndpoint(typeof(ITestRunnerAgent), new NetTcpBinding("NDistribUnit.Default"), "");
-            TestRunnerHost.AddServiceEndpoint(typeof(IRemoteParticle), new NetTcpBinding("NDistribUnit.Default"), RemoteParticleAddress);
+			Endpoint = TestRunnerHost.AddServiceEndpoint(typeof(IAgent), new NetTcpBinding("NDistribUnit.Default"), "");
+            TestRunnerHost.AddServiceEndpoint(typeof(IRemoteAppPart), new NetTcpBinding("NDistribUnit.Default"), RemoteParticleAddress);
         	TestRunnerHost.Description.Behaviors.Find<ServiceDebugBehavior>().IncludeExceptionDetailInFaults = true;
             log.BeginActivity("Starting external modules...");
             foreach (var module in modules)
@@ -72,7 +72,7 @@ namespace NDistribUnit.Common.Agent
         /// <value>
         /// The test runner.
         /// </value>
-        public TestRunnerAgent TestRunner { get; set; }
+        public Agent TestRunner { get; set; }
 
         /// <summary>
         /// Stops all agent's services

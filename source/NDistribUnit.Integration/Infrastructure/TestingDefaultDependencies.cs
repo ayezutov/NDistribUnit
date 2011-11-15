@@ -39,7 +39,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
             var repo = new MockRepository(MockBehavior.Default);
 
             builder.RegisterType<ClientWrapper>();
-            builder.RegisterType<TestingConnectionTracker>().As<INetworkExplorer<IRemoteParticle>>();
+            builder.RegisterType<TestingConnectionTracker>().As<INetworkExplorer<IRemoteAppPart>>();
 
             var versionProvider = repo.Create<IVersionProvider>();
             versionProvider.Setup(p => p.GetVersion()).Returns(new Version(1, 0, 0, 0));

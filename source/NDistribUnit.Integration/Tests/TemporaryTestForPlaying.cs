@@ -8,7 +8,7 @@ using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Logging;
 using NUnit.Framework;
 
-namespace NDistribUnit.Integration.Tests.TestExecution
+namespace NDistribUnit.Integration.Tests.Tests
 {
     [TestFixture]
     public class TemporaryTestForPlaying
@@ -97,7 +97,6 @@ namespace NDistribUnit.Integration.Tests.TestExecution
             Assert.That(versionProvider1.GetVersion(), Is.EqualTo(new Version("1.0.0.0")));
         }
 
-
         private class OptionalParamsInConstructor
         {
             public ConsoleLog ConsoleLog { get; set; }
@@ -109,5 +108,7 @@ namespace NDistribUnit.Integration.Tests.TestExecution
                 RollingLog = rollingLog;
             }
         }
+
+
     }
 }

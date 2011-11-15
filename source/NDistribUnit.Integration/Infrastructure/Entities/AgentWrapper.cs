@@ -17,7 +17,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// <param name="testRunner">The test runner.</param>
         /// <param name="updateReceiver">The update receiver.</param>
         /// <param name="versionProvider">The version provider.</param>
-        public AgentWrapper(AgentHost agentHost, TestRunnerAgent testRunner, TestUpdateReceiver updateReceiver, IVersionProvider versionProvider)
+        public AgentWrapper(AgentHost agentHost, Common.Agent.Agent testRunner, TestUpdateReceiver updateReceiver, IVersionProvider versionProvider)
         {
             this.versionProvider = versionProvider;
             AgentHost = agentHost;
@@ -35,7 +35,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// <summary>
         /// Gets the test runner.
         /// </summary>
-        public TestRunnerAgent TestRunner { get; private set; }
+        public Common.Agent.Agent TestRunner { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is started.

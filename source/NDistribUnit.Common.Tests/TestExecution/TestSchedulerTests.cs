@@ -2,9 +2,11 @@
 using System.ServiceModel;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.DataContracts;
+using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.Server;
 using NDistribUnit.Common.TestExecution;
-using NDistribUnit.Common.TestExecution.Data;
 using NDistribUnit.Common.TestExecution.Exceptions;
+using NDistribUnit.Common.TestExecution.Storage;
 using NUnit.Framework;
 
 namespace NDistribUnit.Common.Tests.TestExecution
@@ -16,93 +18,18 @@ namespace NDistribUnit.Common.Tests.TestExecution
         private TestAgentsCollection agents;
         private TestUnitsCollection tests;
         private TestsScheduler scheduler;
+        private RequestsStorage requests;
 
         [SetUp]
         public void Init()
         {
             agents = new TestAgentsCollection();
             tests = new TestUnitsCollection();
+            requests = new RequestsStorage(new ServerConfiguration {PingIntervalInMiliseconds = 10000}, new ConsoleLog());
 
-            scheduler = new TestsScheduler(agents, tests);
+            scheduler = new TestsScheduler(agents, tests, requests);
         }
         
-        [Test]
-        public void GetAgentThrowsExceptionIfNoAgentsAreAvailable()
-        {
-            Assert.Throws<NoAvailableAgentsException>(()=>scheduler.GetAgentForTest(CreateTestUnit("first")));
-        }
-
-
-        [Test]
-        public void GetAgentThrowsExceptionIfAllAgentsAreDisconnected()
-        {
-            agents.Add(CreateTestAgent("first", AgentState.Disconnected));
-            agents.Add(CreateTestAgent("second", AgentState.Disconnected));
-
-            Assert.Throws<NoAvailableAgentsException>(()=> scheduler.GetAgentForTest(CreateTestUnit("first")));
-        }
-
-        [Test]
-        public void GetAgentThrowsExceptionIfAllAgentsAreError()
-        {
-            agents.Add(CreateTestAgent("first", AgentState.Error));
-            agents.Add(CreateTestAgent("second", AgentState.Error));
-
-            Assert.Throws<NoAvailableAgentsException>(()=> scheduler.GetAgentForTest(CreateTestUnit("first")));
-        }
-
-        [Test]
-        public void GetAgentReturnsFirstIfThereIsAtLeastOneReadyAgent()
-        {
-            agents.Add(CreateTestAgent("first"));
-            agents.Add(CreateTestAgent("second"));
-
-            var agent = scheduler.GetAgentForTest(CreateTestUnit("first"));
-            Assert.That(agent, Is.Not.Null);
-            Assert.That(agent.Name, Is.EqualTo("first"));
-        }
-
-        [Test]
-        public void GetAgentThrowsExceptionIfAllAgentsAreErrorAndDisconnected()
-        {
-            agents.Add(CreateTestAgent("first", AgentState.Error));
-            agents.Add(CreateTestAgent("second", AgentState.Disconnected));
-
-            Assert.Throws<NoAvailableAgentsException>(()=> scheduler.GetAgentForTest(CreateTestUnit("first")));
-        }
-
-        [Test]
-        public void GetAgentReturnsNullIfAllAgentsAreBusy()
-        {
-            agents.Add(CreateTestAgent("first", AgentState.Busy));
-
-            var agent = scheduler.GetAgentForTest(CreateTestUnit("first"));
-
-            Assert.That(agent, Is.Null);
-        }
-
-        [Test]
-        public void GetAgentReturnsNullIfAllAgentsAreUpdating()
-        {
-            agents.Add(CreateTestAgent("first", AgentState.Updating));
-
-            var agent = scheduler.GetAgentForTest(CreateTestUnit("first"));
-
-            Assert.That(agent, Is.Null);
-        }
-        
-        [Test]
-        public void GetTestReturnsFirstIfThereIsAtLeastOneAvailable()
-        {
-            tests.Add(CreateTestUnit("first"));
-            tests.Add(CreateTestUnit("second"));
-            tests.Add(CreateTestUnit("third"));
-
-            var testUnit = scheduler.GetTestForAgent(CreateTestAgent("agent"));
-            Assert.That(testUnit, Is.Not.Null);
-            Assert.That(testUnit.UniqueTestId, Is.EqualTo("first"));
-        }
-
         [Test]
         public void GetBothReturnsNullIfNoTestsAreAvailable()
         {
@@ -129,6 +56,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
             var tuple = scheduler.GetAgentAndTest();
             Assert.That(tuple, Is.Null);
         }
+
         [Test]
         public void GetBothReturnsNullIfTestsAreAvailableAndSomeAgentsAreUpdating()
         {
@@ -143,16 +71,16 @@ namespace NDistribUnit.Common.Tests.TestExecution
         public void GetBothThrowsExceptionIfNoAgentsAreAvailableWhileTestsAre()
         {
             tests.Add(CreateTestUnit("first"));
-            
-            Assert.Throws<NoAvailableAgentsException>(()=>scheduler.GetAgentAndTest());
+
+            Assert.Throws<NoAvailableAgentsException>(() => scheduler.GetAgentAndTest());
         }
 
-        private TestUnit CreateTestUnit(string testName, Guid? runId = null)
+        private TestUnitWithMetadata CreateTestUnit(string testName, Guid? runId = null)
         {
-            return new TestUnit(new TestRunRequest(new TestRun
-                                                       {
-                                                           Id = runId ?? defaultId
-                                                       }, null), testName);
+            return new TestUnitWithMetadata(new TestRun
+                                    {
+                                        Id = runId ?? defaultId
+                                    }, testName);
         }
 
         private AgentInformation CreateTestAgent(string agentName = null, AgentState state = AgentState.Ready)

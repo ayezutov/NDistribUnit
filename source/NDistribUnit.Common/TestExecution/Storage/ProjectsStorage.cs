@@ -11,23 +11,16 @@ namespace NDistribUnit.Common.TestExecution.Storage
     /// </summary>
     public class ProjectsStorage : IProjectsStorage
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string PackedFileName = "packed.zip";
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string UnpackedFolder = "unpacked";
+        private const string PackedFileName = "packed.zip";
+        private const string UnpackedFolder = "unpacked";
+        private const string StorageFolderName = "_Storage";
+        private const string TemporaryStorageFolderName = "Temporary";
+        private const string PermanentStorageFolderName = "Permanent";
 
         private readonly string storageName;
         private readonly BootstrapperParameters parameters;
         private readonly ZipSource zip;
-        private const string StorageFolderName = "_Storage";
-        private const string temporaryStorageFolderName = "Temporary";
-        private const string permanentStorageFolderName = "Permanent";
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectsStorage"/> class.
         /// </summary>
@@ -45,8 +38,9 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// Gets the project.
         /// </summary>
         /// <param name="testRun"></param>
+        /// <param name="loadPackedProject"></param>
         /// <returns></returns>
-        public TestProject GetProject(TestRun testRun)
+        public TestProject GetOrLoad(TestRun testRun, Func<PackedProject> loadPackedProject = null)
         {
             string path = GetPathToProject(testRun);
 
@@ -62,14 +56,17 @@ namespace NDistribUnit.Common.TestExecution.Storage
                 return new TestProject(unpackedDirectory);
             }
 
+            if (loadPackedProject != null)
+                return Store(testRun, loadPackedProject());
+
             return null;
         }
 
         private string GetPathToProject(TestRun testRun)
         {
             if (string.IsNullOrEmpty(testRun.Alias))
-                return Path.Combine(RootPath, GetStorageFolderName(), temporaryStorageFolderName, testRun.Id.ToString());
-            return Path.Combine(RootPath, StorageFolderName, permanentStorageFolderName, testRun.Alias);
+                return Path.Combine(RootPath, GetStorageFolderName(), TemporaryStorageFolderName, testRun.Id.ToString());
+            return Path.Combine(RootPath, StorageFolderName, PermanentStorageFolderName, testRun.Alias);
         }
 
         private string GetStorageFolderName()
@@ -106,7 +103,7 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// <summary>
         /// Gets the root path.
         /// </summary>
-        protected string RootPath
+        private string RootPath
         {
             get { return parameters.RootFolder; }
         }
@@ -128,7 +125,7 @@ namespace NDistribUnit.Common.TestExecution.Storage
             var file = File.Create(packedFileName);
             file.Write(project.Data, 0, project.Data.Length);
             file.Close();
-            return GetProject(testRun);
+            return GetOrLoad(testRun);
         }
 
         private static byte[] ReadBytes(string fullFilePath)
@@ -160,7 +157,7 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// <param name="path">The root path.</param>
         public TestProject(string path)
         {
-            this.Path = path;
+            Path = path;
         }
 
         /// <summary>

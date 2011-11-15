@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using NDistribUnit.Common.Client;
-using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.ConnectionTracking;
@@ -16,7 +15,7 @@ namespace NDistribUnit.Common.TestExecution.Storage
     public class RequestsStorage : IRequestsStorage
     {
         private readonly ConcurrentDictionary<Guid, TestRunRequest> requests = new ConcurrentDictionary<Guid, TestRunRequest>();
-        private readonly PingableCollection<TestRunRequest> pingable;
+        //private readonly PingableCollection<TestRunRequest> pingable;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RequestsStorage"/> class.
@@ -25,8 +24,8 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// <param name="log">The log.</param>
         public RequestsStorage(IConnectionsHostOptions options, ILog log)
         {
-            pingable = new PingableCollection<TestRunRequest>(options, log);
-            pingable.Removed += (sender, args) => args.Data.RemoveClient();
+//            pingable = new PingableCollection<TestRunRequest>(options, log);
+//            pingable.Removed += (sender, args) => args.Data.RemoveClient();
         }
 
         /// <summary>
@@ -39,7 +38,7 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// <param name="testRun">The test run.</param>
         /// <param name="client">The client.</param>
         /// <returns></returns>
-        public TestRunRequest AddOrUpdate(TestRun testRun, ITestRunnerClient client)
+        public TestRunRequest AddOrUpdate(TestRun testRun, IClient client)
         {
             var exists = true;
             var addedRequest = requests.GetOrAdd(testRun.Id, guid =>
@@ -53,10 +52,10 @@ namespace NDistribUnit.Common.TestExecution.Storage
             else
             {
                 addedRequest.Status = TestRunRequestStatus.Received;
-                Added.SafeInvokeAsync(this, addedRequest);
+                Added.SafeInvoke(this, addedRequest);
             }
 
-            pingable.Add(addedRequest);
+            //pingable.Add(addedRequest);
 
             return addedRequest;
         }
@@ -65,10 +64,32 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// Removes the specified request.
         /// </summary>
         /// <param name="request">The request.</param>
-        public void Remove(TestRunRequest request)
+        public TestRunRequest Remove(TestRunRequest request)
+        {
+            return RemoveBy(request.TestRun);
+        }
+
+        /// <summary>
+        /// Removes the specified request.
+        /// </summary>
+        /// <param name="testRun"></param>
+        public TestRunRequest RemoveBy(TestRun testRun)
         {
             TestRunRequest removed;
-            requests.TryRemove(request.TestRun.Id, out removed);
+            requests.TryRemove(testRun.Id, out removed);
+            return removed;
+        }
+
+        /// <summary>
+        /// Removes the specified request.
+        /// </summary>
+        /// <param name="testRun"></param>
+        public TestRunRequest GetBy(TestRun testRun)
+        {
+            TestRunRequest value;
+            if (!requests.TryGetValue(testRun.Id, out value))
+                return null;
+            return value;
         }
     }
 }

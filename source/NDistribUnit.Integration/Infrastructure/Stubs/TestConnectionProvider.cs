@@ -11,7 +11,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
     public class TestConnectionProvider: IConnectionProvider
     {
         private readonly NDistribUnitTestSystemController controller;
-        private ITestRunnerClient lastClient;
+        private IClient lastClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestConnectionProvider"/> class.
@@ -24,7 +24,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
 
         public TServiceContract GetCurrentCallback<TServiceContract>() where TServiceContract : class
         {
-            if (typeof (TServiceContract) == typeof (ITestRunnerClient))
+            if (typeof (TServiceContract) == typeof (IClient))
                 return (TServiceContract) lastClient;
             
             return null;
@@ -32,32 +32,32 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
 
         public TServiceContract GetConnection<TServiceContract>(EndpointAddress address) where TServiceContract : class
         {
-            if (typeof(TServiceContract) == typeof(IRemoteParticle))
+            if (typeof(TServiceContract) == typeof(IRemoteAppPart))
             {
                 var name = address.Uri.AbsolutePath.Trim('/').Split('/')[0];
                 AgentWrapper agentWrapper = controller.Agents
                     .FirstOrDefault(a => a.TestRunner.Name.Equals(name));
 
-                return (TServiceContract)(IRemoteParticle)(agentWrapper == null ? null : agentWrapper.TestRunner);
+                return (TServiceContract)(IRemoteAppPart)(agentWrapper == null ? null : agentWrapper.TestRunner);
             }
             return null;
         }
 
         public TServiceContract GetDuplexConnection<TServiceContract, TCallbackType>(TCallbackType callback, EndpointAddress address) where TServiceContract : class where TCallbackType : class
         {
-            if (typeof(TServiceContract) == typeof(ITestRunnerServer)
-                && typeof(ITestRunnerClient).IsAssignableFrom(typeof(TCallbackType)))
+            if (typeof(TServiceContract) == typeof(IServer)
+                && typeof(IClient).IsAssignableFrom(typeof(TCallbackType)))
             {
-                lastClient = (ITestRunnerClient)callback;
-                return (TServiceContract)(ITestRunnerServer)controller.Server.TestRunner;
+                lastClient = (IClient)callback;
+                return (TServiceContract)(IServer)controller.Server.TestRunner;
             }
 
-            if (typeof(TServiceContract) == typeof(ITestRunnerAgent) && typeof(TCallbackType) == typeof(IAgentDataSource))
+            if (typeof(TServiceContract) == typeof(IAgent) && typeof(TCallbackType) == typeof(IAgentDataSource))
             {
                 AgentWrapper agentWrapper = controller.Agents
                     .FirstOrDefault(a => a.TestRunner.Name.Equals(address.Uri.AbsolutePath.Trim('/')));
 
-                return (TServiceContract)(ITestRunnerAgent)(agentWrapper == null ? null : agentWrapper.TestRunner);
+                return (TServiceContract)(IAgent)(agentWrapper == null ? null : agentWrapper.TestRunner);
             }
 
             return null;

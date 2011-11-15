@@ -10,17 +10,17 @@ namespace NDistribUnit.Common.Client
     /// 
     /// </summary>
     [ServiceContract]
-    public interface ITestRunnerClient
+    public interface IClient
     {
         //void TestProgress(TestResult result);
 
         /// <summary>
         /// Notifies that the test has completed.
         /// </summary>
-        /// <param name="result">The result.</param>
+        /// <param name="receivedResult">The result.</param>
         /// <param name="isCompleted"></param>
         [OperationContract]
-        void NotifyTestProgressChanged(TestResult result, bool isCompleted);
+        void NotifyTestProgressChanged(TestResult receivedResult, bool isCompleted);
 
         /// <summary>
         /// Gets the project.

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.Storage;
@@ -15,7 +14,7 @@ namespace NDistribUnit.Common.Agent
     /// <summary>
     /// 
     /// </summary>
-    public class NDistribUnitTestRunner
+    public class AgentTestRunner
     {
         private readonly IProjectsStorage projects;
         private readonly INativeRunnerCache runnerCache;
@@ -23,13 +22,13 @@ namespace NDistribUnit.Common.Agent
         private readonly ILog log;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NDistribUnitTestRunner"/> class.
+        /// Initializes a new instance of the <see cref="AgentTestRunner"/> class.
         /// </summary>
         /// <param name="projects">The storage.</param>
         /// <param name="runnerCache">The cash.</param>
         /// <param name="initializer">The initializer.</param>
         /// <param name="log">The log.</param>
-        public NDistribUnitTestRunner(
+        public AgentTestRunner(
             IProjectsStorage projects,
             INativeRunnerCache runnerCache,
             ITestSystemInitializer initializer, 
@@ -49,22 +48,22 @@ namespace NDistribUnit.Common.Agent
         /// <returns></returns>
         public TestResult Run(TestUnit test, IAgentDataSource dataSource)
         {
-            var project = projects.GetProject(test.Request.TestRun);
+            var project = projects.GetOrLoad(test.Run);
             if (project == null)
             {
                 log.Info("Sending a request for project files...");
-                PackedProject packedProject = dataSource.GetPackedProject(test.Request.TestRun);
+                PackedProject packedProject = dataSource.GetPackedProject(test.Run);
                 if (packedProject == null)
                     return CreateInvalidTestResult(test);
                 log.Info("Storing project...");
-                project = projects.Store(test.Request.TestRun, packedProject);
+                project = projects.Store(test.Run, packedProject);
             }
 
-            var nativeRunner = runnerCache.GetOrLoad(test.Request.TestRun,
+            var nativeRunner = runnerCache.GetOrLoad(test.Run,
                                                      () =>
                                                          {
                                                              initializer.Initialize();
-                                                             var mappedAssemblyFile = Path.Combine(project.Path, Path.GetFileName(test.Request.TestRun.TestOptions.AssembliesToTest[0]));
+                                                             var mappedAssemblyFile = Path.Combine(project.Path, Path.GetFileName(test.Run.NUnitParameters.AssembliesToTest[0]));
                                                              var package = new TestPackage(mappedAssemblyFile);
                                                              package.Settings["ShadowCopyFiles"] = true;
                                                              package.BasePath = package.PrivateBinPath = project.Path;
@@ -74,7 +73,7 @@ namespace NDistribUnit.Common.Agent
                                                              return nativeTestRunner;
                                                          });
 
-            ClientParameters testOptions = test.Request.TestRun.TestOptions;
+            var testOptions = test.Run.NUnitParameters;
             try
             {
                 NUnit.Core.TestResult testResult = nativeRunner.Run(new NullListener(),
@@ -92,38 +91,31 @@ namespace NDistribUnit.Common.Agent
 
         private TestResult MapResult(NUnit.Core.TestResult testResult, TestUnit test)
         {
-            var result = FindRequiredResult(testResult, test.UniqueTestId);
+            return new TestResult
+                       {
+                           AssertCount = testResult.AssertCount,
+                           Description = testResult.Description,
+                           FailureSite = testResult.FailureSite,
+                           FullName = testResult.FullName,
+                           Message = testResult.Message,
+                           Name = testResult.Name,
+                           ResultState = testResult.ResultState,
+                           StackTrace = testResult.StackTrace,
+                           Time = testResult.Time,
+                           MachineNames = new List<string> {Environment.MachineName},
+                           Results = testResult.Results == null
+                                         ? null
+                                         : new List<TestResult>(
+                                               testResult.Results
+                                                   .Cast<NUnit.Core.TestResult>()
+                                                   .Select(r => MapResult(r, test)))
 
-            var mapSingleResult = new Func<NUnit.Core.TestResult, TestResult>(
-                nunit=> new TestResult
-                                    {
-                                        AssertCount = nunit.AssertCount,
-                                        Description = nunit.Description
-                                        Exception = nunit.
-                                    }
-                );
-
-            return new TestResult();
-        }
-
-        private NUnit.Core.TestResult FindRequiredResult(NUnit.Core.TestResult testResult, string testName)
-        {
-            if (testResult == null)
-                return null;
-
-            if (testResult.FullName.Equals(testName))
-                return testResult;
-
-            return (
-                from NUnit.Core.TestResult childResult 
-                    in testResult.Results 
-                    select FindRequiredResult(childResult, testName))
-                .FirstOrDefault(resultForTestName => resultForTestName != null);
+                       };
         }
 
         private TestResult CreateInvalidTestResult(TestUnit test)
         {
-            return new TestResult("Invalid test:" + test.UniqueTestId);
+            return new TestResult(/*"Invalid test:" + test.UniqueTestId*/);
         }
     }
 }

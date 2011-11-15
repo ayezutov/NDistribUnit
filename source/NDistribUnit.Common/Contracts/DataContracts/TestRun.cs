@@ -47,15 +47,12 @@ namespace NDistribUnit.Common.Contracts.DataContracts
         /// <value>
         /// The options.
         /// </value>
-	    public ClientParameters TestOptions { get; set; }
+	    public NUnitParameters NUnitParameters { get; set; }
 
-        /// <summary>
-        /// Gets the alias.
-        /// </summary>
-	    public string Alias
-	    {
-            get { return TestOptions.Alias; }
-	    }
+	    /// <summary>
+	    /// Gets the alias.
+	    /// </summary>
+        public string Alias { get; set; }
 
 	    /// <summary>
 		/// Equalses the specified other.

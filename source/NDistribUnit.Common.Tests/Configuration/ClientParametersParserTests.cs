@@ -16,7 +16,7 @@ namespace NDistribUnit.Client.Tests.Configuration
         {
             ClientParameters parameters = ClientParameters.Parse(new[] { "some.tests.assembly.dll" });
 
-            Assert.That(parameters.AssembliesToTest, Is.EquivalentTo(new[] { "some.tests.assembly.dll" }));
+            Assert.That(parameters.NUnitParameters.AssembliesToTest, Is.EquivalentTo(new[] { "some.tests.assembly.dll" }));
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace NDistribUnit.Client.Tests.Configuration
         {
             ClientParameters parameters = ClientParameters.Parse(new[] { "some.tests.assembly23.dll", "some.tests.assembly.dll" });
 
-            Assert.That(parameters.AssembliesToTest, Is.EquivalentTo(new[] { "some.tests.assembly.dll", "some.tests.assembly23.dll" }));
+            Assert.That(parameters.NUnitParameters.AssembliesToTest, Is.EquivalentTo(new[] { "some.tests.assembly.dll", "some.tests.assembly23.dll" }));
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace NDistribUnit.Client.Tests.Configuration
         {
             ClientParameters parameters = ClientParameters.Parse(new[] { "some.tests.assembly23.dll", "some.tests.assembly.dll", "/fake:someValue", "/fake2", "someOtherValue" });
 
-            Assert.That(parameters.AssembliesToTest, Is.EquivalentTo(new[] { "some.tests.assembly.dll", "some.tests.assembly23.dll" }));
+            Assert.That(parameters.NUnitParameters.AssembliesToTest, Is.EquivalentTo(new[] { "some.tests.assembly.dll", "some.tests.assembly23.dll" }));
         }
 
         [Test]
@@ -40,9 +40,9 @@ namespace NDistribUnit.Client.Tests.Configuration
         {
             ClientParameters parameters = ClientParameters.Parse(new[] { "some.tests.assembly23.dll", "some.tests.assembly.dll", "/xml:xml.file" });
 
-            Assert.That(parameters.AssembliesToTest, Is.EquivalentTo(new[] { "some.tests.assembly.dll", "some.tests.assembly23.dll" }));
-            Assert.That(parameters.XmlFileName, Is.EqualTo("xml.file"));
-            Assert.That(parameters.NoShadow, Is.False);
+            Assert.That(parameters.NUnitParameters.AssembliesToTest, Is.EquivalentTo(new[] { "some.tests.assembly.dll", "some.tests.assembly23.dll" }));
+            Assert.That(parameters.NUnitParameters.XmlFileName, Is.EqualTo("xml.file"));
+            Assert.That(parameters.NUnitParameters.NoShadow, Is.False);
         }
 
         [Test]
@@ -50,9 +50,9 @@ namespace NDistribUnit.Client.Tests.Configuration
         {
             ClientParameters parameters = ClientParameters.Parse(new[] { "some.tests.assembly23.dll", "/noshadow", "some.tests.assembly.dll", "/xml:xml.file" });
 
-            Assert.That(parameters.AssembliesToTest, Is.EquivalentTo(new[] { "some.tests.assembly.dll", "some.tests.assembly23.dll" }));
-            Assert.That(parameters.XmlFileName, Is.EqualTo("xml.file"));
-            Assert.That(parameters.NoShadow, Is.True);
+            Assert.That(parameters.NUnitParameters.AssembliesToTest, Is.EquivalentTo(new[] { "some.tests.assembly.dll", "some.tests.assembly23.dll" }));
+            Assert.That(parameters.NUnitParameters.XmlFileName, Is.EqualTo("xml.file"));
+            Assert.That(parameters.NUnitParameters.NoShadow, Is.True);
         }
 
         [Test]
@@ -60,9 +60,9 @@ namespace NDistribUnit.Client.Tests.Configuration
         {
             ClientParameters parameters = ClientParameters.Parse(new[] { "/noshadow", "/xml:xml.file", "some.tests.assembly23.dll", "some.tests.assembly.dll" });
 
-            Assert.That(parameters.AssembliesToTest, Is.EquivalentTo(new[] { "some.tests.assembly.dll", "some.tests.assembly23.dll" }));
-            Assert.That(parameters.XmlFileName, Is.EqualTo("xml.file"));
-            Assert.That(parameters.NoShadow, Is.True);
+            Assert.That(parameters.NUnitParameters.AssembliesToTest, Is.EquivalentTo(new[] { "some.tests.assembly.dll", "some.tests.assembly23.dll" }));
+            Assert.That(parameters.NUnitParameters.XmlFileName, Is.EqualTo("xml.file"));
+            Assert.That(parameters.NUnitParameters.NoShadow, Is.True);
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace NDistribUnit.Client.Tests.Configuration
         {
             ClientParameters parameters = ClientParameters.Parse(new[] { "/noshadow", "/xml:xml.file", "some.tests.assembly23.dll", "some.tests.assembly.dll", "/include:Cat1, Another Category,SomeCategory," });
 
-            Assert.That(parameters.IncludeCategories, Is.EqualTo("Cat1, Another Category,SomeCategory,"));
+            Assert.That(parameters.NUnitParameters.IncludeCategories, Is.EqualTo("Cat1, Another Category,SomeCategory,"));
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace NDistribUnit.Client.Tests.Configuration
         {
             ClientParameters parameters = ClientParameters.Parse(new[] { "/noshadow", "/xml:xml.file", "some.tests.assembly23.dll", "some.tests.assembly.dll", "/exclude:Cat1, Another Category,SomeCategory," });
 
-            Assert.That(parameters.ExcludeCategories, Is.EqualTo("Cat1, Another Category,SomeCategory,"));
+            Assert.That(parameters.NUnitParameters.ExcludeCategories, Is.EqualTo("Cat1, Another Category,SomeCategory,"));
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace NDistribUnit.Client.Tests.Configuration
         {
             ClientParameters parameters = ClientParameters.Parse(new[] { "/noshadow", "/xml:xml.file", "some.tests.assembly23.dll", "some.tests.assembly.dll"});
 
-            Assert.That(parameters.IncludeCategories, Is.Null);
+            Assert.That(parameters.NUnitParameters.IncludeCategories, Is.Null);
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace NDistribUnit.Client.Tests.Configuration
         {
             ClientParameters parameters = ClientParameters.Parse(new[] { "/noshadow", "/xml:xml.file", "some.tests.assembly23.dll", "some.tests.assembly.dll"});
 
-            Assert.That(parameters.ExcludeCategories, Is.Null);
+            Assert.That(parameters.NUnitParameters.ExcludeCategories, Is.Null);
         }
 
         [Test]

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NDistribUnit.Common.Contracts.DataContracts;
-using NDistribUnit.Common.TestExecution.Data;
 
 namespace NDistribUnit.Common.TestExecution
 {
@@ -11,19 +10,15 @@ namespace NDistribUnit.Common.TestExecution
 	[Serializable]
 	public class TestUnit
 	{
-        [NonSerialized]
-        private List<TestResult> results;
-
 	    /// <summary>
         /// Initializes a new instance of the <see cref="TestUnit"/> class.
         /// </summary>
         /// <param name="testRun">The test run.</param>
         /// <param name="fullTestName">Full name of the test.</param>
-	    public TestUnit(TestRunRequest testRun, string fullTestName)
+	    public TestUnit(TestRun testRun, string fullTestName)
         {
-            Request = testRun;
+            Run = testRun;
 	        UniqueTestId = fullTestName;
-            results = new List<TestResult>();
         }
 
 	    /// <summary>
@@ -32,7 +27,7 @@ namespace NDistribUnit.Common.TestExecution
 		/// <value>
 		/// The run.
 		/// </value>
-		public TestRunRequest Request { get; set; }
+		public TestRun Run { get; private set; }
 
 		/// <summary>
 		/// Gets or sets the unique test id.
@@ -40,18 +35,47 @@ namespace NDistribUnit.Common.TestExecution
 		/// <value>
 		/// The unique test id.
 		/// </value>
-		public string UniqueTestId { get; set; }
+		public string UniqueTestId { get; private set; }
         
-	    /// <summary>
+	    
+	}
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class TestUnitWithMetadata
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestUnitWithMetadata"/> class.
+        /// </summary>
+        /// <param name="testRun">The test run.</param>
+        /// <param name="fullTestName">Full name of the test.</param>
+        public TestUnitWithMetadata(TestRun testRun, string fullTestName) 
+        {
+            Test = new TestUnit(testRun, fullTestName);
+            Results = new List<TestResult>();
+            SchedulerHints = new SchedulerHints();
+        }
+
+        /// <summary>
+        /// Gets the test.
+        /// </summary>
+        public TestUnit Test { get; private set; }
+
+        /// <summary>
         /// Gets or sets the results.
         /// </summary>
         /// <value>
         /// The results.
         /// </value>
-        
-	    public List<TestResult> Results
-	    {
-	        get { return results; }
-	    }
-	}
+        public List<TestResult> Results { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the scheduler hints.
+        /// </summary>
+        /// <value>
+        /// The scheduler hints.
+        /// </value>
+        public SchedulerHints SchedulerHints { get; private set; }
+    }
 }

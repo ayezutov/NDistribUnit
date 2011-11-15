@@ -15,6 +15,6 @@ namespace NDistribUnit.Common.TestExecution
         /// <param name="project">The project.</param>
         /// <param name="request">The request.</param>
         /// <returns></returns>
-        IEnumerable<TestUnit> Get(TestProject project, TestRunRequest request);
+        IEnumerable<TestUnitWithMetadata> Get(TestProject project, TestRunRequest request);
     }
 }

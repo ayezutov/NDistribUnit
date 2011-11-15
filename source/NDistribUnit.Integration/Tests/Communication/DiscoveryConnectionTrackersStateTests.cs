@@ -13,7 +13,7 @@ namespace NDistribUnit.Integration.Tests.Tests.Communication
             system
                 .ActAsRealSystemWithOpeningPorts()
                 .Register(new DiscoveryConnectionTrackerOptions{ DiscoveryIntervalInMiliseconds = 1000 })
-                .SetConnectionsTracker<DiscoveryConnectionTracker<IRemoteParticle>>();
+                .SetConnectionsTracker<DiscoveryConnectionTracker<IRemoteAppPart>>();
         }
     }
 }

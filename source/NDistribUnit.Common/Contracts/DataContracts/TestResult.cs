@@ -319,7 +319,6 @@ namespace NDistribUnit.Common.Contracts.DataContracts
             }
         }
 
-
         private void UpdateNameAndFullnameIfContainsSlashes()
         {
             if (FullName.Contains("/") || FullName.Contains("\\"))
@@ -423,6 +422,12 @@ namespace NDistribUnit.Common.Contracts.DataContracts
             }
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             if (IsSkipped)

@@ -27,11 +27,9 @@ namespace NDistribUnit.Common.Tests.TestExecution
             project = new TestProject(Path.GetDirectoryName(targetAssembly));
             request = new TestRunRequest(new TestRun
                                                  {
-                                                     TestOptions = new ClientParameters
-                                                     {
-                                                     }
+                                                     NUnitParameters = new NUnitParameters()
                                                  }, null);
-            request.TestRun.TestOptions.AssembliesToTest.Add(targetAssembly);
+            request.TestRun.NUnitParameters.AssembliesToTest.Add(targetAssembly);
         }
 
         [TearDown]
@@ -54,27 +52,27 @@ namespace NDistribUnit.Common.Tests.TestExecution
         {
             var testUnits = retriever.Get(project, request);
             Assert.That(testUnits, Is.Not.Null);
-            Assert.That(testUnits.Any(u => u.UniqueTestId.Equals(typeof(TestFixtureWithCategoriesOnTests).FullName)), 
+            Assert.That(testUnits.Any(u => u.Test.UniqueTestId.Equals(typeof(TestFixtureWithCategoriesOnTests).FullName)), 
                 Is.True);
-            Assert.That(testUnits.Any(u => u.UniqueTestId.Equals(typeof(TestFixtureWithGroup1CategoryAndCategoriesOnTests).FullName)), 
+            Assert.That(testUnits.Any(u => u.Test.UniqueTestId.Equals(typeof(TestFixtureWithGroup1CategoryAndCategoriesOnTests).FullName)), 
                 Is.True);
-            Assert.That(testUnits.Any(u => u.UniqueTestId.Equals(typeof(TestFixtureWithNoGroup1CategoryOnTestsOrSelf).FullName)), 
+            Assert.That(testUnits.Any(u => u.Test.UniqueTestId.Equals(typeof(TestFixtureWithNoGroup1CategoryOnTestsOrSelf).FullName)), 
                 Is.True);
         }
 
         [Test]
         public void EnsureOnlyParticularTestFixturesAreLoadedIfFilteredByGroup1()
         {
-            request.TestRun.TestOptions.IncludeCategories = "Group1";
+            request.TestRun.NUnitParameters.IncludeCategories = "Group1";
 
             var testUnits = retriever.Get(project, request);
 
             Assert.That(testUnits, Is.Not.Null);
-            Assert.That(testUnits.Any(u => u.UniqueTestId.Equals(typeof(TestFixtureWithCategoriesOnTests).FullName)), 
+            Assert.That(testUnits.Any(u => u.Test.UniqueTestId.Equals(typeof(TestFixtureWithCategoriesOnTests).FullName)), 
                 Is.True);
-            Assert.That(testUnits.Any(u => u.UniqueTestId.Equals(typeof(TestFixtureWithGroup1CategoryAndCategoriesOnTests).FullName)), 
+            Assert.That(testUnits.Any(u => u.Test.UniqueTestId.Equals(typeof(TestFixtureWithGroup1CategoryAndCategoriesOnTests).FullName)), 
                 Is.True);
-            Assert.That(testUnits.Any(u => u.UniqueTestId.Equals(typeof(TestFixtureWithNoGroup1CategoryOnTestsOrSelf).FullName)), 
+            Assert.That(testUnits.Any(u => u.Test.UniqueTestId.Equals(typeof(TestFixtureWithNoGroup1CategoryOnTestsOrSelf).FullName)), 
                 Is.False);
 
         }
@@ -82,16 +80,16 @@ namespace NDistribUnit.Common.Tests.TestExecution
         [Test]
         public void EnsureOnlyParticularTestFixturesAreLoadedIfFilteredByGroup3()
         {
-            request.TestRun.TestOptions.IncludeCategories = "Group3";
+            request.TestRun.NUnitParameters.IncludeCategories = "Group3";
 
             var testUnits = retriever.Get(project, request);
 
             Assert.That(testUnits, Is.Not.Null);
-            Assert.That(testUnits.Any(u => u.UniqueTestId.Equals(typeof(TestFixtureWithCategoriesOnTests).FullName)), 
+            Assert.That(testUnits.Any(u => u.Test.UniqueTestId.Equals(typeof(TestFixtureWithCategoriesOnTests).FullName)), 
                 Is.False);
-            Assert.That(testUnits.Any(u => u.UniqueTestId.Equals(typeof(TestFixtureWithGroup1CategoryAndCategoriesOnTests).FullName)), 
+            Assert.That(testUnits.Any(u => u.Test.UniqueTestId.Equals(typeof(TestFixtureWithGroup1CategoryAndCategoriesOnTests).FullName)), 
                 Is.False);
-            Assert.That(testUnits.Any(u => u.UniqueTestId.Equals(typeof(TestFixtureWithNoGroup1CategoryOnTestsOrSelf).FullName)), 
+            Assert.That(testUnits.Any(u => u.Test.UniqueTestId.Equals(typeof(TestFixtureWithNoGroup1CategoryOnTestsOrSelf).FullName)), 
                 Is.True);
 
         }
@@ -99,16 +97,16 @@ namespace NDistribUnit.Common.Tests.TestExecution
         [Test]
         public void EnsureOnlyParticularTestFixturesAreLoadedIfFilteredByExcludeGroup1()
         {
-            request.TestRun.TestOptions.ExcludeCategories = "Group1";
+            request.TestRun.NUnitParameters.ExcludeCategories = "Group1";
 
             var testUnits = retriever.Get(project, request);
 
             Assert.That(testUnits, Is.Not.Null);
-            Assert.That(testUnits.Any(u => u.UniqueTestId.Equals(typeof(TestFixtureWithCategoriesOnTests).FullName)), 
+            Assert.That(testUnits.Any(u => u.Test.UniqueTestId.Equals(typeof(TestFixtureWithCategoriesOnTests).FullName)), 
                 Is.True); // there are some tests without Group1
-            Assert.That(testUnits.Any(u => u.UniqueTestId.Equals(typeof(TestFixtureWithGroup1CategoryAndCategoriesOnTests).FullName)), 
+            Assert.That(testUnits.Any(u => u.Test.UniqueTestId.Equals(typeof(TestFixtureWithGroup1CategoryAndCategoriesOnTests).FullName)), 
                 Is.False);
-            Assert.That(testUnits.Any(u => u.UniqueTestId.Equals(typeof(TestFixtureWithNoGroup1CategoryOnTestsOrSelf).FullName)), 
+            Assert.That(testUnits.Any(u => u.Test.UniqueTestId.Equals(typeof(TestFixtureWithNoGroup1CategoryOnTestsOrSelf).FullName)), 
                 Is.True);
 
         }

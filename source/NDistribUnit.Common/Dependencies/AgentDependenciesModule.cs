@@ -37,9 +37,9 @@ namespace NDistribUnit.Common.Dependencies
             builder.RegisterInstance(AgentConfiguration.LogConfiguration);
             builder.RegisterType<DiscoveryModule>().As<IAgentExternalModule>();
             builder.RegisterType<AnnouncementModule>().As<IAgentExternalModule>();
-            builder.RegisterType<TestRunnerAgent>().InstancePerLifetimeScope();
+            builder.RegisterType<Agent.Agent>().InstancePerLifetimeScope();
             builder.RegisterType<AgentHost>().InstancePerLifetimeScope();
-            builder.RegisterType<NDistribUnitTestRunner>().InstancePerLifetimeScope();
+            builder.RegisterType<AgentTestRunner>().InstancePerLifetimeScope();
             builder.RegisterType<NativeRunnerCache>().As<INativeRunnerCache>().InstancePerLifetimeScope();
             builder.Register(c => new WindowsLog("Agent")).InstancePerLifetimeScope();
             builder.Register(c => new ProjectsStorage("Agent", c.Resolve<BootstrapperParameters>(), c.Resolve<ZipSource>())).As<IProjectsStorage>().AsSelf().InstancePerLifetimeScope();

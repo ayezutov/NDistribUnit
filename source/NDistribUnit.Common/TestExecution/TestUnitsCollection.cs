@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Extensions;
 using System.Linq;
-using NDistribUnit.Common.TestExecution.Data;
 
 namespace NDistribUnit.Common.TestExecution
 {
@@ -15,54 +15,45 @@ namespace NDistribUnit.Common.TestExecution
         /// The synchronization object, which is used for thread safe access to that collection
         /// </summary>
 	    public readonly object SyncObject = new object();
-        private readonly List<TestUnit> available = new List<TestUnit>();
-        private readonly List<TestUnit> running = new List<TestUnit>();
+        private readonly List<TestUnitWithMetadata> available = new List<TestUnitWithMetadata>();
+        private readonly List<TestUnitWithMetadata> running = new List<TestUnitWithMetadata>();
 
         /// <summary>
         /// Occurs when a test unit is added to available for running collection
         /// </summary>
-	    public EventHandler<EventArgs<TestUnit>> AvailableAdded;
-
-        /// <summary>
-        /// Occurs when a test unit is moved to running collection
-        /// </summary>
-	    public EventHandler<EventArgs<TestUnit>> RunningAdded;
-
-        /// <summary>
-        /// Occurrs, when a test run is finished
-        /// </summary>
-	    public EventHandler<EventArgs<TestRunRequest>> TestRequestFinished;
+	    public event EventHandler AvailableAdded;
 
 	    /// <summary>
         /// Adds the range of test units into the collection.
         /// </summary>
         /// <param name="testUnits">The test units.</param>
-	    public void AddRange(IEnumerable<TestUnit> testUnits)
+        public void AddRange(IEnumerable<TestUnitWithMetadata> testUnits)
 	    {
-            foreach (var testUnit in testUnits)
+            lock (SyncObject)
             {
-                Add(testUnit);
+                available.AddRange(testUnits);
             }
+            AvailableAdded.SafeInvoke(this);
 	    }
 
         /// <summary>
         /// Adds the specified test unit.
         /// </summary>
         /// <param name="testUnit">The test unit.</param>
-	    public void Add(TestUnit testUnit)
+        public void Add(TestUnitWithMetadata testUnit)
 	    {
 	        lock (SyncObject)
 	        {
 	            available.Add(testUnit);
 	        }
-            AvailableAdded.SafeInvoke(this, testUnit);
+            AvailableAdded.SafeInvoke(this);
 	    }
 
         /// <summary>
         /// Moves to running.
         /// </summary>
         /// <param name="testUnit">The test unit.</param>
-        public void MarkRunning(TestUnit testUnit)
+        public void MarkRunning(TestUnitWithMetadata testUnit)
         {
             lock (SyncObject)
             {
@@ -72,39 +63,40 @@ namespace NDistribUnit.Common.TestExecution
                 available.Remove(testUnit);
                 running.Add(testUnit);
             }
-            RunningAdded.SafeInvoke(this, testUnit);
         }
 
         /// <summary>
         /// Marks the completed.
         /// </summary>
         /// <param name="test">The test.</param>
-	    public void MarkCompleted(TestUnit test)
+        public void MarkCompleted(TestUnitWithMetadata test)
         {
-            bool hasMoreTests = true;
             lock (SyncObject)
             {
                 available.Remove(test);
                 running.Remove(test);
-
-                Func<TestUnit, bool> belongsToSameTestRun = t => t.Request.TestRun.Id.Equals(test.Request.TestRun.Id);
-                if (!available.Any(belongsToSameTestRun) &&
-                    !running.Any(belongsToSameTestRun))
-                {
-                    hasMoreTests = false;
-                }
             }
-
-            if (!hasMoreTests)
-                TestRequestFinished.SafeInvoke(this, test.Request);
         }
 
         /// <summary>
         /// Gets the available.
         /// </summary>
-	    public List<TestUnit> GetAvailable()
+        public List<TestUnitWithMetadata> GetAvailable()
 	    {
 	        return available;
+	    }
+
+        /// <summary>
+        /// Determines whether [is any available for] [the specified test run].
+        /// </summary>
+        /// <param name="testRun">The test run.</param>
+        /// <returns>
+        ///   <c>true</c> if [is any available for] [the specified test run]; otherwise, <c>false</c>.
+        /// </returns>
+	    public bool IsAnyAvailableFor(TestRun testRun)
+	    {
+            Func<TestUnitWithMetadata, bool> belongsToSameTestRun = t => t.Test.Run.Id.Equals(testRun.Id);
+            return available.Any(belongsToSameTestRun) || running.Any(belongsToSameTestRun);
 	    }
 	}
 }

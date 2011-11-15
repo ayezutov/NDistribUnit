@@ -17,7 +17,7 @@ namespace NDistribUnit.Client
 	{
 		private readonly ClientParameters options;
 		private readonly BootstrapperParameters bootstrapperParameters;
-		private readonly TestRunnerClient testRunnerClient;
+		private readonly Common.Client.Client client;
 		private readonly ILog log;
 
 		static int Main(string[] args)
@@ -48,13 +48,13 @@ namespace NDistribUnit.Client
 		/// </summary>
 		/// <param name="options">Options, which were provided through command line</param>
 		/// <param name="bootstrapperParameters">The bootstrapper parameters.</param>
-		/// <param name="testRunnerClient">The client.</param>
+		/// <param name="client">The client.</param>
 		/// <param name="log">The log.</param>
-		public ClientProgram(ClientParameters options, BootstrapperParameters bootstrapperParameters, TestRunnerClient testRunnerClient, ILog log)
+		public ClientProgram(ClientParameters options, BootstrapperParameters bootstrapperParameters, Common.Client.Client client, ILog log)
 		{
 			this.options = options;
 			this.bootstrapperParameters = bootstrapperParameters;
-			this.testRunnerClient = testRunnerClient;
+			this.client = client;
 			this.log = log;
 		}
 
@@ -76,9 +76,9 @@ namespace NDistribUnit.Client
 											"\ton           : '{2}'{0}" +
 											"\tconfiguration: '{3}'{0}" +
 											"\toutput file  : '{4}'",
-				Environment.NewLine, string.Join(";", options.AssembliesToTest),
-				options.ServerUri, options.Configuration,
-				options.XmlFileName));
+				Environment.NewLine, string.Join(";", options.NUnitParameters.AssembliesToTest),
+				options.ServerUri, options.NUnitParameters.Configuration,
+				options.NUnitParameters.XmlFileName));
 
 			if (options.ServerUri == null)
 			{
@@ -89,7 +89,8 @@ namespace NDistribUnit.Client
 
 			try
 			{
-			    testRunnerClient.Run();
+                log.BeginActivity("Running tests on server...");
+			    client.Run();
 			}
 			catch(CommunicationException e)
 			{

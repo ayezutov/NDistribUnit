@@ -9,7 +9,7 @@ namespace NDistribUnit.Common.Contracts.ServiceContracts
     /// part of a program
     /// </summary>
     [ServiceContract]
-    public interface IRemoteParticle : IPingable
+    public interface IRemoteAppPart : IPingable
     {
         /// <summary>
         /// Gets the log.

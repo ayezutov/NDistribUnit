@@ -22,7 +22,7 @@ namespace NDistribUnit.Common.Server.Communication
 
         private readonly DashboardService dashboard;
         private readonly ILog log;
-        private readonly TestRunnerServer testRunner;
+        private readonly Services.Server testRunner;
 
         /// <summary>
         /// Gets or sets the connections tracker.
@@ -40,7 +40,7 @@ namespace NDistribUnit.Common.Server.Communication
         /// <param name="dashboard">The dashboard instance</param>
         /// <param name="connectionsTracker">The connection tracker for the host</param>
         /// <param name="log">The logger</param>
-        public ServerHost(ServerConfiguration configuration, TestRunnerServer testRunner, DashboardService dashboard, ServerConnectionsTracker connectionsTracker, ILog log)
+        public ServerHost(ServerConfiguration configuration, Services.Server testRunner, DashboardService dashboard, ServerConnectionsTracker connectionsTracker, ILog log)
         {
             dashboardPort = configuration.DashboardPort;
             testRunnerPort = configuration.TestRunnerPort;
@@ -65,7 +65,7 @@ namespace NDistribUnit.Common.Server.Communication
             var baseAddress = new Uri(string.Format("net.tcp://{0}:{1}", Environment.MachineName, testRunnerPort));
             log.Info(string.Format("Starting server at {0}", baseAddress));
             testRunnerService = new ServiceHost(testRunner, baseAddress);
-            testRunnerService.AddServiceEndpoint(typeof(ITestRunnerServer), new NetTcpBinding("NDistribUnit.Default"), "");
+            testRunnerService.AddServiceEndpoint(typeof(IServer), new NetTcpBinding("NDistribUnit.Default"), "");
             testRunnerService.Open();
         }
 
