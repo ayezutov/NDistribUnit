@@ -91,6 +91,7 @@ namespace NDistribUnit.Client
 			{
                 log.BeginActivity("Running tests on server...");
 			    client.Run();
+                log.EndActivity("Test run was completed");
 			}
 			catch(CommunicationException e)
 			{
@@ -98,6 +99,7 @@ namespace NDistribUnit.Client
 				return (int)ReturnCodes.IncompleteParameterList;
 			}
 			
+            Console.Write("Test run was finished");
             Console.ReadLine();
             return 0;
         }

@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Reflection;
 using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
@@ -32,21 +31,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
             request.TestRun.NUnitParameters.AssembliesToTest.Add(targetAssembly);
         }
 
-        [TearDown]
-        public void Dispose()
-        {
-        }
-
-        [TestFixtureSetUp]
-        public void InitOnce()
-        {
-        }
-
-        [TestFixtureTearDown]
-        public void DisposeOnce()
-        {
-        }
-
+       
         [Test]
         public void EnsureAllSuitesAreLoadedWhenNoCategoriesAreSelected()
         {
@@ -91,7 +76,6 @@ namespace NDistribUnit.Common.Tests.TestExecution
                 Is.False);
             Assert.That(testUnits.Any(u => u.Test.UniqueTestId.Equals(typeof(TestFixtureWithNoGroup1CategoryOnTestsOrSelf).FullName)), 
                 Is.True);
-
         }
 
         [Test]

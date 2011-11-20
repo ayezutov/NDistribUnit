@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.ServiceModel;
 using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Contracts.DataContracts;

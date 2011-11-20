@@ -25,6 +25,7 @@ namespace NDistribUnit.Common.Server.Services
         private readonly IConnectionProvider connectionProvider;
         private readonly ServerTestRunner runner;
         private readonly IRequestsStorage requests;
+        private readonly IResultsStorage resultsStorage;
         private readonly ILog log;
 
         /// <summary>
@@ -35,6 +36,7 @@ namespace NDistribUnit.Common.Server.Services
         /// <param name="connectionProvider">The connection provider.</param>
         /// <param name="runner">The manager.</param>
         /// <param name="requests">The storage.</param>
+        /// <param name="resultsStorage">The results.</param>
         /// <param name="log">The log.</param>
     	public Server(
             IUpdateSource updateSource, 
@@ -42,6 +44,7 @@ namespace NDistribUnit.Common.Server.Services
             IConnectionProvider connectionProvider,
             ServerTestRunner runner,
             IRequestsStorage requests,
+            IResultsStorage resultsStorage,
             ILog log)
 		{
 			this.updateSource = updateSource;
@@ -49,6 +52,7 @@ namespace NDistribUnit.Common.Server.Services
             this.connectionProvider = connectionProvider;
             this.runner = runner;
             this.requests = requests;
+            this.resultsStorage = resultsStorage;
             this.log = log;
 		}
         
@@ -64,12 +68,12 @@ namespace NDistribUnit.Common.Server.Services
             if (run == null)
                 throw new ArgumentNullException("run");
 
-//            var results = resultsStorage.GetCompletedResults();
-//            if (results != null)
-//            {
-//                client.NotifyTestProgressChanged(results, true);
-//                return;
-//            }
+            var result = resultsStorage.GetCompletedResult(run);
+            if (result != null)
+            {
+                client.NotifyTestProgressChanged(result, true);
+                return;
+            }
 
             var request = requests.AddOrUpdate(run, client);
 

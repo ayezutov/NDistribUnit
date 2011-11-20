@@ -46,6 +46,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Discovery" />
     <Reference Include="System.Xml.Linq" />
@@ -85,9 +86,17 @@
       <Project>{B060BDAC-E277-42BB-871C-320D6D8C5CA7}</Project>
       <Name>NDistribUnit.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NDistribUnit.SampleTestAssembly\NDistribUnit.SampleTestAssembly.csproj">
+      <Project>{83494149-0503-437E-8208-D91AFC60CD1F}</Project>
+      <Name>NDistribUnit.SampleTestAssembly</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NDistribUnit.Server\NDistribUnit.Server.csproj">
       <Project>{91A452A1-4EBC-42C6-A724-F3BFF3A66EAF}</Project>
       <Name>NDistribUnit.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\_dependencies\NUnit-2.5.9.10348\src\NUnitCore\interfaces\nunit.core.interfaces.dll.csproj">
+      <Project>{435428F8-5995-4CE4-8022-93D595A8CC0F}</Project>
+      <Name>nunit.core.interfaces.dll</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

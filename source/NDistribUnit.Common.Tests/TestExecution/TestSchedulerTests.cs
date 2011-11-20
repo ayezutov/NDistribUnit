@@ -78,9 +78,9 @@ namespace NDistribUnit.Common.Tests.TestExecution
         private TestUnitWithMetadata CreateTestUnit(string testName, Guid? runId = null)
         {
             return new TestUnitWithMetadata(new TestRun
-                                    {
-                                        Id = runId ?? defaultId
-                                    }, testName);
+                                                {
+                                                    Id = runId ?? defaultId
+                                                }, testName, true, "TestFixture", "http://someName/assembly.dll");
         }
 
         private AgentInformation CreateTestAgent(string agentName = null, AgentState state = AgentState.Ready)

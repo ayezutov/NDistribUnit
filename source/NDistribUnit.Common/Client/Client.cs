@@ -12,6 +12,7 @@ using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.Configuration;
 using NDistribUnit.Common.TestExecution.Storage;
+using NUnit.Core;
 
 namespace NDistribUnit.Common.Client
 {
@@ -26,6 +27,7 @@ namespace NDistribUnit.Common.Client
         private readonly IVersionProvider versionProvider;
         private readonly ITestRunParametersFileReader parametersReader;
         private readonly IProjectPackager packager;
+        private readonly ITestResultsSerializer serializer;
         private readonly ILog log;
         private TestResult result;
         private readonly Semaphore testCompleted;
@@ -40,14 +42,16 @@ namespace NDistribUnit.Common.Client
         /// <param name="versionProvider">The version provider.</param>
         /// <param name="parametersReader">The file reader.</param>
         /// <param name="packager">The packager.</param>
+        /// <param name="serializer">The serializer.</param>
         /// <param name="log">The log.</param>
         public Client(ClientParameters options,
-                                IUpdateReceiver updateReceiver,
-                                IConnectionProvider connectionProvider,
-                                IVersionProvider versionProvider,
-                                ITestRunParametersFileReader parametersReader,
-                                IProjectPackager packager,
-                                ILog log)
+                      IUpdateReceiver updateReceiver,
+                      IConnectionProvider connectionProvider,
+                      IVersionProvider versionProvider,
+                      ITestRunParametersFileReader parametersReader,
+                      IProjectPackager packager,
+                      ITestResultsSerializer serializer,
+                      ILog log)
         {
             this.options = options;
             this.updateReceiver = updateReceiver;
@@ -55,8 +59,9 @@ namespace NDistribUnit.Common.Client
             this.versionProvider = versionProvider;
             this.parametersReader = parametersReader;
             this.packager = packager;
+            this.serializer = serializer;
             this.log = log;
-            testCompleted = new Semaphore(0,1);
+            testCompleted = new Semaphore(0, 1);
         }
 
         /// <summary>
@@ -79,10 +84,12 @@ namespace NDistribUnit.Common.Client
         public PackedProject GetPackedProject(Guid testRunId)
         {
             if (testRun == null)
-                throw new InvalidOperationException("Can't load any project from that client, as it is not initialized yet");
+                throw new InvalidOperationException(
+                    "Can't load any project from that client, as it is not initialized yet");
 
             if (testRun.Id != testRunId)
-                throw new ArgumentException("The identifier should be of the client, which issued the test request", "testRunId");
+                throw new ArgumentException("The identifier should be of the client, which issued the test request",
+                                            "testRunId");
 
             return new PackedProject(packager.GetPackage(testRun.NUnitParameters.AssembliesToTest));
         }
@@ -113,16 +120,18 @@ namespace NDistribUnit.Common.Client
                               Alias = options.Alias
                           }; //TODO: load saved state here
 
-            if (options.NUnitParameters.AssembliesToTest == null || options.NUnitParameters.AssembliesToTest.Count != 1 /*|| !NUnitProject.IsNUnitProjectFile(options.AssembliesToTest[0])*/)
+            if (options.NUnitParameters.AssembliesToTest == null || options.NUnitParameters.AssembliesToTest.Count != 1
+                /*|| !NUnitProject.IsNUnitProjectFile(options.AssembliesToTest[0])*/)
                 throw new InvalidOperationException("Please specify single NUnit project file");
 
-            string parametersFileName = Path.ChangeExtension(options.NUnitParameters.AssembliesToTest[0], ".ndistribunit");
+            string parametersFileName = Path.ChangeExtension(options.NUnitParameters.AssembliesToTest[0],
+                                                             ".ndistribunit");
 
             testRun.Parameters = File.Exists(parametersFileName)
-                                 ? parametersReader.Read(parametersFileName)
-                                 : TestRunParameters.Default;
+                                     ? parametersReader.Read(parametersFileName)
+                                     : TestRunParameters.Default;
 
-            
+
             var testRunningTask = Task.Factory.StartNew(() =>
                                                             {
                                                                 server.StartRunningTests(testRun);
@@ -135,11 +144,11 @@ namespace NDistribUnit.Common.Client
                                                            var updatePackage =
                                                                server.GetUpdatePackage(versionProvider.GetVersion());
                                                            if (updatePackage.IsAvailable)
-                                                            updateReceiver.SaveUpdatePackage(updatePackage);
+                                                               updateReceiver.SaveUpdatePackage(updatePackage);
                                                        });
             try
             {
-                Task.WaitAll(new []{testRunningTask, updateTask}, options.TimeoutPeriod);
+                Task.WaitAll(new[] {testRunningTask, updateTask}, options.TimeoutPeriod);
             }
             catch (AggregateException ex)
             {
@@ -149,7 +158,7 @@ namespace NDistribUnit.Common.Client
                 }
                 throw;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error("Error while running tests", ex);
                 throw;
@@ -165,7 +174,9 @@ namespace NDistribUnit.Common.Client
 
         private void SaveResult()
         {
-            //throw new NotImplementedException();
+            if (!string.IsNullOrEmpty(options.NUnitParameters.XmlFileName))
+            {
+            }
         }
     }
 }

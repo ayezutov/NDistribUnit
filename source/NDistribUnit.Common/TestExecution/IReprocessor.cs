@@ -1,4 +1,5 @@
 using NDistribUnit.Common.Contracts.DataContracts;
+using NUnit.Core;
 
 namespace NDistribUnit.Common.TestExecution
 {
@@ -12,6 +13,6 @@ namespace NDistribUnit.Common.TestExecution
         /// </summary>
         /// <param name="test">The test.</param>
         /// <param name="result">The result.</param>
-        void AddForReprocessingIfRequired(TestUnitWithMetadata test, TestResult result);
+        void AddForReprocessingIfRequired(TestUnitWithMetadata test, TestUnitResult result);
     }
 }

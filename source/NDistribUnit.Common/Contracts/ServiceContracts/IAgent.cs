@@ -1,6 +1,8 @@
+using System.Collections;
 using System.ServiceModel;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.TestExecution;
+using NUnit.Core;
 
 namespace NDistribUnit.Common.Contracts.ServiceContracts
 {
@@ -8,6 +10,8 @@ namespace NDistribUnit.Common.Contracts.ServiceContracts
     /// A contract for communicating from server to agents
     /// </summary>
     [ServiceContract(CallbackContract = typeof(IAgentDataSource))]
+    [ServiceKnownType(typeof(ArrayList))]
+    [ServiceKnownType(typeof(TestResult))]
     public interface IAgent
     {
         /// <summary>
@@ -16,6 +20,6 @@ namespace NDistribUnit.Common.Contracts.ServiceContracts
         /// <param name="test"></param>
         /// <returns></returns>
         [OperationContract]
-        TestResult RunTests(TestUnit test);
+        TestUnitResult RunTests(TestUnit test);
     }
 }

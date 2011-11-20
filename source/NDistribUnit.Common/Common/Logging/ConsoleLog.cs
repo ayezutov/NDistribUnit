@@ -89,7 +89,7 @@ namespace NDistribUnit.Common.Logging
     	public void Debug(string message)
     	{
 			#if DEBUG
-			WriteToConsole(System.Console.Out, ConsoleColor.Gray, "Debug:", message, null);
+			//WriteToConsole(System.Console.Out, ConsoleColor.Gray, "Debug:", message, null);
 			#endif
     	}
 

@@ -3,6 +3,7 @@ using Autofac;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Communication.ConnectionTracking;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server;
@@ -76,7 +77,12 @@ namespace NDistribUnit.Common.Dependencies
             builder.RegisterType<UpdateSource>().As<IUpdateSource>();
             builder.RegisterType<RequestsStorage>().As<IRequestsStorage>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<Reprocessor>().As<IReprocessor>().InstancePerLifetimeScope();
-            builder.Register(c => new ResultsStorage()).As<IResultsStorage>().AsSelf().InstancePerLifetimeScope();
+            builder.Register(c => 
+                new ResultsStorage(c.Resolve<TestResultsProcessor>(), 
+                    c.Resolve<ITestResultsSerializer>(),
+                    c.Resolve<ILog>(), 
+                    c.Resolve<BootstrapperParameters>(),
+                    "Server.Results")).As<IResultsStorage>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<TestsRetriever>().As<ITestsRetriever>();
             builder.RegisterType<TestsScheduler>().As<ITestsScheduler>().InstancePerLifetimeScope();
             builder.RegisterType<ServerTestRunner>().InstancePerLifetimeScope();

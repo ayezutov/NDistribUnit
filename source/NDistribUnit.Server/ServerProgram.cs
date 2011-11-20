@@ -22,7 +22,12 @@ namespace NDistribUnit.Server
         /// <param name="args">The args.</param>
         /// <returns></returns>
 		private static int Main(string[] args)
-		{
+        {
+            AppDomain.CurrentDomain.UnhandledException +=
+                (sender, eventArgs) =>
+                new ConsoleLog().Error("Unhandled exception caught by unhandled exception handler",
+                                       (Exception) eventArgs.ExceptionObject);
+
             try
             {
                 var builder = new ContainerBuilder();

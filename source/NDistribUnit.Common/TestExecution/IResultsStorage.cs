@@ -1,4 +1,5 @@
 using NDistribUnit.Common.Contracts.DataContracts;
+using NUnit.Core;
 
 namespace NDistribUnit.Common.TestExecution
 {
@@ -12,7 +13,7 @@ namespace NDistribUnit.Common.TestExecution
         /// </summary>
         /// <param name="test"></param>
         /// <param name="result">The result.</param>
-        void Add(TestUnitWithMetadata test, TestResult result);
+        void Add(TestUnitWithMetadata test, TestUnitResult result);
 
         /// <summary>
         /// Stores as completed.
@@ -20,5 +21,12 @@ namespace NDistribUnit.Common.TestExecution
         /// <param name="testRun">The test run.</param>
         /// <returns></returns>
         TestResult StoreAsCompleted(TestRun testRun);
+
+        /// <summary>
+        /// Gets the completed result.
+        /// </summary>
+        /// <param name="testRun">The run.</param>
+        /// <returns></returns>
+        TestResult GetCompletedResult(TestRun testRun);
     }
 }

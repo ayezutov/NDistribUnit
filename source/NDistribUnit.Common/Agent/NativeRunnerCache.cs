@@ -6,7 +6,10 @@ using NUnit.Core;
 
 namespace NDistribUnit.Common.Agent
 {
-    class NativeRunnerCache : INativeRunnerCache
+    /// <summary>
+    /// 
+    /// </summary>
+    public class NativeRunnerCache : INativeRunnerCache
     {
         private class TestRunnerMetadata
         {

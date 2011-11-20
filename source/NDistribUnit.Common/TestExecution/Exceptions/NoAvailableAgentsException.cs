@@ -15,6 +15,6 @@ namespace NDistribUnit.Common.TestExecution.Exceptions
         /// <value>
         /// The tests.
         /// </value>
-        public IEnumerable<TestRunRequest> Tests { get; set; }
+        public IEnumerable<TestUnitWithMetadata> Tests { get; set; }
     }
 }

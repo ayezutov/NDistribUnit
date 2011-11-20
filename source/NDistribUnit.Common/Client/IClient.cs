@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.ServiceModel;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.TestExecution;
+using NUnit.Core;
 
 namespace NDistribUnit.Common.Client
 {
@@ -10,6 +12,7 @@ namespace NDistribUnit.Common.Client
     /// 
     /// </summary>
     [ServiceContract]
+    [ServiceKnownType(typeof(ArrayList))]
     public interface IClient
     {
         //void TestProgress(TestResult result);

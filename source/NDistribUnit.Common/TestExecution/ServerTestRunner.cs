@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.ServiceModel;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Contracts.DataContracts;
@@ -9,6 +9,7 @@ using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution.Data;
 using NDistribUnit.Common.TestExecution.Exceptions;
 using NDistribUnit.Common.TestExecution.Storage;
+using NUnit.Core;
 
 namespace NDistribUnit.Common.TestExecution
 {
@@ -91,9 +92,8 @@ namespace NDistribUnit.Common.TestExecution
         // Should be started asynchronously to avoid any deadlocks
         private void TryToRunIfAvailable()
         {
-            Tuple<AgentInformation, TestUnitWithMetadata> pair = null;
+            Tuple<AgentInformation, TestUnitWithMetadata> pair;
             // lock both collections
-            // TODO: check the flows for no deadlocks
             lock (agents.SyncObject)
             {
                 lock (tests.SyncObject)
@@ -104,7 +104,10 @@ namespace NDistribUnit.Common.TestExecution
                     }
                     catch(NoAvailableAgentsException ex)
                     {
-                        MarkAsInvalidAndComplete(ex.Tests);
+                        foreach (var test in ex.Tests)
+                        {
+                            ProcessResult(test, null, new TestUnitResult(TestResultFactory.GetNoAvailableAgentsFailure(test, ex)));
+                        }
                         return;
                     }
 
@@ -113,6 +116,9 @@ namespace NDistribUnit.Common.TestExecution
 
                     tests.MarkRunning(pair.Item2);
                     agents.MarkBusy(pair.Item1);
+
+                    if (tests.HasAvailable)
+                        RunAsynchronously(TryToRunIfAvailable);
                 }
             }
 
@@ -125,7 +131,7 @@ namespace NDistribUnit.Common.TestExecution
             var request = requests.GetBy(test.Test.Run);
             if (request != null)
                 request.Status = TestRunRequestStatus.Pending;
-            TestResult result = null;
+            TestUnitResult result = null;
             try
             {
                 var testRunnerAgent =
@@ -149,14 +155,14 @@ namespace NDistribUnit.Common.TestExecution
             ProcessResult(test, agent, result);
         }
 
-        private void ProcessResult(TestUnitWithMetadata test, AgentInformation agent, TestResult result)
+        private void ProcessResult(TestUnitWithMetadata test, AgentInformation agent, TestUnitResult result)
         {
             bool isRequestCompleted;
             lock (agents.SyncObject)
             {
                 lock (tests.SyncObject)
                 {
-                    test.Results.Add(result);
+                    AddResultsToTestUnitMetadata(test, result);
                     tests.MarkCompleted(test);
                     agents.MarkAsReady(agent);
 
@@ -170,6 +176,33 @@ namespace NDistribUnit.Common.TestExecution
 
             if (isRequestCompleted)
                 ProcessCompletedTestRun(test);
+        }
+
+        private static void AddResultsToTestUnitMetadata(TestUnitWithMetadata test, TestUnitResult result)
+        {
+            var found = FindByName(result.Result, test.Test.UniqueTestId);
+            if (found == null)
+                return;
+
+            test.Results.Add(found);
+
+            foreach (var child in test.Children)
+            {
+                var foundChild = FindByName(found, child.Test.UniqueTestId);
+                if (foundChild == null)
+                    continue;
+            }
+        }
+
+        private static TestResult FindByName(TestResult result, string name)
+        {
+            if (result.FullName == name)
+                return result;
+
+            if (result.Results != null)
+                return result.Results.Cast<TestResult>().Select(child => FindByName(child, name)).FirstOrDefault(foundChild => foundChild != null);
+
+            return null;
         }
 
         private void ProcessCompletedTestRun(TestUnitWithMetadata test)
@@ -211,43 +244,43 @@ namespace NDistribUnit.Common.TestExecution
             catch (Exception ex)
             {
                 log.Error("Unable to get test project", ex);
-                MarkAsInvalidAndComplete(request);
+                Complete(request, TestResultFactory.GetProjectRetrievalFailure(request, ex));
                 return;
             }
             
             if (project == null)
             {
-                MarkAsInvalidAndComplete(request);
+                Complete(request, TestResultFactory.GetProjectRetrievalFailure(request));
                 return;
             }
 
             try
             {
                 log.BeginActivity("Parsing project into separate test units");
-                tests.AddRange(testsRetriever.Get(project, request));
+                var testUnits = testsRetriever.Get(project, request);
+                if (testUnits != null && testUnits.Count == 0)
+                {
+                    log.Warning(string.Format("No tests were found in request: {0}", request.TestRun));
+                    Complete(request, TestResultFactory.GetNoAvailableTestFailure(request));
+                    return;
+                }
+
+                tests.AddRange(testUnits);
                 log.EndActivity("Finished parsing project into separate test units");
             }
             catch (Exception ex)
             {
                 log.Error("Error while parsing test request", ex);
-                MarkAsInvalidAndComplete(request);
+                Complete(request, TestResultFactory.GetUnhandledExceptionFailure(request, ex));
             }
         }
 
-        private void MarkAsInvalidAndComplete(IEnumerable<TestRunRequest> requests)
-        {
-            foreach (var request in requests)
-            {
-                MarkAsInvalidAndComplete(request);
-            }
-        }
-
-        private void MarkAsInvalidAndComplete(TestRunRequest request)
+        private void Complete(TestRunRequest request, TestResult result)
         {
             requests.Remove(request);
             try
             {
-                request.Client.NotifyTestProgressChanged(new TestResult( /*mark invalid*/), true);
+                request.Client.NotifyTestProgressChanged(result, true);
             }
             catch(Exception ex)
             {

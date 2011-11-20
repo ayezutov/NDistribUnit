@@ -3,12 +3,13 @@ using System.ServiceModel;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Common.Updating;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Common.TestExecution;
-using TestResult = NDistribUnit.Common.Contracts.DataContracts.TestResult;
+using NUnit.Core;
 
 namespace NDistribUnit.Common.Agent
 {
@@ -71,13 +72,16 @@ namespace NDistribUnit.Common.Agent
         /// </summary>
         /// <param name="test"></param>
         /// <returns></returns>
-        public TestResult RunTests(TestUnit test)
+        public TestUnitResult RunTests(TestUnit test)
         {
-            log.Info(string.Format("Run Tests command Received: {0}", test));
+            log.Info(string.Format("Run Tests command Received: {0}", test.UniqueTestId));
 
             var dataSource = connectionProvider.GetCurrentCallback<IAgentDataSource>();
 
-            return runner.Run(test, dataSource);
+            var result = runner.Run(test, dataSource);
+            result.Result.ForSelfAndAllDescedants(r => r.SetAgentName(Name));
+
+            return result;
         }
 
         /// <summary>

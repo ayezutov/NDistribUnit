@@ -5,6 +5,7 @@ using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Common.Networking;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.Storage;
@@ -42,6 +43,9 @@ namespace NDistribUnit.Common.Dependencies
             builder.RegisterType<UpdateReceiver>().As<IUpdateReceiver>().AsSelf();
             builder.RegisterType<ZipSource>();
             builder.RegisterType<ProjectPackager>().As<IProjectPackager>();
+            builder.RegisterType<TestResultsProcessor>();
+            builder.RegisterType<TestResultsSerializer>().As<ITestResultsSerializer>().InstancePerLifetimeScope();
+
             builder.Register(c => new RollingLog(c.Resolve<LogConfiguration>().RollingLogItemsCount));
             builder.RegisterType<ConsoleLog>();
             builder.Register(

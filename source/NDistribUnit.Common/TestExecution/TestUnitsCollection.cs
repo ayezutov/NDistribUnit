@@ -23,6 +23,17 @@ namespace NDistribUnit.Common.TestExecution
         /// </summary>
 	    public event EventHandler AvailableAdded;
 
+        /// <summary>
+        /// Gets a value indicating whether this instance has available.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance has available; otherwise, <c>false</c>.
+        /// </value>
+	    public bool HasAvailable
+	    {
+            get { return available.Count > 0; }
+	    }
+
 	    /// <summary>
         /// Adds the range of test units into the collection.
         /// </summary>

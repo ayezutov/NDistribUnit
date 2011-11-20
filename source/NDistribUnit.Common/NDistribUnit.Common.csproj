@@ -85,6 +85,7 @@
     <Compile Include="Agent\Agent.cs" />
     <Compile Include="Client\ClientParameters.cs" />
     <Compile Include="Client\NUnitParameters.cs" />
+    <Compile Include="Contracts\DataContracts\Test.cs" />
     <Compile Include="Contracts\DataContracts\TestResult.cs" />
     <Compile Include="Client\IClient.cs" />
     <Compile Include="Client\Client.cs" />
@@ -107,6 +108,10 @@
     <Compile Include="Common\HashChecking\ErrorLevel.cs" />
     <Compile Include="Common\HashChecking\HashValidationException.cs" />
     <Compile Include="Agent\AgentConfiguration.cs" />
+    <Compile Include="TestExecution\TestResultExtensions.cs" />
+    <Compile Include="TestExecution\TestResultFactory.cs" />
+    <Compile Include="TestExecution\TestResultsProcessor.cs" />
+    <Compile Include="Contracts\DataContracts\TestResultType.cs" />
     <Compile Include="Contracts\ServiceContracts\IRemoteAppPart.cs" />
     <Compile Include="Dependencies\AgentDependenciesModule.cs" />
     <Compile Include="Dependencies\ClientDependenciesModule.cs" />
@@ -150,11 +155,13 @@
     <Compile Include="TestExecution\IAgentDataSource.cs" />
     <Compile Include="TestExecution\IReprocessor.cs" />
     <Compile Include="TestExecution\IResultsStorage.cs" />
+    <Compile Include="TestExecution\ITestResultsSerializer.cs" />
     <Compile Include="TestExecution\ITestsRetriever.cs" />
     <Compile Include="TestExecution\ITestsScheduler.cs" />
     <Compile Include="TestExecution\NUnitTestsFilter.cs" />
     <Compile Include="TestExecution\Reprocessor.cs" />
     <Compile Include="TestExecution\ResultsStorage.cs" />
+    <Compile Include="TestExecution\RunResultsCollection.cs" />
     <Compile Include="TestExecution\SchedulerHints.cs" />
     <Compile Include="TestExecution\Storage\IProjectPackager.cs" />
     <Compile Include="TestExecution\Storage\IRequestsStorage.cs" />
@@ -163,12 +170,15 @@
     <Compile Include="TestExecution\Data\TestRunRequestStatus.cs" />
     <Compile Include="TestExecution\Storage\IProjectsStorage.cs" />
     <Compile Include="TestExecution\Storage\ProjectsStorage.cs" />
+    <Compile Include="TestExecution\Storage\TestProject.cs" />
     <Compile Include="TestExecution\TestAgentsCollection.cs" />
     <Compile Include="TestExecution\ServerTestRunner.cs" />
     <Compile Include="TestExecution\PackedProject.cs" />
+    <Compile Include="TestExecution\TestResultsSerializer.cs" />
     <Compile Include="TestExecution\TestsRetriever.cs" />
     <Compile Include="TestExecution\NUnitInitializer.cs" />
     <Compile Include="TestExecution\TestsScheduler.cs" />
+    <Compile Include="TestExecution\TestType.cs" />
     <Compile Include="TestExecution\TestUnit.cs" />
     <Compile Include="TestExecution\TestUnitsCollection.cs" />
     <Compile Include="Contracts\ServiceContracts\IPingable.cs" />
@@ -189,6 +199,7 @@
     <Compile Include="Common\Updating\UpdatesMonitor.cs" />
     <Compile Include="Common\Updating\UpdateSource.cs" />
     <Compile Include="Common\Updating\VersionDirectoryFinder.cs" />
+    <Compile Include="TestExecution\TestUnitWithMetadata.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
@@ -197,6 +208,10 @@
     <None Include="NDistribUnit.cd" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NDistribUnit.SampleTestAssembly\NDistribUnit.SampleTestAssembly.csproj">
+      <Project>{83494149-0503-437E-8208-D91AFC60CD1F}</Project>
+      <Name>NDistribUnit.SampleTestAssembly</Name>
+    </ProjectReference>
     <ProjectReference Include="..\_dependencies\NUnit-2.5.9.10348\src\ClientUtilities\util\nunit.util.dll.csproj">
       <Project>{61CE9CE5-943E-44D4-A381-814DC1406767}</Project>
       <Name>nunit.util.dll</Name>
