@@ -50,17 +50,23 @@ namespace NDistribUnit.Bootstrapper
 				throw new InvalidOperationException(string.Format("There is more than 1 file with 'exe' extension inside '{0}'",
 				                                                  exeDirectory.FullName));
 
-			try
+            var targetFile = files[0].FullName;
+            var targetFolder = Path.GetDirectoryName(targetFile);
+
+		    var targetFileConfig = GetConfigurationFilename(targetFile);
+
+		    var currentFileConfig = GetConfigurationFilename(assemblyFile);
+
+            targetFileConfig = new ConfigurationFileMerger().MergeFiles(targetFileConfig, currentFileConfig);
+            
+		    try
 			{
-				var fileToRun = files[0].FullName;
-			    var filePath = Path.GetDirectoryName(fileToRun);
-                
-			    domain = AppDomain.CreateDomain(AppDomain.CurrentDomain.FriendlyName + "_bootstrapped",
+				domain = AppDomain.CreateDomain(AppDomain.CurrentDomain.FriendlyName + "_bootstrapped",
 				                                    AppDomain.CurrentDomain.Evidence,
 				                                    new AppDomainSetup
 				                                    	{
-				                                    		ConfigurationFile = fileToRun + ".config",
-                                                            ApplicationBase = filePath,
+				                                    		ConfigurationFile = targetFileConfig,
+                                                            ApplicationBase = targetFolder,
 				                                    	});
 
 				var newArgs = new List<string>(args);
@@ -69,7 +75,7 @@ namespace NDistribUnit.Bootstrapper
 				                 		BootstrapperFile = assemblyFile,
 				                 		ConfigurationFile = assemblyFile + ".config"
 				                 	}.ToArray());
-				var returnValue = domain.ExecuteAssembly(fileToRun, newArgs.ToArray());
+				var returnValue = domain.ExecuteAssembly(targetFile, newArgs.ToArray());
 				AppDomain.Unload(domain);
 			    if (returnValue == (int) ReturnCodes.RestartDueToAvailableUpdate)
 			        Main(args);
@@ -80,5 +86,18 @@ namespace NDistribUnit.Bootstrapper
 				Console.ReadLine();
 			}
 		}
+
+	    private string GetConfigurationFilename(string exeName)
+	    {
+	        string possibleName = exeName + ".config";
+            if (File.Exists(possibleName))
+                return possibleName;
+
+	        possibleName = Path.ChangeExtension(exeName, ".config");
+            if (File.Exists(possibleName))
+                return possibleName;
+
+	        return null;
+	    }
 	}
 }
