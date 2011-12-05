@@ -36,14 +36,14 @@ namespace NDistribUnit.Common.Tests.TestExecution
             agents.Add(CreateTestAgent("first"));
             agents.Add(CreateTestAgent("second"));
 
-            var tuple = scheduler.GetAgentAndTest();
+            var tuple = scheduler.GetAgentAndTestAndVariables();
             Assert.That(tuple, Is.Null);
         }
 
         [Test]
         public void GetBothReturnsNullIfNoAgentsAndTestsAreAvailable()
         {
-            var tuple = scheduler.GetAgentAndTest();
+            var tuple = scheduler.GetAgentAndTestAndVariables();
             Assert.That(tuple, Is.Null);
         }
 
@@ -53,7 +53,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
             tests.Add(CreateTestUnit("first"));
             agents.Add(CreateTestAgent("first", AgentState.Busy));
 
-            var tuple = scheduler.GetAgentAndTest();
+            var tuple = scheduler.GetAgentAndTestAndVariables();
             Assert.That(tuple, Is.Null);
         }
 
@@ -63,7 +63,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
             tests.Add(CreateTestUnit("first"));
             agents.Add(CreateTestAgent("first", AgentState.Updating));
 
-            var tuple = scheduler.GetAgentAndTest();
+            var tuple = scheduler.GetAgentAndTestAndVariables();
             Assert.That(tuple, Is.Null);
         }
 
@@ -72,7 +72,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
         {
             tests.Add(CreateTestUnit("first"));
 
-            Assert.Throws<NoAvailableAgentsException>(() => scheduler.GetAgentAndTest());
+            Assert.Throws<NoAvailableAgentsException>(() => scheduler.GetAgentAndTestAndVariables());
         }
 
         private TestUnitWithMetadata CreateTestUnit(string testName, Guid? runId = null)

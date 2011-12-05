@@ -60,6 +60,14 @@ namespace NDistribUnit.Common.TestExecution.Data
         /// </value>
 	    public DateTime RequestTime { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the configuration setup.
+        /// </summary>
+        /// <value>
+        /// The configuration setup.
+        /// </value>
+	    public DistributedConfigurationSetup ConfigurationSetup { get; set; }
+
 	    /// <summary>
 		/// Pings the tracking side
 		/// </summary>

@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using System.ServiceModel;
 using Autofac;
 using NDistribUnit.Common.Agent;
@@ -15,6 +16,7 @@ using NDistribUnit.Integration.Tests.Infrastructure.Entities;
 using NDistribUnit.Integration.Tests.Infrastructure.Stubs;
 using Moq;
 using System.Linq;
+using Module = Autofac.Module;
 
 namespace NDistribUnit.Integration.Tests.Infrastructure
 {
@@ -55,6 +57,10 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
             builder.RegisterInstance(updateSource.Object).As<IUpdateSource>();
 
             builder.RegisterType<TestConnectionProvider>().As<IConnectionProvider>().SingleInstance();
+            builder.Register(c => new BootstrapperParameters()
+                                      {
+                                          BootstrapperFile = Assembly.GetExecutingAssembly().Location
+                                      });
         }
 
         internal static void RegisterHosts(ContainerBuilder builder)

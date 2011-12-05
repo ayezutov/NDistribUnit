@@ -11,6 +11,7 @@ using NDistribUnit.Common.Server.Communication;
 using NDistribUnit.Common.Server.ConnectionTracking;
 using NDistribUnit.Common.Server.Services;
 using NDistribUnit.Common.TestExecution;
+using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 using NDistribUnit.Common.TestExecution.Storage;
 using NDistribUnit.Common.Updating;
 
@@ -90,6 +91,7 @@ namespace NDistribUnit.Common.Dependencies
             builder.Register(c => new WindowsLog("Server")).InstancePerLifetimeScope();
             builder.RegisterModule(new CommonDependenciesModule(CommandLineArgs));
             builder.Register(c=> new ProjectsStorage("Server", c.Resolve<BootstrapperParameters>(), c.Resolve<ZipSource>())).As<IProjectsStorage>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<DistributedConfigurationOperator>().As<IDistributedConfigurationOperator>();
 
             foreach (ConnectionTrackerElement connectionTracker in ServerConfiguration.ConnectionTrackers)
             {

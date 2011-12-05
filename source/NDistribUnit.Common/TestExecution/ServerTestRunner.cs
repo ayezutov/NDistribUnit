@@ -7,6 +7,7 @@ using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution.Data;
+using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 using NDistribUnit.Common.TestExecution.Exceptions;
 using NDistribUnit.Common.TestExecution.Storage;
 using NUnit.Core;
@@ -26,6 +27,7 @@ namespace NDistribUnit.Common.TestExecution
         private readonly IResultsStorage results;
         private readonly ILog log;
         private readonly ITestsRetriever testsRetriever;
+        private readonly IDistributedConfigurationOperator configurationOperator;
         private readonly ITestsScheduler scheduler;
         private readonly IReprocessor reprocessor;
         private readonly IConnectionProvider connectionProvider;
@@ -40,6 +42,7 @@ namespace NDistribUnit.Common.TestExecution
         /// <param name="results">The results.</param>
         /// <param name="log">The log.</param>
         /// <param name="testsRetriever">The tests parser.</param>
+        /// <param name="configurationOperator">The configuration reader.</param>
         /// <param name="scheduler">The scheduler.</param>
         /// <param name="reprocessor">The reprocessor.</param>
         /// <param name="connectionProvider">The connection provider.</param>
@@ -50,6 +53,7 @@ namespace NDistribUnit.Common.TestExecution
                                 IResultsStorage results,
                                 ILog log,
                                 ITestsRetriever testsRetriever,
+                                IDistributedConfigurationOperator configurationOperator,
                                 ITestsScheduler scheduler,
                                 IReprocessor reprocessor,
                                 IConnectionProvider connectionProvider)
@@ -59,6 +63,7 @@ namespace NDistribUnit.Common.TestExecution
             this.results = results;
             this.log = log;
             this.testsRetriever = testsRetriever;
+            this.configurationOperator = configurationOperator;
             this.scheduler = scheduler;
             this.reprocessor = reprocessor;
             this.connectionProvider = connectionProvider;
@@ -92,7 +97,7 @@ namespace NDistribUnit.Common.TestExecution
         // Should be started asynchronously to avoid any deadlocks
         private void TryToRunIfAvailable()
         {
-            Tuple<AgentInformation, TestUnitWithMetadata> pair;
+            Tuple<AgentInformation, TestUnitWithMetadata, DistributedConfigurationSubstitutions> pair;
             // lock both collections
             lock (agents.SyncObject)
             {
@@ -100,7 +105,7 @@ namespace NDistribUnit.Common.TestExecution
                 {
                     try
                     {
-                        pair = scheduler.GetAgentAndTest();
+                        pair = scheduler.GetAgentAndTestAndVariables();
                     }
                     catch(NoAvailableAgentsException ex)
                     {
@@ -122,11 +127,11 @@ namespace NDistribUnit.Common.TestExecution
                 }
             }
 
-            Run(pair.Item2, pair.Item1);
+            Run(pair.Item2, pair.Item1, pair.Item3);
         }
 
         // Should be started in a separate thread
-        private void Run(TestUnitWithMetadata test, AgentInformation agent)
+        private void Run(TestUnitWithMetadata test, AgentInformation agent, DistributedConfigurationSubstitutions configurationSubstitutions)
         {
             var request = requests.GetBy(test.Test.Run);
             if (request != null)
@@ -137,7 +142,7 @@ namespace NDistribUnit.Common.TestExecution
                 var testRunnerAgent =
                     connectionProvider.GetDuplexConnection<IAgent, IAgentDataSource>(this,
                                                                                      agent.Address);
-                result = testRunnerAgent.RunTests(test.Test);
+                result = testRunnerAgent.RunTests(test.Test, configurationSubstitutions);
             }
             catch (CommunicationException ex)
             {
@@ -265,6 +270,7 @@ namespace NDistribUnit.Common.TestExecution
                     return;
                 }
 
+                request.ConfigurationSetup = configurationOperator.ReadConfigurationSetup(project, request.TestRun.NUnitParameters);
                 tests.AddRange(testUnits);
                 log.EndActivity("Finished parsing project into separate test units");
             }

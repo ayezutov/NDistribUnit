@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics;
+using System.Threading;
 using Autofac;
 using NDistribUnit.Common.Agent;
 using NDistribUnit.Common.Agent.Naming;
@@ -19,7 +21,7 @@ namespace NDistribUnit.Agent
     /// </summary>
 	public class AgentProgram: GeneralProgram
 	{
-		private static int Main(string[] args)
+        private static int Main(string[] args)
 		{
 		    var configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 		    var agentConfiguration = configuration.GetSection("settings") as AgentConfiguration;

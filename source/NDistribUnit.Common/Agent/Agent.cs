@@ -9,6 +9,7 @@ using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Common.TestExecution;
+using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 using NUnit.Core;
 
 namespace NDistribUnit.Common.Agent
@@ -71,14 +72,15 @@ namespace NDistribUnit.Common.Agent
         /// Runs tests on agent
         /// </summary>
         /// <param name="test"></param>
+        /// <param name="configurationSubstitutions"></param>
         /// <returns></returns>
-        public TestUnitResult RunTests(TestUnit test)
+        public TestUnitResult RunTests(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions)
         {
             log.Info(string.Format("Run Tests command Received: {0}", test.UniqueTestId));
 
             var dataSource = connectionProvider.GetCurrentCallback<IAgentDataSource>();
 
-            var result = runner.Run(test, dataSource);
+            var result = runner.Run(test, configurationSubstitutions, dataSource);
             result.Result.ForSelfAndAllDescedants(r => r.SetAgentName(Name));
 
             return result;

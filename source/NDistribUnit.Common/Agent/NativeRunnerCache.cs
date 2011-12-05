@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using NDistribUnit.Common.Contracts.DataContracts;
+using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 using NUnit.Core;
 
 namespace NDistribUnit.Common.Agent
@@ -17,25 +18,29 @@ namespace NDistribUnit.Common.Agent
             public Timer Timer { get; set; }
         }
 
-        private readonly ConcurrentDictionary<string, TestRunnerMetadata> cache = new ConcurrentDictionary<string, TestRunnerMetadata>();
+        private readonly ConcurrentDictionary<string, ConcurrentDictionary<int, TestRunnerMetadata>> cache = new ConcurrentDictionary<string, ConcurrentDictionary<int, TestRunnerMetadata>>();
 
         /// <summary>
         /// Gets the or load.
         /// </summary>
         /// <param name="testRun">The test run.</param>
+        /// <param name="substitutions"></param>
         /// <param name="loadRunner">The action.</param>
         /// <returns></returns>
-        public TestRunner GetOrLoad(TestRun testRun, Func<TestRunner> loadRunner)
+        public TestRunner GetOrLoad(TestRun testRun, DistributedConfigurationSubstitutions substitutions, Func<TestRunner> loadRunner)
         {
             var key = GetKey(testRun);
             var timeSpan = TimeSpan.FromMinutes(59);
-            var metadata = cache.GetOrAdd(key, guid=>
+            var cacheByParameters = cache.GetOrAdd(key, guid => new ConcurrentDictionary<int, TestRunnerMetadata>());
+            int hashCode = substitutions == null ? 0 : substitutions.GetHashCode();
+
+            var metadata = cacheByParameters.GetOrAdd(hashCode, hash =>
                                                  {
                                                      var runner = loadRunner();
                                                      var timer = new Timer(obj=>
                                                                                {
                                                                                    TestRunnerMetadata removed;
-                                                                                   if (cache.TryRemove(key, out removed))
+                                                                                   if (cacheByParameters.TryRemove(hashCode, out removed))
                                                                                        removed.Runner.Unload();
                                                                                }, null, timeSpan, TimeSpan.FromMilliseconds(-1));
                                                      return new TestRunnerMetadata
@@ -54,11 +59,14 @@ namespace NDistribUnit.Common.Agent
         /// <param name="run">The run.</param>
         public void Clear(TestRun run)
         {
-            TestRunnerMetadata removed;
+            ConcurrentDictionary<int, TestRunnerMetadata> removed;
             if (cache.TryRemove(GetKey(run), out removed))
             {
-                removed.Timer.Change(Timeout.Infinite, Timeout.Infinite);
-                removed.Runner.Unload();
+                foreach (var testRunnerMetadata in removed)
+                {
+                    testRunnerMetadata.Value.Timer.Change(Timeout.Infinite, Timeout.Infinite);
+                    testRunnerMetadata.Value.Runner.Unload(); 
+                }
             }
         }
 
