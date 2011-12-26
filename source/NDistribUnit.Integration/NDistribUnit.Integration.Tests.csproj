@@ -61,19 +61,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infrastructure\Entities\ClientWrapper.cs" />
-    <Compile Include="Infrastructure\Stubs\TestConnectionProvider.cs" />
+    <Compile Include="Infrastructure\Stubs\CommunicationExceptionThrowingAgent.cs" />
+    <Compile Include="Infrastructure\Stubs\TestingConnectionProvider.cs" />
+    <Compile Include="Infrastructure\Stubs\TestingVersionProvider.cs" />
     <Compile Include="Infrastructure\Stubs\TestUpdateReceiver.cs" />
-    <Compile Include="Infrastructure\NDistribUnitTestSystemController.cs" />
-    <Compile Include="Infrastructure\Stubs\TestingConnectionTracker.cs" />
-    <Compile Include="Infrastructure\TestingDefaultDependencies.cs" />
-    <Compile Include="Tests\Communication\AnnouncementConnectionTrackersStateTests.cs" />
-    <Compile Include="Tests\Communication\ConnectionTrackersStateTestsBase.cs" />
-    <Compile Include="Tests\Communication\DiscoveryConnectionTrackersStateTests.cs" />
-    <Compile Include="Infrastructure\Entities\AgentWrapper.cs" />
     <Compile Include="Infrastructure\NDistribUnitTestSystem.cs" />
+    <Compile Include="Infrastructure\Stubs\TestingAgentsProvider.cs" />
+    <Compile Include="Infrastructure\TestingDefaultDependencies.cs" />
+    <Compile Include="Tests\Communication\AnnouncementAgentsTrackersStateTests.cs" />
+    <Compile Include="Tests\Communication\AgentsTrackersStateTestsBase.cs" />
+    <Compile Include="Tests\Communication\DiscoveryAgentsTrackersStateTests.cs" />
+    <Compile Include="Infrastructure\Entities\AgentWrapper.cs" />
+    <Compile Include="Infrastructure\NDistribUnitTestSystemFluent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastructure\Entities\ServerWrapper.cs" />
-    <Compile Include="Tests\Communication\TestingConnectionTrackerTests.cs" />
+    <Compile Include="Tests\Communication\TestingAgentsTrackerTests.cs" />
     <Compile Include="Tests\TemporaryTestForPlaying.cs" />
     <Compile Include="Tests\TestExecution\PackageTransferTests.cs" />
     <Compile Include="Tests\Updating\UpdateTests.cs" />

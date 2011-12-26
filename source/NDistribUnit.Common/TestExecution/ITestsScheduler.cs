@@ -1,5 +1,5 @@
 using System;
-using NDistribUnit.Common.Contracts.DataContracts;
+using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 
 namespace NDistribUnit.Common.TestExecution
@@ -13,6 +13,6 @@ namespace NDistribUnit.Common.TestExecution
         /// Gets the agent and test.
         /// </summary>
         /// <returns></returns>
-        Tuple<AgentInformation, TestUnitWithMetadata, DistributedConfigurationSubstitutions> GetAgentAndTestAndVariables();
+        Tuple<AgentMetadata, TestUnitWithMetadata, DistributedConfigurationSubstitutions> GetAgentAndTestAndVariables();
     }
 }

@@ -9,7 +9,7 @@ namespace NDistribUnit.Common.Contracts.DataContracts
     /// <summary>
     /// Holds information about an agent
     /// </summary>
-    [DataContract]
+    [DataContract] // A contract for Dashboard service
     public class AgentInformation
     {
         private AgentState state;

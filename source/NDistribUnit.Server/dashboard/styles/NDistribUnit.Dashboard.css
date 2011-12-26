@@ -210,11 +210,15 @@ UL.list-menu LI>SPAN
     background-position: left 3px;
     }
     
-.agent.Connected
+.agent.Ready
 {
     background-image: url("../images/icons/Point Green.png");
-    
-    }    
+}    
+
+.agent.Updating
+{
+    background-image: url("../images/icons/Point Yellow.png");
+}    
     
 .agent.Disconnected
 {

@@ -4,6 +4,7 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Web;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.Server.Services;
 using NDistribUnit.Common.ServiceContracts;
 
@@ -30,7 +31,7 @@ namespace NDistribUnit.Common.Server.Communication
         /// <value>
         /// The connections tracker.
         /// </value>
-        public ServerConnectionsTracker ConnectionsTracker { get; private set; }
+        public AgentsTracker ConnectionsTracker { get; private set; }
 
         /// <summary>
         /// Creates a new server instance, which exposes dashboard and test runner at given ports
@@ -40,7 +41,7 @@ namespace NDistribUnit.Common.Server.Communication
         /// <param name="dashboard">The dashboard instance</param>
         /// <param name="connectionsTracker">The connection tracker for the host</param>
         /// <param name="log">The logger</param>
-        public ServerHost(ServerConfiguration configuration, Services.Server testRunner, DashboardService dashboard, ServerConnectionsTracker connectionsTracker, ILog log)
+        public ServerHost(ServerConfiguration configuration, Services.Server testRunner, DashboardService dashboard, AgentsTracker connectionsTracker, ILog log)
         {
             dashboardPort = configuration.DashboardPort;
             testRunnerPort = configuration.TestRunnerPort;

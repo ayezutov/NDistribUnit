@@ -4,9 +4,9 @@ using NUnit.Framework;
 namespace NDistribUnit.Integration.Tests.Tests.Communication
 {
     [TestFixture, Explicit]
-    public class TestingConnectionTrackerTests : ConnectionTrackersStateTestsBase
+    public class TestingAgentsTrackerTests : AgentsTrackersStateTestsBase
     {
-        protected override void ConfigureSystem(NDistribUnitTestSystem system)
+        protected override void ConfigureSystem(NDistribUnitTestSystemFluent system)
         {}
     }
 }

@@ -4,18 +4,18 @@ using NUnit.Framework;
 
 namespace NDistribUnit.Integration.Tests.Tests.Communication
 {
-    public abstract class ConnectionTrackersStateTestsBase
+    public abstract class AgentsTrackersStateTestsBase
     {
-        private NDistribUnitTestSystem system;
+        private NDistribUnitTestSystemFluent system;
 
         [SetUp]
         public void Init()
         {
-            system = new NDistribUnitTestSystem();
+            system = new NDistribUnitTestSystemFluent();
             ConfigureSystem(system);
         }
 
-        protected abstract void ConfigureSystem(NDistribUnitTestSystem system);
+        protected abstract void ConfigureSystem(NDistribUnitTestSystemFluent system);
 
         [TearDown]
         public void TearDown()
@@ -45,7 +45,7 @@ namespace NDistribUnit.Integration.Tests.Tests.Communication
             var server = system.StartServer();
             var agent = system.StartAgent();
 
-            Assert.That(server.HasAConnected(agent));
+            Assert.That(server.HasAReady(agent));
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace NDistribUnit.Integration.Tests.Tests.Communication
             var agent = system.StartAgent();
             var server = system.StartServer();
 
-            Assert.That(server.HasAConnected(agent));
+            Assert.That(server.HasAReady(agent));
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace NDistribUnit.Integration.Tests.Tests.Communication
             var server = system.StartServer();
             var agent = system.StartAgent();
 
-            Assert.That(server.HasAConnected(agent));
+            Assert.That(server.HasAReady(agent));
 
             Console.WriteLine("Shutting down...");
             agent.ShutDownInExpectedWay();
@@ -84,7 +84,7 @@ namespace NDistribUnit.Integration.Tests.Tests.Communication
                 return;
             }
 
-            Assert.That(server.HasAConnected(agent));
+            Assert.That(server.HasAReady(agent));
 
             agent.ShutDownUngraceful();
 
@@ -101,14 +101,14 @@ namespace NDistribUnit.Integration.Tests.Tests.Communication
         public void AgentNameChangeIsCorrectlyHandledByServer()
         {
             var server = system.StartServer();
-            var agent = system.StartAgent("Agent #1 Name 1");
+            var agent = system.StartAgent("Agent 1 Name 1");
 
-            Assert.That(server.HasAConnected("Agent #1 Name 1"));
+            Assert.That(server.HasAReady("Agent 1 Name 1"));
 
-            agent.ChangeNameTo("Agent #1 Name 2");
+            agent.ChangeNameTo("Agent 1 Name 2");
 
-            Assert.That(server.HasADisconnected("Agent #1 Name 1"));
-            Assert.That(server.HasAConnected("Agent #1 Name 2"));
+            Assert.That(server.HasADisconnected("Agent 1 Name 1"));
+            Assert.That(server.HasAReady("Agent 1 Name 2"));
         }
         
         /// <summary>
@@ -119,7 +119,7 @@ namespace NDistribUnit.Integration.Tests.Tests.Communication
         public void AgentPortChangeIsCorrectlyHandledByServer()
         {
             var server = system.StartServer();
-            var agent = system.StartAgent("Agent #1 Name 1");
+            var agent = system.StartAgent("Agent 1 Name 1");
 
             if (agent.AgentHost == null)
             {
@@ -128,13 +128,13 @@ namespace NDistribUnit.Integration.Tests.Tests.Communication
             }
 
             var firstAddress = agent.AgentHost.Endpoint.Address;
-            Assert.That(server.HasAConnected(agent));
+            Assert.That(server.HasAReady(agent));
 
             agent.ShutDownUngraceful();
-            agent = system.StartAgent("Agent #1 Name 1");
+            agent = system.StartAgent("Agent 1 Name 1");
 
             Assert.That(firstAddress, Is.Not.EqualTo(agent.AgentHost.Endpoint.Address));
-            Assert.That(server.HasAConnected("Agent #1 Name 1", agent.AgentHost.Endpoint.Address));
+            Assert.That(server.HasAReady("Agent 1 Name 1", agent.AgentHost.Endpoint.Address));
         }
     }
 }

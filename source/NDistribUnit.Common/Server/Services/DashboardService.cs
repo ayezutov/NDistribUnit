@@ -4,20 +4,19 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using NDistribUnit.Common.Agent;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Logging;
-using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
-using NDistribUnit.Common.Server.Communication;
+using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.ServiceContracts;
 using System.Linq;
-using NDistribUnit.Common.TestExecution;
 
 namespace NDistribUnit.Common.Server.Services
 {
@@ -27,7 +26,7 @@ namespace NDistribUnit.Common.Server.Services
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public class DashboardService : IDashboardService
     {
-        private readonly TestAgentsCollection agents;
+        private readonly AgentsCollection agents;
         private readonly RollingLog log;
         private readonly IConnectionProvider connectionProvider;
 
@@ -46,10 +45,10 @@ namespace NDistribUnit.Common.Server.Services
         /// <summary>
         /// Initializes a new instance of dashboard service
         /// </summary>
-        /// <param name="agents">The <see cref="ServerConnectionsTracker">connections tracker</see> for the server</param>
+        /// <param name="agents">The <see cref="AgentsCollection">connections tracker</see> for the server</param>
         /// <param name="log">The log to display for requests</param>
         /// <param name="connectionProvider">The connection provider.</param>
-        public DashboardService(TestAgentsCollection agents, 
+        public DashboardService(AgentsCollection agents, 
             RollingLog log,
             IConnectionProvider connectionProvider)
         {
@@ -93,9 +92,15 @@ namespace NDistribUnit.Common.Server.Services
         /// Gets the statuses of connected agents
         /// </summary>
         /// <returns></returns>
-        public AgentInformation[] GetClientStatuses()
+        public AgentView[] GetClientStatuses()
         {
-            return agents.ToArray();
+            return agents.ToArray().Select(a => new AgentView
+                                                    {
+                                                        Name = a.Name,
+                                                        State = a.Status,
+                                                        Address = a.Address.ToString(),
+                                                        Version = a.Version.ToString()
+                                                    }).ToArray();
         }
 
         /// <summary>
@@ -116,7 +121,7 @@ namespace NDistribUnit.Common.Server.Services
         /// <returns></returns>
         public LogEntry[] GetAgentLog(string agentName, int maxItemsCount, int? lastFetchedEntryId = null)
         {
-            AgentInformation agent = agents.GetBy(agentName);
+            var agent = agents.GetAgentByName(agentName);
 
             if (agent == null)
                 return new LogEntry[0];
@@ -175,7 +180,8 @@ namespace NDistribUnit.Common.Server.Services
             var physicalPathToFile =
                 Path.Combine(
                     Path.Combine(Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().CodeBase).AbsolutePath),
-                                 "dashboard"), fileName);
+//                                 "dashboard"), fileName);
+                                 "../../../../NDistribUnit.Server/dashboard"), fileName);
             var response = WebOperationContext.Current.OutgoingResponse;
 
             if (!File.Exists(physicalPathToFile))
@@ -199,5 +205,48 @@ namespace NDistribUnit.Common.Server.Services
         {
             return allowed.Keys.Contains(extension);
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [DataContract]
+    public class AgentView
+    {
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        [DataMember] 
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the state.
+        /// </summary>
+        /// <value>
+        /// The state.
+        /// </value>
+        [DataMember] 
+        public AgentState State { get; set; }
+
+        /// <summary>
+        /// Gets or sets the address.
+        /// </summary>
+        /// <value>
+        /// The address.
+        /// </value>
+        [DataMember] 
+        public string Address { get; set; }
+
+        /// <summary>
+        /// Gets or sets the version.
+        /// </summary>
+        /// <value>
+        /// The version.
+        /// </value>
+        [DataMember] 
+        public string Version { get; set; }
     }
 }

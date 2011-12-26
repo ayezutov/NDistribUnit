@@ -1,14 +1,23 @@
 ﻿using System;
+using System.ServiceModel;
+using System.Threading;
 using NDistribUnit.Common.Agent;
 using NDistribUnit.Common.Common.Updating;
+using NDistribUnit.Common.Contracts.DataContracts;
+using NDistribUnit.Common.Contracts.ServiceContracts;
+using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Extensions;
+using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.ServiceContracts;
+using NDistribUnit.Common.TestExecution;
+using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 using NDistribUnit.Integration.Tests.Infrastructure.Stubs;
 
 namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
 {
-    public class AgentWrapper: IDisposable
+    public class AgentWrapper: IDisposable, IRemoteAppPart, IAgent
     {
-        private readonly IVersionProvider versionProvider;
+        private readonly TestingVersionProvider versionProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AgentWrapper"/> class.
@@ -17,7 +26,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// <param name="testRunner">The test runner.</param>
         /// <param name="updateReceiver">The update receiver.</param>
         /// <param name="versionProvider">The version provider.</param>
-        public AgentWrapper(AgentHost agentHost, Common.Agent.Agent testRunner, TestUpdateReceiver updateReceiver, IVersionProvider versionProvider)
+        public AgentWrapper(AgentHost agentHost, Common.Agent.Agent testRunner, TestUpdateReceiver updateReceiver, TestingVersionProvider versionProvider)
         {
             this.versionProvider = versionProvider;
             AgentHost = agentHost;
@@ -114,9 +123,71 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
                 Started.SafeInvoke(this);
         }
 
-        public Version GetVersion()
+
+        /// <summary>
+        /// Pings the tracking side
+        /// </summary>
+        /// <param name="pingInterval"></param>
+        /// <returns>Anything (including null) if everything is ok, throws exception otherwise</returns>
+        public PingResult Ping(TimeSpan pingInterval)
         {
-            return versionProvider.GetVersion();
+            if (IsStarted)
+                return TestRunner.Ping(pingInterval);
+
+            throw new CommunicationException("Agent seems to be not available");
+        }
+
+        /// <summary>
+        /// Gets the log.
+        /// </summary>
+        /// <param name="maxItemsCount">The max items count.</param>
+        /// <param name="lastFetchedEntryId">The last fetched entry id.</param>
+        /// <returns></returns>
+        public LogEntry[] GetLog(int maxItemsCount, int? lastFetchedEntryId)
+        {
+            if (IsStarted)
+                return TestRunner.GetLog(maxItemsCount, lastFetchedEntryId);
+
+            throw new CommunicationException("Agent seems to be not available");
+        }
+
+        /// <summary>
+        /// Receives the update pakage.
+        /// </summary>
+        /// <param name="updatePackage"></param>
+        public void ReceiveUpdatePackage(UpdatePackage updatePackage)
+        {
+            if (IsStarted)
+            {
+                TestRunner.ReceiveUpdatePackage(updatePackage);
+
+                // emulate, that an updates monitor has detected an update
+                // and triggered system restart
+                new Action(() =>
+                               {
+                                   Thread.Sleep(50);
+                                   ShutDownInExpectedWay();
+                                   versionProvider.SetVersion(updatePackage.Version);
+                                   Start();
+                               }).BeginInvoke(null, null);
+                return;
+            }
+
+            throw new CommunicationException("Agent seems to be not available");
+        }
+
+        /// <summary>
+        /// Runs tests on agent
+        /// </summary>
+        /// <param name="test">The test.</param>
+        /// <param name="configurationSubstitutions">The configuration substitutions.</param>
+        /// <returns></returns>
+        public TestUnitResult RunTests(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions)
+        {
+            if (IsStarted)
+                return TestRunner.RunTests(test, configurationSubstitutions);
+
+            throw new CommunicationException("Agent seems to be not available");
         }
     }
 }

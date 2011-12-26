@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -7,3 +8,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NDistribUnit.Bootstrapper")]
 [assembly: AssemblyDescription("")]
 [assembly: Guid("b676e1ac-a8d1-4118-b8b6-1561b4034ec5")]
+
+[assembly: InternalsVisibleTo("NDistribUnit.Bootstrapper.Tests")]

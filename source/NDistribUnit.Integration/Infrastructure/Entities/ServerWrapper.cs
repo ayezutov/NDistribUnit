@@ -1,12 +1,9 @@
 ﻿using System;
 using System.ServiceModel;
-using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Retrying;
+using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.Server.Communication;
-using System.Linq;
-using NDistribUnit.Common.Server.Services;
-using NDistribUnit.Common.TestExecution;
 
 namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
 {
@@ -14,10 +11,10 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
     /// The class is a special wrapper around real server program to allow easy access
     /// in testing code
     /// </summary>
-    public class ServerWrapper: IDisposable
+    public class ServerWrapper : IDisposable
     {
-        private readonly ServerConnectionsTracker serverConnectionsTracker;
-        private readonly TestAgentsCollection agents;
+        private readonly AgentsTracker agentsTracker;
+        private readonly AgentsCollection agents;
         private ServerHost ServerHost { get; set; }
 
         public Common.Server.Services.Server TestRunner { get; set; }
@@ -26,17 +23,17 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// Initializes a new instance of the <see cref="ServerWrapper"/> class.
         /// </summary>
         /// <param name="testRunner">The test runner.</param>
-        /// <param name="serverConnectionsTracker">The server connections tracker.</param>
+        /// <param name="agentsTracker">The server connections tracker.</param>
         /// <param name="agents">The agents.</param>
         /// <param name="serverHost">The server host.</param>
         public ServerWrapper(
-            Common.Server.Services.Server testRunner, 
-            ServerConnectionsTracker serverConnectionsTracker, 
-            TestAgentsCollection agents,
+            Common.Server.Services.Server testRunner,
+            AgentsTracker agentsTracker,
+            AgentsCollection agents,
             ServerHost serverHost = null)
         {
             TestRunner = testRunner;
-            this.serverConnectionsTracker = serverConnectionsTracker;
+            this.agentsTracker = agentsTracker;
             this.agents = agents;
             ServerHost = serverHost;
         }
@@ -46,7 +43,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
             if (ServerHost != null)
                 ServerHost.Start();
             else
-                serverConnectionsTracker.Start();
+                agentsTracker.Start();
         }
 
         /// <summary>
@@ -56,11 +53,11 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// <returns>
         ///   <c>true</c> if the server has a connected agent with the specified name; otherwise, <c>false</c>.
         /// </returns>
-        public bool HasAConnected(AgentWrapper agent)
+        public bool HasAReady(AgentWrapper agent)
         {
             string agentName = agent.TestRunner.Name;
 
-            return HasAConnected(agentName);
+            return HasAReady(agentName);
         }
 
         /// <summary>
@@ -71,14 +68,17 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// <returns>
         ///   <c>true</c> if the server has a connected agent with the specified name; otherwise, <c>false</c>.
         /// </returns>
-        public bool HasAConnected(string agentName, EndpointAddress address = null)
+        public bool HasAReady(string agentName, EndpointAddress address = null)
         {
-            return Retry.While(
-                 () =>
-                 {
-                     AgentInformation found = agents.GetBy(agentName, address);
-                     return found != null && found.State != AgentState.Disconnected;
-                 }, 500);
+            return Retry.UntilTrue(
+                () =>
+                    {
+                        var found = (address == null)
+                                        ? agents.GetAgentByName(agentName)
+                                        : agents.GetAgent(a => string.Equals(a.Name, agentName)
+                                                               && a.Address.Equals(address));
+                        return found != null && found.Status == AgentState.Ready;
+                    }, 500);
         }
 
         public bool HasADisconnected(AgentWrapper agent)
@@ -96,12 +96,12 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// </returns>
         public bool HasADisconnected(string agentName)
         {
-            return Retry.While(
+            return Retry.UntilTrue(
                 () =>
-                {
-                    AgentInformation found = agents.GetBy(agentName);
-                    return found == null || found.State == AgentState.Disconnected;
-                }, 500);
+                    {
+                        var found = agents.GetAgentByName(agentName);
+                        return found == null || found.Status == AgentState.Disconnected;
+                    }, 500);
         }
 
         private void ShutDownUngraceful()
@@ -127,7 +127,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// </returns>
         public bool HasNoConnectedAgents()
         {
-            return !Retry.While(() => agents.Count != 0, 500);
+            return !Retry.UntilTrue(() => agents.Count != 0, 500);
         }
     }
 }

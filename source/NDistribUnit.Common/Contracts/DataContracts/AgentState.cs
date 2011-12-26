@@ -1,4 +1,5 @@
-﻿namespace NDistribUnit.Common.DataContracts
+﻿
+namespace NDistribUnit.Common.DataContracts
 {
     /// <summary>
     /// Describes the state of an agent
@@ -33,6 +34,11 @@
 		/// <summary>
 		/// The agent is beeing updated
 		/// </summary>
-    	Updating
+    	Updating,
+
+        /// <summary>
+        /// The agent was updated and should be being restarted
+        /// </summary>
+        Updated
     }
 }

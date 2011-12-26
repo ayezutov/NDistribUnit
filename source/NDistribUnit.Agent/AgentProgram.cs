@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Configuration;
-using System.Diagnostics;
-using System.Threading;
 using Autofac;
 using NDistribUnit.Common.Agent;
 using NDistribUnit.Common.Agent.Naming;
 using NDistribUnit.Common.Common.ConsoleProcessing;
-using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication;
-using NDistribUnit.Common.ConsoleProcessing;
 using NDistribUnit.Common.Dependencies;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Updating;
@@ -95,7 +91,7 @@ namespace NDistribUnit.Agent
 			}
 
 
-			var returnCode = WaitAndGetReturnCode();
+			var returnCode = WaitAndGetReturnCode(new string[0]);
 
 			updatesMonitor.Stop();
 			// AgentHost.SaveState();

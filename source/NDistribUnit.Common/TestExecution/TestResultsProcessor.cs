@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
 using System.IO;
+using System.Reflection;
 using NDistribUnit.Common.TestExecution;
 using NUnit.Core;
+using System.Linq;
 
 namespace NDistribUnit.Common.Contracts.DataContracts
 {
@@ -152,11 +155,29 @@ namespace NDistribUnit.Common.Contracts.DataContracts
                         });
                 if (mergedChild == null)
                 {
-                    merged.Results.Add(otherChild);
+                    AddResult(merged, otherChild);
                     continue;
                 }
                 Merge(otherChild, mergedChild);
             }
+        }
+
+        private void AddResult(TestResult model, TestResult otherChild)
+        {
+            if (model.Results != null && model.Results.IsFixedSize)
+            {
+                var results = new ArrayList(model.Results);
+
+                // Finding result by ReferenceEquals not to be tight to private variable name
+                var resultsField = model.GetType()
+                    .GetFields(BindingFlags.Default | BindingFlags.Instance | BindingFlags.NonPublic)
+                    .Where(f => ReferenceEquals(f.GetValue(model), model.Results))
+                    .FirstOrDefault();
+
+                if (resultsField != null)
+                    resultsField.SetValue(model, results);
+            }
+            model.AddResult(otherChild);
         }
     }
 }

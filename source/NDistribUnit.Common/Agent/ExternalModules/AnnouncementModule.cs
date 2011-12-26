@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.ServiceModel.Discovery;
 using System.Threading;
-using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Logging;
 
 namespace NDistribUnit.Common.Agent.ExternalModules
@@ -31,7 +30,6 @@ namespace NDistribUnit.Common.Agent.ExternalModules
             this.log = log;
         }
 
-
         /// <summary>
         /// Starts the module for the given host.
         /// </summary>
@@ -43,7 +41,9 @@ namespace NDistribUnit.Common.Agent.ExternalModules
                 client = new AnnouncementClient(new UdpAnnouncementEndpoint());
                 client.Open();
                 host.TestRunner.PingReceived += PingReceived;
-
+                host.TestRunner.UpdateStarted += UpdateStarted;
+                host.TestRunner.UpdateFinished += UpdateFinished;
+                
                 endpointDiscoveryMetadata = EndpointDiscoveryMetadata.FromServiceEndpoint(host.Endpoint);
                 announcementTimer = new Timer(o => Announce(), null, Timeout.Infinite, Timeout.Infinite);
 
@@ -51,8 +51,27 @@ namespace NDistribUnit.Common.Agent.ExternalModules
 
                 if (!endpointDiscoveryMetadata.Scopes.Contains(scope))
                     endpointDiscoveryMetadata.Scopes.Add(scope);
-                AdditionalDataManager.Add(endpointDiscoveryMetadata.Extensions, host);
+                
                 new Action(Announce).BeginInvoke(null, null);
+            }
+        }
+
+        private volatile bool isUpdating;
+        private void UpdateFinished(object sender, EventArgs e)
+        {
+            lock (this)
+            {
+                isUpdating = false;
+                announcementTimer.Change((int)announcementInterval.TotalMilliseconds, Timeout.Infinite);
+            }
+        }
+
+        private void UpdateStarted(object sender, EventArgs e)
+        {
+            lock (this)
+            {
+                isUpdating = true;
+                announcementTimer.Change(Timeout.Infinite, Timeout.Infinite);
             }
         }
 
@@ -60,6 +79,9 @@ namespace NDistribUnit.Common.Agent.ExternalModules
         {
             lock (this)
             {
+                if (isUpdating)
+                    return;
+
                 log.Debug(string.Format("Ping received: {0}, Ping interval: {1}", endpointDiscoveryMetadata.Address, eventArgs.Data));
                 var timeoutBeforeAnnouncement = eventArgs.Data.Add(TimeSpan.FromSeconds(2));
                 if (timeoutBeforeAnnouncement < announcementInterval)
@@ -76,12 +98,22 @@ namespace NDistribUnit.Common.Agent.ExternalModules
         {
             lock (this)
             {
-                if (announcementTimer != null)
+                if (announcementTimer != null && !isUpdating)
                 {
-                    log.Info(string.Format("Announcing endpoint {0}", endpointDiscoveryMetadata.Address));
-                    client.AnnounceOnline(endpointDiscoveryMetadata);
-
-                    announcementTimer.Change((int)announcementInterval.TotalMilliseconds, Timeout.Infinite);
+                    try
+                    {
+                        log.Info(string.Format("Announcing endpoint {0}", endpointDiscoveryMetadata.Address));
+                        client.AnnounceOnline(endpointDiscoveryMetadata);
+                    }
+                    catch(Exception ex)
+                    {
+                        log.Debug(string.Format("There was an exception while announcing: {0}", ex.Message));
+                        throw;
+                    }
+                    finally
+                    {
+                        announcementTimer.Change((int) announcementInterval.TotalMilliseconds, Timeout.Infinite);
+                    }
                 }
             }
         }

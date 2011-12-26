@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using NDistribUnit.Common.Common.Logging;
-using NDistribUnit.Common.Server.ConnectionTracking;
+using NDistribUnit.Common.Server.AgentsTracking;
 
 namespace NDistribUnit.Common.Server
 {
@@ -52,7 +52,7 @@ namespace NDistribUnit.Common.Server
         /// The ping interval in miliseconds.
         /// </value>
         [ConfigurationProperty("pingIntervalInMiliseconds", DefaultValue = 5000, IsRequired = true)]
-        [IntegerValidator(MinValue = 500, MaxValue = 3600000)]
+        [IntegerValidator(MinValue = 50, MaxValue = 3600000)]
         public int PingIntervalInMiliseconds
         {
             get { return (int)base["pingIntervalInMiliseconds"]; }

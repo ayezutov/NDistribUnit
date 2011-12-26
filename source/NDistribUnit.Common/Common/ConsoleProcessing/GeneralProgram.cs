@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication;
@@ -13,15 +14,34 @@ namespace NDistribUnit.Common.Common.ConsoleProcessing
 		/// 
 		protected UpdatesMonitor updatesMonitor;
 
-		/// <summary>
-		/// Waits until console input or available update and get return code.
-		/// </summary>
-		/// <returns></returns>
-		protected int WaitAndGetReturnCode()
+	    /// <summary>
+	    /// Waits until console input or available update and get return code.
+	    /// </summary>
+	    /// <param name="restartOnTheseFilesChange"></param>
+	    /// <returns></returns>
+	    protected int WaitAndGetReturnCode(string[] restartOnTheseFilesChange)
 		{
 			var returnSemaphore = new Semaphore(0, 1);
 			var returnCodeAccessMutex = new Mutex();
 			int? returnCode = null;
+
+	        foreach (var fileName in restartOnTheseFilesChange)
+	        {
+                var fsw = new FileSystemWatcher(Path.GetDirectoryName(fileName), Path.GetFileName(fileName));
+                fsw.Changed += (sender, args) =>
+                {
+                    returnCodeAccessMutex.WaitOne();
+
+                    if (returnCode == null)
+                    {
+                        returnCode = (int)ReturnCodes.RestartDueToConfigChange;
+                        returnSemaphore.Release();
+                    }
+
+                    returnCodeAccessMutex.ReleaseMutex();
+                };
+	            fsw.EnableRaisingEvents = true;
+	        }
 
 			updatesMonitor.UpdateAvailable += () =>
 			{

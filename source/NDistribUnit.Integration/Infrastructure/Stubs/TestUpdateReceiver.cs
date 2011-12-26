@@ -20,10 +20,10 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
 
         public bool HasReceivedUpdate(Version version = null)
         {
-            return Retry.While(() => (version == null && updatePackage != null)
+            return Retry.UntilTrue(() => (version == null && updatePackage != null)
                                      ||
                                      (version != null && updatePackage != null &&
-                                      updatePackage.Version.Equals(version)), 10);
+                                      updatePackage.Version.Equals(version)), 100);
         }
     }
 }

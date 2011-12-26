@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using NDistribUnit.Common.Contracts.DataContracts;
+using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 using NDistribUnit.Common.TestExecution.Exceptions;
 using NDistribUnit.Common.TestExecution.Storage;
@@ -12,7 +13,7 @@ namespace NDistribUnit.Common.TestExecution
     /// </summary>
     public class TestsScheduler : ITestsScheduler
     {
-        private readonly TestAgentsCollection agents;
+        private readonly AgentsCollection agents;
         private readonly TestUnitsCollection tests;
         private readonly IRequestsStorage requests;
 
@@ -22,7 +23,7 @@ namespace NDistribUnit.Common.TestExecution
         /// <param name="agents">The agents.</param>
         /// <param name="tests">The tests.</param>
         /// <param name="requests">The requests.</param>
-        public TestsScheduler(TestAgentsCollection agents, TestUnitsCollection tests, IRequestsStorage requests)
+        public TestsScheduler(AgentsCollection agents, TestUnitsCollection tests, IRequestsStorage requests)
         {
             this.agents = agents;
             this.tests = tests;
@@ -33,7 +34,7 @@ namespace NDistribUnit.Common.TestExecution
         /// Gets the agent and test.
         /// </summary>
         /// <returns></returns>
-        public Tuple<AgentInformation, TestUnitWithMetadata, DistributedConfigurationSubstitutions> GetAgentAndTestAndVariables()
+        public Tuple<AgentMetadata, TestUnitWithMetadata, DistributedConfigurationSubstitutions> GetAgentAndTestAndVariables()
         {
             lock (tests.SyncObject)
             {
@@ -43,7 +44,7 @@ namespace NDistribUnit.Common.TestExecution
 
                 var testToRun = availableTests[0];
 
-                lock (agents.SyncObject)
+                using (agents.Lock())
                 {
                     if (!agents.AreConnectedAvailable)
                         throw new NoAvailableAgentsException();
@@ -57,18 +58,17 @@ namespace NDistribUnit.Common.TestExecution
 
                     var request = requests.GetBy(testToRun.Test.Run);
                     if (request.ConfigurationSetup == null)
-                        return new Tuple<AgentInformation, TestUnitWithMetadata, DistributedConfigurationSubstitutions>(
+                        return new Tuple<AgentMetadata, TestUnitWithMetadata, DistributedConfigurationSubstitutions>(
                             agentToRun,
                             testToRun,
                             null);
 
 
-                    DistributedConfigurationSubstitutions configSubstitutions = GetConfigurationValues(request.ConfigurationSetup,
-                                                                                         agentToRun, testToRun);
+                    DistributedConfigurationSubstitutions configSubstitutions = GetConfigurationValues(request.ConfigurationSetup,agentToRun, testToRun);
                     if (configSubstitutions == null)
                         return null;
 
-                    return new Tuple<AgentInformation, TestUnitWithMetadata, DistributedConfigurationSubstitutions>(
+                    return new Tuple<AgentMetadata, TestUnitWithMetadata, DistributedConfigurationSubstitutions>(
                         agentToRun,
                         testToRun,
                         configSubstitutions);
@@ -76,13 +76,13 @@ namespace NDistribUnit.Common.TestExecution
             }
         }
 
-        private ConcurrentDictionary<string, DistributedConfigurationSubstitutions> configurations =
-            new ConcurrentDictionary<string, DistributedConfigurationSubstitutions>();
+        private readonly ConcurrentDictionary<string, DistributedConfigurationSubstitutions> configurations = new ConcurrentDictionary<string, DistributedConfigurationSubstitutions>();
 
         private DistributedConfigurationSubstitutions GetConfigurationValues(DistributedConfigurationSetup configurationSetup,
-                                                                      AgentInformation agentToRun,
+                                                                      AgentMetadata agentToRun,
                                                                       TestUnitWithMetadata testToRun)
         {
+            //BUG: add dependency on test run!
             return configurations.GetOrAdd(agentToRun.Name,
                                     key =>
                                         {

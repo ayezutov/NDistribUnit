@@ -4,6 +4,8 @@ using System.ServiceModel.Web;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.Server.AgentsTracking;
+using NDistribUnit.Common.Server.Services;
 
 namespace NDistribUnit.Common.ServiceContracts
 {
@@ -41,7 +43,7 @@ namespace NDistribUnit.Common.ServiceContracts
         /// </summary>
         /// <returns></returns>
         [OperationContract, WebGet(UriTemplate = "agent/getStatus")]
-        AgentInformation[] GetClientStatuses();
+        AgentView[] GetClientStatuses();
 
         /// <summary>
         /// Gets the log for the server

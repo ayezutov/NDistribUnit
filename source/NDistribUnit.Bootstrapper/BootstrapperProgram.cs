@@ -77,7 +77,7 @@ namespace NDistribUnit.Bootstrapper
 				                 	}.ToArray());
 				var returnValue = domain.ExecuteAssembly(targetFile, newArgs.ToArray());
 				AppDomain.Unload(domain);
-			    if (returnValue == (int) ReturnCodes.RestartDueToAvailableUpdate)
+			    if (returnValue == (int) ReturnCodes.RestartDueToAvailableUpdate || returnValue == (int) ReturnCodes.RestartDueToConfigChange)
 			        Main(args);
 			}
 			catch (Exception ex)

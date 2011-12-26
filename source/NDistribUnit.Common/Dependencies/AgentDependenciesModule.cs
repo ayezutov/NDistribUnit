@@ -4,6 +4,8 @@ using NDistribUnit.Common.Agent;
 using NDistribUnit.Common.Agent.ExternalModules;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.TestExecution;
+using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 using NDistribUnit.Common.TestExecution.Storage;
 using NDistribUnit.Common.Updating;
 
@@ -41,6 +43,7 @@ namespace NDistribUnit.Common.Dependencies
             builder.RegisterType<AgentHost>().InstancePerLifetimeScope();
             builder.RegisterType<AgentTestRunner>().InstancePerLifetimeScope();
             builder.RegisterType<NativeRunnerCache>().As<INativeRunnerCache>().InstancePerLifetimeScope();
+            builder.RegisterType<DistributedConfigurationOperator>().As<IDistributedConfigurationOperator>().InstancePerLifetimeScope();
             builder.Register(c => new WindowsLog("Agent")).InstancePerLifetimeScope();
             builder.Register(c => new ProjectsStorage("Agent", c.Resolve<BootstrapperParameters>(), c.Resolve<ZipSource>())).As<IProjectsStorage>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterModule(new CommonDependenciesModule(args));

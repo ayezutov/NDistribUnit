@@ -46,8 +46,8 @@ namespace NDistribUnit.Common.Dependencies
             builder.RegisterType<TestResultsProcessor>();
             builder.RegisterType<TestResultsSerializer>().As<ITestResultsSerializer>().InstancePerLifetimeScope();
 
-            builder.Register(c => new RollingLog(c.Resolve<LogConfiguration>().RollingLogItemsCount));
-            builder.RegisterType<ConsoleLog>();
+            builder.Register(c => new RollingLog(c.Resolve<LogConfiguration>().RollingLogItemsCount)).InstancePerLifetimeScope();
+            builder.RegisterType<ConsoleLog>().InstancePerLifetimeScope();
             builder.Register(
                 c => new CombinedLog(c.Resolve<ConsoleLog>(), c.Resolve<RollingLog>(), c.Resolve<WindowsLog>()))
                 .As<ILog>()

@@ -20,6 +20,7 @@ namespace NDistribUnit.Common.Agent
         public static readonly string RemoteParticleAddress = "remote";
 
         private readonly IEnumerable<IAgentExternalModule> modules;
+        private readonly AgentConfiguration configuration;
 
         private ILog log;
         internal ServiceHost TestRunnerHost { get; set; }
@@ -34,11 +35,13 @@ namespace NDistribUnit.Common.Agent
         /// </summary>
         /// <param name="testRunner">The test runner.</param>
         /// <param name="modules">The agents' external modules.</param>
+        /// <param name="configuration">The configuration.</param>
         /// <param name="log">The log.</param>
-        public AgentHost(Agent testRunner, IEnumerable<IAgentExternalModule> modules, ILog log)
+        public AgentHost(Agent testRunner, IEnumerable<IAgentExternalModule> modules, AgentConfiguration configuration,  ILog log)
         {
             TestRunner = testRunner;
             this.modules = modules;
+            this.configuration = configuration;
             this.log = log;
         }
 
@@ -47,7 +50,11 @@ namespace NDistribUnit.Common.Agent
         /// </summary>
         public void Start()
         {
-            var baseAddress = new Uri(string.Format("net.tcp://{0}:{1}", Environment.MachineName, WcfUtilities.FindPort()));
+            var port = configuration.Port;
+            if (!port.HasValue || !WcfUtilities.IsFreePort(port.Value))
+                port = WcfUtilities.FindPort();
+
+            var baseAddress = new Uri(string.Format("net.tcp://{0}:{1}", Environment.MachineName, port));
 
             log.BeginActivity(string.Format("Starting agent {1} on '{0}'...", baseAddress, TestRunner.Name));
             TestRunnerHost = new ServiceHost(TestRunner, baseAddress);

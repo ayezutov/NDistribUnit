@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NDistribUnit.Common.Server.ConnectionTracking
+namespace NDistribUnit.Common.Server.AgentsTracking
 {
     /// <summary>
     /// The options of a connection tracker

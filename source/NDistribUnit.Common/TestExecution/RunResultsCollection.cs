@@ -51,12 +51,10 @@ namespace NDistribUnit.Common.TestExecution
             lock (syncObject)
             {
                 if (MergedResult == null)
-                    MergedResult = result.Result;
-                else
-                {
-                    unmerged.Add(result);
-                    Merge(async: true);
-                }
+                    MergedResult = new TestResult(result.Result.Test);
+
+                unmerged.Add(result);
+                Merge(async: true);
             }
         }
 

@@ -1,6 +1,5 @@
 using System;
 using System.ServiceModel.Discovery;
-using NDistribUnit.Common.Common.Communication;
 
 namespace NDistribUnit.Common.Agent.ExternalModules
 {
@@ -10,6 +9,7 @@ namespace NDistribUnit.Common.Agent.ExternalModules
     public class DiscoveryModule : IAgentExternalModule
     {
         private readonly Uri scope;
+        private EndpointDiscoveryBehavior discoveryBehavior;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DiscoveryModule"/> class.
@@ -26,18 +26,20 @@ namespace NDistribUnit.Common.Agent.ExternalModules
         /// <param name="host">The host.</param>
         public void Start(AgentHost host)
         {
-            var agentTestRunnerDiscoveryBehavior = host.Endpoint.Behaviors.Find<EndpointDiscoveryBehavior>();
-            if (agentTestRunnerDiscoveryBehavior == null)
+            discoveryBehavior = host.Endpoint.Behaviors.Find<EndpointDiscoveryBehavior>();
+            if (discoveryBehavior == null)
             {
-                agentTestRunnerDiscoveryBehavior = new EndpointDiscoveryBehavior();
-                host.Endpoint.Behaviors.Add(agentTestRunnerDiscoveryBehavior);
-                AdditionalDataManager.Add(agentTestRunnerDiscoveryBehavior.Extensions, host);
+                discoveryBehavior = new EndpointDiscoveryBehavior();
+                host.Endpoint.Behaviors.Add(discoveryBehavior);
             }
-            agentTestRunnerDiscoveryBehavior.Scopes.Add(scope);
+            discoveryBehavior.Scopes.Add(scope);
             
 
             host.TestRunnerHost.Description.Behaviors.Add(new ServiceDiscoveryBehavior());
             host.TestRunnerHost.AddServiceEndpoint(new UdpDiscoveryEndpoint());
+
+            host.TestRunner.UpdateStarted += (sender, args) => { discoveryBehavior.Enabled = false; };
+            host.TestRunner.UpdateFinished += (sender, args) => { discoveryBehavior.Enabled = true; };
         }
 
         /// <summary>

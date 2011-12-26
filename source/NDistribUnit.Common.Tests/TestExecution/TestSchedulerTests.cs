@@ -4,6 +4,7 @@ using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server;
+using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.Exceptions;
 using NDistribUnit.Common.TestExecution.Storage;
@@ -15,7 +16,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
     public class TestSchedulerTests
     {
         private readonly Guid defaultId = Guid.NewGuid();
-        private TestAgentsCollection agents;
+        private AgentsCollection agents;
         private TestUnitsCollection tests;
         private TestsScheduler scheduler;
         private RequestsStorage requests;
@@ -23,7 +24,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
         [SetUp]
         public void Init()
         {
-            agents = new TestAgentsCollection();
+            agents = new AgentsCollection(new ConsoleLog());
             tests = new TestUnitsCollection();
             requests = new RequestsStorage(new ServerConfiguration {PingIntervalInMiliseconds = 10000}, new ConsoleLog());
 
@@ -33,8 +34,8 @@ namespace NDistribUnit.Common.Tests.TestExecution
         [Test]
         public void GetBothReturnsNullIfNoTestsAreAvailable()
         {
-            agents.Add(CreateTestAgent("first"));
-            agents.Add(CreateTestAgent("second"));
+            agents.Connect(CreateTestAgent("first"));
+            agents.Connect(CreateTestAgent("second"));
 
             var tuple = scheduler.GetAgentAndTestAndVariables();
             Assert.That(tuple, Is.Null);
@@ -51,7 +52,9 @@ namespace NDistribUnit.Common.Tests.TestExecution
         public void GetBothReturnsNullIfTestsAreAvailableAndSomeAgentsAreBusy()
         {
             tests.Add(CreateTestUnit("first"));
-            agents.Add(CreateTestAgent("first", AgentState.Busy));
+            var agent = CreateTestAgent("first");
+            agents.Connect(agent);
+            agents.MarkAsBusy(agent);
 
             var tuple = scheduler.GetAgentAndTestAndVariables();
             Assert.That(tuple, Is.Null);
@@ -61,7 +64,9 @@ namespace NDistribUnit.Common.Tests.TestExecution
         public void GetBothReturnsNullIfTestsAreAvailableAndSomeAgentsAreUpdating()
         {
             tests.Add(CreateTestUnit("first"));
-            agents.Add(CreateTestAgent("first", AgentState.Updating));
+            var agent = CreateTestAgent("first");
+            agents.Connect(agent);
+            agents.MarkAsUpdating(agent);
 
             var tuple = scheduler.GetAgentAndTestAndVariables();
             Assert.That(tuple, Is.Null);
@@ -83,13 +88,11 @@ namespace NDistribUnit.Common.Tests.TestExecution
                                                 }, testName, true, "TestFixture", "http://someName/assembly.dll");
         }
 
-        private AgentInformation CreateTestAgent(string agentName = null, AgentState state = AgentState.Ready)
+        private AgentMetadata CreateTestAgent(string agentName = null)
         {
-            return new AgentInformation
+            return new AgentMetadata(new EndpointAddress(string.Format("http://{0}", agentName)))
                        {
                            Name = agentName ?? Guid.NewGuid().ToString(),
-                           State = state,
-                           Address = new EndpointAddress(string.Format("http://{0}", agentName))
                        };
         }
     }

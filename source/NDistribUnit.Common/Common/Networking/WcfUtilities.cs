@@ -23,5 +23,27 @@ namespace NDistribUnit.Common.Common.Networking
                 return local.Port;
             }
         }
+        
+        /// <summary>
+        /// Finds a free available port on current machine
+        /// </summary>
+        /// <returns>The free port number</returns>
+        public static bool IsFreePort(int port)
+        {
+            var endPoint = new IPEndPoint(IPAddress.Any, port);
+
+            try
+            {
+                using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+                {
+                    socket.Bind(endPoint);
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

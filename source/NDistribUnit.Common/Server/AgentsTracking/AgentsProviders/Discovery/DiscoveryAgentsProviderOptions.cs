@@ -1,11 +1,11 @@
 using System.Configuration;
 
-namespace NDistribUnit.Common.Server.ConnectionTracking.Discovery
+namespace NDistribUnit.Common.Server.AgentsTracking.AgentsProviders.Discovery
 {
     /// <summary>
-    /// The options for <see cref="DiscoveryConnectionTracker{TIEndpoint}"/>
+    /// The options for <see cref="DiscoveryAgentsProvider"/>
     /// </summary>
-    public class DiscoveryConnectionTrackerOptions: ConfigurationSection
+    public class DiscoveryAgentsProviderOptions: ConfigurationSection
     {
         /// <summary>
         /// Gets or sets the discovery interval in miliseconds.

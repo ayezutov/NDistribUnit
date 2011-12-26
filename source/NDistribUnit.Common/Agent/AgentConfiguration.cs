@@ -44,6 +44,19 @@ namespace NDistribUnit.Common.Agent
         }
 
         /// <summary>
+        /// Gets or sets the port.
+        /// </summary>
+        /// <value>
+        /// The port.
+        /// </value>
+        [ConfigurationProperty("port")]
+        public int? Port
+        {
+            get { return (int?) base["port"]; }
+            set { base["port"] = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the log configuration.
         /// </summary>
         /// <value>

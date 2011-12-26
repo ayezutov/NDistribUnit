@@ -6,6 +6,7 @@ using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution.Data;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 using NDistribUnit.Common.TestExecution.Exceptions;
@@ -19,7 +20,7 @@ namespace NDistribUnit.Common.TestExecution
     /// </summary>
     public class ServerTestRunner : IAgentDataSource
     {
-        private readonly TestAgentsCollection agents;
+        private readonly AgentsCollection agents;
         private readonly TestUnitsCollection tests;
 
         private readonly IRequestsStorage requests;
@@ -46,7 +47,7 @@ namespace NDistribUnit.Common.TestExecution
         /// <param name="scheduler">The scheduler.</param>
         /// <param name="reprocessor">The reprocessor.</param>
         /// <param name="connectionProvider">The connection provider.</param>
-        public ServerTestRunner(TestAgentsCollection agents,
+        public ServerTestRunner(AgentsCollection agents,
                                 TestUnitsCollection tests,
                                 IRequestsStorage requests,
                                 IProjectsStorage projects,
@@ -75,8 +76,8 @@ namespace NDistribUnit.Common.TestExecution
             requests.Added += (sender, args) => RunAsynchronously(() => ProcessRequest(args.Data));
 
             // Binding to agent collection events
-            agents.AgentFreed += (sender, args) => RunAsynchronously(TryToRunIfAvailable);
-            agents.AgentDisconnected += (sender, args) => RunAsynchronously(TryToRunIfAvailable);
+            agents.ReadyAgentAppeared += (sender, args) => RunAsynchronously(TryToRunIfAvailable);
+            agents.ClientDisconnectedOrFailed += (sender, args) => RunAsynchronously(TryToRunIfAvailable);
 
             // Binding to test collection events
             tests.AvailableAdded += (sender, args) => RunAsynchronously(TryToRunIfAvailable); 
@@ -97,9 +98,9 @@ namespace NDistribUnit.Common.TestExecution
         // Should be started asynchronously to avoid any deadlocks
         private void TryToRunIfAvailable()
         {
-            Tuple<AgentInformation, TestUnitWithMetadata, DistributedConfigurationSubstitutions> pair;
+            Tuple<AgentMetadata, TestUnitWithMetadata, DistributedConfigurationSubstitutions> pair;
             // lock both collections
-            lock (agents.SyncObject)
+            using (agents.Lock())
             {
                 lock (tests.SyncObject)
                 {
@@ -120,7 +121,7 @@ namespace NDistribUnit.Common.TestExecution
                         return;
 
                     tests.MarkRunning(pair.Item2);
-                    agents.MarkBusy(pair.Item1);
+                    agents.MarkAsBusy(pair.Item1);
 
                     if (tests.HasAvailable)
                         RunAsynchronously(TryToRunIfAvailable);
@@ -131,7 +132,7 @@ namespace NDistribUnit.Common.TestExecution
         }
 
         // Should be started in a separate thread
-        private void Run(TestUnitWithMetadata test, AgentInformation agent, DistributedConfigurationSubstitutions configurationSubstitutions)
+        private void Run(TestUnitWithMetadata test, AgentMetadata agent, DistributedConfigurationSubstitutions configurationSubstitutions)
         {
             var request = requests.GetBy(test.Test.Run);
             if (request != null)
@@ -147,23 +148,23 @@ namespace NDistribUnit.Common.TestExecution
             catch (CommunicationException ex)
             {
                 log.Error("Exception while running test", ex);
-                agent.State = AgentState.Ready;
+                agents.MarkAsReady(agent);
                 tests.Add(test);
             }
             catch (Exception ex)
             {
                 log.Error("Exception while running test", ex);
-                agent.State = AgentState.Error;
+                agents.MarkAsFailure(agent);
                 tests.Add(test);
             }
 
             ProcessResult(test, agent, result);
         }
 
-        private void ProcessResult(TestUnitWithMetadata test, AgentInformation agent, TestUnitResult result)
+        private void ProcessResult(TestUnitWithMetadata test, AgentMetadata agent, TestUnitResult result)
         {
             bool isRequestCompleted;
-            lock (agents.SyncObject)
+            using (agents.Lock())
             {
                 lock (tests.SyncObject)
                 {

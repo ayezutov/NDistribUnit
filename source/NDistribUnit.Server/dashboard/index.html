@@ -172,10 +172,7 @@
                                     ${Name}
                                   {{/if}}
                                   </span><span class="agent-address"> (${Address})</span><br/>
-                                  <span class="agent-timestamp">
-                                      <span class="agent-time">${LastStatusUpdate.toLocaleTimeString()},</span>
-                                      <span class="agent-date">${LastStatusUpdate.toLocaleDateString()}</span>
-                                  </span>
+                                  
                                  </div>
                             {{/each}}
                         {{/if}}             
@@ -188,9 +185,11 @@
                         <div id="agents-statuses-error" class="error" style="display: none">
                         Oooops...</div></h3>
                     <div class="agents-legend">
-                        <span class="agent Connected">-&nbsp;Ready</span> <span class="agent Busy">-&nbsp;Busy</span>
-                        <span class="agent Disconnected">-&nbsp;Disconnected</span> <span class="agent Unknown">
-                            -&nbsp;Unknown</span>
+                        <span class="agent Ready">-&nbsp;Ready</span> 
+                        <span class="agent Busy">-&nbsp;Busy</span>
+                        <span class="agent Updating">-&nbsp;Updating</span> 
+                        <span class="agent Disconnected">-&nbsp;Disconnected</span> 
+                        <span class="agent Unknown">-&nbsp;Unknown</span>
                     </div>
                     <div style="clear: both;"></div>                    
                     <div style="clear:both; height:10px;"></div>

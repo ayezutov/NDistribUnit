@@ -7,7 +7,7 @@ using System.Threading;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Extensions;
 using NDistribUnit.Common.Logging;
-using NDistribUnit.Common.Server.ConnectionTracking;
+using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.ServiceContracts;
 using System.Linq;
 

@@ -11,6 +11,7 @@ using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 using NUnit.Core;
+using NDistribUnit.Common.Extensions;
 
 namespace NDistribUnit.Common.Agent
 {
@@ -67,7 +68,7 @@ namespace NDistribUnit.Common.Agent
         {
             get { return versionProvider.GetVersion(); }
         }
-
+        
         /// <summary>
         /// Runs tests on agent
         /// </summary>
@@ -103,9 +104,26 @@ namespace NDistribUnit.Common.Agent
     	/// <param name="updatePackage"></param>
     	public void ReceiveUpdatePackage(UpdatePackage updatePackage)
     	{
-    		updateReceiver.SaveUpdatePackage(updatePackage);
+            try
+            {
+                UpdateStarted.SafeInvoke(this);
+                updateReceiver.SaveUpdatePackage(updatePackage);
+            }
+            finally
+            {
+                UpdateFinished.SafeInvoke(this);
+            }
     	}
 
+        /// <summary>
+        /// Occurs when an update is started.
+        /// </summary>
+        public event EventHandler UpdateStarted;
+
+        /// <summary>
+        /// Occurs when an update is finished.
+        /// </summary>
+        public event EventHandler UpdateFinished;
 
     	/// <summary>
         /// Pings the tracking side
@@ -119,7 +137,7 @@ namespace NDistribUnit.Common.Agent
                 @event(this, new EventArgs<TimeSpan>(pingInterval));
 
             return new PingResult { 
-				EndpointName = Name, 
+				Name = Name, 
 				Version = Version};
         }
 

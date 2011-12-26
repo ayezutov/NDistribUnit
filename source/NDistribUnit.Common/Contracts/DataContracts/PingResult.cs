@@ -13,7 +13,7 @@ namespace NDistribUnit.Common.DataContracts
         /// <value>
         /// The name of the endpoint.
         /// </value>
-        public string EndpointName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
 		/// Gets or sets the version.

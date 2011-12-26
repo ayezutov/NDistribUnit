@@ -3,8 +3,8 @@ using System.Collections.Concurrent;
 using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
-using NDistribUnit.Common.Server.ConnectionTracking;
 using NDistribUnit.Common.Extensions;
+using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution.Data;
 
 namespace NDistribUnit.Common.TestExecution.Storage

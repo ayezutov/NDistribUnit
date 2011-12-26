@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using NDistribUnit.Common.Retrying;
 using NDistribUnit.Integration.Tests.Infrastructure;
 using NUnit.Framework;
 
@@ -9,12 +10,12 @@ namespace NDistribUnit.Integration.Tests.Tests.Updating
     public class UpdateTests
     {
         
-        private NDistribUnitTestSystem system;
+        private NDistribUnitTestSystemFluent system;
 
         [SetUp]
         public void Init()
         {
-            system = new NDistribUnitTestSystem();
+            system = new NDistribUnitTestSystemFluent();
         }
 
         [TearDown]
@@ -56,6 +57,7 @@ namespace NDistribUnit.Integration.Tests.Tests.Updating
                 .StartAgent();
 
             Assert.That(agent.UpdateReceiver.HasReceivedUpdate(Version.Parse("2.0.0.0")));
+            Assert.That(server.HasAReady(agent));
         }
 
         [Test]
@@ -70,6 +72,7 @@ namespace NDistribUnit.Integration.Tests.Tests.Updating
                 .StartAgent();
 
             Assert.That(agent.UpdateReceiver.HasReceivedUpdate(), Is.False);
+            Assert.That(server.HasAReady(agent));
         }
 
         [Test]
@@ -84,6 +87,7 @@ namespace NDistribUnit.Integration.Tests.Tests.Updating
                 .StartAgent();
 
             Assert.That(agent.UpdateReceiver.HasReceivedUpdate(), Is.False);
+            Assert.That(server.HasAReady(agent));
         }
 
 
@@ -100,6 +104,7 @@ namespace NDistribUnit.Integration.Tests.Tests.Updating
             client.RunEmptyTest();
 
             Assert.That(client.UpdateReceiver.HasReceivedUpdate(Version.Parse("2.0.0.0")));
+
         }
 
 

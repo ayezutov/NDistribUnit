@@ -15,7 +15,7 @@ namespace NDistribUnit.Common.Retrying
         /// <param name="interval">The interval.</param>
         /// <param name="maxCount">The max count.</param>
         /// <returns></returns>
-        public static bool While(Func<bool> condition, int interval, int maxCount = 10)
+        public static bool UntilTrue(Func<bool> condition, int interval, int maxCount = 10)
         {
             var count = 0;
             while (!condition())

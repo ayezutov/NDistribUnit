@@ -1,26 +1,17 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web.Script.Serialization;
 using System.Xml.Linq;
 using Autofac;
 using Moq;
-using NDistribUnit.Common.Agent;
-using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Common.Updating;
-using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
-using NDistribUnit.Common.TestExecution;
-using NDistribUnit.Common.TestExecution.Storage;
-using NDistribUnit.Integration.Tests.Infrastructure;
-using NDistribUnit.SampleTestAssembly.CategorizedTests;
 using NUnit.Framework;
 using System.Xml.XPath;
 
@@ -47,6 +38,111 @@ namespace NDistribUnit.Integration.Tests.Tests
         [TestFixtureTearDown]
         public void DisposeOnce()
         {
+        }
+
+
+        [Serializable]
+        class Foo : IDeserializationCallback
+        {
+            public Dictionary<int, string> Dict { get; private set; }
+
+            public Foo()
+            {
+                Dict = new Dictionary<int, string>();
+            }
+            
+            public void OnDeserialization(object sender)
+            {
+                Dict.OnDeserialization(sender);
+                Dict.Add(99, "test"); // Error here
+            }
+        }
+
+        [Test]
+        public void DocParsing()
+        {
+            var doc = XDocument.Parse(@"<?xml version=""1.0"" encoding=""utf-8""?>
+            <xml>
+            <root>
+            <Item>
+            <taxids>
+                <string>1</string>
+                <string>374</string>
+                <string>723</string>
+                <string>1087</string>
+                <string>1118</string>
+                <string>1121</string>
+            </taxids>
+            <taxids>
+                <string>2-</string>
+                <string>374</string>
+                <string>724</string>
+                <string>1087</string>
+                <string>1118</string>
+                <string>1121</string>
+            </taxids>
+            <taxids>
+                <string>3</string>
+                <string>374</string>
+                <string>723</string>
+                <string>1087</string>
+                <string>1118</string>
+                <string>1121</string>
+            </taxids>
+            </Item>
+            <Item>
+            <taxids>
+                <string>4</string>
+                <string>374</string>
+                <string>723</string>
+                <string>1087</string>
+                <string>1118</string>
+                <string>1121</string>
+            </taxids>
+            <taxids>
+                <string>5-</string>
+                <string>374</string>
+                <string>724</string>
+                <string>1087</string>
+                <string>1118</string>
+                <string>1121</string>
+            </taxids>
+            <taxids>
+                <string>6</string>
+                <string>374</string>
+                <string>723</string>
+                <string>1087</string>
+                <string>1118</string>
+                <string>1121</string>
+            </taxids>
+            </Item>
+            </root>
+            </xml>");
+
+            var values = from ids in doc.XPathSelectElements("/xml/root/Item/taxids")
+                         from id in ids.Elements("string")
+                         where id.Value.Contains("723")
+                         select ids.ToString();
+
+            var result = string.Join("\n", values);
+
+            Console.WriteLine(result);
+        }
+
+        [Test]
+        public void SerializationTest()
+        {
+            var formatter = new BinaryFormatter();
+
+            var foo = new Foo();
+            foo.Dict.Add(1, "456");
+
+            var memoryStream = new MemoryStream();
+            formatter.Serialize(memoryStream, foo);
+
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            var foo2 = (Foo)formatter.Deserialize(memoryStream);
+            
         }
 
         [Test, Explicit]
@@ -81,7 +177,7 @@ namespace NDistribUnit.Integration.Tests.Tests
         private class C : Exception
         {
         }
-        
+
         [Test]
         public void CanBuildMultipleContainers()
         {
@@ -111,7 +207,7 @@ namespace NDistribUnit.Integration.Tests.Tests
 
             var fileName = @"d:\work\personal\NDistribUnit\test\O2ITestsDebug2_dec_2011Debug\UI.Test.dll.config";
             var doc = XDocument.Load(fileName);
-            
+
 
             Console.WriteLine(doc.ToString());
         }
@@ -228,7 +324,7 @@ namespace NDistribUnit.Integration.Tests.Tests
                     int remainder;
                     index = Math.DivRem(index - 1, @base, out remainder);
 
-                    result.Insert(0, (char) (one + remainder));
+                    result.Insert(0, (char)(one + remainder));
                 }
                 return result.ToString();
             }

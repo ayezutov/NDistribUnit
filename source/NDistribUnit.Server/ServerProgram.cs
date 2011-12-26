@@ -82,7 +82,7 @@ namespace NDistribUnit.Server
 			serverHost.Start();
 			log.EndActivity(@"Server was started. Please type ""exit"" and press <Enter> to exit");
 
-			var returnCode = WaitAndGetReturnCode();
+			var returnCode = WaitAndGetReturnCode(new[]{ bootstrapperParameters.ConfigurationFile });
 
 			//serverHost.SaveState();
 			updatesMonitor.Stop();

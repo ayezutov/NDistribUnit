@@ -1,76 +1,111 @@
 using System;
-using Moq;
-using NDistribUnit.Common.Common.Updating;
-using NDistribUnit.Common.Communication.ConnectionTracking;
-using NDistribUnit.Common.Contracts.ServiceContracts;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Autofac;
+using NDistribUnit.Common.Agent;
+using NDistribUnit.Common.Client;
+using NDistribUnit.Common.Dependencies;
+using NDistribUnit.Common.Server;
+using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Integration.Tests.Infrastructure.Entities;
 
 namespace NDistribUnit.Integration.Tests.Infrastructure
 {
     public class NDistribUnitTestSystem
     {
-        private readonly NDistribUnitTestSystemController controller;
+        internal const string DefaultScope = "http://dev.yezutov.com/ndistribunit/tests";
+        private readonly IContainer dependenciesContainer;
+        internal ContainerBuilder CurrentBuilder { get; private set; }
+        
+        internal readonly ObservableCollection<AgentWrapper> Agents = new ObservableCollection<AgentWrapper>();
+        
+        private readonly ServerConfiguration serverConfiguration;
+        internal AgentConfiguration AgentConfiguration { get; set; }
+        private readonly IList<ILifetimeScope> scopes = new List<ILifetimeScope>();
+        private readonly ClientParameters clientParameters;
+
+        public ServerWrapper Server { get; private set; }
 
         public NDistribUnitTestSystem()
         {
-            controller = new NDistribUnitTestSystemController();
-            
-        }
+            serverConfiguration = new ServerConfiguration
+                                      {
+                                          PingIntervalInMiliseconds = 500,
+                                          TestRunnerPort = 8091,
+                                          DashboardPort = 8090,
+                                          Scope = new Uri(DefaultScope)
+                                      };
+            AgentConfiguration = new AgentConfiguration
+                                     {
+                                         Scope = new Uri(DefaultScope),
+                                         AnnouncementInterval = TimeSpan.FromMilliseconds(1000)
+                                     };
+            clientParameters = new ClientParameters
+                                   {
+                                       ServerUri = new Uri("test://server"),
+                                       TimeoutPeriod = TimeSpan.FromSeconds(1),
+                                       NUnitParameters = {Configuration = "Debug"}
+                                   };
+            clientParameters.NUnitParameters.AssembliesToTest.Add("test://ndistribunit.org/project.nunit");
 
-        public ServerWrapper StartServer()
-        {
-            var server = controller.GetServer();
-            server.Start();
-            return server;
-        }
+            CurrentBuilder = new ContainerBuilder();
+            var commandLineArgs = new string[0];
+            CurrentBuilder.RegisterInstance(this);
+            CurrentBuilder.RegisterModule(new CommonDependenciesModule(commandLineArgs));
+            CurrentBuilder.RegisterInstance(serverConfiguration).As<IConnectionsHostOptions>().AsSelf();
+            CurrentBuilder.RegisterInstance(clientParameters);
+            CurrentBuilder.RegisterModule(new AgentDependenciesModule(AgentConfiguration, commandLineArgs));
+            CurrentBuilder.RegisterModule(new ServerDependenciesModule(serverConfiguration, commandLineArgs));
+            CurrentBuilder.RegisterModule(new ClientDependenciesModule());
+            CurrentBuilder.RegisterModule(new TestingDefaultDependencies());
 
-        public AgentWrapper StartAgent(string agentName = null, Uri agentScope = null)
-        {
-            controller.UpdateNextAgentParameters(agentName ?? Guid.NewGuid().ToString(), agentScope);
-            var agent = controller.GetAgent();
-            agent.Start();
-            return agent;
-        }
-
-        public ClientWrapper GetClient()
-        {
-            return controller.GetClient();
+            dependenciesContainer = CurrentBuilder.Build();
+            CurrentBuilder = new ContainerBuilder();
         }
 
         public void Dispose()
         {
-            controller.Dispose();
+            foreach (var lifetimeScope in scopes)
+            {
+                lifetimeScope.Dispose();
+            }
+            dependenciesContainer.Dispose();
         }
 
-        #region Configuration methods
-
-        public NDistribUnitTestSystem SetConnectionsTracker<TTracker>()
-            where TTracker : INetworkExplorer<IRemoteAppPart>
+        public ServerWrapper GetServer()
         {
-            controller.Register<TTracker, INetworkExplorer<IRemoteAppPart>>();
-            return this;
+            return Server = GetContainer().Resolve<ServerWrapper>();
         }
 
-        public NDistribUnitTestSystem ActAsRealSystemWithOpeningPorts()
+        private ILifetimeScope GetContainer()
         {
-            controller.EnablePortsOpening();
-            return this;
+            FinalizeBuilder();
+            ILifetimeScope scope = dependenciesContainer.BeginLifetimeScope();
+            scopes.Add(scope);
+            return scope;
         }
 
-        public NDistribUnitTestSystem Register<TType>(TType entry) where TType : class
+        private void FinalizeBuilder()
         {
-            controller.Register(entry);
-            return this;
+            CurrentBuilder.Update(dependenciesContainer);
+            CurrentBuilder = new ContainerBuilder();
         }
-
-        public NDistribUnitTestSystem OfVersion(Version version)
+        
+        public AgentWrapper GetAgent()
         {
-            var versionProvider = new Mock<IVersionProvider>();
-            versionProvider.Setup(p => p.GetVersion()).Returns(version);
-            controller.Register(versionProvider.Object);
-            return this;
+            var agent = GetContainer().Resolve<AgentWrapper>();
+            Agents.Add(agent);
+            return agent;
         }
 
-        #endregion
+        public void Register<TType>(TType entry) where TType : class
+        {
+            CurrentBuilder.RegisterInstance(entry).As<TType>().AsSelf();
+        }
+
+        public ClientWrapper GetClient()
+        {
+            return GetContainer().Resolve<ClientWrapper>();
+        }
     }
 }

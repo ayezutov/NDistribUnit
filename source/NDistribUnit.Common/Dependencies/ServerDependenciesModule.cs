@@ -2,13 +2,13 @@ using System.Configuration;
 using Autofac;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Logging;
-using NDistribUnit.Common.Communication.ConnectionTracking;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server;
+using NDistribUnit.Common.Server.AgentsTracking;
+using NDistribUnit.Common.Server.AgentsTracking.AgentsProviders;
 using NDistribUnit.Common.Server.Communication;
-using NDistribUnit.Common.Server.ConnectionTracking;
 using NDistribUnit.Common.Server.Services;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
@@ -72,9 +72,10 @@ namespace NDistribUnit.Common.Dependencies
 
             builder.RegisterType<Server.Services.Server>().InstancePerLifetimeScope();
             builder.RegisterType<TestUnitsCollection>().InstancePerLifetimeScope();
-            builder.RegisterType<TestAgentsCollection>().InstancePerLifetimeScope();
+            builder.RegisterType<AgentsCollection>().InstancePerLifetimeScope();
+            builder.RegisterType<AgentUpdater>().As<IAgentUpdater>().InstancePerLifetimeScope();
             builder.RegisterType<DashboardService>().InstancePerLifetimeScope();
-            builder.RegisterType<ServerConnectionsTracker>().InstancePerLifetimeScope();
+            builder.RegisterType<AgentsTracker>().InstancePerLifetimeScope();
             builder.RegisterType<UpdateSource>().As<IUpdateSource>();
             builder.RegisterType<RequestsStorage>().As<IRequestsStorage>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<Reprocessor>().As<IReprocessor>().InstancePerLifetimeScope();
@@ -95,7 +96,7 @@ namespace NDistribUnit.Common.Dependencies
 
             foreach (ConnectionTrackerElement connectionTracker in ServerConfiguration.ConnectionTrackers)
             {
-                builder.RegisterType(connectionTracker.Type).As<INetworkExplorer<IRemoteAppPart>>();
+                builder.RegisterType(connectionTracker.Type).As<IAgentsProvider>();
                 if (!string.IsNullOrEmpty(connectionTracker.SectionName))
                 {
                     ConfigurationSection section = Configuration.GetSection(connectionTracker.SectionName);

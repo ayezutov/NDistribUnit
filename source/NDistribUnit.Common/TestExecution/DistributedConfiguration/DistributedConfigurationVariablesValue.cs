@@ -1,8 +1,11 @@
+using System;
+
 namespace NDistribUnit.Common.TestExecution.DistributedConfiguration
 {
     /// <summary>
     /// 
     /// </summary>
+    [Serializable]
     public class DistributedConfigurationVariablesValue
     {
         /// <summary>

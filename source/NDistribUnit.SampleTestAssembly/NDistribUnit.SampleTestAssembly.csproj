@@ -31,6 +31,7 @@
       <HintPath>..\_dependencies\NUnit-2.5.9.10348\bin\net-2.0\framework\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,9 +44,15 @@
     <Compile Include="CategorizedTests\TestFixtureWithCategoriesOnTests.cs" />
     <Compile Include="CategorizedTests\TestFixtureWithNoGroup1CategoryOnTestsOrSelf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleTests\ReadingConfigurationAndWritingItToConsole.cs" />
+    <Compile Include="SampleTests\ReadingConfigurationAndWritingItToConsole2.cs" />
+    <Compile Include="SampleTests\ReadingConfigurationAndWritingItToConsole3.cs" />
+    <Compile Include="SampleTests\ReadingConfigurationAndWritingItToConsole4.cs" />
+    <Compile Include="SampleTests\ReadingConfigurationAndWritingItToConsole5.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="SampleTests\" />
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

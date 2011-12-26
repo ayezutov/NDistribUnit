@@ -19,5 +19,8 @@
 		
 		///
 		IncompleteParameterList = int.MaxValue - 3,
+
+        ///
+        RestartDueToConfigChange = int.MaxValue - 4
 	}
 }

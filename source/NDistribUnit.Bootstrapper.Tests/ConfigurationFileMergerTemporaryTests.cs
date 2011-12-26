@@ -7,13 +7,13 @@ namespace NDistribUnit.Client.Tests.Configuration
     [TestFixture]
     public class ConfigurationFileMergerTemporaryTests
     {
-        [Test]
+        [Test, Explicit]
         public void CheckOnExistingFilesOnCurrentComputer()
         {
-            var @base = @"d:\temp\NdistribUnit\Server\NDistribUnit.Server.exe.config";
+            var @base = @"d:\work\personal\NDistribUnit\source\builds\Debug\Fixed.Version\Server\NDistribUnit.Server.exe.config";
             var part = @"d:\work\personal\NDistribUnit\source\builds\Debug\Server.exe.config";
 
-            var merged = new InAnotherDomainConfigurationMerger().Merge(@base, part);
+            var merged = new ConfigurationFileMerger().MergeFilesToString(@base, part);
 
             Console.WriteLine(merged);
         }

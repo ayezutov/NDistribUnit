@@ -8,16 +8,16 @@ using NDistribUnit.Integration.Tests.Infrastructure.Entities;
 
 namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
 {
-    public class TestConnectionProvider: IConnectionProvider
+    public class TestingConnectionProvider: IConnectionProvider
     {
-        private readonly NDistribUnitTestSystemController controller;
+        private readonly NDistribUnitTestSystem controller;
         private IClient lastClient;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestConnectionProvider"/> class.
+        /// Initializes a new instance of the <see cref="TestingConnectionProvider"/> class.
         /// </summary>
         /// <param name="controller">The controller.</param>
-        public TestConnectionProvider(NDistribUnitTestSystemController controller)
+        public TestingConnectionProvider(NDistribUnitTestSystem controller)
         {
             this.controller = controller;
         }
@@ -34,11 +34,11 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
         {
             if (typeof(TServiceContract) == typeof(IRemoteAppPart))
             {
-                var name = address.Uri.AbsolutePath.Trim('/').Split('/')[0];
+                var name = address.Uri.LocalPath.Trim('/').Split('/')[0];
                 AgentWrapper agentWrapper = controller.Agents
                     .FirstOrDefault(a => a.TestRunner.Name.Equals(name));
 
-                return (TServiceContract)(IRemoteAppPart)(agentWrapper == null ? null : agentWrapper.TestRunner);
+                return (TServiceContract)((IRemoteAppPart)agentWrapper ?? new CommunicationExceptionThrowingAgent());
             }
             return null;
         }
@@ -57,7 +57,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
                 AgentWrapper agentWrapper = controller.Agents
                     .FirstOrDefault(a => a.TestRunner.Name.Equals(address.Uri.AbsolutePath.Trim('/')));
 
-                return (TServiceContract)(IAgent)(agentWrapper == null ? null : agentWrapper.TestRunner);
+                return (TServiceContract)((IAgent)agentWrapper ?? new CommunicationExceptionThrowingAgent());
             }
 
             return null;

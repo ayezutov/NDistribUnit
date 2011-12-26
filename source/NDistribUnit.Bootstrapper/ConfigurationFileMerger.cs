@@ -19,26 +19,12 @@ namespace NDistribUnit.Bootstrapper
             if (part == null)
                 return @base;
 
+            var resultingDocument = MergeFilesToString(@base, part);
+
             var mergedFileName = InAnotherDomainConfigurationMerger.GetMergedFileName(@base);
 
             if (File.Exists(mergedFileName))
                 File.Delete(mergedFileName);
-
-            var basePath = Path.GetDirectoryName(@base);
-
-            var domain = AppDomain.CreateDomain("Configuration.File.Merger",
-                                                AppDomain.CurrentDomain.Evidence,
-                                                new AppDomainSetup
-                                                    {
-                                                        ApplicationBase = AppDomain.CurrentDomain.BaseDirectory,
-                                                        PrivateBinPath = basePath,
-                                                        ConfigurationFile = @base
-                                                    });
-            var inAnotherDomainMerger = (InAnotherDomainConfigurationMerger)domain.CreateInstanceFromAndUnwrap(Assembly.GetExecutingAssembly().Location, typeof (InAnotherDomainConfigurationMerger).FullName,
-                                                   false, BindingFlags.Default, null, null, 
-                                                   Thread.CurrentThread.CurrentCulture, null);
-            
-            var resultingDocument = inAnotherDomainMerger.Merge(@base, part);
 
             using (var file = new FileStream(mergedFileName, FileMode.Create))
             {
@@ -49,6 +35,29 @@ namespace NDistribUnit.Bootstrapper
             }
 
             return mergedFileName;
+        }
+
+        internal string MergeFilesToString(string @base, string part)
+        {
+            var basePath = Path.GetDirectoryName(@base);
+
+            var domain = AppDomain.CreateDomain("Configuration.File.Merger",
+                                                AppDomain.CurrentDomain.Evidence,
+                                                new AppDomainSetup
+                                                    {
+                                                        ApplicationBase =basePath,
+                                                        PrivateBinPath = Path.GetDirectoryName(part),
+                                                        ConfigurationFile = @base,
+                                                    });
+            var inAnotherDomainMerger =
+                (InAnotherDomainConfigurationMerger)
+                domain.CreateInstanceFromAndUnwrap(Assembly.GetExecutingAssembly().Location,
+                                                   typeof (InAnotherDomainConfigurationMerger).FullName,
+                                                   false, BindingFlags.Default, null, null,
+                                                   Thread.CurrentThread.CurrentCulture, null);
+
+            var resultingDocument = inAnotherDomainMerger.Merge(@base, part);
+            return resultingDocument;
         }
     }
 
@@ -152,7 +161,11 @@ namespace NDistribUnit.Bootstrapper
                                 continue;
 
                             var mergedChildElement = mergedElements
-                                .FirstOrDefault(e => e.Attribute(key.Name) != null);
+                                .FirstOrDefault(e =>
+                                                    {
+                                                        var keyAttribute = e.Attribute(key.Name);
+                                                        return keyAttribute != null && key.Value.Equals(keyAttribute.Value);
+                                                    });
                             
                             if (mergedChildElement != null)
                                 mergedElements.Remove(mergedChildElement);
