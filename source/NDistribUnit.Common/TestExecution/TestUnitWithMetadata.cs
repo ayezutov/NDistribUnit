@@ -13,15 +13,13 @@ namespace NDistribUnit.Common.TestExecution
         /// Initializes a new instance of the <see cref="TestUnitWithMetadata"/> class.
         /// </summary>
         /// <param name="testRun">The test run.</param>
-        /// <param name="fullTestName">Full name of the test.</param>
-        /// <param name="isSuite">if set to <c>true</c> [is suite].</param>
-        /// <param name="testType">Type of the test.</param>
+        /// <param name="test"></param>
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <param name="children">The children.</param>
-        public TestUnitWithMetadata(TestRun testRun, string fullTestName, bool isSuite, string testType, string assemblyName, List<TestUnitWithMetadata> children = null) 
+        public TestUnitWithMetadata(TestRun testRun, ITest test, string assemblyName, List<TestUnitWithMetadata> children = null) 
         {
             Children = children ?? new List<TestUnitWithMetadata>();
-            Test = new TestUnit(testRun, fullTestName, isSuite, testType, assemblyName);
+            Test = new TestUnit(test, testRun, assemblyName);
             Results = new List<TestResult>();
             SchedulerHints = new SchedulerHints();
         }

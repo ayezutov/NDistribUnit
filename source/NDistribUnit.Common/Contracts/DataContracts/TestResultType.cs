@@ -12,9 +12,6 @@ namespace NDistribUnit.Common.Contracts.DataContracts
         NoTests,
 
         ///
-        NoAvailableAgent,
-
-        ///
         ProjectRetrievalFailure,
         
         ///

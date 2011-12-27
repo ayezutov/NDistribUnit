@@ -1,5 +1,6 @@
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Description;
 using NDistribUnit.Common.Common.Communication;
 
 namespace NDistribUnit.Common.Common.Networking
@@ -40,9 +41,14 @@ namespace NDistribUnit.Common.Common.Networking
         /// <returns></returns>
         public TServiceContract GetDuplexConnection<TServiceContract, TCallbackType>(TCallbackType callback, EndpointAddress address) where TServiceContract : class where TCallbackType : class
         {
-            return DuplexChannelFactory<TServiceContract>.CreateChannel(callback,
-                        new NetTcpBinding("NDistribUnit.Default"),
-                        address);
+            var factory = new DuplexChannelFactory<TServiceContract>(callback, new NetTcpBinding("NDistribUnit.Default"), address);
+            foreach (OperationDescription op in factory.Endpoint.Contract.Operations)
+            {
+                var dataContractBehavior = op.Behaviors.Find<DataContractSerializerOperationBehavior>();
+                if (dataContractBehavior != null)
+                    dataContractBehavior.MaxItemsInObjectGraph = 2147483647;
+            }
+            return factory.CreateChannel();
         }
     }
 }

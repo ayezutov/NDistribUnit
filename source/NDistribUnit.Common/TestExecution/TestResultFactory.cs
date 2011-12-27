@@ -4,6 +4,7 @@ using System.Diagnostics;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.TestExecution.Data;
 using NUnit.Core;
+using System.Linq;
 
 namespace NDistribUnit.Common.TestExecution
 {
@@ -12,6 +13,15 @@ namespace NDistribUnit.Common.TestExecution
     /// </summary>
     public class TestResultFactory
     {
+        private static class TestType
+        {
+            public const string Project = "Project";
+            public const string Assembly = "Assembly";
+            public const string Namespace = "Namespace";
+            public const string TestFixture = "TestFixture";
+            public const string TestMethod = "TestMethod";
+        }
+
         /// <summary>
         /// Gets the project retrieval failure.
         /// </summary>
@@ -37,7 +47,7 @@ namespace NDistribUnit.Common.TestExecution
                                                       TestResultType testResultType)
         {
             var description = string.Format("There was an error, when running '{0}' ({1})", testRun.Id, testResultType);
-            return GetResult(exception, description, "Project", string.Empty);
+            return GetResult(exception, description, TestType.Project, string.Empty);
         }
 
         /// <summary>
@@ -76,46 +86,7 @@ namespace NDistribUnit.Common.TestExecution
         /// <returns></returns>
         public static TestResult GetProjectRetrievalFailure(TestUnit test, Exception exception = null)
         {
-            return GetResultForTest(test, exception, TestResultType.ProjectRetrievalFailure);
-        }
-
-        private static TestResult GetResultForTest(TestUnit test, Exception exception, TestResultType testResultType)
-        {
-            var description = string.Format("There was an error, when running '{0}'", test.UniqueTestId);
-            var projectResult = GetResult(exception, description, "Project", string.Empty);
-            var assemblyResult = GetResult(exception, description, "Assembly", test.AssemblyName);
-            projectResult.AddResult(assemblyResult);
-            assemblyResult.AddResult(GetNamespacedResultForTest(test, exception, testResultType, description));
-            return projectResult;
-        }
-
-        private static TestResult GetNamespacedResultForTest(TestUnit test, Exception exception, TestResultType testResultType, string description)
-        {
-            Debug.Assert(!string.IsNullOrEmpty(test.UniqueTestId));
-            TestResult result = null;
-            TestResult last = null;
-            var splitted = test.UniqueTestId.Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 0; i < splitted.Length - 2; i++)
-            {
-                var current = GetResult(exception, description, "Namespace", string.Join(".", splitted, 0, i+1));
-                if (last == null)
-                    result = last = current;
-                else
-                {
-                    last.AddResult(current);
-                    last = current;
-                }
-            }
-
-            var fixture = GetResult(exception, description, "TestFixture", string.Join(".", splitted, 0, splitted.Length - 1));
-            var method  = GetResult(exception, description, "TestMethod",  test.UniqueTestId, false);
-            fixture.AddResult(method);
-            if (last == null)
-                result = fixture;
-            else
-                last.AddResult(fixture);
-
-            return result;
+            return GetResultForTest(test, exception);
         }
 
         /// <summary>
@@ -126,7 +97,59 @@ namespace NDistribUnit.Common.TestExecution
         /// <returns></returns>
         public static TestResult GetNoAvailableAgentsFailure(TestUnitWithMetadata test, Exception exception)
         {
-            return GetResultForTest(test.Test, exception, TestResultType.NoAvailableAgent);
+            var result = GetResultForTest(test.Test, exception);
+            TestResult suite = result;
+
+            while (suite.HasResults)
+            {
+                suite = (TestResult)suite.Results[0];
+            }
+
+            // A test can be either test suite or test case
+            // Here it is a suite
+            if (test.Test.Info.IsSuite && test.Children.Any())
+            {
+                foreach (var child in test.Children)
+                {
+                    var childResult = new TestResult(child.Test.Info);
+                    childResult.SetResult(ResultState.NotRunnable, exception, FailureSite.Parent);
+                    suite.AddResult(childResult);
+                }
+            }
+
+            return result;
+        }
+
+        private static TestResult GetResultForTest(TestUnit test, Exception exception)
+        {
+            var description = string.Format("There was an error, when running '{0}'", test.UniqueTestId);
+
+            var projectResult = GetResult(exception, description, TestType.Project, string.Empty);
+            var assemblyResult = GetResult(exception, description, TestType.Assembly, test.AssemblyName);
+            projectResult.AddResult(assemblyResult);
+
+            var previous = assemblyResult;
+            var splittedTestName = test.UniqueTestId.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Add namespace parts
+            int position;
+            for (position = 0; position < splittedTestName.Length - (test.Info.IsSuite ? 1: 2); position++)
+            {
+                var namespacePart = GetResult(exception, description, TestType.Namespace, string.Join(".", splittedTestName, 0, position + 1));
+
+                previous.AddResult(namespacePart);
+                previous = namespacePart;
+            }
+
+            // Add test suite
+            TestResult suiteResult = GetResult(exception, description, TestType.TestFixture, string.Join(".", splittedTestName, 0, position + 1));
+            previous.AddResult(suiteResult);
+
+            // Add test case, if it is not a suite
+            if (!test.Info.IsSuite)
+                suiteResult.AddResult(GetResult(exception, description, TestType.TestMethod, test.UniqueTestId, false));
+
+            return projectResult;
         }
 
         /// <summary>

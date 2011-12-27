@@ -11,6 +11,7 @@ namespace NDistribUnit.Common.Contracts.ServiceContracts
     /// Contract, which is used by client to connect to server
     /// </summary>
     [ServiceContract(CallbackContract = typeof(IClient))]
+    
     public interface IServer
     {
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using NDistribUnit.Common.Contracts.DataContracts;
+using NUnit.Core;
 
 namespace NDistribUnit.Common.TestExecution
 {
@@ -9,22 +10,23 @@ namespace NDistribUnit.Common.TestExecution
 	[Serializable]
 	public class TestUnit
 	{
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TestUnit"/> class.
-        /// </summary>
-        /// <param name="testRun">The test run.</param>
-        /// <param name="fullTestName">Full name of the test.</param>
-        /// <param name="isSuite">if set to <c>true</c> [is suite].</param>
-        /// <param name="testType">Type of the test.</param>
-        /// <param name="assemblyName">Name of the assembly.</param>
-        public TestUnit(TestRun testRun, string fullTestName, bool isSuite, string testType, string assemblyName)
+	    /// <summary>
+	    /// Initializes a new instance of the <see cref="TestUnit"/> class.
+	    /// </summary>
+	    /// <param name="test"></param>
+	    /// <param name="testRun">The test run.</param>
+	    /// <param name="assemblyName">Name of the assembly.</param>
+	    public TestUnit(ITest test, TestRun testRun, string assemblyName)
         {
             Run = testRun;
-	        UniqueTestId = fullTestName;
-	        IsSuite = isSuite;
-	        TestType = testType;
-            AssemblyName = assemblyName;
+	        AssemblyName = assemblyName;
+	        Info = new TestInfo(test);
         }
+
+        /// <summary>
+        /// Gets the test info.
+        /// </summary>
+	    public TestInfo Info { get; private set; }
 
 	    /// <summary>
 		/// Gets or sets the test run.
@@ -40,24 +42,8 @@ namespace NDistribUnit.Common.TestExecution
 		/// <value>
 		/// The unique test id.
 		/// </value>
-		public string UniqueTestId { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance is suite.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is suite; otherwise, <c>false</c>.
-        /// </value>
-	    public bool IsSuite { get; private set; }
-
-        /// <summary>
-        /// Gets the type of the test.
-        /// </summary>
-        /// <value>
-        /// The type of the test.
-        /// </value>
-	    public string TestType { get; private set; }
-
+		public string UniqueTestId { get { return Info.TestName.FullName; } }
+        
         /// <summary>
         /// Gets the name of the assembly.
         /// </summary>

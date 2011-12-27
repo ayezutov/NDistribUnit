@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Threading;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution;

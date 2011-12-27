@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
 using NUnit.Core;
@@ -7,7 +8,7 @@ using NUnit.Core;
 namespace NDistribUnit.Common.TestExecution
 {
     /// <summary>
-    /// 
+    /// Represents a collection of test results for a single test run
     /// </summary>
     public class RunResultsCollection
     {
@@ -54,44 +55,53 @@ namespace NDistribUnit.Common.TestExecution
                     MergedResult = new TestResult(result.Result.Test);
 
                 unmerged.Add(result);
-                Merge(async: true);
+                MergeAsync();
             }
         }
 
-        private void Merge(bool async)
+        private void MergeAsync()
         {
-            if (unmerged.Count == 0)
-                return;
+            Task.Factory.StartNew(() =>
+                                      {
+                                          try
+                                          {
+                                              lock (syncObject)
+                                              {
+                                                  MergeNext();
+                                                  if (unmerged.Count > 0)
+                                                      MergeAsync();
+                                              }
+                                          }
+                                          catch (Exception ex)
+                                          {
+                                              log.Warning("An error occurred while merging results", ex);
+                                              throw;
+                                          }
+                                      });
+        }
 
-            if (async)
+        private void MergeSynchronously()
+        {
+            lock (syncObject)
             {
-                new Action(() =>
-                               {
-                                   try
-                                   {
-                                       lock (syncObject)
-                                       {
-                                           Merge(false);
-                                           if (unmerged.Count > 0)
-                                               Merge(true);
-                                       }
-                                   }
-                                   catch(Exception ex)
-                                   {
-                                       log.Warning("An error occurred while merging results", ex);
-                                       throw;
-                                   }
-                               }).BeginInvoke(null, null);
-                return;
+                while (unmerged.Count > 0)
+                {
+                    MergeNext();
+                }
             }
+        }
 
-            
+        private void MergeNext()
+        {
+            lock (syncObject)
+            {
                 if (unmerged.Count == 0)
                     return;
 
                 var resultToMerge = unmerged[0];
                 unmerged.Remove(resultToMerge);
                 processor.Merge(resultToMerge, ref mergedResult);
+            }
         }
 
         /// <summary>
@@ -101,7 +111,7 @@ namespace NDistribUnit.Common.TestExecution
         public TestResult Close()
         {
             closed = true;
-            Merge(async: false);
+            MergeSynchronously();
             return MergedResult;
         }
     }

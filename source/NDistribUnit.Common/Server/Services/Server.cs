@@ -17,7 +17,10 @@ namespace NDistribUnit.Common.Server.Services
     /// <summary>
     /// The test runner service, which is used by clients to tell the job
     /// </summary>
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, 
+        InstanceContextMode = InstanceContextMode.Single,
+        MaxItemsInObjectGraph = 2147483647)]
+    [CallbackBehavior(MaxItemsInObjectGraph = 2147483647)]
     public class Server : IServer
     {
     	private readonly IUpdateSource updateSource;

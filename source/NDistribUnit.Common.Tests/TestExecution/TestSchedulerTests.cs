@@ -8,6 +8,7 @@ using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.Exceptions;
 using NDistribUnit.Common.TestExecution.Storage;
+using NUnit.Core;
 using NUnit.Framework;
 
 namespace NDistribUnit.Common.Tests.TestExecution
@@ -85,7 +86,16 @@ namespace NDistribUnit.Common.Tests.TestExecution
             return new TestUnitWithMetadata(new TestRun
                                                 {
                                                     Id = runId ?? defaultId
-                                                }, testName, true, "TestFixture", "http://someName/assembly.dll");
+                                                }, new TestDataProvider
+                                                       {
+                                                           TestName = new TestName
+                                                                          {
+                                                                              FullName = testName,
+                                                                              Name = testName,
+                                                                          },
+                                                           IsSuite = true,
+                                                           TestType = "TestFixture",
+                                                       }, "http://someName/assembly.dll");
         }
 
         private AgentMetadata CreateTestAgent(string agentName = null)

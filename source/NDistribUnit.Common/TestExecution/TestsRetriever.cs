@@ -85,8 +85,9 @@ namespace NDistribUnit.Common.TestExecution
 
             if (filter.Pass(test))
             {
-                if ((test.IsSuite && test.Tests != null && test.Tests.Count != 0 && !((ITest) test.Tests[0]).IsSuite)
-                    || !test.IsSuite)
+                var isTestSuiteWithAtLeastOneTestMethod = (test.IsSuite && test.Tests != null && test.Tests.Count != 0 && !((ITest) test.Tests[0]).IsSuite);
+
+                if (isTestSuiteWithAtLeastOneTestMethod || !test.IsSuite)
                 {
                     List<TestUnitWithMetadata> subTests = null;
                     if (test.IsSuite && test.Tests != null)
@@ -97,9 +98,7 @@ namespace NDistribUnit.Common.TestExecution
                             FindTestUnits(child, request, filter, subTests, assemblyName);
                         }
                     }
-                    var testUnitWithMetadata = new TestUnitWithMetadata(request.TestRun, test.TestName.FullName,
-                                                                        test.IsSuite, test.TestType, assemblyName,
-                                                                        subTests);
+                    var testUnitWithMetadata = new TestUnitWithMetadata(request.TestRun, test, assemblyName, subTests);
                     result.Add(testUnitWithMetadata);
                 }
                 else if (test.Tests != null && test.Tests.Count > 0)
