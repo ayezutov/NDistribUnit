@@ -132,20 +132,36 @@ namespace NDistribUnit.Common.Client
                                      : TestRunParameters.Default;
 
 
+            
+
+            try
+            {
+                server.StartRunningTests(testRun);
+            }
+            catch (EndpointNotFoundException)
+            {
+                log.Error("It seems, that the server is not available");
+                return;
+            }
+
             var testRunningTask = Task.Factory.StartNew(() =>
                                                             {
-                                                                server.StartRunningTests(testRun);
                                                                 testCompleted.WaitOne();
-                                                                // TODO: show results and/or write to xml file
                                                             });
-
             var updateTask = Task.Factory.StartNew(() =>
-                                                       {
-                                                           var updatePackage =
-                                                               server.GetUpdatePackage(versionProvider.GetVersion());
-                                                           if (updatePackage.IsAvailable)
-                                                               updateReceiver.SaveUpdatePackage(updatePackage);
-                                                       });
+                                          {
+                                              try
+                                              {
+                                                  var updatePackage =
+                                                      server.GetUpdatePackage(versionProvider.GetVersion());
+                                                  if (updatePackage.IsAvailable)
+                                                      updateReceiver.SaveUpdatePackage(updatePackage);
+                                              }
+                                              catch (Exception ex)
+                                              {
+                                                  log.Warning("There was an exception when trying to get an update", ex);
+                                              }
+                                          });
             try
             {
                 Task.WaitAll(new[] {testRunningTask, updateTask}, options.TimeoutPeriod);
