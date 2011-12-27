@@ -58,6 +58,7 @@ namespace NDistribUnit.Integration.Tests.Tests.Updating
 
             Assert.That(agent.UpdateReceiver.HasReceivedUpdate(Version.Parse("2.0.0.0")));
             Assert.That(server.HasAReady(agent));
+            Assert.That(server.GetAgentsCount(), Is.EqualTo(1));
         }
 
         [Test]

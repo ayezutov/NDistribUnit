@@ -129,5 +129,10 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         {
             return !Retry.UntilTrue(() => agents.Count != 0, 500);
         }
+
+        public int GetAgentsCount()
+        {
+            return agents.Count;
+        }
     }
 }

@@ -115,7 +115,9 @@ namespace NDistribUnit.Common.Server.AgentsTracking
             lock (syncObject)
             {
                 ChangeStatus(agent, AgentState.Ready);
-                allAgents.Add(agent);
+
+                if (!allAgents.Contains(agent))
+                    allAgents.Add(agent);
             }
             
         }
