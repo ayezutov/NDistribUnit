@@ -29,7 +29,7 @@ namespace NDistribUnit.Common.TestExecution
         /// Parses the specified XML into test result.
         /// </summary>
         /// <param name="data"></param>
-        public TestResult Deserialize(Stream data)
+        public TestResult ReadBinary(Stream data)
         {
             return (TestResult)new BinaryFormatter().Deserialize(data);
         }
@@ -40,7 +40,7 @@ namespace NDistribUnit.Common.TestExecution
         /// <param name="serialize">The serialize.</param>
         /// <param name="serializeTo">The serialize to.</param>
         /// <returns></returns>
-        public void Serialize(TestResult serialize, Stream serializeTo)
+        public void WriteBinary(TestResult serialize, Stream serializeTo)
         {
             new BinaryFormatter().Serialize(serializeTo, serialize);
         }

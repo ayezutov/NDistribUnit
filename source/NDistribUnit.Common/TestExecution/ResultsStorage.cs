@@ -84,7 +84,7 @@ namespace NDistribUnit.Common.TestExecution
             if (!File.Exists(binaryFile))
                 return null;
 
-            return serializer.Deserialize(new FileStream(binaryFile, FileMode.Open));
+            return serializer.ReadBinary(new FileStream(binaryFile, FileMode.Open));
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace NDistribUnit.Common.TestExecution
 
             var binaryFile = GetBinaryFileName(testRun);
             var dataStream = new FileStream(binaryFile, FileMode.Create);
-            serializer.Serialize(mergedResult, dataStream);
+            serializer.WriteBinary(mergedResult, dataStream);
             dataStream.Close();
         }
 

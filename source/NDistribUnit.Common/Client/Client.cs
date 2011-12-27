@@ -185,13 +185,36 @@ namespace NDistribUnit.Common.Client
 
         private void PrintResult()
         {
-            //throw new NotImplementedException();
+            var total = 0;
+            var success = 0;
+            result.ForSelfAndAllDescedants(r =>
+                                               {
+                                                   if (!r.Test.IsSuite)
+                                                   {
+                                                       total++;
+                                                       if (r.IsSuccess)
+                                                           success++;
+                                                   }
+                                               });
+            log.Info(string.Format("{0} test cases were run. {1} of them completed successfully.", total, success));
         }
 
         private void SaveResult()
         {
             if (!string.IsNullOrEmpty(options.NUnitParameters.XmlFileName))
             {
+                var xml = new TestResultsSerializer().GetXml(result);
+
+                var writer = new StreamWriter(options.NUnitParameters.XmlFileName);
+                try
+                {
+                    writer.Write(xml);
+                }
+                finally
+                {
+                    writer.Close();
+                }
+
             }
         }
     }

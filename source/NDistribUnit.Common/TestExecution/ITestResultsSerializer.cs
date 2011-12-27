@@ -19,13 +19,13 @@ namespace NDistribUnit.Common.TestExecution
         /// Parses the specified XML into test result.
         /// </summary>
         /// <param name="data"></param>
-        TestResult Deserialize(Stream data);
+        TestResult ReadBinary(Stream data);
 
         /// <summary>
         /// Parses the specified XML into test result.
         /// </summary>
         /// <param name="serialize">The serialize.</param>
         /// <param name="serializeTo">The serialize to.</param>
-        void Serialize(TestResult serialize, Stream serializeTo);
+        void WriteBinary(TestResult serialize, Stream serializeTo);
     }
 }
