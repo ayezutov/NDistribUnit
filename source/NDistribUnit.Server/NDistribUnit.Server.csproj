@@ -167,7 +167,9 @@
     <Content Include="dashboard\images\icons\Point White10x10.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dashboard\images\icons\Point Yellow Completed.png" />
+    <Content Include="dashboard\images\icons\Point Yellow Completed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="dashboard\images\icons\Point Yellow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
