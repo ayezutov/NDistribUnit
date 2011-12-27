@@ -134,6 +134,9 @@ namespace NDistribUnit.Common.Server.AgentsTracking
 
         private void ChangeStatus(AgentMetadata agent, AgentState agentState)
         {
+            if (agent == null)
+                return; 
+
             var oldStatus = agent.Status;
             ((IAgentStateSetter)agent).Status = agentState;
 

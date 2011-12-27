@@ -214,7 +214,7 @@ namespace NDistribUnit.Common.TestExecution.DistributedConfiguration
                         yield break;
                     }
 
-                    yield return matchingConfig.ConfigurationFile;
+                    yield return matchingConfig.ConfigurationFilePath;
                     yield break;
                 }
             }

@@ -26,11 +26,13 @@ function Dashboard()
         tests: {
             beforeAction: function () { me.ui.openTestsPane(); }
         },
-        unknownAction: function () { window.location.hash = "tests"; }
+        unknownAction: function () { window.location.hash = "status"; }
     },
     { autoCompleteRouteToLastUsed: true });
     this.ui = new DashboardUI();
     this.server = new DashboardServer();
+
+    window.location.hash = "status";
 }
 
 Dashboard.prototype = {

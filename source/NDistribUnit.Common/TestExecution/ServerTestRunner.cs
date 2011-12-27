@@ -106,25 +106,34 @@ namespace NDistribUnit.Common.TestExecution
                 {
                     try
                     {
-                        pair = scheduler.GetAgentAndTestAndVariables();
-                    }
-                    catch(NoAvailableAgentsException ex)
-                    {
-                        foreach (var test in ex.Tests)
+                        try
                         {
-                            ProcessResult(test, null, new TestUnitResult(TestResultFactory.GetNoAvailableAgentsFailure(test, ex)));
+                            pair = scheduler.GetAgentAndTestAndVariables();
                         }
-                        return;
+                        catch (NoAvailableAgentsException ex)
+                        {
+                            foreach (var test in ex.Tests)
+                            {
+                                ProcessResult(test, null,
+                                              new TestUnitResult(TestResultFactory.GetNoAvailableAgentsFailure(test, ex)));
+                            }
+                            return;
+                        }
+
+                        if (pair == null)
+                            return;
+
+                        tests.MarkRunning(pair.Item2);
+                        agents.MarkAsBusy(pair.Item1);
+
+                        if (tests.HasAvailable)
+                            RunAsynchronously(TryToRunIfAvailable);
                     }
-
-                    if (pair == null)
-                        return;
-
-                    tests.MarkRunning(pair.Item2);
-                    agents.MarkAsBusy(pair.Item1);
-
-                    if (tests.HasAvailable)
-                        RunAsynchronously(TryToRunIfAvailable);
+                    catch(Exception ex)
+                    {
+                        log.Error("Exception while running test", ex);
+                        throw;
+                    }
                 }
             }
 

@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Diagnostics;
-using NDistribUnit.Common.TestExecution;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.TestExecution.Data;
 using NUnit.Core;
 
-namespace NDistribUnit.Common.Contracts.DataContracts
+namespace NDistribUnit.Common.TestExecution
 {
     /// <summary>
     /// 
@@ -51,19 +51,20 @@ namespace NDistribUnit.Common.Contracts.DataContracts
         /// <returns></returns>
         private static TestResult GetResult(Exception exception, string description, string testType, string fullName, bool isSuite = true)
         {
-            var result = new TestResult(new TestInfo(new TestName()
-                                                             {
-                                                                 FullName = fullName,
-                                                                 Name = fullName,
-                                                             })
-                                                {
-
-                                                });
+            var result = new TestResult(new TestDataProvider
+                                            {
+                                                TestName = new TestName
+                                                               {
+                                                                   FullName = fullName,
+                                                                   Name = fullName
+                                                               },
+                                                IsSuite = isSuite,
+                                                TestType = testType,
+                                            });
             result.SetResult(ResultState.NotRunnable, 
                 exception == null ? description : exception.Message,
                 exception == null ? null : exception.StackTrace);
 
-            //TODO: assign testType here
             return result;
         }
 
@@ -83,8 +84,8 @@ namespace NDistribUnit.Common.Contracts.DataContracts
             var description = string.Format("There was an error, when running '{0}'", test.UniqueTestId);
             var projectResult = GetResult(exception, description, "Project", string.Empty);
             var assemblyResult = GetResult(exception, description, "Assembly", test.AssemblyName);
-            projectResult.Results.Add(assemblyResult);
-            assemblyResult.Results.Add(GetNamespacedResultForTest(test, exception, testResultType, description));
+            projectResult.AddResult(assemblyResult);
+            assemblyResult.AddResult(GetNamespacedResultForTest(test, exception, testResultType, description));
             return projectResult;
         }
 
@@ -101,18 +102,18 @@ namespace NDistribUnit.Common.Contracts.DataContracts
                     result = last = current;
                 else
                 {
-                    last.Results.Add(current);
+                    last.AddResult(current);
                     last = current;
                 }
             }
 
             var fixture = GetResult(exception, description, "TestFixture", string.Join(".", splitted, 0, splitted.Length - 1));
             var method  = GetResult(exception, description, "TestMethod",  test.UniqueTestId, false);
-            fixture.Results.Add(method);
+            fixture.AddResult(method);
             if (last == null)
                 result = fixture;
             else
-                last.Results.Add(fixture);
+                last.AddResult(fixture);
 
             return result;
         }

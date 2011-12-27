@@ -47,7 +47,7 @@ namespace NDistribUnit.Common.TestExecution
                 using (agents.Lock())
                 {
                     if (!agents.AreConnectedAvailable)
-                        throw new NoAvailableAgentsException();
+                        throw new NoAvailableAgentsException(availableTests.ToArray());
 
                     var freeAgents = agents.GetFree();
 

@@ -134,7 +134,7 @@ namespace NDistribUnit.Common.TestExecution.Storage
         {
             if (string.IsNullOrEmpty(testRun.Alias))
                 return Path.Combine(RootPath, GetStorageFolderName(), TemporaryStorageFolderName, testRun.Id.ToString());
-            return Path.Combine(RootPath, StorageFolderName, PermanentStorageFolderName, testRun.Alias);
+            return Path.Combine(RootPath, GetStorageFolderName(), PermanentStorageFolderName, testRun.Alias);
         }
 
         private string GetStorageFolderName()

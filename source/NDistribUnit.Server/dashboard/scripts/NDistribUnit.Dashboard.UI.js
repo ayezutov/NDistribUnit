@@ -69,8 +69,8 @@ DashboardUI.prototype = {
 
         this.panes =
             [
-                $(this.selectors.testsPane),
-                $(this.selectors.statusPane).hide(),
+                $(this.selectors.testsPane).hide(),
+                $(this.selectors.statusPane),
                 $(this.selectors.settingsPane).hide()
             ];
         this.statusPanes = [];

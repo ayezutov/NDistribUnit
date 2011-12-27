@@ -130,6 +130,7 @@
     <Compile Include="TestExecution\DistributedConfiguration\DistributedConfigurationVariablesValue.cs" />
     <Compile Include="TestExecution\DistributedConfiguration\IDistributedConfigurationOperator.cs" />
     <Compile Include="TestExecution\DistributedConfiguration\SequenceDistributedConfigurationVariable.cs" />
+    <Compile Include="TestExecution\TestDataProvider.cs" />
     <Compile Include="TestExecution\TestResultExtensions.cs" />
     <Compile Include="TestExecution\TestResultFactory.cs" />
     <Compile Include="TestExecution\TestResultsProcessor.cs" />

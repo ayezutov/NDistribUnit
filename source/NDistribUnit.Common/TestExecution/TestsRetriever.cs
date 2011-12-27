@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
+using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution.Data;
 using NDistribUnit.Common.TestExecution.Storage;
 using NUnit.Core;
+using NUnit.Util;
 
 namespace NDistribUnit.Common.TestExecution
 {
@@ -39,7 +41,8 @@ namespace NDistribUnit.Common.TestExecution
             var projectFileNameOnly = Path.GetFileName(request.TestRun.NUnitParameters.AssembliesToTest[0]);
             var projectFileNameMapped = Path.Combine(project.Path, projectFileNameOnly);
 
-            var package = new TestPackage(projectFileNameMapped);
+
+            var package = GetTestPackage(projectFileNameMapped, request.TestRun.NUnitParameters);
             var builder = new TestSuiteBuilder();
 
             var testSuite = builder.Build(package);
@@ -47,6 +50,20 @@ namespace NDistribUnit.Common.TestExecution
                                               request.TestRun.NUnitParameters.ExcludeCategories);
 
             return ToTestUnitList(testSuite, request, filter);
+        }
+
+        private TestPackage GetTestPackage(string projectFileName, NUnitParameters nUnitParameters)
+        {
+            if (!NUnitProject.IsNUnitProjectFile(projectFileName))
+                return new TestPackage(projectFileName);
+
+
+            var nunitProject = new NUnitProject(projectFileName);
+            nunitProject.Load();
+            if (!string.IsNullOrEmpty(nUnitParameters.Configuration))
+                nunitProject.SetActiveConfig(nUnitParameters.Configuration);
+
+            return nunitProject.ActiveConfig.MakeTestPackage();
         }
 
         private IList<TestUnitWithMetadata> ToTestUnitList(ITest test, TestRunRequest request, ITestFilter filter)
@@ -68,7 +85,7 @@ namespace NDistribUnit.Common.TestExecution
 
             if (filter.Pass(test))
             {
-                if ((test.IsSuite && test.Tests != null && test.Tests.Count != 0 && !((ITest)test.Tests[0]).IsSuite) 
+                if ((test.IsSuite && test.Tests != null && test.Tests.Count != 0 && !((ITest) test.Tests[0]).IsSuite)
                     || !test.IsSuite)
                 {
                     List<TestUnitWithMetadata> subTests = null;
@@ -81,7 +98,8 @@ namespace NDistribUnit.Common.TestExecution
                         }
                     }
                     var testUnitWithMetadata = new TestUnitWithMetadata(request.TestRun, test.TestName.FullName,
-                                                                        test.IsSuite, test.TestType, assemblyName, subTests);
+                                                                        test.IsSuite, test.TestType, assemblyName,
+                                                                        subTests);
                     result.Add(testUnitWithMetadata);
                 }
                 else if (test.Tests != null && test.Tests.Count > 0)

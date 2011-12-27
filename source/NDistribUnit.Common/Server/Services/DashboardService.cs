@@ -180,8 +180,11 @@ namespace NDistribUnit.Common.Server.Services
             var physicalPathToFile =
                 Path.Combine(
                     Path.Combine(Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().CodeBase).AbsolutePath),
-//                                 "dashboard"), fileName);
+#if !DEBUG
+                                 "dashboard"), fileName);
+#else
                                  "../../../../NDistribUnit.Server/dashboard"), fileName);
+#endif
             var response = WebOperationContext.Current.OutgoingResponse;
 
             if (!File.Exists(physicalPathToFile))

@@ -36,7 +36,7 @@
         <div style="float: left;">
             <img id="logo" alt="NDistribUnit" src="images/logo-medium.gif" /></div>
         <div id="" class="menuCommandRight">
-            <a href="#settings">
+            <a href="#settings" class="disabled" onclick="return false;">
                 <img alt="settings" src="images/settings.gif" />
                 Settings</a></div>
         <div id="infoCommand" class="menuCommandRight">
@@ -44,9 +44,9 @@
                 <img alt="info" src="images/info.gif" />
                 Status</a></div>
         <div id="homeCommand" class="menuCommandRight">
-            <a href="#tests">
+            <a href="#tests" class="disabled" onclick="return false;">
                 <img alt="home" src="images/home.gif" />
-                Home</a></div>
+                Tests</a></div>
     </div>
     <div id="content-pane">
         <div id="tests-pane" class="content">
@@ -111,10 +111,10 @@
         <div id="status-pane" class="content">
             <div id="status-tree-pane" class="left-menu-pane">
                 <ul class="list-menu">
-                    <li><span id="server-status-menu">Server's status</span></li>
+                    <li><span id="server-status-menu"><a href="#status/server/log" id="server-log-link">Server's status</a></span></li>
                     <li>
                         <ul>
-                            <li><a href="#status/server/log" id="server-log-link">Log</a></li>
+                            <li><a href="#status/server/execution-queue" class="disabled" onclick="return false;">Execution queue</a></li>
                         </ul>
                     </li>
                     <li><a href="#status/agents" id="clients-statuses-menu">Agents' statuses</a></li>
@@ -188,6 +188,7 @@
                         <span class="agent Ready">-&nbsp;Ready</span> 
                         <span class="agent Busy">-&nbsp;Busy</span>
                         <span class="agent Updating">-&nbsp;Updating</span> 
+                        <span class="agent Updated">-&nbsp;Updated</span> 
                         <span class="agent Disconnected">-&nbsp;Disconnected</span> 
                         <span class="agent Unknown">-&nbsp;Unknown</span>
                     </div>

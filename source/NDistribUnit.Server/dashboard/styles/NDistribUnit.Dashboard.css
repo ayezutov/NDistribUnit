@@ -36,6 +36,21 @@ a
     border-bottom: dashed 1px #A8B6FF;
 }
 
+a.disabled
+{   
+    text-decoration: none;
+    color: #d1d1d1;
+    border-bottom: none;
+    cursor: default;
+}
+
+a.disabled:hover
+{   
+    text-decoration: none;
+    color: #d1d1d1;
+    background-color: transparent;
+}
+
 a:hover
 {
     background-color: #efeffe;
@@ -218,6 +233,11 @@ UL.list-menu LI>SPAN
 .agent.Updating
 {
     background-image: url("../images/icons/Point Yellow.png");
+}  
+ 
+.agent.Updated
+{
+    background-image: url("../images/icons/Point Yellow Completed.png");
 }    
     
 .agent.Disconnected
