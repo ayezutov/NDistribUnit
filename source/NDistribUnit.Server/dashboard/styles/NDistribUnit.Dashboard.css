@@ -17,9 +17,15 @@
     overflow: hidden;
 }
 
-#logo
+#logo IMG
 {
     margin-left: 10px;
+}
+
+#logo
+{
+    text-decoration: none;
+    background: none;
 }
 
 h3
