@@ -33,7 +33,7 @@ DashboardServer.prototype = {
             cache: false,
             type: mergedOptions.method,
             data: JSON.stringify(mergedOptions.data),
-            processData: false,
+            processData: true,
             contentType: "application/json; charset=utf-8",
             dataFilter: function (data, type) {
                 return JSON.parse(data, function (key, value) {

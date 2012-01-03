@@ -41,9 +41,8 @@ Helper.getEnumNameByValue = function (enumeration, value) {
 };
 
 Helper.getJsonDate = function (value) {
-    /// <summary>Returns textual representation of enum value. Return the value itself, if there is no such enum value.</summary>
-    /// <param name="enumeration">The enumeration object. Is supposed to be a simple (property: intValue)[] object. </param>
-    /// <param name="value">The value to check for.</param>
+    /// <summary>Converts a .NET serializer date to a date object</summary>
+    /// <param name="value">The string to convert.</param>
     var regex = /\/Date\((\d+)\)\//gi;
     if (!value.match(regex))
         throw "The provided value is not a JSON date (" + value + ").";
