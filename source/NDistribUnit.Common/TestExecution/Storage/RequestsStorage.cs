@@ -15,7 +15,6 @@ namespace NDistribUnit.Common.TestExecution.Storage
     public class RequestsStorage : IRequestsStorage
     {
         private readonly ConcurrentDictionary<Guid, TestRunRequest> requests = new ConcurrentDictionary<Guid, TestRunRequest>();
-        //private readonly PingableCollection<TestRunRequest> pingable;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RequestsStorage"/> class.
@@ -23,10 +22,7 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// <param name="options">The options.</param>
         /// <param name="log">The log.</param>
         public RequestsStorage(IConnectionsHostOptions options, ILog log)
-        {
-//            pingable = new PingableCollection<TestRunRequest>(options, log);
-//            pingable.Removed += (sender, args) => args.Data.RemoveClient();
-        }
+        {}
 
         /// <summary>
         /// Occurs when a request is added to the queue.
@@ -36,20 +32,17 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// Adds the request.
         /// </summary>
         /// <param name="testRun">The test run.</param>
-        /// <param name="client">The client.</param>
         /// <returns></returns>
-        public TestRunRequest AddOrUpdate(TestRun testRun, IClient client)
+        public TestRunRequest AddOrUpdate(TestRun testRun)
         {
             var exists = true;
             var addedRequest = requests.GetOrAdd(testRun.Id, guid =>
                                                       {
                                                           exists = false;
-                                                          return new TestRunRequest(testRun, client);
+                                                          return new TestRunRequest(testRun);
                                                       });
 
-            if (exists)
-                addedRequest.SetClient(client);
-            else
+            if (!exists)
             {
                 addedRequest.Status = TestRunRequestStatus.Received;
                 Added.SafeInvoke(this, addedRequest);

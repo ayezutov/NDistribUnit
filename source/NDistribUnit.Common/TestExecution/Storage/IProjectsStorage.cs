@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using NDistribUnit.Common.Contracts.DataContracts;
 
 namespace NDistribUnit.Common.TestExecution.Storage
@@ -12,23 +13,14 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// Gets the project.
         /// </summary>
         /// <param name="testRun">The test run.</param>
-        /// <param name="loadPackedProject">The load packed project.</param>
         /// <returns></returns>
-        TestProject GetOrLoad(TestRun testRun, Func<PackedProject> loadPackedProject = null);
+        TestProject Get(TestRun testRun);
 
         /// <summary>
-        /// Gets the packed project.
-        /// </summary>
-        /// <param name="testRun">The test run.</param>
-        /// <returns></returns>
-        PackedProject GetPackedProject(TestRun testRun);
-
-        /// <summary>
-        /// Stores the specified project test run.
+        /// Stores the specified test run.
         /// </summary>
         /// <param name="testRun">The test run.</param>
         /// <param name="project">The project.</param>
-        /// <returns></returns>
-        TestProject Store(TestRun testRun, PackedProject project);
+        void Store(TestRun testRun, Stream project);
     }
 }

@@ -10,10 +10,10 @@ namespace NDistribUnit.Common.Contracts.ServiceContracts
     /// <summary>
     /// A contract for communicating from server to agents
     /// </summary>
-    [ServiceContract(CallbackContract = typeof(IAgentDataSource))]
     [ServiceKnownType(typeof(ArrayList))]
     [ServiceKnownType(typeof(TestResult))]
-    public interface IAgent
+    [ServiceContract(Namespace = "http://yezutov.com/ndistribunit")]
+    public interface IAgent : IProjectReceiver
     {
         /// <summary>
         /// Runs tests on agent

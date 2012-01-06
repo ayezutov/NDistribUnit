@@ -11,6 +11,7 @@ using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.Data;
 using NDistribUnit.Common.TestExecution.Storage;
 using NDistribUnit.Common.Updating;
+using NUnit.Core;
 
 namespace NDistribUnit.Common.Server.Services
 {
@@ -29,6 +30,7 @@ namespace NDistribUnit.Common.Server.Services
         private readonly ServerTestRunner runner;
         private readonly IRequestsStorage requests;
         private readonly IResultsStorage resultsStorage;
+        private readonly IProjectsStorage projects;
         private readonly ILog log;
 
         /// <summary>
@@ -41,6 +43,7 @@ namespace NDistribUnit.Common.Server.Services
         /// <param name="requests">The storage.</param>
         /// <param name="resultsStorage">The results.</param>
         /// <param name="log">The log.</param>
+        /// <param name="projects">The projects.</param>
     	public Server(
             IUpdateSource updateSource, 
             IVersionProvider versionProvider, 
@@ -48,7 +51,7 @@ namespace NDistribUnit.Common.Server.Services
             ServerTestRunner runner,
             IRequestsStorage requests,
             IResultsStorage resultsStorage,
-            ILog log)
+            ILog log, IProjectsStorage projects)
 		{
 			this.updateSource = updateSource;
             this.versionProvider = versionProvider;
@@ -57,31 +60,27 @@ namespace NDistribUnit.Common.Server.Services
             this.requests = requests;
             this.resultsStorage = resultsStorage;
             this.log = log;
+            this.projects = projects;
 		}
         
         /// <summary>
         /// Runs tests from client
         /// </summary>
         /// <param name="run"></param>
-        public void StartRunningTests(TestRun run)
+        public TestResult RunTests(TestRun run)
     	{
             log.BeginActivity(string.Format("Test was started: {0} ({1})", run.Id, run.NUnitParameters.AssembliesToTest[0]));
-    	    var client = connectionProvider.GetCurrentCallback<IClient>();
-
+    	    
             if (run == null)
                 throw new ArgumentNullException("run");
 
             var result = resultsStorage.GetCompletedResult(run);
             if (result != null)
-            {
-                client.NotifyTestProgressChanged(result, true);
-                return;
-            }
+                return result.SetFinal();
 
-            var request = requests.AddOrUpdate(run, client);
+            var request = requests.AddOrUpdate(run);
 
-            if (request.Status == TestRunRequestStatus.Pending)
-                client.NotifyTestProgressChanged(null/*resultsStorage.GetIntermediateResults()*/, false);
+            return request.ResultsPipeToClient.Dequeue();
     	}
 
     	/// <summary>
@@ -105,5 +104,15 @@ namespace NDistribUnit.Common.Server.Services
 						Version = currentVersion
 			       	};
     	}
+
+        public void ReceiveProject(ProjectMessage project)
+        {
+            projects.Store(project.TestRun, project.Project);
+        }
+
+        public bool HasProject(TestRun run)
+        {
+            return projects.Get(run) != null;
+        }
     }
 }

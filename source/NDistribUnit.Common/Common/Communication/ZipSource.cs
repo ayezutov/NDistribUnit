@@ -53,8 +53,10 @@ namespace NDistribUnit.Common.Common.Communication
 	    {
             using (var zipStream = new MemoryStream(updateZipBytes))
             {
-                var zipFile = ZipFile.Read(zipStream);
-                zipFile.ExtractAll(folderPath, ExtractExistingFileAction.OverwriteSilently);
+                using (var zipFile = ZipFile.Read(zipStream))
+                {
+                    zipFile.ExtractAll(folderPath, ExtractExistingFileAction.OverwriteSilently);
+                }
             }
 	    }
 	}

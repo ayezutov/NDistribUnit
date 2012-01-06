@@ -19,9 +19,8 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// Adds the request.
         /// </summary>
         /// <param name="testRun">The test run.</param>
-        /// <param name="client">The client.</param>
         /// <returns></returns>
-        TestRunRequest AddOrUpdate(TestRun testRun, IClient client);
+        TestRunRequest AddOrUpdate(TestRun testRun);
 
         /// <summary>
         /// Removes the specified request.

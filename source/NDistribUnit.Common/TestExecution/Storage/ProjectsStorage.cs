@@ -47,9 +47,8 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// Gets the project.
         /// </summary>
         /// <param name="testRun"></param>
-        /// <param name="loadPackedProject"></param>
         /// <returns></returns>
-        public TestProject GetOrLoad(TestRun testRun, Func<PackedProject> loadPackedProject = null)
+        public TestProject Get(TestRun testRun)
         {
             return RunSynchronized(testRun,
                                    () =>
@@ -67,66 +66,8 @@ namespace NDistribUnit.Common.TestExecution.Storage
                                                zip.UnpackFolder(ReadBytes(packedFile), unpackedDirectory);
                                                return new TestProject(unpackedDirectory);
                                            }
-
-                                           if (loadPackedProject != null)
-                                               return Store(testRun, loadPackedProject());
-
+                                           
                                            return null;
-                                       });
-        }
-
-        /// <summary>
-        /// Gets the packed project.
-        /// </summary>
-        /// <param name="testRun">The test run.</param>
-        /// <returns></returns>
-        public PackedProject GetPackedProject(TestRun testRun)
-        {
-            return RunSynchronized(testRun,
-                                   () =>
-                                       {
-                                           var projectPath = GetPathToProject(testRun);
-
-                                           string packedFileName = Path.Combine(projectPath, PackedFileName);
-                                           if (File.Exists(packedFileName))
-                                               return new PackedProject(packedFileName, ReadBytes(packedFileName));
-
-                                           string unpackedDirectory = Path.Combine(projectPath, UnpackedFolder);
-                                           if (Directory.Exists(unpackedDirectory))
-                                           {
-                                               var packedProject =
-                                                   zip.GetPackedFolder(new DirectoryInfo(unpackedDirectory));
-                                               var file = File.Create(packedFileName);
-                                               file.Write(packedProject, 0, packedProject.Length);
-                                               file.Close();
-                                               return new PackedProject(packedFileName, packedProject);
-                                           }
-
-                                           return null;
-                                       });
-        }
-
-        /// <summary>
-        /// Stores the specified project test run.
-        /// </summary>
-        /// <param name="testRun">The test run.</param>
-        /// <param name="project">The project.</param>
-        /// <returns></returns>
-        public TestProject Store(TestRun testRun, PackedProject project)
-        {
-            return RunSynchronized(testRun,
-                                   () =>
-                                       {
-                                           var projectPath = GetPathToProject(testRun);
-                                           string packedFileName = Path.Combine(projectPath, PackedFileName);
-
-                                           if (!Directory.Exists(projectPath))
-                                               Directory.CreateDirectory(projectPath);
-
-                                           var file = File.Create(packedFileName);
-                                           file.Write(project.Data, 0, project.Data.Length);
-                                           file.Close();
-                                           return GetOrLoad(testRun);
                                        });
         }
 
@@ -177,6 +118,20 @@ namespace NDistribUnit.Common.TestExecution.Storage
             {
                 mutex.ReleaseMutex();
             }
+        }
+
+        public void Store(TestRun testRun, Stream projectStream)
+        {
+            var path = GetPathToProject(testRun);
+            var packedFile = Path.Combine(path, PackedFileName);
+            var file = new FileStream(packedFile, FileMode.CreateNew, FileAccess.Write);
+            var buffer = new byte[1024*1024];
+            int readBytes;
+            while ((readBytes = projectStream.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                file.Write(buffer, 0, readBytes);
+            }
+            file.Close();
         }
     }
 }

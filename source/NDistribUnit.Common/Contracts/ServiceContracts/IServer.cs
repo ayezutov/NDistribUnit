@@ -4,22 +4,23 @@ using System.ServiceModel;
 using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.ServiceContracts;
+using NUnit.Core;
 
 namespace NDistribUnit.Common.Contracts.ServiceContracts
 {
     /// <summary>
     /// Contract, which is used by client to connect to server
     /// </summary>
-    [ServiceContract(CallbackContract = typeof(IClient))]
-    
-    public interface IServer
+    [ServiceContract(Namespace = "http://yezutov.com/ndistribunit")]
+    public interface IServer: IProjectReceiver
     {
         /// <summary>
         /// Runs tests from client
         /// </summary>
-        /// <param name="run"></param>
+        /// <param name="run">The run.</param>
+       /// <returns>Test results. It always returns intermediate test results, until the "ndistribunit-completed-merged" property is set</returns>
         [OperationContract]
-		void StartRunningTests(TestRun run);
+		TestResult RunTests(TestRun run);
 
 		/// <summary>
 		/// Gets the update if available.

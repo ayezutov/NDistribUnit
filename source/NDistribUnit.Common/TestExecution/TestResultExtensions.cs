@@ -82,5 +82,23 @@ namespace NDistribUnit.Common.TestExecution
                         select child.FindDescedant(condition))
                     .FirstOrDefault(foundDescedant => foundDescedant != null);
         }
+
+        const string CompletedPropertyName = "ndistribunit-completed-merged";
+
+        /// <summary>
+        /// Marks the result as completed by adding the "ndistribunit-completed-merged" property.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <param name="value">if set to <c>true</c> [value].</param>
+        /// <returns></returns>
+        public static TestResult SetFinal(this TestResult result, bool value = true)
+        {
+            if (value && !result.Test.Properties.Contains(CompletedPropertyName))
+                result.Test.Properties.Add(CompletedPropertyName, "true");
+            else if (!value && result.Test.Properties.Contains(CompletedPropertyName))
+                result.Test.Properties.Remove(CompletedPropertyName);
+
+            return result;
+        }
     }
 }

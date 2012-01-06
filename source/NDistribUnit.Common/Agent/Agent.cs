@@ -1,6 +1,5 @@
 using System;
 using System.ServiceModel;
-using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Contracts.DataContracts;
@@ -10,6 +9,7 @@ using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
+using NDistribUnit.Common.TestExecution.Storage;
 using NUnit.Core;
 using NDistribUnit.Common.Extensions;
 
@@ -25,8 +25,8 @@ namespace NDistribUnit.Common.Agent
     	private readonly RollingLog logStorage;
 		private readonly IUpdateReceiver updateReceiver;
         private readonly IVersionProvider versionProvider;
-        private readonly IConnectionProvider connectionProvider;
         private readonly AgentTestRunner runner;
+        private readonly IProjectsStorage projects;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Agent"/> class.
@@ -36,23 +36,23 @@ namespace NDistribUnit.Common.Agent
         /// <param name="updateReceiver">The update receiver.</param>
         /// <param name="configuration">The configuration.</param>
         /// <param name="versionProvider">The version provider.</param>
-        /// <param name="connectionProvider">The connection provider.</param>
         /// <param name="runner">The runner.</param>
+        /// <param name="projects">The projects.</param>
         public Agent(
             ILog log, 
             RollingLog logStorage, 
             IUpdateReceiver updateReceiver, 
             AgentConfiguration configuration, 
             IVersionProvider versionProvider, 
-            IConnectionProvider connectionProvider, 
-            AgentTestRunner runner)
+            AgentTestRunner runner, 
+            IProjectsStorage projects)
         {
             this.log = log;
 			this.logStorage = logStorage;
     		this.updateReceiver = updateReceiver;
             this.versionProvider = versionProvider;
-            this.connectionProvider = connectionProvider;
             this.runner = runner;
+            this.projects = projects;
             Name = configuration.AgentName;
         }
 
@@ -79,12 +79,31 @@ namespace NDistribUnit.Common.Agent
         {
             log.Info(string.Format("Run Tests command Received: {0}", test.UniqueTestId));
 
-            var dataSource = connectionProvider.GetCurrentCallback<IAgentDataSource>();
-
-            var result = runner.Run(test, configurationSubstitutions, dataSource);
+            var result = runner.Run(test, configurationSubstitutions);
             result.Result.ForSelfAndAllDescedants(r => r.SetAgentName(Name));
 
             return result;
+        }
+
+        /// <summary>
+        /// Receives the project.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        public void ReceiveProject(ProjectMessage project)
+        {
+            projects.Store(project.TestRun, project.Project);
+        }
+
+        /// <summary>
+        /// Receives the project.
+        /// </summary>
+        /// <param name="run">The run.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified agent has a project for the given run; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasProject(TestRun run)
+        {
+            return projects.Get(run) != null;
         }
 
         /// <summary>
@@ -114,6 +133,8 @@ namespace NDistribUnit.Common.Agent
                 UpdateFinished.SafeInvoke(this);
             }
     	}
+
+
 
         /// <summary>
         /// Occurs when an update is started.

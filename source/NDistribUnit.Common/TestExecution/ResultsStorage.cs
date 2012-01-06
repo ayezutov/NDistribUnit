@@ -61,6 +61,10 @@ namespace NDistribUnit.Common.TestExecution
         public TestResult StoreAsCompleted(TestRun testRun)
         {
             var resultsForTestRun = GetCollection(testRun);
+
+            RunResultsCollection temp;
+            results.TryRemove(testRun.Id, out temp);
+
             var result = resultsForTestRun.Close();
             Store(testRun, resultsForTestRun.MergedResult);
             return result;

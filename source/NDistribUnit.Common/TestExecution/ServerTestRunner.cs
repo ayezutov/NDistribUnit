@@ -225,22 +225,14 @@ namespace NDistribUnit.Common.TestExecution
             var request = requests.RemoveBy(test.Test.Run);
 
             var result = results.StoreAsCompleted(test.Test.Run);
-            var client = request.Client;
-            if (client == null)
-                log.Warning(string.Format("Unable to notify the client about completed test run: {0}", test.Test.Run.Id));
-            else
+            
+            if (request != null && result != null)
             {
-                try
-                {
-                    client.NotifyTestProgressChanged(result, true);
-                }
-                catch(Exception ex)
-                {
-                    log.Warning(string.Format("Error while notifying the client about completed test run: {0}", test.Test.Run.Id),
-                                ex);
-                }
+                // empty condition to avoid compile errors while 
+                // not finished with the next to-do
             }
 
+            //TODO: add completed result to final collection
         }
 
         /// <summary>
@@ -253,8 +245,7 @@ namespace NDistribUnit.Common.TestExecution
 
             try
             {
-                project = projects.GetOrLoad(request.TestRun,
-                                         () => request.Client.GetPackedProject(request.TestRun.Id));
+                project = projects.Get(request.TestRun);
             }
             catch (Exception ex)
             {
@@ -294,24 +285,7 @@ namespace NDistribUnit.Common.TestExecution
         private void Complete(TestRunRequest request, TestResult result)
         {
             requests.Remove(request);
-            try
-            {
-                request.Client.NotifyTestProgressChanged(result, true);
-            }
-            catch(Exception ex)
-            {
-                log.Warning("Unable to report test result", ex);
-            }
-        }
-
-        /// <summary>
-        /// Gets the packed project.
-        /// </summary>
-        /// <param name="testRun">The test run.</param>
-        /// <returns></returns>
-        public PackedProject GetPackedProject(TestRun testRun)
-        {
-            return projects.GetPackedProject(testRun);
+            //TODO: notify client about failed tests
         }
     }
 }

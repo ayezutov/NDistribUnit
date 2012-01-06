@@ -48,27 +48,14 @@ namespace NDistribUnit.Common.Agent
         /// </summary>
         /// <param name="test">The test.</param>
         /// <param name="configurationSubstitutions"></param>
-        /// <param name="dataSource">The data source.</param>
         /// <returns></returns>
-        public TestUnitResult Run(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions, IAgentDataSource dataSource)
+        public TestUnitResult Run(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions)
         {
             var project = projects.GetOrLoad(test.Run);
             if (project == null)
             {
-                log.Info("Sending a request for project files...");
-                PackedProject packedProject;
-                try
-                {
-                    packedProject = dataSource.GetPackedProject(test.Run);
-                    if (packedProject == null)
-                        return new TestUnitResult(TestResultFactory.GetProjectRetrievalFailure(test));
-                }
-                catch(Exception ex)
-                {
-                    return new TestUnitResult(TestResultFactory.GetProjectRetrievalFailure(test, ex));
-                }
-                log.Info("Storing project...");
-                project = projects.Store(test.Run, packedProject);
+                log.Info("Project file was not found. Throwing exception");
+                return new TestUnitResult(TestResultFactory.GetProjectRetrievalFailure(test));
             }
 
             log.BeginActivity("Starting test execution...");

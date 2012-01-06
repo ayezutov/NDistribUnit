@@ -201,7 +201,11 @@ namespace NDistribUnit.Common.Server.Services
             }
 
             response.ContentType = allowed[extension];
-            return new FileStream(physicalPathToFile, FileMode.Open, FileAccess.Read);
+            var stream = new FileStream(physicalPathToFile, FileMode.Open, FileAccess.Read);
+
+            //OperationContext.Current.OperationCompleted += (sender, args) => stream.Dispose();
+
+            return stream;
         }
 
         private static bool IsAllowedExtension(string extension)
