@@ -23,12 +23,11 @@ namespace NDistribUnit.Common.Updating
 			this.zip = zip;
 		}
 
-		/// <summary>
-		/// Gets the zipped version folder.
-		/// </summary>
-		/// <param name="version">The version.</param>
-		/// <returns></returns>
-		public byte[] GetZippedVersionFolder(Version version)
+	    /// <summary>
+	    /// Gets the zipped version folder.
+	    /// </summary>
+	    /// <returns></returns>
+	    public Stream GetZippedVersionFolder()
 		{
 			var directory = new DirectoryInfo(Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().CodeBase).AbsolutePath));
 

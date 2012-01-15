@@ -1,4 +1,6 @@
 using System.ServiceModel;
+using NDistribUnit.Common.Common.Communication;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
 
@@ -8,7 +10,7 @@ namespace NDistribUnit.Common.Contracts.ServiceContracts
     /// Interface, which represents standard operations with a remote
     /// part of a program
     /// </summary>
-    [ServiceContract]
+    [ServiceContract(Namespace = ServiceConfiguration.Namespace)]
     public interface IRemoteAppPart : IPingable
     {
         /// <summary>

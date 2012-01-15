@@ -23,7 +23,7 @@ namespace NDistribUnit.Common.TestExecution.Configuration
         /// The type of the failure message.
         /// </value>
         [XmlAttribute("messageType")]
-        public FailureMessageType FailureMessageType { get; set; }
+        public MatchType FailureMessageType { get; set; }
 
         /// <summary>
         /// Gets or sets the retry count.
@@ -33,5 +33,23 @@ namespace NDistribUnit.Common.TestExecution.Configuration
         /// </value>
         [XmlAttribute("retryCount")]
         public int RetryCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the stack trace.
+        /// </summary>
+        /// <value>
+        /// The stack trace.
+        /// </value>
+        [XmlAttribute("stackTrace")]
+        public string FailureStackTrace { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of the failure stack trace.
+        /// </summary>
+        /// <value>
+        /// The type of the failure stack trace.
+        /// </value>
+        [XmlAttribute("stackTraceType")]
+        public MatchType FailureStackTraceType { get; set; }
     }
 }

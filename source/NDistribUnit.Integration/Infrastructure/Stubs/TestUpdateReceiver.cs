@@ -1,5 +1,6 @@
 using System;
 using NDistribUnit.Common.Common.Updating;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Retrying;
 using NDistribUnit.Common.ServiceContracts;
 
@@ -12,10 +13,9 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
     {
         private UpdatePackage updatePackage;
 
-        public bool SaveUpdatePackage(UpdatePackage package)
+        public void SaveUpdatePackage(UpdatePackage package)
         {
-            this.updatePackage = package;
-            return true;
+            updatePackage = package;
         }
 
         public bool HasReceivedUpdate(Version version = null)

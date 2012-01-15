@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Core;
@@ -30,7 +31,7 @@ namespace NDistribUnit.Common.TestExecution
         /// <returns></returns>
         public static string GetAgentName(this TestResult result)
         {
-            return (string) (result.Test.Properties.Contains(AgentNameProperty) ? result.Test.Properties[AgentNameProperty] : null);
+            return (string)(result.Test.Properties.Contains(AgentNameProperty) ? result.Test.Properties[AgentNameProperty] : null);
         }
 
         /// <summary>
@@ -77,13 +78,50 @@ namespace NDistribUnit.Common.TestExecution
             if (foundChild != null)
                 return foundChild;
 
-            return (from TestResult child 
-                        in result.Results 
-                        select child.FindDescedant(condition))
+            return (from TestResult child
+                        in result.Results
+                    select child.FindDescedant(condition))
                     .FirstOrDefault(foundDescedant => foundDescedant != null);
         }
 
+        /// <summary>
+        /// Finds the descedants.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <param name="condition">The condition.</param>
+        /// <returns></returns>
+        public static IEnumerable<TestResult> FindDescedants(this TestResult result, Func<TestResult, bool> condition)
+        {
+            if (result.Results == null)
+                yield break;
+
+            var foundChild = result.Results.Cast<TestResult>().Where(condition).FirstOrDefault();
+            if (foundChild != null)
+                yield return foundChild;
+
+            var childResults = result.Results.Cast<TestResult>()
+                .SelectMany(child => child.FindDescedants(condition));
+
+            foreach (var childResult in childResults)
+            {
+                yield return childResult;
+            }
+
+        }
+
         const string CompletedPropertyName = "ndistribunit-completed-merged";
+
+        /// <summary>
+        /// Determines whether the specified result is final.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified result is final; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsFinal(this TestResult result)
+        {
+            return result.Test.Properties.Contains(CompletedPropertyName);
+        }
 
         /// <summary>
         /// Marks the result as completed by adding the "ndistribunit-completed-merged" property.

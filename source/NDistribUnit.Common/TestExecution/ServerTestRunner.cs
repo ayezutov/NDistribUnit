@@ -1,10 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
-using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution.Data;
@@ -18,7 +18,7 @@ namespace NDistribUnit.Common.TestExecution
     /// <summary>
     /// 
     /// </summary>
-    public class ServerTestRunner : IAgentDataSource
+    public class ServerTestRunner
     {
         private readonly AgentsCollection agents;
         private readonly TestUnitsCollection tests;
@@ -115,7 +115,7 @@ namespace NDistribUnit.Common.TestExecution
                             foreach (var test in ex.Tests)
                             {
                                 ProcessResult(test, null,
-                                              new TestUnitResult(TestResultFactory.GetNoAvailableAgentsFailure(test, ex)));
+                                              TestResultFactory.GetNoAvailableAgentsFailure(test, ex));
                             }
                             return;
                         }
@@ -146,18 +146,26 @@ namespace NDistribUnit.Common.TestExecution
             var request = requests.GetBy(test.Test.Run);
             if (request != null)
                 request.Status = TestRunRequestStatus.Pending;
-            TestUnitResult result = null;
+            TestResult result = null;
             try
             {
                 var testRunnerAgent =
-                    connectionProvider.GetDuplexConnection<IAgent, IAgentDataSource>(this,
-                                                                                     agent.Address);
+                    connectionProvider.GetConnection<IAgent>(agent.Address);
+
+                if (!testRunnerAgent.HasProject(test.Test.Run))
+                {
+                    testRunnerAgent.ReceiveProject(new ProjectMessage()
+                                                       {
+                                                           TestRun = test.Test.Run,
+                                                           Project = projects.GetStreamToPacked(test.Test.Run) ?? new MemoryStream(1)
+                                                       });
+                }
                 result = testRunnerAgent.RunTests(test.Test, configurationSubstitutions);
             }
             catch (CommunicationException ex)
             {
                 log.Error("Exception while running test", ex);
-                agents.MarkAsReady(agent);
+                agents.MarkAsDisconnected(agent);
                 tests.Add(test);
             }
             catch (Exception ex)
@@ -170,7 +178,7 @@ namespace NDistribUnit.Common.TestExecution
             ProcessResult(test, agent, result);
         }
 
-        private void ProcessResult(TestUnitWithMetadata test, AgentMetadata agent, TestUnitResult result)
+        private void ProcessResult(TestUnitWithMetadata test, AgentMetadata agent, TestResult result)
         {
             bool isRequestCompleted;
             using (agents.Lock())
@@ -187,15 +195,15 @@ namespace NDistribUnit.Common.TestExecution
                 }
             }
 
-            results.Add(test, result);
+            results.Add(result, test.Test.Run);
 
             if (isRequestCompleted)
-                ProcessCompletedTestRun(test);
+                ProcessCompletedTestRun(test.Test.Run);
         }
 
-        private static void AddResultsToTestUnitMetadata(TestUnitWithMetadata test, TestUnitResult result)
+        private static void AddResultsToTestUnitMetadata(TestUnitWithMetadata test, TestResult result)
         {
-            var found = FindByName(result.Result, test.Test.UniqueTestId);
+            var found = FindByName(result, test.Test.UniqueTestId);
             if (found == null)
                 return;
 
@@ -220,21 +228,6 @@ namespace NDistribUnit.Common.TestExecution
             return null;
         }
 
-        private void ProcessCompletedTestRun(TestUnitWithMetadata test)
-        {
-            var request = requests.RemoveBy(test.Test.Run);
-
-            var result = results.StoreAsCompleted(test.Test.Run);
-            
-            if (request != null && result != null)
-            {
-                // empty condition to avoid compile errors while 
-                // not finished with the next to-do
-            }
-
-            //TODO: add completed result to final collection
-        }
-
         /// <summary>
         /// Processes the request.
         /// </summary>
@@ -245,29 +238,30 @@ namespace NDistribUnit.Common.TestExecution
 
             try
             {
+                log.BeginActivity(string.Format("Starting executing project request {0}", request.TestRun.Id));
                 project = projects.Get(request.TestRun);
             }
             catch (Exception ex)
             {
                 log.Error("Unable to get test project", ex);
-                Complete(request, TestResultFactory.GetProjectRetrievalFailure(request, ex));
+                Complete(TestResultFactory.GetProjectRetrievalFailure(request, ex), request.TestRun);
                 return;
             }
             
             if (project == null)
             {
-                Complete(request, TestResultFactory.GetProjectRetrievalFailure(request));
+                Complete(TestResultFactory.GetProjectRetrievalFailure(request), request.TestRun);
                 return;
             }
 
             try
             {
-                log.BeginActivity("Parsing project into separate test units");
+                log.BeginActivity(string.Format("Starting parsing project request into test units {0}", request.TestRun.Id));
                 var testUnits = testsRetriever.Get(project, request);
                 if (testUnits != null && testUnits.Count == 0)
                 {
-                    log.Warning(string.Format("No tests were found in request: {0}", request.TestRun));
-                    Complete(request, TestResultFactory.GetNoAvailableTestFailure(request));
+                    log.Warning(string.Format("No tests were found in request: {0}", request.TestRun.Id));
+                    Complete(TestResultFactory.GetNoAvailableTestFailure(request), request.TestRun);
                     return;
                 }
 
@@ -278,14 +272,25 @@ namespace NDistribUnit.Common.TestExecution
             catch (Exception ex)
             {
                 log.Error("Error while parsing test request", ex);
-                Complete(request, TestResultFactory.GetUnhandledExceptionFailure(request, ex));
+                Complete(TestResultFactory.GetUnhandledExceptionFailure(request, ex), request.TestRun);
             }
         }
 
-        private void Complete(TestRunRequest request, TestResult result)
+        private void Complete(TestResult result, TestRun testRun)
         {
-            requests.Remove(request);
-            //TODO: notify client about failed tests
+            results.Add(result, testRun);
+            ProcessCompletedTestRun(testRun);
+        }
+
+        private void ProcessCompletedTestRun(TestRun testRun)
+        {
+            var request = requests.RemoveBy(testRun);
+            var result = results.StoreAsCompleted(testRun);
+            
+            request.PipeToClient.Publish(result.SetFinal());
+            request.PipeToClient.Close();
+
+            log.EndActivity(string.Format("Finished running request: {0}", testRun.Id));
         }
     }
 }

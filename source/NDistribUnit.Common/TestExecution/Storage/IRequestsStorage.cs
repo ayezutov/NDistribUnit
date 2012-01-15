@@ -25,12 +25,6 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// <summary>
         /// Removes the specified request.
         /// </summary>
-        /// <param name="request">The request.</param>
-        TestRunRequest Remove(TestRunRequest request);
-
-        /// <summary>
-        /// Removes the specified request.
-        /// </summary>
         /// <param name="testRun"></param>
         TestRunRequest RemoveBy(TestRun testRun);
 

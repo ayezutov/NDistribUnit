@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ServiceModel;
+using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.DataContracts;
 
 namespace NDistribUnit.Common.ServiceContracts
@@ -7,7 +8,7 @@ namespace NDistribUnit.Common.ServiceContracts
     /// <summary>
     /// A contract, which should be implemented by some side to be discoverable and trackable
     /// </summary>
-    [ServiceContract]
+    [ServiceContract(Namespace = ServiceConfiguration.Namespace)]
     public interface IPingable
     {
         /// <summary>

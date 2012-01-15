@@ -1,19 +1,18 @@
 ﻿using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Web;
-using NDistribUnit.Common.Contracts.DataContracts;
+using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
-using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.Server.Services;
 
-namespace NDistribUnit.Common.ServiceContracts
+namespace NDistribUnit.Common.Contracts.ServiceContracts
 {
     /// <summary>
     /// The contract for communicating with dashboard information of the server
     /// It is web-enabled, so is mostly designed to be accessed through browser
     /// </summary>
-    [ServiceContract]
+    [ServiceContract(Namespace = ServiceConfiguration.Namespace)]
     public interface IDashboardService
     {
         /// <summary>

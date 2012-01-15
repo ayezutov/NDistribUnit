@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.ServiceModel;
-using System.Threading;
 using System.Threading.Tasks;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Updating;
@@ -13,6 +12,7 @@ using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.Configuration;
 using NDistribUnit.Common.TestExecution.Storage;
 using NUnit.Core;
+using System.Linq;
 
 namespace NDistribUnit.Common.Client
 {
@@ -30,7 +30,6 @@ namespace NDistribUnit.Common.Client
         private readonly ITestResultsSerializer serializer;
         private readonly ILog log;
         private TestResult result;
-        private readonly Semaphore testCompleted;
         private TestRun testRun;
 
         /// <summary>
@@ -61,37 +60,6 @@ namespace NDistribUnit.Common.Client
             this.packager = packager;
             this.serializer = serializer;
             this.log = log;
-            testCompleted = new Semaphore(0, 1);
-        }
-
-        /// <summary>
-        /// Notifies that the test has completed.
-        /// </summary>
-        /// <param name="receivedResult">The result.</param>
-        /// <param name="isCompleted"></param>
-        public void NotifyTestProgressChanged(TestResult receivedResult, bool isCompleted)
-        {
-            result = receivedResult;
-            if (isCompleted)
-                testCompleted.Release();
-        }
-
-        /// <summary>
-        /// Gets the project.
-        /// </summary>
-        /// <param name="testRunId">The test run id.</param>
-        /// <returns></returns>
-        public PackedProject GetPackedProject(Guid testRunId)
-        {
-            if (testRun == null)
-                throw new InvalidOperationException(
-                    "Can't load any project from that client, as it is not initialized yet");
-
-            if (testRun.Id != testRunId)
-                throw new ArgumentException("The identifier should be of the client, which issued the test request",
-                                            "testRunId");
-
-            return new PackedProject(packager.GetPackage(testRun.NUnitParameters.AssembliesToTest));
         }
 
         /// <summary>
@@ -111,8 +79,7 @@ namespace NDistribUnit.Common.Client
         /// </summary>
         public void Run()
         {
-            var server = connectionProvider.GetDuplexConnection<IServer, IClient>(
-                this, new EndpointAddress(options.ServerUri));
+            var server = connectionProvider.GetConnection<IServer>(new EndpointAddress(options.ServerUri));
 
             testRun = new TestRun
                           {
@@ -136,24 +103,74 @@ namespace NDistribUnit.Common.Client
 
             try
             {
-                server.StartRunningTests(testRun);
+                bool hasProject = server.HasProject(testRun);
+                if (!hasProject)
+                {
+                    Stream packageStream = packager.GetPackage(testRun.NUnitParameters.AssembliesToTest);
+                    try
+                    {
+                        server.ReceiveProject(new ProjectMessage
+                                                  {
+                                                      Project = new StreamWrapper(packageStream, log),
+                                                      TestRun = testRun
+                                                  });
+                    }
+                    finally
+                    {
+                        packageStream.Close();
+                    }
+                }
             }
             catch (EndpointNotFoundException)
             {
                 log.Error("It seems, that the server is not available");
+                //TODO: Save a failed test run here
+                return;
+            }
+            catch(CommunicationException ex)
+            {
+                log.Error("There was an error, when trying to send the package to client", ex);
+                //TODO: Save a failed test run here
                 return;
             }
 
             var testRunningTask = Task.Factory.StartNew(() =>
                                                             {
-                                                                testCompleted.WaitOne();
+                                                                try
+                                                                {
+                                                                    TestResult tempResult;
+                                                                    while ((tempResult = server.RunTests(testRun)) != null)
+                                                                    {
+                                                                        if (tempResult.IsFinal())
+                                                                        {
+                                                                            result = tempResult;
+                                                                            log.Info("Running all tests completed!");
+                                                                            break;
+                                                                        }
+
+                                                                        log.Info(
+                                                                            string.Format(
+                                                                                "Test '{0}' completed: {1} run, {2} successful, {3} failed",
+                                                                                tempResult.FullName,
+                                                                                tempResult.FindDescedants(
+                                                                                    d => !d.Test.IsSuite).Count(),
+                                                                                tempResult.FindDescedants(
+                                                                                    d => !d.Test.IsSuite && d.IsSuccess).Count(),
+                                                                                tempResult.FindDescedants(
+                                                                                    d => !d.Test.IsSuite && d.IsFailure).Count()));
+                                                                    }
+                                                                }
+                                                                catch(Exception ex)
+                                                                {
+                                                                    log.Error("An error occurred while running tests", ex);
+                                                                }
                                                             });
             var updateTask = Task.Factory.StartNew(() =>
                                           {
                                               try
                                               {
                                                   var updatePackage =
-                                                      server.GetUpdatePackage(versionProvider.GetVersion());
+                                                      server.GetUpdatePackage(new UpdateRequest {Version = versionProvider.GetVersion()});
                                                   if (updatePackage.IsAvailable)
                                                       updateReceiver.SaveUpdatePackage(updatePackage);
                                               }
@@ -185,6 +202,12 @@ namespace NDistribUnit.Common.Client
 
         private void PrintResult()
         {
+            if (result == null)
+            {
+                log.Info("Result is not available. Maybe not all tests were run?");
+                return;
+            }
+
             var total = 0;
             var success = 0;
             result.ForSelfAndAllDescedants(r =>
@@ -201,9 +224,12 @@ namespace NDistribUnit.Common.Client
 
         private void SaveResult()
         {
+            if (result == null)
+                return;
+
             if (!string.IsNullOrEmpty(options.NUnitParameters.XmlFileName))
             {
-                var xml = new TestResultsSerializer().GetXml(result);
+                var xml = serializer.GetXml(result);
 
                 var writer = new StreamWriter(options.NUnitParameters.XmlFileName);
                 try

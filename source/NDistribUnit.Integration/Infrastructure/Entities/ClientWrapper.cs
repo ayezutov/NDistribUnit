@@ -11,7 +11,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// <value>
         /// The test runnner.
         /// </value>
-        public Client TestRunnner { get; private set; }
+        public Client TestRunner { get; private set; }
 
         public TestUpdateReceiver UpdateReceiver { get; private set; }
 
@@ -22,13 +22,13 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// <param name="updateReceiver">The update receiver.</param>
         public ClientWrapper(Client testRunnner, TestUpdateReceiver updateReceiver)
         {
-            TestRunnner = testRunnner;
+            TestRunner = testRunnner;
             UpdateReceiver = updateReceiver;
         }
 
         public void RunEmptyTest()
         {
-            TestRunnner.Run();
+            TestRunner.Run();
         }
     }
 }

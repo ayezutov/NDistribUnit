@@ -15,6 +15,7 @@ namespace NDistribUnit.Bootstrapper
 		private ConsoleLog log;
 		private AppDomain domain;
 
+        [STAThread]
 		private static void Main(string[] args)
 		{
 			new BootstrapperProgram(args).Run();

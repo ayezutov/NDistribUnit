@@ -1,0 +1,74 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/Categories/=Imported_00201_002F9_002F2012/@EntryIndexedValue">Imported 1/9/2012</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/Description/@EntryValue">NUnit test</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/Field/=Test/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/Field/=Test/Expression/@EntryValue">constant("Test")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/Field/=Test/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/Scope/=B68999B9D6B43E47A02B22C12A54C3CC/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/Scope/=B68999B9D6B43E47A02B22C12A54C3CC/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/Scope/=B68999B9D6B43E47A02B22C12A54C3CC/Type/@EntryValue">InCSharpTypeMember</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/Shortcut/@EntryValue">test</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C8A8DE3344D794CA5B484C1EF0A2A5D/Text/@EntryValue">[Test]&#xD;
+        public void $Test$()&#xD;
+        {&#xD;
+			$END$&#xD;
+        }</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Description/@EntryValue">NUnit test</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Text/@EntryValue">using NUnit.Framework;&#xD;
+&#xD;
+namespace $NameSpace$&#xD;
+{&#xD;
+	[TestFixture]&#xD;
+	public class $TestFixture$&#xD;
+	{&#xD;
+		[SetUp]&#xD;
+		public void Init()&#xD;
+		{&#xD;
+		}&#xD;
+&#xD;
+		[TearDown]&#xD;
+		public void Dispose()&#xD;
+		{&#xD;
+		}&#xD;
+&#xD;
+        [TestFixtureSetUp]&#xD;
+        public void InitOnce()&#xD;
+        {&#xD;
+        }&#xD;
+&#xD;
+        [TestFixtureTearDown]&#xD;
+        public void DisposeOnce()&#xD;
+        {&#xD;
+        }&#xD;
+&#xD;
+	    [Test]&#xD;
+		public void $Test$()&#xD;
+		{&#xD;
+		}&#xD;
+	}&#xD;
+}</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Categories/=Imported_00201_002F9_002F2012/@EntryIndexedValue">Imported 1/9/2012</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/CustomProperties/=FileName/@EntryIndexedValue">NUnitTest</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/CustomProperties/=Extension/@EntryIndexedValue">cs</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/CustomProperties/=ValidateFileName/@EntryIndexedValue">True</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Scope/=E8F0594528C33E45BBFEC6CFE851095D/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Scope/=E8F0594528C33E45BBFEC6CFE851095D/Type/@EntryValue">InCSharpProjectFile</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Field/=TestFixture/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Field/=TestFixture/Expression/@EntryValue">getFileNameWithoutExtension()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Field/=TestFixture/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Field/=NameSpace/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Field/=NameSpace/Expression/@EntryValue">fileDefaultNamespace()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Field/=NameSpace/Order/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Field/=Test/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Field/=Test/Expression/@EntryValue">constant("Test")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3D6FA11AD94DC14B8B3B5D9265E9120A/Field/=Test/Order/@EntryValue">2</s:Int64></wpf:ResourceDictionary>

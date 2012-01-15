@@ -1,12 +1,16 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using Autofac;
 using NDistribUnit.Common.Agent;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Networking;
 using NDistribUnit.Common.Common.Updating;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Server.AgentsTracking.AgentsProviders;
 using NDistribUnit.Common.Server.Communication;
+using NDistribUnit.Common.TestExecution.Storage;
 using NDistribUnit.Common.Updating;
 using NDistribUnit.Integration.Tests.Infrastructure.Entities;
 using NDistribUnit.Integration.Tests.Infrastructure.Stubs;
@@ -39,10 +43,28 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
 
             var updateSource = repo.Create<IUpdateSource>();
             updateSource
-                .Setup(s => s.GetZippedVersionFolder(It.IsAny<Version>()))
-                .Returns(new[] {(byte) 'c'});
-
+                .Setup(s => s.GetZippedVersionFolder())
+                .Returns(new MemoryStream(new[] {(byte) 'c'}));
             builder.RegisterInstance(updateSource.Object).As<IUpdateSource>();
+
+
+            var projectPackager = repo.Create<IProjectPackager>();
+            projectPackager
+                .Setup(p => p.GetPackage(It.IsAny<IList<string>>()))
+                .Returns(new MemoryStream(new[] {(byte) 'p'}));
+            builder.RegisterInstance(projectPackager.Object).As<IProjectPackager>();
+            
+            var projectsStorage = repo.Create<IProjectsStorage>();
+            projectsStorage
+                .Setup(p => p.HasProject(It.IsAny<TestRun>()))
+                .Returns(true);
+            projectsStorage
+                .Setup(p => p.Get(It.IsAny<TestRun>()))
+                .Returns((TestProject)null);
+
+            builder.RegisterInstance(projectsStorage.Object).As<IProjectsStorage>();
+            
+
 
             builder.RegisterType<TestingConnectionProvider>().As<IConnectionProvider>().SingleInstance();
             builder.Register(c => new BootstrapperParameters

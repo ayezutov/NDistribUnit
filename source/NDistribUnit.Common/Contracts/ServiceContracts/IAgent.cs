@@ -1,5 +1,6 @@
 using System.Collections;
 using System.ServiceModel;
+using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
@@ -12,8 +13,8 @@ namespace NDistribUnit.Common.Contracts.ServiceContracts
     /// </summary>
     [ServiceKnownType(typeof(ArrayList))]
     [ServiceKnownType(typeof(TestResult))]
-    [ServiceContract(Namespace = "http://yezutov.com/ndistribunit")]
-    public interface IAgent : IProjectReceiver
+    [ServiceContract(Namespace = ServiceConfiguration.Namespace)]
+    public interface IAgent: IProjectReceiver
     {
         /// <summary>
         /// Runs tests on agent
@@ -22,6 +23,6 @@ namespace NDistribUnit.Common.Contracts.ServiceContracts
         /// <param name="configurationSubstitutions">The configuration substitutions.</param>
         /// <returns></returns>
         [OperationContract]
-        TestUnitResult RunTests(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions);
+        TestResult RunTests(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions);
     }
 }

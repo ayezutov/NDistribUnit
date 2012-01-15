@@ -50,10 +50,10 @@ namespace NDistribUnit.Common.TestExecution.Configuration
         {
             return SpecialHandlings.FirstOrDefault(h =>
                                                        {
-                                                           if (h.FailureMessageType == FailureMessageType.ContainsText)
+                                                           if (h.FailureMessageType == MatchType.ContainsText)
                                                                return exception.Message.Contains(h.FailureMessage) 
                                                                    || exception.StackTrace.Contains(h.FailureMessage);
-                                                            if (h.FailureMessageType == FailureMessageType.Regex)
+                                                            if (h.FailureMessageType == MatchType.Regex)
                                                             {
                                                                 var regex = new Regex(h.FailureMessage);
                                                                 return regex.IsMatch(exception.Message) 

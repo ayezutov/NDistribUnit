@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\RollingListTests.cs" />
+    <Compile Include="Common\CrossThreadPipeTests.cs" />
     <Compile Include="Configuration\ClientParametersParserTests.cs" />
     <Compile Include="FileSystem\DirectoryHashTests.cs" />
     <Compile Include="Logging\RollingLogTests.cs" />

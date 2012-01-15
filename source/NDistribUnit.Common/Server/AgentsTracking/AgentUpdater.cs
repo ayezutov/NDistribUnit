@@ -2,6 +2,7 @@ using System;
 using System.ServiceModel;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Updating;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.ServiceContracts;
@@ -50,7 +51,7 @@ namespace NDistribUnit.Common.Server.AgentsTracking
 
                 if (agentVersion < currentVersion)
                 {
-                    var zippedVersionFolder = updateSource.GetZippedVersionFolder(currentVersion);
+                    var zippedVersionFolder = updateSource.GetZippedVersionFolder();
                     if (zippedVersionFolder != null)
                     {
                         agents.MarkAsUpdating(agent);
@@ -60,11 +61,12 @@ namespace NDistribUnit.Common.Server.AgentsTracking
                                            {
                                                var testRunnerAgent =
                                                    connectionProvider.GetConnection<IRemoteAppPart>(agent.RemotePartAddress);
+
                                                testRunnerAgent.ReceiveUpdatePackage(new UpdatePackage
                                                                                         {
                                                                                             IsAvailable = true,
                                                                                             Version = currentVersion,
-                                                                                            UpdateZipBytes =
+                                                                                            UpdateZipStream =
                                                                                                 zippedVersionFolder
                                                                                         });
                                                agents.MarkAsUpdated(agent);

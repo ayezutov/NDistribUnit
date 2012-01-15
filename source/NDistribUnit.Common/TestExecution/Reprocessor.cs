@@ -13,7 +13,7 @@ namespace NDistribUnit.Common.TestExecution
         /// </summary>
         /// <param name="test">The test.</param>
         /// <param name="result">The result.</param>
-        public void AddForReprocessingIfRequired(TestUnitWithMetadata test, TestUnitResult result)
+        public void AddForReprocessingIfRequired(TestUnitWithMetadata test, TestResult result)
         {}
     }
 }

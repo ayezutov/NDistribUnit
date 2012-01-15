@@ -2,6 +2,7 @@
 using System.Threading;
 using Ionic.Zip;
 using NDistribUnit.Common.Common.Communication;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Common.Updating;
 
@@ -29,18 +30,18 @@ namespace NDistribUnit.Common.Common.Updating
             this.zip = zip;
 		}
 
-		/// <summary>
-		/// Applies the update.
-		/// </summary>
-		/// <param name="package">The package.</param>
-		 public bool SaveUpdatePackage(UpdatePackage package)
+	    /// <summary>
+	    /// Applies the update.
+	    /// </summary>
+	    /// <param name="package">The package.</param>
+	    public void SaveUpdatePackage(UpdatePackage package)
 		 {
 			 if (!package.IsAvailable)
-			 	return false;
+			 	return;
 
 			 var versionDirectory = finder.GetVersionDirectory(parameters.RootFolder, package.Version);
 			 if (versionDirectory != null)
-				 return false;
+				 return;
 
 			 var mutex = new Mutex(false, parameters.RootFolder.Replace("\\", "|"));
 			 mutex.WaitOne();
@@ -49,15 +50,13 @@ namespace NDistribUnit.Common.Common.Updating
 			 {
 				 versionDirectory = finder.GetVersionDirectory(parameters.RootFolder, package.Version);
 				 if (versionDirectory != null)
-					 return false;
+					 return;
 
                  var targetDir = parameters.RootFolder;
                  if (!Directory.Exists(targetDir))
                      Directory.CreateDirectory(targetDir);
 
-                 zip.UnpackFolder(package.UpdateZipBytes, targetDir);
-
-			 	return true;
+                 zip.UnpackFolder(package.UpdateZipStream, targetDir);
 			 }
 			 finally
 			 {

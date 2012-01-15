@@ -17,6 +17,7 @@ namespace NDistribUnit.Agent
     /// </summary>
 	public class AgentProgram: GeneralProgram
 	{
+        [STAThread]
         private static int Main(string[] args)
 		{
 		    var configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);

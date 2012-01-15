@@ -1,12 +1,13 @@
 using System;
+using NDistribUnit.Common.Common;
 using NDistribUnit.Common.Contracts.DataContracts;
+using NUnit.Core;
 
 namespace NDistribUnit.Common.TestExecution.Data
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	[Serializable]
 	public class TestRunRequest
 	{
 		/// <summary>
@@ -17,6 +18,13 @@ namespace NDistribUnit.Common.TestExecution.Data
 		{
 			TestRun = testRun;
 		    RequestTime = DateTime.UtcNow;
+            PipeToClient = new CrossThreadPipe<TestResult>(TimeSpan.FromSeconds(5), list =>
+                                                                                        {
+                                                                                            for (int i = list.Count - 1; i > 0; i--)
+                                                                                            {
+                                                                                                new TestResultsProcessor().Merge(list[i], list[0]);
+                                                                                            }
+                                                                                        });
 		}
 
 		/// <summary>
@@ -50,5 +58,10 @@ namespace NDistribUnit.Common.TestExecution.Data
         /// The configuration setup.
         /// </value>
 	    public DistributedConfigurationSetup ConfigurationSetup { get; set; }
-    }
+
+        /// <summary>
+        /// Gets the results pipe to client.
+        /// </summary>
+	    public CrossThreadPipe<TestResult> PipeToClient { get; private set; }
+	}
 }

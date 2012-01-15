@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.ServiceModel;
-using NDistribUnit.Common.Client;
+using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Contracts.DataContracts;
-using NDistribUnit.Common.ServiceContracts;
 using NUnit.Core;
 
 namespace NDistribUnit.Common.Contracts.ServiceContracts
@@ -11,7 +10,9 @@ namespace NDistribUnit.Common.Contracts.ServiceContracts
     /// <summary>
     /// Contract, which is used by client to connect to server
     /// </summary>
-    [ServiceContract(Namespace = "http://yezutov.com/ndistribunit")]
+    [ServiceContract(Namespace = ServiceConfiguration.Namespace)]
+    [ServiceKnownType(typeof(ArrayList))]
+    [ServiceKnownType(typeof(TestResult))]
     public interface IServer: IProjectReceiver
     {
         /// <summary>
@@ -22,12 +23,28 @@ namespace NDistribUnit.Common.Contracts.ServiceContracts
         [OperationContract]
 		TestResult RunTests(TestRun run);
 
-		/// <summary>
-		/// Gets the update if available.
-		/// </summary>
-		/// <param name="version">The version.</param>
-		/// <returns></returns>
-		[OperationContract]
-    	UpdatePackage GetUpdatePackage(Version version);
+        /// <summary>
+        /// Gets the update if available.
+        /// </summary>
+        /// <param name="request"> </param>
+        /// <returns></returns>
+        [OperationContract]
+    	UpdatePackage GetUpdatePackage(UpdateRequest request);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [MessageContract]
+    public class UpdateRequest
+    {
+        /// <summary>
+        /// Gets or sets the version.
+        /// </summary>
+        /// <value>
+        /// The version.
+        /// </value>
+        [MessageBodyMember]
+        public Version Version { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace NDistribUnit.Common.TestExecution
         private readonly TestResultsProcessor processor;
         private readonly ILog log;
         private readonly object syncObject = new object();
-        private readonly List<TestUnitResult> unmerged = new List<TestUnitResult>();
+        private readonly List<TestResult> unmerged = new List<TestResult>();
         private bool closed;
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace NDistribUnit.Common.TestExecution
         /// Adds the unmerged.
         /// </summary>
         /// <param name="result">The result.</param>
-        public void AddUnmerged(TestUnitResult result)
+        public void AddUnmerged(TestResult result)
         {
             if (closed)
                 throw new InvalidOperationException("It is not allowed to add new results after finalization.");
@@ -52,7 +52,7 @@ namespace NDistribUnit.Common.TestExecution
             lock (syncObject)
             {
                 if (MergedResult == null)
-                    MergedResult = new TestResult(result.Result.Test);
+                    MergedResult = new TestResult(result.Test);
 
                 unmerged.Add(result);
                 MergeAsync();
@@ -100,7 +100,7 @@ namespace NDistribUnit.Common.TestExecution
 
                 var resultToMerge = unmerged[0];
                 unmerged.Remove(resultToMerge);
-                processor.Merge(resultToMerge, ref mergedResult);
+                processor.Merge(resultToMerge, mergedResult);
             }
         }
 

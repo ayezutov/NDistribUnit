@@ -84,7 +84,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
                 })
             });
 
-            processor.Merge(new TestUnitResult(branch2), ref branch1);
+            processor.Merge(branch2, branch1);
 
             Assert.That(mergePoint.Results.Cast<TestResult>().Select(r => r.FullName).ToArray(), 
                 Is.EquivalentTo(new[]
@@ -160,7 +160,8 @@ namespace NDistribUnit.Common.Tests.TestExecution
                 })
             });
 
-            processor.Merge(new TestUnitResult(branch2), ref branch1);
+            
+            processor.Merge(branch2, branch1);
 
             Assert.That(mergePoint.Results.Cast<TestResult>().Select(r => r.FullName).ToArray(), 
                 Is.EquivalentTo(new[]
@@ -197,7 +198,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
                 data.CreateTestResult(TestType.Assembly, "D:/ndistribunit/someotherpath/assembly1.dll")
             });
 
-            processor.Merge(new TestUnitResult(branch2), ref branch1);
+            processor.Merge(branch2, branch1);
 
             Assert.That(branch1.Results.Count, Is.EqualTo(1));
         }

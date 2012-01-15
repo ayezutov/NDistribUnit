@@ -4,9 +4,9 @@ using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
-using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
+using NUnit.Core;
 
 namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
 {
@@ -48,7 +48,17 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
         /// <param name="test">The test.</param>
         /// <param name="configurationSubstitutions">The configuration substitutions.</param>
         /// <returns></returns>
-        public TestUnitResult RunTests(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions)
+        public TestResult RunTests(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions)
+        {
+            throw new CommunicationException();
+        }
+
+        public void ReceiveProject(ProjectMessage project)
+        {
+            throw new CommunicationException();
+        }
+
+        public bool HasProject(TestRun run)
         {
             throw new CommunicationException();
         }

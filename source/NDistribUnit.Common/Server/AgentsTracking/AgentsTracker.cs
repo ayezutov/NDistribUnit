@@ -193,12 +193,15 @@ namespace NDistribUnit.Common.Server.AgentsTracking
 
             var agent = state as AgentMetadata;
 
-            if (agent == null || (!agent.Status.IsOneOf(new[] { AgentState.Ready, AgentState.New, AgentState.Error })))
-                return;
-
             Timer timer;
             if (!timers.TryGetValue(agent, out timer))
                 return;
+
+            if (agent == null || (!agent.Status.IsOneOf(new[] { AgentState.Ready, AgentState.New, AgentState.Error })))
+            {
+                ReschedulePinging(timer);
+                return;
+            }
 
             try
             {
@@ -221,15 +224,7 @@ namespace NDistribUnit.Common.Server.AgentsTracking
 
                 agentUpdater.UpdateAgent(agent);
 
-                try
-                {
-                    if (timer != null)
-                        timer.Change(options.PingIntervalInMiliseconds, Timeout.Infinite);
-                }
-                catch(ObjectDisposedException)
-                {
-                    // Do not handle this: timer was destroyed by another thread
-                }
+                ReschedulePinging(timer);
             }
             catch (CommunicationException)
             {
@@ -244,6 +239,20 @@ namespace NDistribUnit.Common.Server.AgentsTracking
                 // mark as errored out
                 StopAgentPinging(agent);
                 agents.MarkAsFailure(agent);
+            }
+        }
+
+        private void ReschedulePinging(Timer timer)
+        {
+            try
+            {
+                if (timer != null)
+                    timer.Change(options.PingIntervalInMiliseconds,
+                                 Timeout.Infinite);
+            }
+            catch (ObjectDisposedException)
+            {
+                // Do not handle this: timer was destroyed by another thread
             }
         }
 

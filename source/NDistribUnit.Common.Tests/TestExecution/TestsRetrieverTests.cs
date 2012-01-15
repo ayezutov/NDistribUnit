@@ -27,7 +27,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
             request = new TestRunRequest(new TestRun
                                                  {
                                                      NUnitParameters = new NUnitParameters()
-                                                 }, null);
+                                                 });
             request.TestRun.NUnitParameters.AssembliesToTest.Add(targetAssembly);
         }
 

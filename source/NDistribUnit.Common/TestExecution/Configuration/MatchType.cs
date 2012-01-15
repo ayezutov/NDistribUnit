@@ -3,8 +3,10 @@ namespace NDistribUnit.Common.TestExecution.Configuration
     /// <summary>
     /// 
     /// </summary>
-    public enum FailureMessageType
+    public enum MatchType
     {
+        ///
+        None,
         /// 
         ContainsText,
         /// 

@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using NDistribUnit.Common.Contracts.DataContracts;
+using System.Threading;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
@@ -49,20 +49,20 @@ namespace NDistribUnit.Common.Agent
         /// <param name="test">The test.</param>
         /// <param name="configurationSubstitutions"></param>
         /// <returns></returns>
-        public TestUnitResult Run(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions)
+        public TestResult Run(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions)
         {
-            var project = projects.GetOrLoad(test.Run);
+            var project = projects.Get(test.Run);
             if (project == null)
             {
                 log.Info("Project file was not found. Throwing exception");
-                return new TestUnitResult(TestResultFactory.GetProjectRetrievalFailure(test));
+                return TestResultFactory.GetProjectRetrievalFailure(test);
             }
 
             log.BeginActivity("Starting test execution...");
             var nUnitTestResult = GetNUnitTestResult(test, project, configurationSubstitutions);
             log.EndActivity("Test execution was finished");
             
-            return new TestUnitResult(nUnitTestResult);
+            return nUnitTestResult;
         }
 
         /// <summary>
@@ -89,25 +89,60 @@ namespace NDistribUnit.Common.Agent
                                                                                                    Path.GetFileName(
                                                                                                        test.Run.NUnitParameters.
                                                                                                            AssembliesToTest[0]));
-                                                             var package = new TestPackage(mappedAssemblyFile);
+
+                                                             TestPackage package;
+                                                             if (!NUnitProject.IsNUnitProjectFile(mappedAssemblyFile))
+                                                                 package = new TestPackage(mappedAssemblyFile);
+                                                             else
+                                                             {
+                                                                 var nunitProject = new NUnitProject(mappedAssemblyFile);
+                                                                 nunitProject.Load();
+                                                                 if (!string.IsNullOrEmpty(test.Run.NUnitParameters.Configuration))
+                                                                     nunitProject.SetActiveConfig(test.Run.NUnitParameters.Configuration);
+
+                                                                 package = nunitProject.ActiveConfig.MakeTestPackage();
+                                                             }
+                                                             
                                                              package.Settings["ShadowCopyFiles"] = true;
                                                              package.BasePath = package.PrivateBinPath = project.Path;
-                                                             package.ConfigurationFile = configurationFileName 
-                                                                 ?? Path.ChangeExtension(mappedAssemblyFile, ".config");
+
+                                                             if (!string.IsNullOrEmpty(configurationFileName))
+                                                             {
+                                                                 package.ConfigurationFile = configurationFileName;
+                                                                     /*?? Path.ChangeExtension(mappedAssemblyFile, ".config");*/
+                                                             }
+
                                                              var nativeTestRunner = new MultipleTestDomainRunner();
                                                              nativeTestRunner.Load(package);
                                                              return nativeTestRunner;
                                                          });
 
             var testOptions = test.Run.NUnitParameters;
-            TestResult testResult;
+            TestResult testResult = null;
             
             try
             {
-                testResult = nativeRunner.Run(new NullListener(),
-                                              new NUnitTestsFilter(testOptions.IncludeCategories,
-                                                                   testOptions.ExcludeCategories,
-                                                                   test.UniqueTestId));
+                ThreadStart runTest = ()=>
+                                     {
+                                         testResult = nativeRunner.Run(new NullListener(),
+                                                                       new NUnitTestsFilter(
+                                                                           testOptions.IncludeCategories,
+                                                                           testOptions.ExcludeCategories,
+                                                                           test.UniqueTestId));
+                                     };
+
+                if (Thread.CurrentThread.GetApartmentState() != ApartmentState.STA
+                    && !Thread.CurrentThread.TrySetApartmentState(ApartmentState.STA))
+                {
+                    var thread = new Thread(runTest);
+                    thread.SetApartmentState(ApartmentState.STA);
+                    thread.Start();
+                    thread.Join();
+                }
+                else
+                {
+                    runTest();
+                }
             }
             catch (Exception ex)
             {

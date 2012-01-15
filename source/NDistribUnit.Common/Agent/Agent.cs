@@ -18,7 +18,7 @@ namespace NDistribUnit.Common.Agent
     /// <summary>
     /// The service, which is communicated, when the server calls he agent
     /// </summary>
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Reentrant)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class Agent : IAgent, IRemoteAppPart
     {
         private readonly ILog log;
@@ -75,12 +75,12 @@ namespace NDistribUnit.Common.Agent
         /// <param name="test"></param>
         /// <param name="configurationSubstitutions"></param>
         /// <returns></returns>
-        public TestUnitResult RunTests(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions)
+        public TestResult RunTests(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions)
         {
             log.Info(string.Format("Run Tests command Received: {0}", test.UniqueTestId));
 
             var result = runner.Run(test, configurationSubstitutions);
-            result.Result.ForSelfAndAllDescedants(r => r.SetAgentName(Name));
+            result.ForSelfAndAllDescedants(r => r.SetAgentName(Name));
 
             return result;
         }
@@ -103,7 +103,7 @@ namespace NDistribUnit.Common.Agent
         /// </returns>
         public bool HasProject(TestRun run)
         {
-            return projects.Get(run) != null;
+            return projects.HasProject(run);
         }
 
         /// <summary>

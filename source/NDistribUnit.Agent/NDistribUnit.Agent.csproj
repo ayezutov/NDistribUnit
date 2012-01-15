@@ -44,6 +44,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MsBuild Task|AnyCPU'">
     <OutputPath>bin\MsBuild Task\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
       <HintPath>..\_dependencies\Autofac-2.4.4.705-NET40\Autofac.dll</HintPath>
@@ -81,6 +84,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />

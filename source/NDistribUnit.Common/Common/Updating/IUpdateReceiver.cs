@@ -1,4 +1,4 @@
-using NDistribUnit.Common.ServiceContracts;
+using NDistribUnit.Common.Contracts.DataContracts;
 
 namespace NDistribUnit.Common.Common.Updating
 {
@@ -11,6 +11,6 @@ namespace NDistribUnit.Common.Common.Updating
         /// Applies the update.
         /// </summary>
         /// <param name="package">The package.</param>
-        bool SaveUpdatePackage(UpdatePackage package);
+        void SaveUpdatePackage(UpdatePackage package);
     }
 }

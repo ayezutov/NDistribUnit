@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApartmentState\WriteApartmentStateToConsole.cs" />
     <Compile Include="CategorizedTests\TestFixtureWithGroup1CategoryAndCategoriesOnTests.cs" />
     <Compile Include="CategorizedTests\TestFixtureWithCategoriesOnTests.cs" />
     <Compile Include="CategorizedTests\TestFixtureWithNoGroup1CategoryOnTestsOrSelf.cs" />

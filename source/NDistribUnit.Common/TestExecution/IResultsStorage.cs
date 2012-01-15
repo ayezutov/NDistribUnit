@@ -11,9 +11,9 @@ namespace NDistribUnit.Common.TestExecution
         /// <summary>
         /// Adds the specified result.
         /// </summary>
-        /// <param name="test"></param>
         /// <param name="result">The result.</param>
-        void Add(TestUnitWithMetadata test, TestUnitResult result);
+        /// <param name="testRun"> </param>
+        void Add(TestResult result, TestRun testRun);
 
         /// <summary>
         /// Stores as completed.

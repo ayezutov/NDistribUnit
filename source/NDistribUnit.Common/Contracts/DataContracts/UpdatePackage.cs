@@ -1,11 +1,14 @@
 using System;
+using System.IO;
+using System.ServiceModel;
 
-namespace NDistribUnit.Common.ServiceContracts
+namespace NDistribUnit.Common.Contracts.DataContracts
 {
 	/// <summary>
 	/// 
 	/// </summary>
 	[Serializable]
+    [MessageContract]
 	public class UpdatePackage
 	{
 		/// <summary>
@@ -14,6 +17,7 @@ namespace NDistribUnit.Common.ServiceContracts
 		/// <value>
 		/// 	<c>true</c> if this instance is available; otherwise, <c>false</c>.
 		/// </value>
+		[MessageHeader]
 		public bool IsAvailable { get; set; }
 
 		/// <summary>
@@ -22,7 +26,8 @@ namespace NDistribUnit.Common.ServiceContracts
 		/// <value>
 		/// The version.
 		/// </value>
-		public Version Version { get; set; }
+		[MessageHeader]
+        public Version Version { get; set; }
 
 		/// <summary>
 		/// Gets or sets the update zip.
@@ -30,6 +35,7 @@ namespace NDistribUnit.Common.ServiceContracts
 		/// <value>
 		/// The update zip.
 		/// </value>
-		public byte[] UpdateZipBytes { get; set; }
+		[MessageBodyMember]
+        public Stream UpdateZipStream { get; set; }
 	}
 }

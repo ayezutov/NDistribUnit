@@ -43,6 +43,8 @@ namespace NDistribUnit.Common.TestExecution.Storage
             get { return parameters.RootFolder; }
         }
 
+
+
         /// <summary>
         /// Gets the project.
         /// </summary>
@@ -63,12 +65,27 @@ namespace NDistribUnit.Common.TestExecution.Storage
                                            string packedFile = Path.Combine(path, PackedFileName);
                                            if (File.Exists(packedFile))
                                            {
-                                               zip.UnpackFolder(ReadBytes(packedFile), unpackedDirectory);
+                                               using(FileStream fileStream = File.OpenRead(packedFile))
+                                               {
+                                                   zip.UnpackFolder(fileStream, unpackedDirectory);
+                                               }
                                                return new TestProject(unpackedDirectory);
                                            }
                                            
                                            return null;
                                        });
+        }
+
+        /// <summary>
+        /// Determines whether the specified test run has project.
+        /// </summary>
+        /// <param name="testRun">The test run.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified test run has project; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasProject(TestRun testRun)
+        {
+            return Get(testRun) != null;
         }
 
         private string GetPathToProject(TestRun testRun)
@@ -120,10 +137,17 @@ namespace NDistribUnit.Common.TestExecution.Storage
             }
         }
 
+        /// <summary>
+        /// Stores the specified test run.
+        /// </summary>
+        /// <param name="testRun">The test run.</param>
+        /// <param name="projectStream">The project stream.</param>
         public void Store(TestRun testRun, Stream projectStream)
         {
             var path = GetPathToProject(testRun);
             var packedFile = Path.Combine(path, PackedFileName);
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
             var file = new FileStream(packedFile, FileMode.CreateNew, FileAccess.Write);
             var buffer = new byte[1024*1024];
             int readBytes;
@@ -132,6 +156,38 @@ namespace NDistribUnit.Common.TestExecution.Storage
                 file.Write(buffer, 0, readBytes);
             }
             file.Close();
+        }
+
+        /// <summary>
+        /// Gets the stream to packed.
+        /// </summary>
+        /// <param name="testRun">The test run.</param>
+        /// <returns></returns>
+        public Stream GetStreamToPacked(TestRun testRun)
+        {
+            return RunSynchronized(testRun,
+                                   () =>
+                                   {
+                                       string path = GetPathToProject(testRun);
+
+                                       string packedFile = Path.Combine(path, PackedFileName);
+
+                                       if (File.Exists(packedFile))
+                                           return File.OpenRead(packedFile);
+
+                                       string unpackedDirectory = Path.Combine(path, UnpackedFolder);
+
+                                       if (Directory.Exists(unpackedDirectory))
+                                       {
+                                           using (FileStream fileStream = File.Create(packedFile))
+                                           {
+                                               zip.GetPackedFolder(new DirectoryInfo(unpackedDirectory), true, fileStream);
+                                           }
+                                           return File.OpenRead(packedFile);
+                                       }
+
+                                       return null;
+                                   });
         }
     }
 }

@@ -87,10 +87,10 @@
     <Compile Include="Agent\Agent.cs" />
     <Compile Include="Client\ClientParameters.cs" />
     <Compile Include="Client\NUnitParameters.cs" />
+    <Compile Include="Common\Communication\ServiceConfiguration.cs" />
     <Compile Include="Common\Extensions\EnumExtensions.cs" />
     <Compile Include="Common\Unlocker.cs" />
     <Compile Include="Contracts\DataContracts\Test.cs" />
-    <Compile Include="Contracts\DataContracts\TestResult.cs" />
     <Compile Include="Client\IClient.cs" />
     <Compile Include="Client\Client.cs" />
     <Compile Include="Common\Logging\WindowsLog.cs" />
@@ -111,6 +111,8 @@
     <Compile Include="Common\HashChecking\ErrorLevel.cs" />
     <Compile Include="Common\HashChecking\HashValidationException.cs" />
     <Compile Include="Agent\AgentConfiguration.cs" />
+    <Compile Include="Contracts\ServiceContracts\IProjectReceiver.cs" />
+    <Compile Include="Contracts\ServiceContracts\ProjectMessage.cs" />
     <Compile Include="Server\AgentsTracking\AgentMetadata.cs" />
     <Compile Include="Server\AgentsTracking\AgentsCollection.cs" />
     <Compile Include="Server\AgentsTracking\AgentsProviders\PredefinedConfiguration\PredefinedAgentsElementCollection.cs" />
@@ -123,6 +125,8 @@
     <Compile Include="Server\AgentsTracking\AgentsProviders\Discovery\DiscoveryAgentsProvider.cs" />
     <Compile Include="Server\AgentsTracking\AgentUpdater.cs" />
     <Compile Include="Server\AgentsTracking\IAgentUpdater.cs" />
+    <Compile Include="Common\CrossThreadPipe.cs" />
+    <Compile Include="StreamWrapper.cs" />
     <Compile Include="TestExecution\DistributedConfiguration\DistributedConfigurationOperator.cs" />
     <Compile Include="TestExecution\DistributedConfiguration\DistributedConfigurationSetup.cs" />
     <Compile Include="TestExecution\DistributedConfiguration\DistributedConfigurationSubstitutions.cs" />
@@ -159,7 +163,7 @@
     <Compile Include="Server\Communication\ServerHost.cs" />
     <Compile Include="Server\ServerConfiguration.cs" />
     <Compile Include="Server\Services\DashboardService.cs" />
-    <Compile Include="TestExecution\Configuration\FailureMessageType.cs" />
+    <Compile Include="TestExecution\Configuration\MatchType.cs" />
     <Compile Include="TestExecution\Configuration\TestRunFailureSpecialHandling.cs" />
     <Compile Include="TestExecution\Data\TestRunRequest.cs" />
     <Compile Include="Server\Services\Server.cs" />
@@ -168,7 +172,6 @@
     <Compile Include="TestExecution\Configuration\TestRunParametersFileReader.cs" />
     <Compile Include="TestExecution\Configuration\TestRunParametersXmlReader.cs" />
     <Compile Include="TestExecution\Exceptions\NoAvailableAgentsException.cs" />
-    <Compile Include="TestExecution\IAgentDataSource.cs" />
     <Compile Include="TestExecution\IReprocessor.cs" />
     <Compile Include="TestExecution\IResultsStorage.cs" />
     <Compile Include="TestExecution\ITestResultsSerializer.cs" />
@@ -189,7 +192,6 @@
     <Compile Include="TestExecution\Storage\TestProject.cs" />
     <Compile Include="TestExecution\TestAgentsCollection.cs" />
     <Compile Include="TestExecution\ServerTestRunner.cs" />
-    <Compile Include="TestExecution\PackedProject.cs" />
     <Compile Include="TestExecution\TestResultsSerializer.cs" />
     <Compile Include="TestExecution\TestsRetriever.cs" />
     <Compile Include="TestExecution\NUnitInitializer.cs" />

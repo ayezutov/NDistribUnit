@@ -2,7 +2,6 @@
 using System.ServiceModel;
 using System.Threading;
 using NDistribUnit.Common.Agent;
-using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
@@ -12,6 +11,7 @@ using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 using NDistribUnit.Integration.Tests.Infrastructure.Stubs;
+using NUnit.Core;
 
 namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
 {
@@ -39,7 +39,7 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// </summary>
         public AgentHost AgentHost { get; private set; }
 
-        public TestUpdateReceiver UpdateReceiver { get; set; }
+        public TestUpdateReceiver UpdateReceiver { get; private set; }
 
         /// <summary>
         /// Gets the test runner.
@@ -182,12 +182,33 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// <param name="test">The test.</param>
         /// <param name="configurationSubstitutions">The configuration substitutions.</param>
         /// <returns></returns>
-        public TestUnitResult RunTests(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions)
+        public TestResult RunTests(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions)
         {
             if (IsStarted)
                 return TestRunner.RunTests(test, configurationSubstitutions);
 
             throw new CommunicationException("Agent seems to be not available");
+        }
+
+        /// <summary>
+        /// Receives the project.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        public void ReceiveProject(ProjectMessage project)
+        {
+            TestRunner.ReceiveProject(project);
+        }
+
+        /// <summary>
+        /// Receives the project.
+        /// </summary>
+        /// <param name="run">The run.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified agent has a project for the given run; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasProject(TestRun run)
+        {
+            return TestRunner.HasProject(run);
         }
     }
 }

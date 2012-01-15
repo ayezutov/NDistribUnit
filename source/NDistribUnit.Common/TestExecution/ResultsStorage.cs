@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Threading;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Updating;
@@ -19,6 +20,7 @@ namespace NDistribUnit.Common.TestExecution
         private readonly BootstrapperParameters parameters;
         private readonly string folderName;
         private readonly ConcurrentDictionary<Guid, RunResultsCollection> results = new ConcurrentDictionary<Guid, RunResultsCollection>();
+        private readonly ConcurrentDictionary<Guid, ReaderWriterLockSlim> lockers = new ConcurrentDictionary<Guid, ReaderWriterLockSlim>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ResultsStorage"/> class.
@@ -40,11 +42,11 @@ namespace NDistribUnit.Common.TestExecution
         /// <summary>
         /// Adds the specified result.
         /// </summary>
-        /// <param name="test"></param>
         /// <param name="result">The result.</param>
-        public void Add(TestUnitWithMetadata test, TestUnitResult result)
+        /// <param name="testRun"> </param>
+        public void Add(TestResult result, TestRun testRun)
         {
-            var resultsForTestRun = GetCollection(test.Test.Run);
+            var resultsForTestRun = GetCollection(testRun);
             resultsForTestRun.AddUnmerged(result);
         }
 
@@ -83,12 +85,23 @@ namespace NDistribUnit.Common.TestExecution
             if (result != null)
                 return null; // the run has not completed yet
 
-            var binaryFile = GetBinaryFileName(testRun);
+            var locker = GetLocker(testRun);
 
-            if (!File.Exists(binaryFile))
-                return null;
+            try
+            {
+                locker.EnterReadLock();
 
-            return serializer.ReadBinary(new FileStream(binaryFile, FileMode.Open));
+                var binaryFile = GetBinaryFileName(testRun);
+
+                if (!File.Exists(binaryFile))
+                    return null;
+
+                return serializer.ReadBinary(new FileStream(binaryFile, FileMode.Open, FileAccess.Read));
+            }
+            finally
+            {
+                locker.ExitReadLock();
+            }
         }
 
         /// <summary>
@@ -102,16 +115,31 @@ namespace NDistribUnit.Common.TestExecution
             if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
 
-            var xmlFile = GetXmlFileName(testRun);
-            var xml = serializer.GetXml(mergedResult);
-            var xmlStream = new StreamWriter(xmlFile, false);
-            xmlStream.Write(xml);
-            xmlStream.Close();
+            var locker = GetLocker(testRun);
+            try
+            {
+                locker.EnterWriteLock();
 
-            var binaryFile = GetBinaryFileName(testRun);
-            var dataStream = new FileStream(binaryFile, FileMode.Create);
-            serializer.WriteBinary(mergedResult, dataStream);
-            dataStream.Close();
+                var xmlFile = GetXmlFileName(testRun);
+                var xml = serializer.GetXml(mergedResult);
+                var xmlStream = new StreamWriter(xmlFile, false);
+                xmlStream.Write(xml);
+                xmlStream.Close();
+
+                var binaryFile = GetBinaryFileName(testRun);
+                var dataStream = new FileStream(binaryFile, FileMode.Create);
+                serializer.WriteBinary(mergedResult, dataStream);
+                dataStream.Close();
+            }
+            finally
+            {
+                locker.ExitWriteLock();
+            }
+        }
+
+        private ReaderWriterLockSlim GetLocker(TestRun testRun)
+        {
+            return lockers.GetOrAdd(testRun.Id, guid => new ReaderWriterLockSlim());
         }
 
         private string GetResultsStorageFolderName(TestRun testRun)

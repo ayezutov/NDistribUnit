@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace NDistribUnit.Common.Updating
 {
@@ -7,11 +7,10 @@ namespace NDistribUnit.Common.Updating
 	/// </summary>
 	public interface IUpdateSource
 	{
-		/// <summary>
-		/// Gets the zipped version folder.
-		/// </summary>
-		/// <param name="version">The version.</param>
-		/// <returns></returns>
-		byte[] GetZippedVersionFolder(Version version);
+	    /// <summary>
+	    /// Gets the zipped version folder.
+	    /// </summary>
+	    /// <returns></returns>
+	    Stream GetZippedVersionFolder();
 	}
 }

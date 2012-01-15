@@ -26,7 +26,7 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// </summary>
         /// <param name="projectFiles">The project files.</param>
         /// <returns></returns>
-        public byte[] GetPackage(IList<string> projectFiles)
+        public Stream GetPackage(IList<string> projectFiles)
         {
             if (projectFiles.Count == 0)
                 throw new ArgumentException("There should be at least one project file", "projectFiles");
@@ -34,7 +34,7 @@ namespace NDistribUnit.Common.TestExecution.Storage
             if (projectFiles.Count > 1)
                 throw new NotImplementedException();
 
-            return zip.GetPackedFolder(Path.GetDirectoryName(projectFiles[0]), true);
+            return zip.GetPackedFolder(new DirectoryInfo(Path.GetDirectoryName(projectFiles[0])), true);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 
 namespace NDistribUnit.Common.TestExecution.Storage
 {
@@ -12,6 +13,6 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// </summary>
         /// <param name="projectFiles">The project files.</param>
         /// <returns></returns>
-        byte[] GetPackage(IList<string> projectFiles);
+        Stream GetPackage(IList<string> projectFiles);
     }
 }
