@@ -48,20 +48,32 @@ namespace NDistribUnit.Common.Common.Updating
 
 			 try
 			 {
-				 versionDirectory = finder.GetVersionDirectory(parameters.RootFolder, package.Version);
-				 if (versionDirectory != null)
-					 return;
+                 using (Stream tempStream = SaveUpdatePackageAsFile(package))
+                 {
+                     versionDirectory = finder.GetVersionDirectory(parameters.RootFolder, package.Version);
+                     if (versionDirectory != null)
+                         return;
 
-                 var targetDir = parameters.RootFolder;
-                 if (!Directory.Exists(targetDir))
-                     Directory.CreateDirectory(targetDir);
+                     var targetDir = parameters.RootFolder;
+                     if (!Directory.Exists(targetDir))
+                         Directory.CreateDirectory(targetDir);
 
-                 zip.UnpackFolder(package.UpdateZipStream, targetDir);
+                     zip.UnpackFolder(tempStream, targetDir);
+                 }
 			 }
 			 finally
 			 {
 				 mutex.ReleaseMutex();
 			 }
 		 }
+
+	    private Stream SaveUpdatePackageAsFile(UpdatePackage package)
+	    {
+            var fileStream = File.Create(Path.GetTempFileName(), 1024 * 1024,
+                                        FileOptions.DeleteOnClose | FileOptions.SequentialScan);
+            package.UpdateZipStream.CopyTo(fileStream);
+            fileStream.Seek(0, SeekOrigin.Begin);
+            return fileStream;
+	    }
 	}
 }

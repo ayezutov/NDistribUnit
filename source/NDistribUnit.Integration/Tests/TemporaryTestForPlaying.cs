@@ -200,7 +200,7 @@ namespace NDistribUnit.Integration.Tests.Tests
             Assert.That(logs.Count(), Is.EqualTo(2));
         }
 
-        [Test]
+        [Test, Explicit]
         public void TryGetInstructions()
         {
             Regex typeIdentifier = new Regex(@"^\s*(?:NDistribUnit\.)(?<selector>\w+)\s*(?<object>{.+})\s*$", RegexOptions.Compiled);
