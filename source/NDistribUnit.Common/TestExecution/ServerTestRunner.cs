@@ -161,6 +161,8 @@ namespace NDistribUnit.Common.TestExecution
                                                        });
                 }
                 result = testRunnerAgent.RunTests(test.Test, configurationSubstitutions);
+
+                ProcessResult(test, agent, result);
             }
             catch (CommunicationException ex)
             {
@@ -175,7 +177,6 @@ namespace NDistribUnit.Common.TestExecution
                 tests.Add(test);
             }
 
-            ProcessResult(test, agent, result);
         }
 
         private void ProcessResult(TestUnitWithMetadata test, AgentMetadata agent, TestResult result)

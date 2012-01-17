@@ -102,7 +102,7 @@ namespace NDistribUnit.Common.Agent.ExternalModules
                 {
                     try
                     {
-                        log.Info(string.Format("Announcing endpoint {0}", endpointDiscoveryMetadata.Address));
+                        log.Debug(string.Format("Announcing endpoint {0}", endpointDiscoveryMetadata.Address));
                         client.AnnounceOnline(endpointDiscoveryMetadata);
                     }
                     catch(Exception ex)

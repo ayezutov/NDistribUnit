@@ -8,7 +8,9 @@ namespace NDistribUnit.Common.Logging
     /// </summary>
     public class WindowsLog : ILog
     {
-        private string source;
+        private const string logName = "NDistribUnit";
+        private readonly string source;
+        readonly EventLog eventLog;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WindowsLog"/> class.
@@ -18,7 +20,9 @@ namespace NDistribUnit.Common.Logging
         {
             source = string.Format("NDistribUnit {0}", postfix);
             if (!EventLog.SourceExists(source))
-                EventLog.CreateEventSource(source, "NDistribUnit");
+                EventLog.CreateEventSource(source, logName);
+            
+            eventLog = new EventLog(logName) { Source = source };
         }
 
         /// <summary>
@@ -59,6 +63,7 @@ namespace NDistribUnit.Common.Logging
         /// <param name="message">The warning message</param>
         public void Warning(string message)
         {
+            Write(message, EventLogEntryType.Warning);
         }
 
         /// <summary>
@@ -68,7 +73,7 @@ namespace NDistribUnit.Common.Logging
         /// <param name="exception">The exception, which caused the warning</param>
         public void Warning(string message, Exception exception)
         {
-            new EventLog("NDistribUnit") { Source = source }.WriteEntry(message, EventLogEntryType.Warning);
+            Write(message, EventLogEntryType.Warning, exception);
         }
 
         /// <summary>
@@ -77,7 +82,7 @@ namespace NDistribUnit.Common.Logging
         /// <param name="message">The error message</param>
         public void Error(string message)
         {
-            new EventLog("NDistribUnit"){Source = source}.WriteEntry(message, EventLogEntryType.Error);
+            Write(message, EventLogEntryType.Error);
         }
 
         /// <summary>
@@ -87,7 +92,7 @@ namespace NDistribUnit.Common.Logging
         /// <param name="exception">The exception, which caused the error</param>
         public void Error(string message, Exception exception)
         {
-            new EventLog("NDistribUnit"){Source = source}.WriteEntry(message + LoggingUtility.GetExceptionText(exception), EventLogEntryType.Error);
+            Write(message, EventLogEntryType.Error, exception);
         }
 
         /// <summary>
@@ -96,5 +101,19 @@ namespace NDistribUnit.Common.Logging
         /// <param name="message">The message.</param>
         public void Debug(string message)
         {}
+
+        private void Write(string message, EventLogEntryType eventType, Exception exception = null)
+        {
+            try
+            {
+                eventLog.WriteEntry(
+                    message + (exception != null ? LoggingUtility.GetExceptionText(exception) : string.Empty),
+                    eventType);
+            }
+            catch
+            {
+                // do nothing - log should not throught any exceptions
+            }
+        }
     }
 }
