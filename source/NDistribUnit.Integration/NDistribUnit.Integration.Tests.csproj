@@ -78,6 +78,7 @@
     <Compile Include="Tests\Communication\TestingAgentsTrackerTests.cs" />
     <Compile Include="Tests\TemporaryTestForPlaying.cs" />
     <Compile Include="Tests\TestExecution\PackageTransferTests.cs" />
+    <Compile Include="Tests\TestExecution\StatusChangeTests.cs" />
     <Compile Include="Tests\Updating\UpdateTests.cs" />
   </ItemGroup>
   <ItemGroup>

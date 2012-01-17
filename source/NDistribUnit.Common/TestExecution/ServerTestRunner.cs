@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using NDistribUnit.Common.Common.Communication;
+using NDistribUnit.Common.Common.ConsoleProcessing;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.Logging;
@@ -31,6 +32,7 @@ namespace NDistribUnit.Common.TestExecution
         private readonly IDistributedConfigurationOperator configurationOperator;
         private readonly ITestsScheduler scheduler;
         private readonly IReprocessor reprocessor;
+        private readonly ExceptionCatcher exceptionCatcher;
         private readonly IConnectionProvider connectionProvider;
 
         /// <summary>
@@ -46,6 +48,7 @@ namespace NDistribUnit.Common.TestExecution
         /// <param name="configurationOperator">The configuration reader.</param>
         /// <param name="scheduler">The scheduler.</param>
         /// <param name="reprocessor">The reprocessor.</param>
+        /// <param name="exceptionCatcher">The exception catcher.</param>
         /// <param name="connectionProvider">The connection provider.</param>
         public ServerTestRunner(AgentsCollection agents,
                                 TestUnitsCollection tests,
@@ -57,6 +60,7 @@ namespace NDistribUnit.Common.TestExecution
                                 IDistributedConfigurationOperator configurationOperator,
                                 ITestsScheduler scheduler,
                                 IReprocessor reprocessor,
+                                ExceptionCatcher exceptionCatcher,
                                 IConnectionProvider connectionProvider)
         {
             // Initializing fields
@@ -67,6 +71,7 @@ namespace NDistribUnit.Common.TestExecution
             this.configurationOperator = configurationOperator;
             this.scheduler = scheduler;
             this.reprocessor = reprocessor;
+            this.exceptionCatcher = exceptionCatcher;
             this.connectionProvider = connectionProvider;
             this.requests = requests;
             this.agents = agents;
@@ -85,14 +90,9 @@ namespace NDistribUnit.Common.TestExecution
 
         private void RunAsynchronously(Action action)
         {
-            try
-            {
-                action.BeginInvoke(null, null);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Exception while running an action in parallel", ex);
-            }
+            
+            Action wrappedAction = () => exceptionCatcher.Run(action);
+            exceptionCatcher.Run(()=>wrappedAction.BeginInvoke(null, null));
         }
 
         // Should be started asynchronously to avoid any deadlocks

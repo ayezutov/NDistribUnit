@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -14,6 +15,8 @@ using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Logging;
 using NUnit.Framework;
 using System.Xml.XPath;
+using Vestris.ResourceLib;
+using IContainer = Autofac.IContainer;
 
 namespace NDistribUnit.Integration.Tests.Tests
 {
@@ -328,6 +331,53 @@ namespace NDistribUnit.Integration.Tests.Tests
                 }
                 return result.ToString();
             }
+        }
+
+        [Test]
+        public void ChangeVersion()
+        {
+            var sourceFile =
+                @"d:\work\personal\NDistribUnit\source\builds\Debug\Fixed.Version\Server\NDistribUnit.Server.exe";
+
+            var targetFile =
+                @"d:\work\personal\NDistribUnit\source\builds\Debug\Server.exe";
+
+            VersionResource targetVersion;
+
+            using (var sourceInfo = new ResourceInfo())
+            {
+                using (var targetInfo = new ResourceInfo())
+                {
+                    try
+                    {
+                        sourceInfo.Load(sourceFile);
+                        targetInfo.Load(targetFile);
+                    }
+                    catch (Win32Exception)
+                    {
+                        //                        if (ContinueOnError)
+                        //                            return true;
+                        throw;
+                    }
+
+                    VersionResource sourceVersion = sourceInfo.OfType<VersionResource>().FirstOrDefault();
+
+                    targetVersion = targetInfo.OfType<VersionResource>().FirstOrDefault();
+
+                    var valuesToCopy = new[] { "FileDescription", "InternalName" };
+
+                    StringTable sourceDefaultStringTable = ((StringFileInfo)(sourceVersion["StringFileInfo"])).Default;
+                    StringTable targetDefaultStringTable = ((StringFileInfo)(targetVersion["StringFileInfo"])).Default;
+
+                    foreach (var value in valuesToCopy)
+                    {
+                        targetDefaultStringTable.Strings[value].Value = sourceDefaultStringTable.Strings[value].Value;
+                    }
+                }
+            }
+
+            targetVersion.SaveTo(targetFile);
+
         }
 
         private class OptionalParamsInConstructor

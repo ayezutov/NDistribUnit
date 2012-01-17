@@ -134,5 +134,15 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         {
             return agents.Count;
         }
+
+        public bool HasAgent(AgentWrapper agent, AgentState agentState)
+        {
+            return Retry.UntilTrue(
+                () =>
+                {
+                    var found = agents.GetAgent(a => a.Name.Equals(agent.TestRunner.Name) && a.Status.Equals(agentState));
+                    return found != null;
+                }, 500);
+        }
     }
 }

@@ -2,17 +2,36 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Updating;
 
 namespace NDistribUnit.Bootstrapper
 {
-	[Serializable]
+    public class UnhandledExceptionLogger: MarshalByRefObject
+    {
+        private ILog log;
+        
+        public UnhandledExceptionLogger()
+        {
+            log = new CombinedLog(new ConsoleLog(), new WindowsLog("Bootstrapper"));
+        }
+
+        public void ProcessUnhandledExceptions()
+        {
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+                                                              {
+                                                                  log.Error("Unhandled exception was handled by bootstrapper", (Exception)args.ExceptionObject);  
+                                                              };
+        }
+    }
+
+    [Serializable]
 	internal class BootstrapperProgram
 	{
 		private readonly string[] args;
-		private ConsoleLog log;
+		private ILog log;
 		private AppDomain domain;
 
         [STAThread]
@@ -24,7 +43,7 @@ namespace NDistribUnit.Bootstrapper
 		private BootstrapperProgram(string[] args)
 		{
 			this.args = args;
-			log = new ConsoleLog();
+            log = new CombinedLog(new ConsoleLog(), new WindowsLog("Bootstrapper"));
 		}
 
 		private void Run()
@@ -70,6 +89,12 @@ namespace NDistribUnit.Bootstrapper
                                                             ApplicationBase = targetFolder,
 				                                    	});
 
+			    UnhandledExceptionLogger logger = (UnhandledExceptionLogger)domain.CreateInstanceFromAndUnwrap(Assembly.GetExecutingAssembly().Location,
+                                                   typeof(UnhandledExceptionLogger).FullName,
+			                                       false, BindingFlags.Default, null, null,
+			                                       Thread.CurrentThread.CurrentCulture, null);
+			    logger.ProcessUnhandledExceptions();
+
 				var newArgs = new List<string>(args);
 				newArgs.AddRange(new BootstrapperParameters
 				                 	{
@@ -87,7 +112,7 @@ namespace NDistribUnit.Bootstrapper
 				Console.ReadLine();
 			}
 		}
-
+        
 	    private string GetConfigurationFilename(string exeName)
 	    {
 	        string possibleName = exeName + ".config";

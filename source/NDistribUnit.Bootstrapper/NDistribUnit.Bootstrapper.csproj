@@ -63,14 +63,24 @@
       <Link>LinkedItems\HashChecking\HashValidationException.cs</Link>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="..\NDistribUnit.Common\Common\Logging\CombinedLog.cs">
+      <Link>LinkedItems\Logging\CombinedLog.cs</Link>
+    </Compile>
     <Compile Include="..\NDistribUnit.Common\Common\Logging\ConsoleLog.cs">
       <Link>LinkedItems\Logging\ConsoleLog.cs</Link>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="..\NDistribUnit.Common\Common\Logging\ILog.cs">
       <Link>LinkedItems\Logging\ILog.cs</Link>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="..\NDistribUnit.Common\Common\Logging\LoggingUtility.cs">
       <Link>LinkedItems\Logging\LoggingUtility.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\NDistribUnit.Common\Common\Logging\WindowsLog.cs">
+      <Link>LinkedItems\Logging\WindowsLog.cs</Link>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="..\NDistribUnit.Common\Properties\AssemblyInfoInc.cs">
       <Link>Properties\AssemblyInfoInc.cs</Link>

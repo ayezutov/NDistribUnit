@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
+using System.Threading.Tasks;
+using NDistribUnit.Common.Common.ConsoleProcessing;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
@@ -44,13 +46,16 @@ namespace NDistribUnit.Common.Server.Services
         /// <param name="resultsStorage">The results.</param>
         /// <param name="log">The log.</param>
         /// <param name="projects">The projects.</param>
+        /// <param name="exceptionCatcher"> </param>
         public Server(
             IUpdateSource updateSource, 
             IVersionProvider versionProvider,
             ServerTestRunner runner,
             IRequestsStorage requests,
             IResultsStorage resultsStorage,
-            ILog log, IProjectsStorage projects)
+            ILog log, 
+            IProjectsStorage projects,
+            ExceptionCatcher exceptionCatcher)
 		{
 			this.updateSource = updateSource;
             this.versionProvider = versionProvider;

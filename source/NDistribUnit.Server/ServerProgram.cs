@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Diagnostics;
+using System.Threading;
 using Autofac;
 using Autofac.Core;
 using NDistribUnit.Common.Common.ConsoleProcessing;
@@ -14,20 +15,15 @@ using NDistribUnit.Common.Updating;
 
 namespace NDistribUnit.Server
 {
-	internal class ServerProgram: GeneralProgram
-	{
+    internal class ServerProgram : GeneralProgram
+    {
         /// <summary>
         /// Mains the specified args.
         /// </summary>
         /// <param name="args">The args.</param>
         /// <returns></returns>
-		private static int Main(string[] args)
+        private static int Main(string[] args)
         {
-            AppDomain.CurrentDomain.UnhandledException +=
-                (sender, eventArgs) =>
-                new ConsoleLog().Error("Unhandled exception caught by unhandled exception handler",
-                                       (Exception) eventArgs.ExceptionObject);
-
             try
             {
                 var builder = new ContainerBuilder();
@@ -44,51 +40,54 @@ namespace NDistribUnit.Server
                 Console.WriteLine(ex.Message);
                 throw;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var log = new ConsoleLog();
                 log.Error("Error while running program", ex);
-                Console.ReadLine();
                 throw;
             }
-		}
+        }
 
-		private readonly BootstrapperParameters bootstrapperParameters;
-		private readonly ILog log;
-		private readonly ServerHost serverHost;
+        private readonly BootstrapperParameters bootstrapperParameters;
+        private readonly ILog log;
+        private readonly ServerHost serverHost;
 
-		public ServerProgram(ServerHost serverHost, BootstrapperParameters bootstrapperParameters,
-		                     UpdatesMonitor updatesMonitor, ILog log)
-		{
-			this.bootstrapperParameters = bootstrapperParameters;
-			this.updatesMonitor = updatesMonitor;
-			this.log = log;
-			this.serverHost = serverHost;
-		}
+        public ServerProgram(ServerHost serverHost, BootstrapperParameters bootstrapperParameters,
+                             UpdatesMonitor updatesMonitor, ILog log, ExceptionCatcher exceptionCatcher)
+        {
+            this.bootstrapperParameters = bootstrapperParameters;
+            this.updatesMonitor = updatesMonitor;
+            this.log = log;
+            this.serverHost = serverHost;
+            this.exceptionCatcher = exceptionCatcher;
+        }
 
-		private int Run()
-		{
-            if (!bootstrapperParameters.AllParametersAreFilled)
-			{
-				log.Error("This program cannot be launched directly");
-				return (int)ReturnCodes.CannotLaunchBootstrappedApplicationDirectly;
-			}
-			//serverHost.LoadState();
+        private int Run()
+        {
+            return exceptionCatcher.Run(() =>
+            {
+                if (!bootstrapperParameters.AllParametersAreFilled)
+                {
+                    log.Error("This program cannot be launched directly");
+                    return (int)ReturnCodes.CannotLaunchBootstrappedApplicationDirectly;
+                }
+                //serverHost.LoadState();
 
-			updatesMonitor.Start();
-			
-			log.BeginActivity("Server is starting...");
-			
-			serverHost.Start();
-			log.EndActivity(@"Server was started. Please type ""exit"" and press <Enter> to exit");
+                updatesMonitor.Start();
 
-			var returnCode = WaitAndGetReturnCode(new[]{ bootstrapperParameters.ConfigurationFile });
+                log.BeginActivity("Server is starting...");
 
-			//serverHost.SaveState();
-			updatesMonitor.Stop();
-			serverHost.Close();
+                serverHost.Start();
+                log.EndActivity(@"Server was started. Please type ""exit"" and press <Enter> to exit");
 
-			return returnCode;
-		}
-	}
+                var returnCode = WaitAndGetReturnCode(new[] { bootstrapperParameters.ConfigurationFile });
+
+                //serverHost.SaveState();
+                updatesMonitor.Stop();
+                serverHost.Close();
+
+                return returnCode;
+            });
+        }
+    }
 }

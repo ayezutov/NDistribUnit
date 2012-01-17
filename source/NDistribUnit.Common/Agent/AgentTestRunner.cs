@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading;
+using NDistribUnit.Common.Common.ConsoleProcessing;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
@@ -19,6 +20,7 @@ namespace NDistribUnit.Common.Agent
         private readonly INativeRunnerCache runnerCache;
         private readonly ITestSystemInitializer initializer;
         private readonly IDistributedConfigurationOperator configurationOperator;
+        private readonly ExceptionCatcher exceptionCatcher;
         private readonly ILog log;
 
         /// <summary>
@@ -28,18 +30,21 @@ namespace NDistribUnit.Common.Agent
         /// <param name="runnerCache">The cash.</param>
         /// <param name="initializer">The initializer.</param>
         /// <param name="configurationOperator">The configuration operator.</param>
+        /// <param name="exceptionCatcher">The exception catcher.</param>
         /// <param name="log">The log.</param>
         public AgentTestRunner(
             IProjectsStorage projects,
             INativeRunnerCache runnerCache,
             ITestSystemInitializer initializer,
             IDistributedConfigurationOperator configurationOperator,
+            ExceptionCatcher exceptionCatcher,
             ILog log)
         {
             this.projects = projects;
             this.runnerCache = runnerCache;
             this.initializer = initializer;
             this.configurationOperator = configurationOperator;
+            this.exceptionCatcher = exceptionCatcher;
             this.log = log;
         }
 
@@ -122,7 +127,7 @@ namespace NDistribUnit.Common.Agent
             
             try
             {
-                ThreadStart runTest = ()=>
+                Action runTest = ()=>
                                      {
                                          testResult = nativeRunner.Run(new NullListener(),
                                                                        new NUnitTestsFilter(
@@ -134,7 +139,7 @@ namespace NDistribUnit.Common.Agent
                 if (Thread.CurrentThread.GetApartmentState() != ApartmentState.STA
                     && !Thread.CurrentThread.TrySetApartmentState(ApartmentState.STA))
                 {
-                    var thread = new Thread(runTest);
+                    var thread = new Thread(()=> exceptionCatcher.Run(runTest));
                     thread.SetApartmentState(ApartmentState.STA);
                     thread.Start();
                     thread.Join();

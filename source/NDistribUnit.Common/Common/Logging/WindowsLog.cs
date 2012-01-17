@@ -68,6 +68,7 @@ namespace NDistribUnit.Common.Logging
         /// <param name="exception">The exception, which caused the warning</param>
         public void Warning(string message, Exception exception)
         {
+            new EventLog("NDistribUnit") { Source = source }.WriteEntry(message, EventLogEntryType.Warning);
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace NDistribUnit.Common.Logging
         /// <param name="message">The error message</param>
         public void Error(string message)
         {
-            new EventLog("NDistribUnit"){Source = source}.WriteEntry(message);
+            new EventLog("NDistribUnit"){Source = source}.WriteEntry(message, EventLogEntryType.Error);
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace NDistribUnit.Common.Logging
         /// <param name="exception">The exception, which caused the error</param>
         public void Error(string message, Exception exception)
         {
-            new EventLog("NDistribUnit"){Source = source}.WriteEntry(message + LoggingUtility.GetExceptionText(exception));
+            new EventLog("NDistribUnit"){Source = source}.WriteEntry(message + LoggingUtility.GetExceptionText(exception), EventLogEntryType.Error);
         }
 
         /// <summary>

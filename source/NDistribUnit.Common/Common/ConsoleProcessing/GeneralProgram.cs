@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using NDistribUnit.Common.Common.Updating;
@@ -6,131 +7,142 @@ using NDistribUnit.Common.Communication;
 
 namespace NDistribUnit.Common.Common.ConsoleProcessing
 {
-	/// <summary>
-	/// 
-	/// </summary>
-	public class GeneralProgram
-	{
-		/// 
-		protected UpdatesMonitor updatesMonitor;
+    /// <summary>
+    /// 
+    /// </summary>
+    public class GeneralProgram
+    {
+        /// 
+        protected UpdatesMonitor updatesMonitor;
 
-	    /// <summary>
-	    /// Waits until console input or available update and get return code.
-	    /// </summary>
-	    /// <param name="restartOnTheseFilesChange"></param>
-	    /// <returns></returns>
-	    protected int WaitAndGetReturnCode(string[] restartOnTheseFilesChange)
-		{
-			var returnSemaphore = new Semaphore(0, 1);
-			var returnCodeAccessMutex = new Mutex();
-			int? returnCode = null;
+        ///
+        protected ExceptionCatcher exceptionCatcher;
 
-	        foreach (var fileName in restartOnTheseFilesChange)
-	        {
+        /// <summary>
+        /// Waits until console input or available update and get return code.
+        /// </summary>
+        /// <param name="restartOnTheseFilesChange"></param>
+        /// <returns></returns>
+        protected int WaitAndGetReturnCode(IEnumerable<string> restartOnTheseFilesChange)
+        {
+            var returnSemaphore = new Semaphore(0, 1);
+            var returnCodeAccessMutex = new Mutex();
+            int? returnCode = null;
+
+            foreach (var fileName in restartOnTheseFilesChange)
+            {
                 var fsw = new FileSystemWatcher(Path.GetDirectoryName(fileName), Path.GetFileName(fileName));
                 fsw.Changed += (sender, args) =>
+                {
+                    exceptionCatcher.Run(() =>
+                    {
+                        returnCodeAccessMutex.WaitOne();
+
+                        if (returnCode == null)
+                        {
+                            returnCode = (int)ReturnCodes.RestartDueToConfigChange;
+                            returnSemaphore.Release();
+                        }
+
+                        returnCodeAccessMutex.ReleaseMutex();
+                    });
+                };
+                fsw.EnableRaisingEvents = true;
+            }
+
+            updatesMonitor.UpdateAvailable += () =>
+            {
+                exceptionCatcher.Run(() =>
                 {
                     returnCodeAccessMutex.WaitOne();
 
                     if (returnCode == null)
                     {
-                        returnCode = (int)ReturnCodes.RestartDueToConfigChange;
+                        returnCode = (int)ReturnCodes.RestartDueToAvailableUpdate;
                         returnSemaphore.Release();
                     }
 
                     returnCodeAccessMutex.ReleaseMutex();
-                };
-	            fsw.EnableRaisingEvents = true;
-	        }
+                });
+            };
 
-			updatesMonitor.UpdateAvailable += () =>
-			{
-				returnCodeAccessMutex.WaitOne();
+            var thread = new Thread(() => exceptionCatcher.Run(
+                () =>
+                {
+                    string line;
+                    do
+                    {
+                        line = ReadLineNonBlocking();
+                    } while (line == null || !line.Equals("exit", StringComparison.OrdinalIgnoreCase));
 
-				if (returnCode == null)
-				{
-					returnCode = (int)ReturnCodes.RestartDueToAvailableUpdate;
-					returnSemaphore.Release();
-				}
+                    returnCodeAccessMutex.WaitOne();
 
-				returnCodeAccessMutex.ReleaseMutex();
-			};
-			var thread = new Thread(() =>
-			{
-				string line;
-				do
-				{
-					line = ReadLineNonBlocking();
-				} while (line == null || !line.Equals("exit", StringComparison.OrdinalIgnoreCase));
+                    if (returnCode == null)
+                    {
+                        returnCode = 0;
+                        returnSemaphore.Release();
+                    }
 
-				returnCodeAccessMutex.WaitOne();
+                    returnCodeAccessMutex.ReleaseMutex();
+                }));
+            thread.Start();
 
-				if (returnCode == null)
-				{
-					returnCode = 0;
-					returnSemaphore.Release();
-				}
+            returnSemaphore.WaitOne();
+            thread.Abort();
+            return returnCode.GetValueOrDefault();
+        }
 
-				returnCodeAccessMutex.ReleaseMutex();
-			});
-			thread.Start();
+        /// <summary>
+        /// Reads the line non blocking.
+        /// </summary>
+        /// <returns></returns>
+        private static string ReadLineNonBlocking()
+        {
+            string line = String.Empty;
+            do
+            {
+                while (!System.Console.KeyAvailable)
+                    Thread.Sleep(100);
 
-			returnSemaphore.WaitOne();
-			thread.Abort();
-			return returnCode.GetValueOrDefault();
-		}
+                ConsoleKeyInfo key = System.Console.ReadKey(true);
 
-		/// <summary>
-		/// Reads the line non blocking.
-		/// </summary>
-		/// <returns></returns>
-		private static string ReadLineNonBlocking()
-		{
-			string line = String.Empty;
-			do
-			{
-				while (!System.Console.KeyAvailable)
-					Thread.Sleep(100);
+                if (key.Key == ConsoleKey.Enter)
+                {
+                    System.Console.CursorTop++;
+                    System.Console.CursorLeft = 0;
+                    break;
+                }
 
-				ConsoleKeyInfo key = System.Console.ReadKey(true);
+                switch (key.Key)
+                {
+                    case ConsoleKey.LeftArrow:
+                    case ConsoleKey.RightArrow:
+                    case ConsoleKey.UpArrow:
+                    case ConsoleKey.DownArrow:
+                    case ConsoleKey.PageDown:
+                    case ConsoleKey.PageUp:
+                    case ConsoleKey.Home:
+                    case ConsoleKey.End:
+                        break;
 
-				if (key.Key == ConsoleKey.Enter)
-				{
-					System.Console.CursorTop++;
-					System.Console.CursorLeft = 0;
-					break;
-				}
+                    case ConsoleKey.Backspace:
+                        line = line.Substring(0, line.Length - 1);
+                        System.Console.Write(key.KeyChar);
+                        System.Console.Write(" ");
+                        System.Console.Write(key.KeyChar);
+                        break;
 
-				switch (key.Key)
-				{
-					case ConsoleKey.LeftArrow:
-					case ConsoleKey.RightArrow:
-					case ConsoleKey.UpArrow:
-					case ConsoleKey.DownArrow:
-					case ConsoleKey.PageDown:
-					case ConsoleKey.PageUp:
-					case ConsoleKey.Home:
-					case ConsoleKey.End:
-						break;
+                    default:
+                        line += key.KeyChar;
+                        System.Console.Write(key.KeyChar);
+                        break;
+                }
 
-					case ConsoleKey.Backspace:
-						line = line.Substring(0, line.Length - 1);
-						System.Console.Write(key.KeyChar);
-						System.Console.Write(" ");
-						System.Console.Write(key.KeyChar);
-						break;
+            } while (true);
 
-					default:
-						line += key.KeyChar;
-						System.Console.Write(key.KeyChar);
-						break;
-				}
+            return line;
+        }
+    }
 
-			} while (true);
 
-			return line;
-		}
-	}
-
-    
 }

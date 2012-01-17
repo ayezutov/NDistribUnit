@@ -88,6 +88,7 @@
     <Compile Include="Client\ClientParameters.cs" />
     <Compile Include="Client\NUnitParameters.cs" />
     <Compile Include="Common\Communication\ServiceConfiguration.cs" />
+    <Compile Include="Common\ConsoleProcessing\ExceptionCatcher.cs" />
     <Compile Include="Common\Extensions\EnumExtensions.cs" />
     <Compile Include="Common\Unlocker.cs" />
     <Compile Include="Contracts\DataContracts\Test.cs" />

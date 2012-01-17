@@ -1,6 +1,7 @@
 using System;
 using Autofac;
 using NDistribUnit.Common.Common.Communication;
+using NDistribUnit.Common.Common.ConsoleProcessing;
 using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Common.Networking;
 using NDistribUnit.Common.Common.Updating;
@@ -56,6 +57,7 @@ namespace NDistribUnit.Common.Dependencies
 
             
             builder.RegisterType<NUnitInitializer>().As<ITestSystemInitializer>().InstancePerLifetimeScope();
+            builder.RegisterType<ExceptionCatcher>().InstancePerLifetimeScope();
         }
     }
 }
