@@ -48,6 +48,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AYezutov.Test.Foundation", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDistribUnit.Bootstrapper.Tests", "NDistribUnit.Bootstrapper.Tests\NDistribUnit.Bootstrapper.Tests.csproj", "{5F58C2A4-3610-4C8E-B7F2-B00C230237B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit-console", "_dependencies\NUnit-2.5.9.10348\src\ConsoleRunner\nunit-console\nunit-console.csproj", "{9367EC89-6A38-42BA-9607-0DC288E4BC3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -258,6 +260,21 @@ Global
 		{5F58C2A4-3610-4C8E-B7F2-B00C230237B2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5F58C2A4-3610-4C8E-B7F2-B00C230237B2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5F58C2A4-3610-4C8E-B7F2-B00C230237B2}.Release|x86.ActiveCfg = Release|Any CPU
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A}.MsBuild Task|Any CPU.ActiveCfg = Release|Any CPU
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A}.MsBuild Task|Any CPU.Build.0 = Release|Any CPU
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A}.MsBuild Task|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A}.MsBuild Task|Mixed Platforms.Build.0 = Release|Any CPU
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A}.MsBuild Task|x86.ActiveCfg = Release|Any CPU
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -279,5 +296,6 @@ Global
 		{61CE9CE5-943E-44D4-A381-814DC1406767} = {178C9439-80AB-42D3-BE67-E1BF0D177C59}
 		{EBD43A7F-AFCA-4281-BB53-5CDD91F966A3} = {178C9439-80AB-42D3-BE67-E1BF0D177C59}
 		{435428F8-5995-4CE4-8022-93D595A8CC0F} = {178C9439-80AB-42D3-BE67-E1BF0D177C59}
+		{9367EC89-6A38-42BA-9607-0DC288E4BC3A} = {178C9439-80AB-42D3-BE67-E1BF0D177C59}
 	EndGlobalSection
 EndGlobal

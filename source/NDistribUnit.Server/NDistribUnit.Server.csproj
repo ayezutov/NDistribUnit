@@ -325,13 +325,16 @@
     <Content Include="dashboard\scripts\jquery.treeview\jquery.treeview.sortable.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dashboard\scripts\json2.js" />
+    <Content Include="dashboard\scripts\json2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="dashboard\scripts\NDistribUnit.Dashboard.Dispatcher.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="dashboard\scripts\NDistribUnit.Dashboard.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="dashboard\scripts\NDistribUnit.Dashboard.Log.js" />
     <Content Include="dashboard\scripts\NDistribUnit.Dashboard.Server.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

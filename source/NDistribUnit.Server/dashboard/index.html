@@ -132,31 +132,29 @@
                             <img id="server-log-progress" style="vertical-align: text-top" alt="sync" src="images/syncing.gif" />
                             <div id="server-log-error" class="error" style="display: none">Oooops...</div>
                         </h3>
+                        <div id="server-log-pane" class="ui-layout-content">
                         
-                    <div id="server-log-pane" class="ui-layout-content">
                         
-                        
-                        <script id="log-entry-template" type="text/x-jquery-tmpl">
-                            <div id="server-log-${Id}" class="log ${ Helper.getEnumNameByValue(LogEntryType, Type)}">
+                            <script id="log-entry-template" type="text/x-jquery-tmpl">
+                                <div id="server-log-${Id}" class="log ${ Helper.getEnumNameByValue(LogEntryType, Type)}">
                           
-                          <span class="log-time">
-                              [<span class="agent-time" title="${LogTime.toLocaleDateString()}, ${LogTime.toLocaleTimeString()}">${LogTime.toLocaleTimeString()}</span>]
-                          </span>
+                                    <span class="log-time">
+                                        [<span class="agent-time" title="${LogTime.toLocaleDateString()}, ${LogTime.toLocaleTimeString()}">${LogTime.toLocaleTimeString()}</span>]
+                                    </span>
 
-                          <span class="log-indicator"></span>
-                          <span class="log-message">${Message}</span>
-                          {{if Exception!=null}}
-                            <span class="log-exception">${Exception.Message}</span>
-                          {{/if}}
-                         </div>
-                        </script>
+                                    <span class="log-indicator"></span>
+                                    <span class="log-message">${Message}</span>
+                                    {{if Exception!=null}}
+                                    <span class="log-exception">${Exception.Message}</span>
+                                    {{/if}}
+                                </div>
+                            </script>
                                                 
-                    <div style="clear: both;"></div>
+                            <div style="clear: both;"></div>
                     
-                    <div id="server-log-display-area" class="console ">
-                            
+                            <div id="server-log-display-area" class="console "></div>
+                        
                         </div>
-                    </div>
                     </div>
                 </div>
                 <div id="agents-statuses-pane"  style="height:100%;">
@@ -208,7 +206,8 @@
                             </h3>
                         <div style="clear: both;">
                         </div>
-                        <div id="agents-log-display-area"  class="ui-layout-content"></div>
+                        <div id="agents-log-display-area"  class="ui-layout-content">
+                        </div>
                     </div>
                 </div>
             </div>

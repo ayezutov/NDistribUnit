@@ -32,6 +32,7 @@ namespace NDistribUnit.Common.TestExecution
                 {
                     if (IsInitialized)
                         return;
+                    InternalTrace.Initialize("%a_%p.log", InternalTraceLevel.Verbose);
                     CoreExtensions.Host.InstallBuiltins();
                     ServiceManager.Services.AddService(new SettingsService());
                     ServiceManager.Services.AddService(new DomainManager());

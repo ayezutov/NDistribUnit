@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.ServiceModel;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.ConsoleProcessing;
@@ -197,6 +198,9 @@ namespace NDistribUnit.Common.TestExecution
             }
 
             results.Add(result, test.Test.Run);
+            var request = requests.GetBy(test.Test.Run);
+            if (request != null)
+                request.PipeToClient.Publish(result.SetFinal(false));
 
             if (isRequestCompleted)
                 ProcessCompletedTestRun(test.Test.Run);

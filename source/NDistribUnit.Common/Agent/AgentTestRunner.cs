@@ -117,7 +117,7 @@ namespace NDistribUnit.Common.Agent
                                                                      /*?? Path.ChangeExtension(mappedAssemblyFile, ".config");*/
                                                              }
 
-                                                             var nativeTestRunner = new MultipleTestDomainRunner();
+                                                             var nativeTestRunner = new DefaultTestRunnerFactory().MakeTestRunner(package);
                                                              nativeTestRunner.Load(package);
                                                              return nativeTestRunner;
                                                          });

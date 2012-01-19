@@ -77,6 +77,28 @@ namespace NDistribUnit.Common.Tests.TestExecution.DistributedConfiguration
         }
 
         [Test]
+        public void ReplaceInstructionsWithFilePathsWorkFine()
+        {
+            var doc =
+                XDocument.Load(
+                    new StringReader(
+                        @"
+<configuration>
+    <appSettings>
+        <add name=""second"" connectionString=""previous2""/>
+        <!--NDistribUnit.Replace {XPath:""../add[@name='second']/@connectionString"", Value:'C:\\Temp\\Somefolder\\'}-->
+    </appSettings>
+</configuration>
+"));
+            @operator.SubstitutePlaceHolders(doc, new DistributedConfigurationSubstitutions());
+
+            var addElements = doc.Descendants("add").ToList();
+
+            Assert.That(addElements[0].Attributes("name").FirstOrDefault().Value, Is.EqualTo("second"));
+            Assert.That(addElements[0].Attributes("connectionString").FirstOrDefault().Value, Is.EqualTo(@"C:\Temp\Somefolder\"));
+        }
+
+        [Test]
         public void SubstituteVariableWorksFine()
         {
             var doc =
