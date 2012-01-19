@@ -1,0 +1,1 @@
+Client.exe  d:\work\personal\NDistribUnit\test\O2ITests_guaranteed-to-be-working\TRR.O2I.UiTest.nunit /alias:"O2I-UI-Tests-33.00.3.6-5" /server:"net.tcp://epbyminw1560:8009/" /configuration:"STG" /xml:"d:/o2i-33.00.3.6-5-local.xml" /include:"XML"

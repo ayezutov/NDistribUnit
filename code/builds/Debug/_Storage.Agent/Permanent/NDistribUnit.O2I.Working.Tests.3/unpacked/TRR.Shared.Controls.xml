@@ -1,0 +1,399 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TRR.Shared.Controls</name>
+    </assembly>
+    <members>
+        <member name="T:TRR.Shared.Controls.BreadcrumbEntryRow">
+            <summary>
+            Data transformation object denoting breadcrumb entry.
+            </summary>
+        </member>
+        <member name="F:TRR.Shared.Controls.BreadcrumbEntryRow.applicationId">
+            <summary>
+            Holds breadcrumbs application id.
+            </summary>
+        </member>
+        <member name="F:TRR.Shared.Controls.BreadcrumbEntryRow.id">
+            <summary>
+            Holds breadcrumbs context id.
+            </summary>
+        </member>
+        <member name="F:TRR.Shared.Controls.BreadcrumbEntryRow.caption">
+            <summary>
+            Holds breadcrumbs caption.
+            </summary>
+        </member>
+        <member name="F:TRR.Shared.Controls.BreadcrumbEntryRow.url">
+            <summary>
+            Holds breadcrumbs url.
+            </summary>
+        </member>
+        <member name="F:TRR.Shared.Controls.BreadcrumbEntryRow.flags">
+            <summary>
+            Holds breadcrumbs flags.
+            </summary>
+        </member>
+        <member name="F:TRR.Shared.Controls.BreadcrumbEntryRow.labelID">
+            <summary>
+            Holds breadcrumbs labelID for localization.
+            </summary>
+        </member>
+        <member name="M:TRR.Shared.Controls.BreadcrumbEntryRow.#ctor">
+            <summary>
+            Initializes instance using default values.
+            </summary>
+        </member>
+        <member name="M:TRR.Shared.Controls.BreadcrumbEntryRow.#ctor(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Initializes instance using user-provided parameters.
+            </summary>
+        </member>
+        <member name="M:TRR.Shared.Controls.BreadcrumbEntryRow.IsNA(System.String)">
+            <summary>
+            Checks if string value is not appicable (null or empty)
+            </summary>
+            <param name="val">Value to run the check on.</param>
+            <returns>bool result.</returns>
+        </member>
+        <member name="M:TRR.Shared.Controls.BreadcrumbEntryRow.HasParameters">
+            <summary>
+            Determines whether this instance has parameters.
+            </summary>
+            <returns>
+            	<c>true</c> if this instance has parameters; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:TRR.Shared.Controls.BreadcrumbEntryRow.GetAsHyperLink">
+            <summary>
+            Gets as hyper link.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.Shared.Controls.BreadcrumbEntryRow.GetAsLabel">
+            <summary>
+            Gets as label.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.Shared.Controls.BreadcrumbEntryRow.CreateEntryDelimiter">
+            <summary>
+            Creates the entry delimiter.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbEntryRow.ApplicationId">
+            <summary>
+            Gets/sets breadcrumbs application id.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbEntryRow.Id">
+            <summary>
+            Gets/sets breadcrumbs context id.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbEntryRow.Caption">
+            <summary>
+            Gets/sets breadcrumbs entry caption.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbEntryRow.Url">
+            <summary>
+            Gets/sets breadcrumbs URL, which is to be re-executed when breaddcrumbs got clicked on.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbEntryRow.Flags">
+            <summary>
+            Gets/sets breadcrumb entry flags.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbEntryRow.LabelID">
+            <summary>
+            Gets/sets breadcrumbs labelID.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbEntryRow.Parameters">
+            <summary>
+            Gets/sets breadcrumb parameters.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbEntryRow.UrlWithNoParams">
+            <summary>
+            Gets the with no params.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:TRR.Shared.Controls.BreadcrumbEntryFlags">
+            <summary>
+            Denotes useful hints for breadcrumbs representation.
+            </summary>
+        </member>
+        <member name="F:TRR.Shared.Controls.BreadcrumbEntryFlags.Root">
+            <summary>
+            Marks breadcrumb as a root, thus former should always reset the trail.
+            </summary>
+        </member>
+        <member name="T:TRR.Shared.Controls.BreadcrumbsControl">
+            <summary>
+            Encapsulates breabcrumbs functionality.
+            </summary>
+        </member>
+        <member name="M:TRR.Shared.Controls.BreadcrumbsControl.#ctor">
+            <summary>
+            Initializes the class' instance.
+            </summary>
+        </member>
+        <member name="M:TRR.Shared.Controls.BreadcrumbsControl.OnPreRender(System.EventArgs)">
+            <summary>
+            Overriden. Performs pre-render activities.
+            </summary>
+            <param name="e">Arguments of EventArgs type.</param>
+        </member>
+        <member name="M:TRR.Shared.Controls.BreadcrumbsControl.OnLoad(System.EventArgs)">
+            <summary>
+            Ovveriden. Performs pre-render activities. 
+            </summary>
+            <param name="e">Arguments of EventArgs type.</param>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbsControl.ApplicationID">
+            <summary>
+            Gets/sets breadcrumb application id.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbsControl.ContextId">
+            <summary>
+            Gets/sets the breadcrumb context id.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbsControl.Caption">
+            <summary>
+            Gets/sets breadcrumb caption.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbsControl.Url">
+            <summary>
+            Gets/sets breadcrumb URL.
+            </summary>
+        </member>
+        <member name="T:TRR.Shared.Controls.BreadcrumbsModel">
+            <summary>
+            Represents breadcrumbs model stuff.
+            </summary>
+        </member>
+        <member name="F:TRR.Shared.Controls.BreadcrumbsModel.BreadcrumbsEntriesSlot">
+            <summary>
+            SessionManager Key to hold breadcrumps
+            </summary>
+        </member>
+        <member name="M:TRR.Shared.Controls.BreadcrumbsModel.#ctor(System.Web.UI.Control)">
+            <summary>
+            Initializes class instance.
+            </summary>
+        </member>
+        <member name="M:TRR.Shared.Controls.BreadcrumbsModel.EnsureProvider">
+            <summary>
+            Ensures proviser instance is set up.
+            </summary>
+        </member>
+        <member name="M:TRR.Shared.Controls.BreadcrumbsModel.ProcessCurrentRequest">
+            <summary>
+            Main processing entrance point.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbsModel.CurrentEntry">
+            <summary>
+            Exposes current entry managed by the model.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbsModel.Entries">
+            <summary>
+            Gets the breadcrumbs entries tail from the session storage.
+            </summary>
+        </member>
+        <member name="T:TRR.Shared.Controls.BreadcrumbsSite">
+            <summary>
+            Concrete implementation of breadcrumbs site control.
+            </summary>
+        </member>
+        <member name="T:TRR.Shared.Controls.IBreadcrumbsSite">
+            <summary>
+            Denotes breadcrumbs site instance.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.IBreadcrumbsSite.SiteControl">
+            <summary>
+            Gets breadcrumbs site presenation-level control.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.IBreadcrumbsSite.Request">
+            <summary>
+            Gets current web request.
+            </summary>
+        </member>
+        <member name="F:TRR.Shared.Controls.BreadcrumbsSite.siteControl">
+            <summary>
+            Holds breadcrumbs site control.
+            </summary>
+        </member>
+        <member name="M:TRR.Shared.Controls.BreadcrumbsSite.#ctor(System.Web.UI.Control)">
+            <summary>
+            Initializes clas instance.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbsSite.SiteControl">
+            <summary>
+            Gets breadcrumbs site presenation-level control.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.BreadcrumbsSite.Request">
+            <summary>
+            Gets current web request.
+            </summary>
+        </member>
+        <member name="T:TRR.Shared.Controls.CarouselControl">
+            <summary>
+            Carousel control
+            </summary>
+        </member>
+        <member name="M:TRR.Shared.Controls.CarouselControl.#ctor">
+            <summary>
+            Public constructor
+            </summary>
+        </member>
+        <member name="M:TRR.Shared.Controls.CarouselControl.CreateChildControls">
+            <summary>
+            Called by the ASP.NET page framework to notify server controls that use composition-based implementation to create any child controls they contain in preparation for posting back or rendering.
+            </summary>
+        </member>
+        <member name="M:TRR.Shared.Controls.CarouselControl.OnPreRender(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.PreRender"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data. 
+                            </param>
+        </member>
+        <member name="M:TRR.Shared.Controls.CarouselControl.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders the control to the specified HTML writer.
+            </summary>
+            <param name="writer">The <see cref="T:System.Web.UI.HtmlTextWriter"/> object that receives the control content. 
+                            </param>
+        </member>
+        <member name="P:TRR.Shared.Controls.CarouselControl.ItemTemplate">
+            <summary>
+            Template to render carousel item
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.CarouselControl.SelectedItemTemplate">
+            <summary>
+            Template to render selected carousel item
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.CarouselControl.LastItemTemplate">
+            <summary>
+            Template to render selected carousel item
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.CarouselControl.SelectedItemIndex">
+            <summary>
+            Gets or sets index of the selected item.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.CarouselControl.Scroll">
+            <summary>
+            Gets or sets amount of items to be scrolled after click on a scroll button.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.CarouselControl.AutoScroll">
+            <summary>
+            Gets or sets amount of items to be scrolled after mouse is over a scroll button.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.CarouselControl.AutoScrollTime">
+            <summary>
+            Gets or sets a time between 2 autoscroll events.
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.CarouselControl.ButtonNextID">
+            <summary>
+            Gets or sets button next server control id
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.CarouselControl.ButtonPrevID">
+            <summary>
+            Gets or sets button prev server cotrol id
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.CarouselControl.Items">
+            <summary>
+            Gets or sets carousel items
+            </summary>
+        </member>
+        <member name="T:TRR.Shared.Controls.CarouselItem">
+            <summary>
+            Carousel item
+            </summary>
+        </member>
+        <member name="M:TRR.Shared.Controls.CarouselItem.#ctor(System.Int32,System.Object)">
+            <summary>
+            Public constructor
+            </summary>
+            <param name="index"></param>
+            <param name="item"></param>
+        </member>
+        <member name="P:TRR.Shared.Controls.CarouselItem.Index">
+            <summary>
+            Item index
+            </summary>
+        </member>
+        <member name="P:TRR.Shared.Controls.CarouselItem.Item">
+            <summary>
+            Item
+            </summary>
+        </member>
+        <member name="T:TRR.Shared.Controls.IBreadcrumbsProvider">
+            <summary>
+            Denotes breadcrumbs provider interface.
+            </summary>
+        </member>
+        <member name="M:TRR.Shared.Controls.IBreadcrumbsProvider.SetSite(TRR.Shared.Controls.IBreadcrumbsSite)">
+            <summary>
+            Initializes the provider's with site control.
+            </summary>
+            <param name="breadcrumbsSite">Breadcrumbs site control.</param>
+        </member>
+        <member name="M:TRR.Shared.Controls.IBreadcrumbsProvider.ProcessCurrentEntry(TRR.Shared.Controls.BreadcrumbEntryRow)">
+            <summary>
+            Allows provider to participate in the calculation of the current entry.
+            </summary>
+            <param name="entry">Actual breadcrumbs entry to be customized.</param>
+        </member>
+        <member name="M:TRR.Shared.Controls.IBreadcrumbsProvider.EnsureHeadConsistency(System.Collections.IList)">
+            <summary>
+            Ensures heading part consistency.
+            </summary>
+            <param name="entries">List of BreadcrumbEntry instances.</param>
+        </member>
+        <member name="T:TRR.Shared.Controls.UrlHelper">
+            <summary>
+            Helper class for working with query string
+            </summary>
+        </member>
+        <member name="M:TRR.Shared.Controls.UrlHelper.RemoveParams(System.String,System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Remove params from url query string
+            </summary>
+            <param name="url"></param>
+            <param name="paramCollection"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.Shared.Controls.UrlHelper.RemoveParam(System.String,System.String,System.Text.StringBuilder)">
+            <summary>
+            Remove param with value specified from query string
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+            <param name="urlBuilder"></param>
+        </member>
+    </members>
+</doc>

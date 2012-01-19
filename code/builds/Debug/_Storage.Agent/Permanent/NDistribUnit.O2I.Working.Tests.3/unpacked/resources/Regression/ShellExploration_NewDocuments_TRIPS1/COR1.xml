@@ -1,0 +1,86 @@
+<?soxtype urn:x-commerceone:document:com:commerceone:XCBL30:XCBL30.sox$1.0?><OrderResponse><OrderResponseHeader><OrderResponseNumber><BuyerOrderResponseNumber>00848ea5-6ec9-4785-b564-8ac4096eda7a</BuyerOrderResponseNumber><SellerOrderResponseNumber>Fiona MacDonald</SellerOrderResponseNumber></OrderResponseNumber><OrderResponseIssueDate>20090115T09:20:45+00:00</OrderResponseIssueDate><OrderResponseDocTypeCoded>ChangeOrderResponse</OrderResponseDocTypeCoded><OrderReference><Reference><RefNum>4510441215</RefNum><RefDate>20070530T04:00:00+00:00</RefDate></Reference></OrderReference><ChangeOrderReference><Reference><RefNum>00848ea5-6ec9-4785-b564-8ac4096eda7a</RefNum><RefDate>20070530T12:00:00+08:00</RefDate></Reference></ChangeOrderReference><SellerParty><Party><PartyID><Identifier><Agency><AgencyCoded>DunAndBradstreet</AgencyCoded></Agency><Ident>888884002</Ident></Identifier></PartyID><NameAddress><Name1>BRYANT ENGINEERING SERVICES LTD</Name1></NameAddress></Party></SellerParty><BuyerParty><Party><PartyID><Identifier><Agency><AgencyCoded>DunAndBradstreet</AgencyCoded></Agency><Ident>888881111</Ident></Identifier></PartyID><NameAddress><Name1>Shell U.K. Limited</Name1><Name2>Switchboard (01224) 882000</Name2></NameAddress></Party></BuyerParty><Purpose><PurposeCoded>Change</PurposeCoded></Purpose><ResponseType><ResponseTypeCoded>Accepted</ResponseTypeCoded></ResponseType><OrderHeaderChanges><OrderHeader><OrderNumber><BuyerOrderNumber>4510441215</BuyerOrderNumber><SellerOrderNumber>Fiona MacDonald</SellerOrderNumber></OrderNumber><OrderIssueDate>20070530T12:00:00+08:00</OrderIssueDate><OrderReferences><AccountCode><Reference><RefNum>888881111</RefNum></Reference></AccountCode><ContractReferences><ListOfContract><Contract><ContractID><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>4610014807</Ident></Identifier></ContractID></Contract></ListOfContract></ContractReferences></OrderReferences><Purpose><PurposeCoded>Change</PurposeCoded></Purpose><OrderType><OrderTypeCoded>PurchaseOrder</OrderTypeCoded></OrderType><OrderCurrency><Currency><CurrencyCoded>EUR</CurrencyCoded></Currency></OrderCurrency><OrderLanguage><Language><LanguageCoded>en</LanguageCoded></Language></OrderLanguage><OrderDates><RequestedDeliverByDate>20080531T04:00:00+00:00</RequestedDeliverByDate><ValidityDates><StartDate>20070601T12:00:00+08:00</StartDate><EndDate>20080531T12:00:00+08:00</EndDate></ValidityDates></OrderDates><OrderParty><BuyerParty><Party><PartyID><Identifier><Agency><AgencyCoded>DunAndBradstreet</AgencyCoded></Agency><Ident>888881111</Ident></Identifier></PartyID><ListOfIdentifier><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>GB01</Ident></Identifier></ListOfIdentifier><NameAddress><Name1>Shell U.K. Limited</Name1><Name2>Switchboard (01224) 882000</Name2><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>EP Europe Purch Org.</Ident></Identifier><Street>1 Altens Farm Road</Street><City>Aberdeen AB12 3FY</City><Country><CountryCoded>GB</CountryCoded></Country></NameAddress><OrderContact><Contact><ContactName>Jennifer Laws</ContactName><ListOfContactNumber><ContactNumber><ContactNumberValue>+44 1224 88 2218</ContactNumberValue><ContactNumberTypeCoded>TelephoneNumber</ContactNumberTypeCoded></ContactNumber><ContactNumber><ContactNumberValue>jennifer.laws@shell.com</ContactNumberValue><ContactNumberTypeCoded>EmailAddress</ContactNumberTypeCoded></ContactNumber></ListOfContactNumber></Contact></OrderContact></Party></BuyerParty><SellerParty><Party><PartyID><Identifier><Agency><AgencyCoded>DunAndBradstreet</AgencyCoded></Agency><Ident>888884002</Ident></Identifier></PartyID><ListOfIdentifier><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>293395091</Ident></Identifier></ListOfIdentifier><NameAddress><Name1>BRYANT ENGINEERING SERVICES LTD</Name1><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>0000129290</Ident></Identifier><Street>440 UNION STREET</Street><PostalCode>AB10 1TR</PostalCode><City>ABERDEEN</City><Country><CountryCoded>GB</CountryCoded></Country></NameAddress><OrderContact><Contact><ContactName>BRYANT ENGINEERING SERVICES LTD</ContactName><ListOfContactNumber><ContactNumber><ContactNumberValue>01224 646238</ContactNumberValue><ContactNumberTypeCoded>TelephoneNumber</ContactNumberTypeCoded></ContactNumber><ContactNumber><ContactNumberValue>01224 656000</ContactNumberValue><ContactNumberTypeCoded>FaxNumber</ContactNumberTypeCoded></ContactNumber></ListOfContactNumber></Contact></OrderContact><CorrespondenceLanguage><Language><LanguageCoded>en</LanguageCoded></Language></CorrespondenceLanguage></Party></SellerParty><ShipToParty><Party><PartyID><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>GB01</Ident></Identifier></PartyID><NameAddress><Name1>GB Planning Plant</Name1><Name2>GB Central/Mature</Name2><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>N/A</Ident></Identifier><Street>1 Altens Farm Road, Nigg</Street><PostalCode>AB12 3FY</PostalCode><City>Aberdeen</City><Country><CountryCoded>GB</CountryCoded></Country></NameAddress><CorrespondenceLanguage><Language><LanguageCoded>en</LanguageCoded></Language></CorrespondenceLanguage></Party></ShipToParty><BillToParty><Party><PartyID><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>GB01</Ident></Identifier></PartyID><NameAddress><Name1>EPFC Accounts Payable</Name1><Name2>Switchboard (01224) 882000</Name2><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>N/A</Ident></Identifier><Street>1 Altens Farm Road, Nigg</Street><City>Aberdeen AB12 3FY</City><Country><CountryCoded>GB</CountryCoded></Country></NameAddress></Party></BillToParty></OrderParty><OrderTermsOfDelivery><TermsOfDelivery><TermsOfDeliveryFunctionCoded>DeliveryCondition</TermsOfDeliveryFunctionCoded><TransportTermsCoded>DeliveredDutyPaid</TransportTermsCoded><ShipmentMethodOfPaymentCoded>Prepaid-BySeller</ShipmentMethodOfPaymentCoded><TermsOfDeliveryDescription>AS PER DELIVERY ADDRESS</TermsOfDeliveryDescription><TransportDescription>AS PER DELIVERY ADDRESS</TransportDescription></TermsOfDelivery></OrderTermsOfDelivery><OrderPaymentInstructions><PaymentInstructions><PaymentTerms><PaymentTerm><PaymentTermCoded>Other</PaymentTermCoded><PaymentTermCodedOther>30 Days Net - No Discount</PaymentTermCodedOther><PaymentTermDetails><Discounts><NetDaysDue>30</NetDaysDue></Discounts></PaymentTermDetails></PaymentTerm></PaymentTerms><PaymentMethod><PaymentMeanCoded>InstrumentNotDefined</PaymentMeanCoded></PaymentMethod></PaymentInstructions></OrderPaymentInstructions><OrderHeaderNote>VARIATION 01
+"In accordance with the European Working Time Directive, holiday
+entitlement has increased from 20 to 24 days. As a result the day rate
+including payroll burden will amount to 279.26 (EUROS) effective from
+1st October 2007."
+
+FIONA MACDONALD - SUPPLY CHAIN ASSISTANT
+
+START DATE:   01/06/2007
+END DATE:     31/05/2008
+
+RATES:
+
+RATE TO MAN (EUROS)    274.59
+MAN FEE (EUROS)          9.42
+
+EXPENSES (EUROS)     5,000.00
+
+OLD PURCHASE ORDER:   4510163657
+
+The following Terms and Conditions are applicable to this Purchase
+Order: For Goods: -   CRINE Purchase Order Terms and Conditions (Short
+Form) Edition 1 December 1997 unless otherwise stipulated on this
+Purchase Order. -   any special Terms and Conditions specified in this
+Purchase Order. For Services: -   the terms, conditions and full
+specifications of the agreement apply as specified under the
+individual line item in this Purchase Order unless otherwise
+stipulated on this Purchase Order. -   any special Terms and
+Conditions specified in this Purchase Order.
+2) Contractor/Supplier shall confirm receipt of this Purchase Order
+within 7 days of receipt. Confirmation shall be made by XML Purchase
+Order Response to the Buyer indicated on this Purchase Order. The
+person confirming receipt shall clearly specify their name,
+designation, date, and Purchase Order number.
+3) The Purchase Order number and item number shall be stated on all
+invoices, correspondence, packages etc.
+4) All Original Invoice for payment must be submitted with details of
+the total amount payable in figures AND words as well as Banking
+details and mailed directly to the Account Receipts &amp; Payments
+Department, using the following address: EPE-F-C Invoice Section 1
+Altens Farm road, Nigg Aberdeen, AB12 3FY Switchboard (01224) 882000
+5) Contractor/Supplier shall note the final destination of the goods
+per item and shall not pack items for different destinations together.</OrderHeaderNote></OrderHeader></OrderHeaderChanges></OrderResponseHeader><OrderResponseDetail><ListOfOrderResponseItemDetail><OrderResponseItemDetail><ItemDetailResponseCoded>ItemAccepted</ItemDetailResponseCoded><ItemDetailChanges><ItemDetail><BaseItemDetail><LineItemNum><BuyerLineItemNum>00010</BuyerLineItemNum></LineItemNum><ItemIdentifiers><PartNumbers><SellerPartNumber><PartNum><PartID>VARIATION 01</PartID></PartNum></SellerPartNumber><OtherItemIdentifiers><ListOfProductIdentifierCoded><ProductIdentifierCoded><ProductIdentifierQualifierCoded>BuyersInternalProductGroupCode</ProductIdentifierQualifierCoded><ProductIdentifier>ZZ9999</ProductIdentifier></ProductIdentifierCoded></ListOfProductIdentifierCoded></OtherItemIdentifiers></PartNumbers><ItemDescription>FIONA MACDONALD - EFFECTIVE FM 1/6/07</ItemDescription></ItemIdentifiers><TotalQuantity><Quantity><QuantityValue>1.00</QuantityValue><UnitOfMeasurement><UOMCoded>UL</UOMCoded></UnitOfMeasurement></Quantity></TotalQuantity><ListOfItemReferences><ListOfReferenceCoded><ReferenceCoded><ReferenceTypeCoded>BuyersContractNumber</ReferenceTypeCoded><PrimaryReference><Reference><RefNum>4610014807</RefNum><RefDate>20070511T20:52:14-05:00</RefDate></Reference></PrimaryReference><SupportingReference><Reference><RefNum>00010</RefNum><RefDate>20070511T20:52:14-05:00</RefDate></Reference></SupportingReference></ReferenceCoded></ListOfReferenceCoded></ListOfItemReferences><CountryOfDestination><Country><CountryCoded>GB</CountryCoded></Country></CountryOfDestination></BaseItemDetail><PricingDetail><ListOfPrice>
+			<Price>
+				<UnitPrice>
+					<UnitPriceValue>68000.00</UnitPriceValue>
+					<Currency>
+						<CurrencyCoded>EUR</CurrencyCoded>
+					</Currency>
+					<UnitOfMeasurement>
+						<UOMCoded>UL</UOMCoded>
+					</UnitOfMeasurement>
+				</UnitPrice>
+				<PriceBasisQuantity>
+					<Quantity>
+						<QuantityValue>1.00</QuantityValue>
+						<UnitOfMeasurement>
+							<UOMCoded>UL</UOMCoded>
+						</UnitOfMeasurement>
+					</Quantity>
+				</PriceBasisQuantity>
+			</Price>
+		</ListOfPrice><TotalValue><MonetaryValue><MonetaryAmount>68000.00</MonetaryAmount><Currency><CurrencyCoded>EUR</CurrencyCoded></Currency></MonetaryValue></TotalValue></PricingDetail><DeliveryDetail><ListOfScheduleLine><ScheduleLine><Quantity><QuantityValue>1.00</QuantityValue><UnitOfMeasurement><UOMCoded>UL</UOMCoded></UnitOfMeasurement></Quantity><RequestedDeliveryDate>20080531T04:00:00+00:00</RequestedDeliveryDate><ListOfOtherDeliveryDate><ListOfDateCoded><DateCoded><Date>20080531T04:00:00+00:00</Date><DateQualifier><DateQualifierCoded>PromisedForShipment</DateQualifierCoded></DateQualifier></DateCoded></ListOfDateCoded></ListOfOtherDeliveryDate><Transport><TransportID>0</TransportID></Transport></ScheduleLine></ListOfScheduleLine></DeliveryDetail></ItemDetail></ItemDetailChanges></OrderResponseItemDetail><OrderResponseItemDetail><ItemDetailResponseCoded>ItemAccepted</ItemDetailResponseCoded><ItemDetailChanges><ItemDetail><BaseItemDetail><LineItemNum><BuyerLineItemNum>0010000010</BuyerLineItemNum></LineItemNum><ParentItemNumber><LineItemNumberReference>00010</LineItemNumberReference></ParentItemNumber><ItemIdentifiers><PartNumbers><SellerPartNumber><PartNum><PartID>N/A</PartID></PartNum></SellerPartNumber><OtherItemIdentifiers><ListOfProductIdentifierCoded><ProductIdentifierCoded><ProductIdentifierQualifierCoded>Other</ProductIdentifierQualifierCoded><ProductIdentifierQualifierCodedOther>Service</ProductIdentifierQualifierCodedOther><ProductIdentifier>000000000060000020</ProductIdentifier></ProductIdentifierCoded><ProductIdentifierCoded><ProductIdentifierQualifierCoded>BuyersInternalProductGroupCode</ProductIdentifierQualifierCoded><ProductIdentifier>PB0000</ProductIdentifier></ProductIdentifierCoded></ListOfProductIdentifierCoded></OtherItemIdentifiers></PartNumbers><ItemDescription>AGENCY PERSONNEL</ItemDescription></ItemIdentifiers><TotalQuantity><Quantity><QuantityValue>68000.00</QuantityValue><UnitOfMeasurement><UOMCoded>EA</UOMCoded></UnitOfMeasurement></Quantity></TotalQuantity><CountryOfDestination><Country><CountryCoded>GB</CountryCoded></Country></CountryOfDestination></BaseItemDetail><PricingDetail><ListOfPrice>
+			<Price>
+				<UnitPrice>
+					<UnitPriceValue>1.00</UnitPriceValue>
+					<Currency>
+						<CurrencyCoded>EUR</CurrencyCoded>
+					</Currency>
+					<UnitOfMeasurement>
+						<UOMCoded>EA</UOMCoded>
+					</UnitOfMeasurement>
+				</UnitPrice>
+				<PriceBasisQuantity>
+					<Quantity>
+						<QuantityValue>1.00</QuantityValue>
+						<UnitOfMeasurement>
+							<UOMCoded>EA</UOMCoded>
+						</UnitOfMeasurement>
+					</Quantity>
+				</PriceBasisQuantity>
+			</Price>
+		</ListOfPrice><TotalValue><MonetaryValue><MonetaryAmount>68000.00</MonetaryAmount><Currency><CurrencyCoded>EUR</CurrencyCoded></Currency></MonetaryValue></TotalValue></PricingDetail><DeliveryDetail><ListOfScheduleLine><ScheduleLine><Quantity><QuantityValue>68000.00</QuantityValue><UnitOfMeasurement><UOMCoded>EA</UOMCoded></UnitOfMeasurement></Quantity><RequestedDeliveryDate>20080531T04:00:00+00:00</RequestedDeliveryDate><ListOfOtherDeliveryDate><ListOfDateCoded><DateCoded><Date>20080531T04:00:00+00:00</Date><DateQualifier><DateQualifierCoded>PromisedForShipment</DateQualifierCoded></DateQualifier></DateCoded></ListOfDateCoded></ListOfOtherDeliveryDate><Transport><TransportID>0</TransportID></Transport></ScheduleLine></ListOfScheduleLine></DeliveryDetail><ListOfStructuredNote><StructuredNote><GeneralNote>Service number =
+60000020</GeneralNote><NoteID>ZSNO</NoteID><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency></StructuredNote><StructuredNote><GeneralNote>WO/NT No : 000022078819 0040
+Agreement No : 4610014807 / 00010
+Final Recipient : EPF-E-C Jennifer Laws</GeneralNote><NoteID>FLOC</NoteID><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency></StructuredNote></ListOfStructuredNote></ItemDetail></ItemDetailChanges></OrderResponseItemDetail></ListOfOrderResponseItemDetail></OrderResponseDetail><OrderResponseSummary><RevisedOrderSummary><OrderSummary><NumberOfLines>2</NumberOfLines><TotalAmount><MonetaryValue><MonetaryAmount>68000.00</MonetaryAmount><Currency><CurrencyCoded>EUR</CurrencyCoded></Currency></MonetaryValue></TotalAmount></OrderSummary></RevisedOrderSummary></OrderResponseSummary></OrderResponse>

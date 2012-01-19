@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Invoice xmlns:core="rrn:org.xcbl:schemas/xcbl/v4_0/core/core.xsd" xmlns:dgs="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="rrn:org.xcbl:schemas/xcbl/v4_0/financial/v1_0/financial.xsd">
+  <InvoiceHeader>
+    <InvoiceNumber>100000138</InvoiceNumber>
+    <InvoiceIssueDate>2010-07-16T14:08:25+00:00</InvoiceIssueDate>
+    <InvoiceReferences>
+      <PurchaseOrderReference>
+        <core:BuyerOrderNumber>a42ff42b-6339-4f59-b588-bfa0b3d41d8e</core:BuyerOrderNumber>
+        <core:SellerOrderNumber>Sales Order 12345</core:SellerOrderNumber>
+      </PurchaseOrderReference>
+      <AccountNumber>
+        <core:RefNum>888880010</core:RefNum>
+      </AccountNumber>
+    </InvoiceReferences>
+    <InvoicePurpose>
+      <InvoicePurposeCoded>Original</InvoicePurposeCoded>
+    </InvoicePurpose>
+    <InvoiceType>
+      <InvoiceTypeCoded>DebitInvoice</InvoiceTypeCoded>
+    </InvoiceType>
+    <InvoiceCurrency>
+      <core:CurrencyCoded>EUR</core:CurrencyCoded>
+    </InvoiceCurrency>
+    <InvoiceLanguage>
+      <core:LanguageCoded>en</core:LanguageCoded>
+    </InvoiceLanguage>
+    <InvoiceDates>
+      <InvoiceDueDate>2010-07-16T14:08:29+00:00</InvoiceDueDate>
+    </InvoiceDates>
+    <InvoiceParty>
+      <BuyerParty>
+        <core:PartyID>
+          <core:Agency>
+            <core:AgencyCoded>DunAndBradstreet</core:AgencyCoded>
+          </core:Agency>
+          <core:Ident>888880010</core:Ident>
+        </core:PartyID>
+        <core:NameAddress>
+          <core:ExternalAddressID>Buyer Logical Business Unit 1</core:ExternalAddressID>
+          <core:Name1>aaa_Test_Buyer Proprietary Name</core:Name1>
+          <core:Name2>This is the tall blue building near the Galleria</core:Name2>
+          <core:Identifier>
+            <core:Agency>
+              <core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded>
+            </core:Agency>
+            <core:Ident>555554444</core:Ident>
+          </core:Identifier>
+          <core:Street>1330 Post Oak Blv. Suite 2000</core:Street>
+          <core:PostalCode>77056</core:PostalCode>
+          <core:City>Houston</core:City>
+          <core:Region>
+            <core:RegionCoded>USTX</core:RegionCoded>
+          </core:Region>
+          <core:Country>
+            <core:CountryCoded>US</core:CountryCoded>
+          </core:Country>
+        </core:NameAddress>
+        <core:PrimaryContact>
+          <core:ContactName>Carl Superman</core:ContactName>
+          <core:ContactDescription>BuyerContact</core:ContactDescription>
+          <core:ListOfContactNumber>
+            <core:ContactNumber>
+              <core:ContactNumberValue>1-713-3326848</core:ContactNumberValue>
+              <core:ContactNumberTypeCoded>TelephoneNumber</core:ContactNumberTypeCoded>
+            </core:ContactNumber>
+            <core:ContactNumber>
+              <core:ContactNumberValue>1-713-3326868</core:ContactNumberValue>
+              <core:ContactNumberTypeCoded>FaxNumber</core:ContactNumberTypeCoded>
+            </core:ContactNumber>
+            <core:ContactNumber>
+              <core:ContactNumberValue>Carl.Superman@company.com</core:ContactNumberValue>
+              <core:ContactNumberTypeCoded>EmailAddress</core:ContactNumberTypeCoded>
+            </core:ContactNumber>
+          </core:ListOfContactNumber>
+        </core:PrimaryContact>
+        <core:PartyTaxInformation>
+          <core:TaxIdentifier>
+            <core:Agency>
+              <core:AgencyCoded>Other</core:AgencyCoded>
+            </core:Agency>
+            <core:Ident>942174586</core:Ident>
+          </core:TaxIdentifier>
+        </core:PartyTaxInformation>
+      </BuyerParty>
+      <SellerParty>
+        <core:PartyID>
+          <core:Agency>
+            <core:AgencyCoded>DunAndBradstreet</core:AgencyCoded>
+          </core:Agency>
+          <core:Ident>888884011</core:Ident>
+        </core:PartyID>
+        <core:NameAddress>
+          <core:ExternalAddressID>TR_Supplier Logical Business Unit 3</core:ExternalAddressID>
+          <core:Name1>Supplier SoandSo</core:Name1>
+          <core:Name2>MailStop-1234</core:Name2>
+          <core:Identifier>
+            <core:Agency>
+              <core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded>
+            </core:Agency>
+            <core:Ident>444455555</core:Ident>
+          </core:Identifier>
+          <core:Street>777 East Bay Rd. Suite 888</core:Street>
+          <core:PostalCode>77056-1099</core:PostalCode>
+          <core:City>Houston</core:City>
+          <core:Region>
+            <core:RegionCoded>USTX</core:RegionCoded>
+          </core:Region>
+          <core:Country>
+            <core:CountryCoded>US</core:CountryCoded>
+          </core:Country>
+        </core:NameAddress>
+        <core:PrimaryContact>
+          <core:ContactName>Mr. Seller</core:ContactName>
+          <core:ContactDescription>OrderContact</core:ContactDescription>
+          <core:ListOfContactNumber>
+            <core:ContactNumber>
+              <core:ContactNumberValue>1-713-3326848</core:ContactNumberValue>
+              <core:ContactNumberTypeCoded>TelephoneNumber</core:ContactNumberTypeCoded>
+            </core:ContactNumber>
+            <core:ContactNumber>
+              <core:ContactNumberValue>1-713-3326868</core:ContactNumberValue>
+              <core:ContactNumberTypeCoded>FaxNumber</core:ContactNumberTypeCoded>
+            </core:ContactNumber>
+            <core:ContactNumber>
+              <core:ContactNumberValue>Mr.Seller@Sellercompany.com</core:ContactNumberValue>
+              <core:ContactNumberTypeCoded>EmailAddress</core:ContactNumberTypeCoded>
+            </core:ContactNumber>
+          </core:ListOfContactNumber>
+        </core:PrimaryContact>
+		<core:PartyTaxInformation>
+			<core:TaxIdentifier>
+				<core:Agency>
+					<core:AgencyCoded>
+					</core:AgencyCoded>
+				</core:Agency>
+				<core:Ident>123</core:Ident>
+			</core:TaxIdentifier>
+		</core:PartyTaxInformation>
+      </SellerParty>
+      <ShipToParty>
+        <core:PartyID>
+          <core:Agency>
+            <core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded>
+          </core:Agency>
+          <core:Ident>001381580YRM</core:Ident>
+        </core:PartyID>
+        <core:NameAddress>
+          <core:Name1>Test_Buyer Company</core:Name1>
+          <core:Name2>Comment on the address informationfor ShipTo</core:Name2>
+          <core:Street>33 Main Street, Dock 333</core:Street>
+          <core:PostalCode>77056</core:PostalCode>
+          <core:City>Houston</core:City>
+          <core:Region>
+            <core:RegionCoded>USTX</core:RegionCoded>
+          </core:Region>
+          <core:Country>
+            <core:CountryCoded>US</core:CountryCoded>
+          </core:Country>
+        </core:NameAddress>
+        <core:PrimaryContact>
+          <core:ContactName>John Spencer</core:ContactName>
+          <core:ContactDescription>BuyerContact</core:ContactDescription>
+          <core:ListOfContactNumber>
+            <core:ContactNumber>
+              <core:ContactNumberValue>1-789-3333848</core:ContactNumberValue>
+              <core:ContactNumberTypeCoded>TelephoneNumber</core:ContactNumberTypeCoded>
+            </core:ContactNumber>
+            <core:ContactNumber>
+              <core:ContactNumberValue>1-733-3333868</core:ContactNumberValue>
+              <core:ContactNumberTypeCoded>FaxNumber</core:ContactNumberTypeCoded>
+            </core:ContactNumber>
+            <core:ContactNumber>
+              <core:ContactNumberValue>John.Spencer@Spencer.com</core:ContactNumberValue>
+              <core:ContactNumberTypeCoded>EmailAddress</core:ContactNumberTypeCoded>
+            </core:ContactNumber>
+          </core:ListOfContactNumber>
+        </core:PrimaryContact>
+      </ShipToParty>
+      <BillToParty>
+        <core:PartyID>
+          <core:Agency>
+            <core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded>
+          </core:Agency>
+          <core:Ident>0013832221580</core:Ident>
+        </core:PartyID>
+        <core:NameAddress>
+          <core:Name1>Test_Buyer_Payer</core:Name1>
+          <core:Name2>Mr. Account Holder</core:Name2>
+          <core:Street>33 Bank Street, Suite 3300</core:Street>
+          <core:PostalCode>77056-8899</core:PostalCode>
+          <core:City>Houston</core:City>
+          <core:Region>
+            <core:RegionCoded>USTX</core:RegionCoded>
+          </core:Region>
+          <core:Country>
+            <core:CountryCoded>US</core:CountryCoded>
+          </core:Country>
+        </core:NameAddress>
+        <core:PrimaryContact>
+          <core:ContactName>Jonny Payitall</core:ContactName>
+          <core:ContactDescription>BillToContact</core:ContactDescription>
+          <core:ListOfContactNumber>
+            <core:ContactNumber>
+              <core:ContactNumberValue>1-800-3333848</core:ContactNumberValue>
+              <core:ContactNumberTypeCoded>TelephoneNumber</core:ContactNumberTypeCoded>
+            </core:ContactNumber>
+            <core:ContactNumber>
+              <core:ContactNumberValue>1-800-3333868</core:ContactNumberValue>
+              <core:ContactNumberTypeCoded>FaxNumber</core:ContactNumberTypeCoded>
+            </core:ContactNumber>
+            <core:ContactNumber>
+              <core:ContactNumberValue>Jonny.Payitall@alwayslate.com</core:ContactNumberValue>
+              <core:ContactNumberTypeCoded>EmailAddress</core:ContactNumberTypeCoded>
+            </core:ContactNumber>
+          </core:ListOfContactNumber>
+        </core:PrimaryContact>
+      </BillToParty>
+      <RemitToParty>
+        <core:PartyID>
+          <core:Agency>
+            <core:AgencyCoded>DunAndBradstreet</core:AgencyCoded>
+          </core:Agency>
+          <core:Ident>888884011</core:Ident>
+        </core:PartyID>
+        <core:NameAddress>
+          <core:Name1>Supplier SoandSo</core:Name1>
+          <core:Street>777 East Bay Rd. Suite 888</core:Street>
+          <core:PostalCode>77056-1099</core:PostalCode>
+          <core:City>Houston</core:City>
+           <core:Region>
+    <core:RegionCoded>USTX</core:RegionCoded>
+  </core:Region>
+          <core:Country>
+            <core:CountryCoded>US</core:CountryCoded>
+          </core:Country>
+        </core:NameAddress>
+        <core:PrimaryContact>
+          <core:ContactName>Mr. Seller</core:ContactName>
+          <core:ListOfContactNumber>
+            <core:ContactNumber>
+              <core:ContactNumberValue>1-713-3326848</core:ContactNumberValue>
+              <core:ContactNumberTypeCoded>TelephoneNumber</core:ContactNumberTypeCoded>
+            </core:ContactNumber>
+            <core:ContactNumber>
+              <core:ContactNumberValue>1-713-3326868</core:ContactNumberValue>
+              <core:ContactNumberTypeCoded>FaxNumber</core:ContactNumberTypeCoded>
+            </core:ContactNumber>
+            <core:ContactNumber>
+              <core:ContactNumberValue>Mr.Seller@Sellercompany.com</core:ContactNumberValue>
+              <core:ContactNumberTypeCoded>EmailAddress</core:ContactNumberTypeCoded>
+            </core:ContactNumber>
+          </core:ListOfContactNumber>
+        </core:PrimaryContact>
+      </RemitToParty>
+    </InvoiceParty>
+    <InvoiceTermsOfDelivery>
+      <core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded>
+      <core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded>
+      <core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded>
+    </InvoiceTermsOfDelivery>
+    <InvoicePaymentInstructions>
+      <core:PaymentTerms>
+        <core:PaymentTerm>
+          <core:PaymentTermCoded>Basic</core:PaymentTermCoded>
+          <core:PaymentTermCodedOther>Pay It All and Rather Quick</core:PaymentTermCodedOther>
+          <core:DiscountInformation>
+            <core:DiscountPercent>0.00</core:DiscountPercent>
+            <core:DiscountDueDate>2010-07-16T14:08:25+00:00</core:DiscountDueDate>
+          </core:DiscountInformation>
+        </core:PaymentTerm>
+      </core:PaymentTerms>
+      <core:PaymentMethod>
+        <core:PaymentMeanCoded>InstrumentNotDefined</core:PaymentMeanCoded>
+      </core:PaymentMethod>
+    </InvoicePaymentInstructions>
+    <InvoiceAllowancesOrCharges>
+      <core:AllowOrCharge SeqNo="1">
+        <core:IndicatorCoded>Allowance</core:IndicatorCoded>
+        <core:MethodOfHandlingCoded>OffInvoice</core:MethodOfHandlingCoded>
+        <core:AllowanceOrChargeDescription>
+          <core:ServiceCoded>Other</core:ServiceCoded>
+          <core:ServiceCodedOther>Allowance</core:ServiceCodedOther>
+        </core:AllowanceOrChargeDescription>
+        <core:TypeOfAllowanceOrCharge>
+          <core:MonetaryValue>
+            <core:MonetaryAmount>0.00</core:MonetaryAmount>
+            <core:Currency>
+              <core:CurrencyCoded>EUR</core:CurrencyCoded>
+            </core:Currency>
+          </core:MonetaryValue>
+        </core:TypeOfAllowanceOrCharge>
+      </core:AllowOrCharge>
+
+      <core:AllowOrCharge SeqNo="2">
+        <core:IndicatorCoded>Charge</core:IndicatorCoded>
+        <core:MethodOfHandlingCoded>OffInvoice</core:MethodOfHandlingCoded>
+        <core:AllowanceOrChargeDescription>
+          <core:ServiceCoded>Other</core:ServiceCoded>
+          <core:ServiceCodedOther>Charge</core:ServiceCodedOther>
+        </core:AllowanceOrChargeDescription>
+        <core:TypeOfAllowanceOrCharge>
+          <core:MonetaryValue>
+            <core:MonetaryAmount>0.00</core:MonetaryAmount>
+            <core:Currency>
+              <core:CurrencyCoded>EUR</core:CurrencyCoded>
+            </core:Currency>
+          </core:MonetaryValue>
+        </core:TypeOfAllowanceOrCharge>
+      </core:AllowOrCharge>
+
+      <core:AllowOrCharge SeqNo="3">
+        <core:IndicatorCoded>Charge</core:IndicatorCoded>
+        <core:MethodOfHandlingCoded>OffInvoice</core:MethodOfHandlingCoded>
+        <core:AllowanceOrChargeDescription>
+          <core:ServiceCoded>Other</core:ServiceCoded>
+          <core:ServiceCodedOther>Freight</core:ServiceCodedOther>
+        </core:AllowanceOrChargeDescription>
+        <core:TypeOfAllowanceOrCharge>
+          <core:MonetaryValue>
+            <core:MonetaryAmount>0.00</core:MonetaryAmount>
+            <core:Currency>
+              <core:CurrencyCoded>EUR</core:CurrencyCoded>
+            </core:Currency>
+          </core:MonetaryValue>
+        </core:TypeOfAllowanceOrCharge>
+      </core:AllowOrCharge>
+    </InvoiceAllowancesOrCharges>
+  </InvoiceHeader>
+
+
+
+<InvoiceDetail><ListOfInvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>0</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber>
+<core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>0</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>
+
+EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal>
+
+</InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail>
+
+<InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>1</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>1</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination>
+
+<core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier>
+
+<core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine>
+
+</core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>2</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription>
+
+</ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>2</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount>
+
+<core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>
+
+EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>3</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded>
+
+</LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>3</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>
+
+400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge>
+
+</core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded>
+
+<core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>4</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences>
+
+<PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>4</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription>
+
+<core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID>
+
+<core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>5</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID>
+
+</core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>5</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement>
+
+<core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount>
+
+</core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail>
+
+</InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>6</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>6</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences>
+
+<CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier>
+
+<core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine>
+
+</core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>7</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription>
+
+</ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>7</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount>
+
+<core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>
+
+EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>8</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded>
+
+</LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>8</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>
+
+400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge>
+
+</core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded>
+
+<core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>9</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences>
+
+<PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>9</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription>
+
+<core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID>
+
+<core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>10</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID>
+
+</core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>10</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement>
+
+<core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount>
+
+</core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail>
+
+</InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>11</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>11</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences>
+
+<CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier>
+
+<core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine>
+
+</core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>12</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription>
+
+</ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>12</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount>
+
+</core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement>
+
+<core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>13</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>
+
+Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>13</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice>
+
+<core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge>
+
+</core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded>
+
+<core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>14</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences>
+
+<PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>14</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription>
+
+<core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID>
+
+<core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>15</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID>
+
+</core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>15</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement>
+
+<core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount>
+
+</core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail>
+
+</InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>16</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>16</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences>
+
+<CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier>
+
+<core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine>
+
+</core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>17</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription>
+
+</ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>17</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount>
+
+</core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement>
+
+<core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>18</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>
+
+Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>18</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice>
+
+<core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge>
+
+</core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded>
+
+<core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>19</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences>
+
+<PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>19</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription>
+
+<core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID>
+
+<core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>20</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID>
+
+</core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>20</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement>
+
+<core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount>
+
+</core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail>
+
+</InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>21</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>21</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences>
+
+<CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier>
+
+<core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine>
+
+</core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>22</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription>
+
+</ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>22</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount>
+
+</core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement>
+
+<core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>23</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>
+
+Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences><PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>23</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice>
+
+<core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription><core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge>
+
+</core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID><core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded>
+
+<core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><core:BuyerLineItemNum>24</core:BuyerLineItemNum></LineItemNum><LineItemType><core:LineItemTypeCoded>Item</core:LineItemTypeCoded></LineItemType><ItemIdentifiers><core:PartNumbers><core:SellerPartNumber><core:PartID>89334488-TRSR-9498</core:PartID></core:SellerPartNumber><core:BuyerPartNumber><core:PartID>SFRT8733-YRRR777</core:PartID></core:BuyerPartNumber><core:ManufacturerPartNumber><core:PartID>SFR3333333</core:PartID></core:ManufacturerPartNumber></core:PartNumbers><core:ItemDescription>Safety Valve</core:ItemDescription></ItemIdentifiers><InvoicedQuantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></InvoicedQuantity><LineItemReferences>
+
+<PurchaseOrderReference><core:BuyerOrderNumber>e1b7443e-0dfd-47dc-83a2-69e90c8f13c7</core:BuyerOrderNumber><core:PurchaseOrderLineItemNumber>24</core:PurchaseOrderLineItemNumber></PurchaseOrderReference></LineItemReferences><CountryOfDestination><core:CountryCoded>DE</core:CountryCoded></CountryOfDestination></InvoiceBaseItemDetail><InvoicePricingDetail><core:ListOfPrice><core:Price><core:UnitPrice><core:UnitPriceValue>400.00</core:UnitPriceValue><core:Currency><core:CurrencyCoded>EUR</core:CurrencyCoded></core:Currency></core:UnitPrice><core:PriceBasisQuantity><core:QuantityValue>1.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:PriceBasisQuantity></core:Price></core:ListOfPrice><core:TotalTaxAmount><core:MonetaryAmount>0.00</core:MonetaryAmount></core:TotalTaxAmount><core:ItemAllowancesOrCharges><core:AllowOrCharge><core:IndicatorCoded>Allowance</core:IndicatorCoded><core:MethodOfHandlingCoded>Other</core:MethodOfHandlingCoded><core:AllowanceOrChargeDescription>
+
+<core:ServiceCoded>Discount</core:ServiceCoded><core:ServiceCodedOther>Discount</core:ServiceCodedOther></core:AllowanceOrChargeDescription><core:TypeOfAllowanceOrCharge><core:PercentageAllowanceOrCharge><core:PercentQualifier><core:PercentQualifierCoded>Other</core:PercentQualifierCoded></core:PercentQualifier><core:Percent>0.00</core:Percent></core:PercentageAllowanceOrCharge></core:TypeOfAllowanceOrCharge></core:AllowOrCharge></core:ItemAllowancesOrCharges><core:LineItemSubTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemSubTotal><core:LineItemTotal><core:MonetaryAmount>2000.00</core:MonetaryAmount></core:LineItemTotal></InvoicePricingDetail><DeliveryDetail><core:ListOfScheduleLine><core:ScheduleLine><core:Quantity><core:QuantityValue>5.00</core:QuantityValue><core:UnitOfMeasurement><core:UOMCoded>EA</core:UOMCoded></core:UnitOfMeasurement></core:Quantity><core:RequestedDeliveryDate>2002-08-08T13:08:08+00:00</core:RequestedDeliveryDate><core:TransportRouting><core:TransportRouteID>000000000</core:TransportRouteID>
+
+<core:CarrierID><core:Agency><core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded></core:Agency><core:Ident>UPSD</core:Ident></core:CarrierID></core:TransportRouting></core:ScheduleLine></core:ListOfScheduleLine><core:TermsOfDelivery><core:TermsOfDeliveryFunctionCoded>DeliveryCondition</core:TermsOfDeliveryFunctionCoded><core:TransportTermsCoded>FreeOnBoard</core:TransportTermsCoded><core:ShipmentMethodOfPaymentCoded>Other</core:ShipmentMethodOfPaymentCoded></core:TermsOfDelivery><core:CargoClassification><core:TypeOfCargo>Safety Valve</core:TypeOfCargo></core:CargoClassification></DeliveryDetail></InvoiceItemDetail></ListOfInvoiceItemDetail></InvoiceDetail>
+
+
+  <InvoiceSummary>
+    <NumberOfLines>25</NumberOfLines>
+    <InvoiceTotals>
+      <InvoiceTotal>
+        <core:MonetaryAmount>50000.00</core:MonetaryAmount>
+        <core:Currency>
+          <core:CurrencyCoded>EUR</core:CurrencyCoded>
+        </core:Currency>
+      </InvoiceTotal>
+      <InvoiceSubTotal>
+        <core:MonetaryAmount>50000.00</core:MonetaryAmount>
+        <core:Currency>
+          <core:CurrencyCoded>EUR</core:CurrencyCoded>
+        </core:Currency>
+      </InvoiceSubTotal>
+      <TotalTaxAmount>
+        <core:MonetaryAmount>0.00</core:MonetaryAmount>
+        <core:Currency>
+          <core:CurrencyCoded>EUR</core:CurrencyCoded>
+        </core:Currency>
+      </TotalTaxAmount>
+    </InvoiceTotals>
+  </InvoiceSummary>
+</Invoice>
+
+

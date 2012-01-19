@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+
+  <taxPercentsForCountries>
+    <countries>
+      <country name="USA"/>
+      <country name="Other"/>
+      <country name="xCBL3Generic"/>
+    </countries>
+    <taxPercents>
+      <taxPercent value="0"/>
+      <taxPercent value="20"/>
+      <taxPercent value="30"/>
+      <taxPercent value="40"/>
+      <taxPercent value="50"/>
+    </taxPercents>
+  </taxPercentsForCountries>
+
+  <taxPercentsForCountries>
+    <countries>
+      <country name="Germany"/>
+    </countries>
+    <taxPercents>
+      <taxPercent value="0"/>
+      <taxPercent value="7"/>
+      <taxPercent value="19"/>
+    </taxPercents>
+  </taxPercentsForCountries>
+
+  <taxPercentsForCountries>
+    <countries>
+      <country name="Belgium"/>
+    </countries>
+    <taxPercents>
+      <taxPercent value="0"/>
+      <taxPercent value="6"/>
+      <taxPercent value="12"/>
+      <taxPercent value="21"/>
+    </taxPercents>
+  </taxPercentsForCountries>
+
+  <taxPercentsForCountries>
+    <countries>
+      <country name="France"/>
+    </countries>
+    <taxPercents>
+      <taxPercent value="0"/>
+      <taxPercent value="2.1"/>
+      <taxPercent value="5.5"/>
+      <taxPercent value="19.6"/>
+    </taxPercents>
+  </taxPercentsForCountries>
+
+  <taxPercentsForCountries>
+    <countries>
+      <country name="Netherlands"/>
+    </countries>
+    <taxPercents>
+      <taxPercent value="0"/>
+      <taxPercent value="6"/>
+      <taxPercent value="19"/>
+    </taxPercents>
+  </taxPercentsForCountries>
+
+  <taxPercentsForCountries>
+    <countries>
+      <country name="Norway"/>
+    </countries>
+    <taxPercents>
+      <taxPercent value="0"/>
+      <taxPercent value="8"/>
+      <taxPercent value="14"/>
+      <taxPercent value="25"/>
+    </taxPercents>
+  </taxPercentsForCountries>
+
+  <taxPercentsForCountries>
+    <countries>
+      <country name="Spain"/>
+    </countries>
+    <taxPercents>
+      <taxPercent value="0"/>
+      <taxPercent value="2"/>
+      <taxPercent value="4"/>
+      <taxPercent value="5"/>
+      <taxPercent value="8"/>
+      <taxPercent value="18"/>
+    </taxPercents>
+  </taxPercentsForCountries>
+
+  <taxPercentsForCountries>
+    <countries>
+      <country name="Switzerland"/>
+    </countries>
+    <taxPercents>
+      <taxPercent value="0"/>
+      <taxPercent value="2.5"/>
+      <taxPercent value="3.8"/>
+      <taxPercent value="8"/>
+    </taxPercents>
+  </taxPercentsForCountries>
+
+  <taxPercentsForCountries>
+    <countries>
+      <country name="UnitedKingdom"/>
+    </countries>
+    <taxPercents>
+      <taxPercent value="0"/>
+      <taxPercent value="5"/>
+      <taxPercent value="20"/>
+    </taxPercents>
+  </taxPercentsForCountries>
+
+</root>

@@ -1,0 +1,375 @@
+﻿<Order>
+  <OrderHeader>
+    <OrderNumber>
+      <BuyerOrderNumber>ST18_0045371420_633316910531793125</BuyerOrderNumber>
+    </OrderNumber>
+    <OrderIssueDate>20070327T12:00:00+01:00</OrderIssueDate>
+    <OrderReferences>
+      <AccountCode>
+        <Reference>
+          <RefNum>888881011</RefNum>
+        </Reference>
+      </AccountCode>
+      <ContractReferences>
+        <ListOfContract>
+          <Contract>
+            <ContractID>
+              <Identifier>
+                <Agency>
+                  <AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded>
+                </Agency>
+                <Ident>0047012784</Ident>
+              </Identifier>
+            </ContractID>
+          </Contract>
+        </ListOfContract>
+      </ContractReferences>
+    </OrderReferences>
+    <Purpose>
+      <PurposeCoded>Original</PurposeCoded>
+    </Purpose>
+    <OrderType>
+      <OrderTypeCoded>PurchaseOrder</OrderTypeCoded>
+    </OrderType>
+    <OrderCurrency>
+      <Currency>
+        <CurrencyCoded>EUR</CurrencyCoded>
+      </Currency>
+    </OrderCurrency>
+    <OrderLanguage>
+      <Language>
+        <LanguageCoded>es</LanguageCoded>
+      </Language>
+    </OrderLanguage>
+    <OrderDates>
+      <RequestedDeliverByDate>20070408T12:00:00+01:00</RequestedDeliverByDate>
+    </OrderDates>
+    <OrderParty>
+      <BuyerParty>
+        <Party>
+          <PartyID>
+            <Identifier>
+              <Agency>
+                <AgencyCoded>DunAndBradstreet</AgencyCoded>
+              </Agency>
+              <Ident>888881011</Ident>
+            </Identifier>
+          </PartyID>
+          <NameAddress>
+            <Name1>REPSOL QUIMICA, S.A.</Name1>
+            <Identifier>
+              <Agency>
+                <AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded>
+              </Agency>
+              <Ident>QUI-TARRAGONA</Ident>
+            </Identifier>
+            <Street>Paseo de la Castellana, 278-280</Street>
+            <PostalCode>28046</PostalCode>
+            <City>MADRID</City>
+            <Country>
+              <CountryCoded>ES</CountryCoded>
+            </Country>
+          </NameAddress>
+        </Party>
+      </BuyerParty>
+      <SellerParty>
+        <Party>
+          <PartyID>
+            <Identifier>
+              <Agency>
+                <AgencyCoded>DunAndBradstreet</AgencyCoded>
+              </Agency>
+              <Ident>888884001</Ident>
+            </Identifier>
+          </PartyID>
+          <NameAddress>
+            <Name1>TUBACERO, S.L.</Name1>
+            <Identifier>
+              <Agency>
+                <AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded>
+              </Agency>
+              <Ident>QUI-TARRAGONA</Ident>
+            </Identifier>
+            <Street>POLI. IND SEPES, NAVE 420</Street>
+            <PostalCode>13500</PostalCode>
+            <City>PUERTOLLANO (C. REAL)</City>
+            <Country>
+              <CountryCoded>ES</CountryCoded>
+            </Country>
+          </NameAddress>
+          <OrderContact>
+            <Contact>
+              <ContactName>TUBACERO, S.L.</ContactName>
+              <ListOfContactNumber>
+                <ContactNumber>
+                  <ContactNumberValue>(926)41-29-42</ContactNumberValue>
+                  <ContactNumberTypeCoded>TelephoneNumber</ContactNumberTypeCoded>
+                </ContactNumber>
+                <ContactNumber>
+                  <ContactNumberValue>(926)41-29-44</ContactNumberValue>
+                  <ContactNumberTypeCoded>FaxNumber</ContactNumberTypeCoded>
+                </ContactNumber>
+              </ListOfContactNumber>
+            </Contact>
+          </OrderContact>
+        </Party>
+      </SellerParty>
+      <ShipToParty>
+        <Party>
+          <PartyID>
+            <Identifier>
+              <Agency>
+                <AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded>
+              </Agency>
+              <Ident>N/A</Ident>
+            </Identifier>
+          </PartyID>
+          <NameAddress>
+            <Name1>REPSOL QUIMICA, S.A.</Name1>
+            <Street>Cta. Nac. 240 Km 8 -Complejo I</Street>
+            <PostalCode>43140</PostalCode>
+            <City>La Pobla de Mafumet</City>
+            <Region>
+              <RegionCoded>Other</RegionCoded>
+              <RegionCodedOther>01</RegionCodedOther>
+            </Region>
+            <Country>
+              <CountryCoded>ES</CountryCoded>
+            </Country>
+          </NameAddress>
+        </Party>
+      </ShipToParty>
+      <BillToParty>
+        <Party>
+          <PartyID>
+            <Identifier>
+              <Agency>
+                <AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded>
+              </Agency>
+              <Ident>Empty</Ident>
+            </Identifier>
+          </PartyID>
+          <NameAddress>
+            <Name1>REPSOL QUIMICA, S.A.</Name1>
+            <Name2>ESA28122992</Name2>
+            <Street>Avd. de Burgos 18</Street>
+            <PostalCode>28042</PostalCode>
+            <City>MADRID</City>
+            <Country>
+              <CountryCoded>ES</CountryCoded>
+            </Country>
+          </NameAddress>
+        </Party>
+      </BillToParty>
+    </OrderParty>
+    <OrderTermsOfDelivery>
+      <TermsOfDelivery>
+        <TermsOfDeliveryFunctionCoded>DeliveryCondition</TermsOfDeliveryFunctionCoded>
+        <TransportTermsCoded>Carriage-InsurancePaidTo</TransportTermsCoded>
+        <ShipmentMethodOfPaymentCoded>Pickup</ShipmentMethodOfPaymentCoded>
+        <ShipmentMethodOfPaymentCodedOther>N/A</ShipmentMethodOfPaymentCodedOther>
+        <TermsOfDeliveryDescription>DIRECCION DE ENTREGA</TermsOfDeliveryDescription>
+        <TransportDescription>DIRECCION DE ENTREGA</TransportDescription>
+      </TermsOfDelivery>
+    </OrderTermsOfDelivery>
+    <OrderPaymentInstructions>
+      <PaymentInstructions>
+        <PaymentTerms>
+          <PaymentTerm>
+            <PaymentTermCoded>Other</PaymentTermCoded>
+            <PaymentTermCodedOther>SAP:ZB90</PaymentTermCodedOther>
+          </PaymentTerm>
+        </PaymentTerms>
+        <PaymentMethod>
+          <PaymentMeanCoded>Other</PaymentMeanCoded>
+          <PaymentMeanCodedOther>N/A</PaymentMeanCodedOther>
+        </PaymentMethod>
+      </PaymentInstructions>
+    </OrderPaymentInstructions>
+    <ListOfStructuredNote>
+      <StructuredNote>
+        <GeneralNote>
+Estimados Se�ores:
+Les encargamos el suministro de los materiales/servicios que se
+indican
+a continuaci�n, para  que  efect�en su entrega, de acuerdo con
+nuestras
+condiciones de  compra, y  en su  caso, con  las  particulares de
+ este
+escrito.
+Para  evitar  rechazos en la recepci�n de la  mercanc�a en el centro
+de
+env�o o el pago de las facturas es  imprescindible  citar el n� de
+este
+pedido y  posici�n en todos los  documentos  relacionados con el
+ mismo
+(factura, albar�n, certificado de an�lisis).
+
+S�ntoma 12245.rct1847.Se modifica el texto.
+S�ntoma 14636.
+Sintoma 15735.RCT2723.Comentar filtro sociedad 0950
+IF &amp;EKKO-BUKRS&amp; = ''0950''
+Para cumplir las Normas de Seguridad de entrada en el recinto de Repso
+Pol�meros es obligatorio que los conductores vayan provistos del equip
+individual de protecci�n, que consta de, casco, gafas de  seguridad co
+protecci�n lateral, guantes, calzado antiest�tico y ropa de trabajo.
+ENDIF
+Introducimos el nuevo p�rrafo
+De acuerdo con las Normas de Seguridad internas es obligatorio el uso
+de equipo de Protecci�n personal de Seguridad para todos los
+transportistas que efectuen entregas en nuestros centros. Dicho equipo
+comprende casco de seguridad, gafas de seguridad con protecci�n
+lateral,guantes, calzado antiest�tico y ropa de trabajo.
+Fin sintoma 15735
+S�ntoma 14636.
+----------------------------------------------------------------------
+--
+&lt;B&gt;ES NECESARIO NOS CONFIRMEN LA RECEPCI�N Y FECHA DE ENTREGA QUE SE
+&lt;B&gt;INDICA EN ESTE DOCUMENTO EN EL MOMENTO DE SU RECEPCION.&lt;/&gt;
+----------------------------------------------------------------------
+--
+</GeneralNote>
+        <NoteID>T04</NoteID>
+        <Agency>
+          <AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded>
+        </Agency>
+      </StructuredNote>
+      <StructuredNote>
+        <GeneralNote>ANEXO AL PEDIDO :
+
+TODAS LAS ENTREGAS INDICAR�N EN LA CAJA O BULTO EL N�MERO DE PEDIDO Y
+EL N�MERO DE BULTOS.
+
+LOS MATERIALES SE ENTREGAR�N ETIQUETADOS CON EL C�DIGO DE ART�CULO QUE
+FIGURA EN EL PEDIDO.
+
+EN LOS CASOS DE INCUMPLIMIENTO DE LA FECHA DE ENTREGA ACORDADA, REPSOL
+QU�MICA SE RESERVA EL DERECHO DE RECHAZAR LA MERCANC�A O DE APLICAR UN
+CARGO DEL 5% DEL VALOR DE LA MISMA EN CONCEPTO DE PENALIZACI�N.
+
+Para cualquier aclaraci�n dirigirse al tfono: &amp;TELEFONO&amp; o al fax:
+&amp;FAX&amp;
+</GeneralNote>
+        <NoteID>ST</NoteID>
+        <Agency>
+          <AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded>
+        </Agency>
+      </StructuredNote>
+    </ListOfStructuredNote>
+  </OrderHeader>
+  <OrderDetail>
+    <ListOfItemDetail>
+      <ItemDetail>
+        <BaseItemDetail>
+          <LineItemNum>
+            <BuyerLineItemNum>00001</BuyerLineItemNum>
+          </LineItemNum>
+          <LineItemType>
+            <LineItemTypeCoded>Item</LineItemTypeCoded>
+          </LineItemType>
+          <ItemIdentifiers>
+            <PartNumbers>
+              <SellerPartNumber>
+                <PartNum>
+                  <PartID>ND</PartID>
+                </PartNum>
+              </SellerPartNumber>
+              <BuyerPartNumber>
+                <PartNum>
+                  <PartID>000000000080021737</PartID>
+                </PartNum>
+              </BuyerPartNumber>
+              <OtherItemIdentifiers>
+                <ListOfProductIdentifierCoded>
+                  <ProductIdentifierCoded>
+                    <ProductIdentifierQualifierCoded>BuyersInternalProductGroupCode</ProductIdentifierQualifierCoded>
+                    <ProductIdentifier>RO</ProductIdentifier>
+                  </ProductIdentifierCoded>
+                </ListOfProductIdentifierCoded>
+              </OtherItemIdentifiers>
+            </PartNumbers>
+            <ItemDescription>VALVULA RETENCION 150#RF 4" AC      L126</ItemDescription>
+          </ItemIdentifiers>
+          <TotalQuantity>
+            <Quantity>
+              <QuantityValue>1.000</QuantityValue>
+              <UnitOfMeasurement>
+                <UOMCoded>S7</UOMCoded>
+              </UnitOfMeasurement>
+            </Quantity>
+          </TotalQuantity>
+          <ListOfItemReferences>
+            <ListOfReferenceCoded>
+              <ReferenceCoded>
+                <ReferenceTypeCoded>BuyersContractNumber</ReferenceTypeCoded>
+                <PrimaryReference>
+                  <Reference>
+                    <RefNum>0047012784</RefNum>
+                    <RefDate>20070511T20:52:14-05:00</RefDate>
+                  </Reference>
+                </PrimaryReference>
+                <SupportingReference>
+                  <Reference>
+                    <RefNum>00123</RefNum>
+                    <RefDate>20070511T20:52:14-05:00</RefDate>
+                  </Reference>
+                </SupportingReference>
+              </ReferenceCoded>
+            </ListOfReferenceCoded>
+          </ListOfItemReferences>
+        </BaseItemDetail>
+        <PricingDetail>
+          <ListOfPrice>
+            <Price>
+              <UnitPrice>
+                <UnitPriceValue>121.54</UnitPriceValue>
+                <Currency>
+                  <CurrencyCoded>EUR</CurrencyCoded>
+                </Currency>
+              </UnitPrice>
+              <PriceBasisQuantity>
+                <Quantity>
+                  <QuantityValue>1</QuantityValue>
+                  <UnitOfMeasurement>
+                    <UOMCoded>S7</UOMCoded>
+                  </UnitOfMeasurement>
+                </Quantity>
+              </PriceBasisQuantity>
+            </Price>
+          </ListOfPrice>
+          <TotalValue>
+            <MonetaryValue>
+              <MonetaryAmount>121.54</MonetaryAmount>
+              <Currency>
+                <CurrencyCoded>EUR</CurrencyCoded>
+              </Currency>
+            </MonetaryValue>
+          </TotalValue>
+        </PricingDetail>
+        <DeliveryDetail>
+          <ListOfScheduleLine>
+            <ScheduleLine>
+              <Quantity>
+                <QuantityValue>1.000</QuantityValue>
+                <UnitOfMeasurement>
+                  <UOMCoded>S7</UOMCoded>
+                </UnitOfMeasurement>
+              </Quantity>
+              <RequestedDeliveryDate>20070408T12:00:00+01:00</RequestedDeliveryDate>
+            </ScheduleLine>
+          </ListOfScheduleLine>
+        </DeliveryDetail>
+      </ItemDetail>
+    </ListOfItemDetail>
+  </OrderDetail>
+  <OrderSummary>
+    <TotalAmount>
+      <MonetaryValue>
+        <MonetaryAmount>121.54</MonetaryAmount>
+        <Currency>
+          <CurrencyCoded>EUR</CurrencyCoded>
+        </Currency>
+      </MonetaryValue>
+    </TotalAmount>
+  </OrderSummary>
+</Order>

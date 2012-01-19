@@ -1,0 +1,476 @@
+<ChangeOrder>
+  <ChangeOrderHeader>
+    <ChangeOrderNumber>
+      <BuyerChangeOrderNumber>50206616/OP/00205/000</BuyerChangeOrderNumber>
+    </ChangeOrderNumber>
+    <ChangeOrderSequence>4</ChangeOrderSequence>
+    <ChangeOrderIssueDate>20071129T12:00:00</ChangeOrderIssueDate>
+    <OrderReference>
+      <Reference>
+        <RefNum>50206616/OP/00205/000</RefNum>
+        <RefDate>20071129T12:00:00</RefDate>
+      </Reference>
+    </OrderReference>
+    <SellerParty>
+      <Party>
+        <PartyID>
+          <Identifier>
+            <Agency>
+              <AgencyCoded>DunAndBradstreet</AgencyCoded>
+            </Agency>
+            <Ident>247408495</Ident>
+          </Identifier>
+        </PartyID>
+        <NameAddress>
+          <Name1>Rexel Canada Electrical Inc.            </Name1>
+        </NameAddress>
+      </Party>
+    </SellerParty>
+    <BuyerParty>
+      <Party>
+        <PartyID>
+          <Identifier>
+            <Agency>
+              <AgencyCoded>DunAndBradstreet</AgencyCoded>
+            </Agency>
+            <Ident>201752268</Ident>
+          </Identifier>
+        </PartyID>
+        <NameAddress>
+          <Name1>Shell Canada Energy           </Name1>
+        </NameAddress>
+      </Party>
+    </BuyerParty>
+    <Purpose>
+      <PurposeCoded>Change</PurposeCoded>
+    </Purpose>
+    <ChangeType>
+      <ChangeTypeCoded>ChangesToLineItems</ChangeTypeCoded>
+    </ChangeType>
+    <OrderType>
+      <OrderTypeCoded>ChangeToPurchaseOrder</OrderTypeCoded>
+    </OrderType>
+    <OrderHeaderChanges>
+      <OrderHeader>
+        <OrderNumber>
+          <BuyerOrderNumber>50206616/OP/00205/000</BuyerOrderNumber>
+        </OrderNumber>
+        <OrderIssueDate>20071129T12:00:00</OrderIssueDate>
+        <OrderReferences>
+          <AccountCode>
+            <Reference>
+              <RefNum>ShellCanadaLTD</RefNum>
+            </Reference>
+          </AccountCode>
+        </OrderReferences>
+        <Purpose>
+          <PurposeCoded>Change</PurposeCoded>
+        </Purpose>
+        <OrderType>
+          <OrderTypeCoded>Order</OrderTypeCoded>
+        </OrderType>
+        <OrderCurrency>
+          <Currency>
+            <CurrencyCoded>CAD</CurrencyCoded>
+          </Currency>
+        </OrderCurrency>
+        <OrderLanguage>
+          <Language>
+            <LanguageCoded>en</LanguageCoded>
+          </Language>
+        </OrderLanguage>
+        <OrderDates>
+          <RequestedDeliverByDate>20071130T12:00:00</RequestedDeliverByDate>
+        </OrderDates>
+        <OrderParty>
+          <BuyerParty>
+            <Party>
+              <PartyID>
+                <Identifier>
+                  <Agency>
+                    <AgencyCoded>DunAndBradstreet</AgencyCoded>
+                  </Agency>
+                  <Ident>201752268</Ident>
+                </Identifier>
+              </PartyID>
+              <NameAddress>
+                <Name1>Shell Canada Energy           </Name1>
+                <Identifier>
+                  <Agency>
+                    <AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded>
+                  </Agency>
+                  <Ident>205</Ident>
+                </Identifier>
+                <Street>400 4 Avenue SW                         Box 100 Station M</Street>
+                <PostalCode>T2P 2H5</PostalCode>
+                <City>Calgary                  </City>
+                <Region>
+                  <RegionCoded>Other</RegionCoded>
+                  <RegionCodedOther>AB</RegionCodedOther>
+                </Region>
+                <Country>
+                  <CountryCoded>CA</CountryCoded>
+                </Country>
+              </NameAddress>
+              <OrderContact>
+                <Contact>
+                  <ContactName>Craig Howell                            </ContactName>
+                  <ListOfContactNumber>
+                    <ContactNumber>
+                      <ContactNumberValue>craig.howell@shell.com                  </ContactNumberValue>
+                      <ContactNumberTypeCoded>EmailAddress</ContactNumberTypeCoded>
+                    </ContactNumber>
+                    <ContactNumber>
+                      <ContactNumberValue>780-618-2681        </ContactNumberValue>
+                      <ContactNumberTypeCoded>TelephoneNumber</ContactNumberTypeCoded>
+                    </ContactNumber>
+                  </ListOfContactNumber>
+                </Contact>
+              </OrderContact>
+            </Party>
+          </BuyerParty>
+          <SellerParty>
+            <Party>
+              <PartyID>
+                <Identifier>
+                  <Agency>
+                    <AgencyCoded>DunAndBradstreet</AgencyCoded>
+                  </Agency>
+                  <Ident>247408495</Ident>
+                </Identifier>
+              </PartyID>
+              <NameAddress>
+                <Name1>Rexel Canada Electrical Inc.            </Name1>
+                <Identifier>
+                  <Agency>
+                    <AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded>
+                  </Agency>
+                  <Ident>40217501</Ident>
+                </Identifier>
+                <Street>eVendor EDI                             3724 8 Street SE</Street>
+                <HouseNumber>3724 8 Street SE</HouseNumber>
+                <PostalCode>T4N 4L2</PostalCode>
+                <City>Red Deer                 </City>
+                <Region>
+                  <RegionCoded>Other</RegionCoded>
+                  <RegionCodedOther>AB</RegionCodedOther>
+                </Region>
+                <Country>
+                  <CountryCoded>CA</CountryCoded>
+                </Country>
+              </NameAddress>
+            </Party>
+          </SellerParty>
+          <ShipToParty>
+            <Party>
+              <PartyID>
+                <Identifier>
+                  <Agency>
+                    <AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded>
+                  </Agency>
+                  <Ident>41149547</Ident>
+                </Identifier>
+              </PartyID>
+              <NameAddress>
+                <Name1>Shell Canada Energy                     </Name1>
+                <Street>Orion Complex                           c/o Midfield Supply</Street>
+                <StreetSupplement1>6412 52 Avenue</StreetSupplement1>
+                <PostalCode>T9N 2L8</PostalCode>
+                <City>Bonneyville              </City>
+                <Region>
+                  <RegionCoded>Other</RegionCoded>
+                  <RegionCodedOther>AB</RegionCodedOther>
+                </Region>
+                <Country>
+                  <CountryCoded>CA</CountryCoded>
+                </Country>
+              </NameAddress>
+            </Party>
+          </ShipToParty>
+          <BillToParty>
+            <Party>
+              <PartyID>
+                <Identifier>
+                  <Agency>
+                    <AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded>
+                  </Agency>
+                  <Ident>205</Ident>
+                </Identifier>
+              </PartyID>
+              <NameAddress>
+                <Name1>Shell Canada Energy           </Name1>
+                <Street>400 4 Avenue SW                         Box 100 Station M</Street>
+                <PostalCode>T2P 2H5</PostalCode>
+                <City>Calgary                  </City>
+                <Region>
+                  <RegionCoded>Other</RegionCoded>
+                  <RegionCodedOther>AB</RegionCodedOther>
+                </Region>
+                <Country>
+                  <CountryCoded>CA</CountryCoded>
+                </Country>
+              </NameAddress>
+            </Party>
+          </BillToParty>
+        </OrderParty>
+        <OrderTermsOfDelivery>
+          <TermsOfDelivery>
+            <TermsOfDeliveryFunctionCoded>DeliveryCondition</TermsOfDeliveryFunctionCoded>
+            <TransportTermsCoded>Other</TransportTermsCoded>
+            <TransportTermsCodedOther>Free-Carrier</TransportTermsCodedOther>
+            <ShipmentMethodOfPaymentCoded>Collect</ShipmentMethodOfPaymentCoded>
+          </TermsOfDelivery>
+        </OrderTermsOfDelivery>
+        <OrderHeaderNote>Supplier Comment on 01/08/08 
+                             item #1 we will supply PART # HUBBELL RS603PW, item #2 
+   we will supply Part # NP26, Item #3 we will supply part 
+  # 60T10CL/3M/130V/STD, item #5 part # will be BUS 
+        GMA125MA, item # 9part # will be BUS GMA250MA, item # 12 
+ part # will be ALB 1497DCXSX3N, Item # 13 part # ALB 
+     1497ECXSX3N, item #14 part # ALB 1497FCXSX3N, Item # 5 
+   Part # BUS BC6031SQ 
+                                        
+                                                        Supplier Comment on 12/06/07 
+                             item #1 we will supply PART # HUBBELL RS603PW, item #2 
+   we will supply Part # NP26, Item #3 we will supply part 
+  # 60T10CL/3M/130V/STD, item #5 part # will be BUS 
+        GMA125MA, item # 9part # will be BUS GMA250MA, item # 12 
+ part # will be ALB 1497DCXSX3N, Item # 13 part # ALB 
+     1497ECXSX3N, item #14 part # ALB 1497FCXSX3N, Item # 5 
+   Part # BUS BC6031SQ 
+                                       
+                                                         Supplier Comment on 12/05/07 
+                             item #1 we will supply PART # HUBBELL RS603PW, item #2 
+   we will supply Part # NP26, Item #3 we will supply part 
+  # 60T10CL/3M/130V/STD, item #5 part # will be BUS 
+        GMA125MA, item # 9part # will be BUS GMA250MA, item # 12 
+ part # will be ALB 1497DCXSX3N, Item # 13 part # ALB 
+     1497ECXSX3N, item #14 part # ALB 1497FCXSX3N, Item # 5 
+   Part # BUS BC6031SQ 
+                                        
+                                                        Supplier Comment on 11/29/07 
+                             item #1 we will supply PART # HUBBELL RS603PW, item #2 
+   we will supply Part # NP26, Item #3 we will supply part 
+  # 60T10CL/3M/130V/STD, item #5 part # will be BUS 
+        GMA125MA, item # 9part # will be BUS GMA250MA, item # 12 
+ part # will be ALB 1497DCXSX3N, Item # 13 part # ALB 
+     1497ECXSX3N, item #14 part # ALB 1497FCXSX3N, Item # 5 
+   </OrderHeaderNote>
+      </OrderHeader>
+    </OrderHeaderChanges>
+  </ChangeOrderHeader>
+  <ChangeOrderDetail>
+    <ListOfChangeOrderItemDetail>
+      <ChangeOrderItemDetail>
+        <ItemDetailChangeCoded>UnitPrice-QuantityChange</ItemDetailChangeCoded>
+        <ItemDetailChanges>
+          <ItemDetail>
+            <BaseItemDetail>
+              <LineItemNum>
+                <BuyerLineItemNum>4</BuyerLineItemNum>
+              </LineItemNum>
+              <LineItemType>
+                <LineItemTypeCoded>Item</LineItemTypeCoded>
+              </LineItemType>
+              <ItemIdentifiers>
+                <PartNumbers>
+                  <SellerPartNumber>
+                    <PartNum>
+                      <PartID>N/A</PartID>
+                    </PartNum>
+                  </SellerPartNumber>
+                  <BuyerPartNumber>
+                    <PartNum>
+                      <PartID>EP-01XXXX                </PartID>
+                    </PartNum>
+                  </BuyerPartNumber>
+                </PartNumbers>
+                <ItemDescription>Heat Trace End kit            Tyco E - 150                  </ItemDescription>
+              </ItemIdentifiers>
+              <TotalQuantity>
+                <Quantity>
+                  <QuantityValue>10.0</QuantityValue>
+                  <UnitOfMeasurement>
+                    <UOMCoded>EA</UOMCoded>
+                  </UnitOfMeasurement>
+                </Quantity>
+              </TotalQuantity>
+              <ListOfItemReferences>
+                <ListOfReferenceCoded>
+                  <ReferenceCoded>
+                    <ReferenceTypeCoded>BuyersContractNumber</ReferenceTypeCoded>
+                    <PrimaryReference>
+                      <Reference>
+                        <RefNum>190052/OR/00205</RefNum>
+                        <RefDate>20070511T20:52:14-05:00</RefDate>
+                      </Reference>
+                    </PrimaryReference>
+                    <SupportingReference>
+                      <Reference>
+                        <RefNum>2.000</RefNum>
+                        <RefDate>20070511T20:52:14-05:00</RefDate>
+                      </Reference>
+                    </SupportingReference>
+                  </ReferenceCoded>
+                </ListOfReferenceCoded>
+              </ListOfItemReferences>
+            </BaseItemDetail>
+            <PricingDetail>
+              <ListOfPrice>
+                <Price>
+                  <UnitPrice>
+                    <UnitPriceValue>33.1600</UnitPriceValue>
+                    <Currency>
+                      <CurrencyCoded>CAD</CurrencyCoded>
+                    </Currency>
+                    <UnitOfMeasurement>
+                      <UOMCoded>EA</UOMCoded>
+                    </UnitOfMeasurement>
+                  </UnitPrice>
+                  <PriceBasisQuantity>
+                    <Quantity>
+                      <QuantityValue>1</QuantityValue>
+                      <UnitOfMeasurement>
+                        <UOMCoded>EA</UOMCoded>
+                      </UnitOfMeasurement>
+                    </Quantity>
+                  </PriceBasisQuantity>
+                </Price>
+              </ListOfPrice>
+              <TotalValue>
+                <MonetaryValue>
+                  <MonetaryAmount>331.60</MonetaryAmount>
+                </MonetaryValue>
+              </TotalValue>
+            </PricingDetail>
+            <DeliveryDetail>
+              <ListOfScheduleLine>
+                <ScheduleLine>
+                  <Quantity>
+                    <QuantityValue>10.0</QuantityValue>
+                    <UnitOfMeasurement>
+                      <UOMCoded>EA</UOMCoded>
+                    </UnitOfMeasurement>
+                  </Quantity>
+                  <RequestedDeliveryDate>20071214T12:00:00</RequestedDeliveryDate>
+                </ScheduleLine>
+              </ListOfScheduleLine>
+            </DeliveryDetail>
+          </ItemDetail>
+        </ItemDetailChanges>
+      </ChangeOrderItemDetail>
+      <ChangeOrderItemDetail>
+        <ItemDetailChangeCoded>UnitPrice-QuantityChange</ItemDetailChangeCoded>
+        <ItemDetailChanges>
+          <ItemDetail>
+            <BaseItemDetail>
+              <LineItemNum>
+                <BuyerLineItemNum>13</BuyerLineItemNum>
+              </LineItemNum>
+              <LineItemType>
+                <LineItemTypeCoded>Item</LineItemTypeCoded>
+              </LineItemType>
+              <ItemIdentifiers>
+                <PartNumbers>
+                  <SellerPartNumber>
+                    <PartNum>
+                      <PartID>N/A</PartID>
+                    </PartNum>
+                  </SellerPartNumber>
+                  <BuyerPartNumber>
+                    <PartNum>
+                      <PartID>EP-01XXXX                </PartID>
+                    </PartNum>
+                  </BuyerPartNumber>
+                </PartNumbers>
+                <ItemDescription>Control Transformer 250VA     ALB 1497ECXSX9N               </ItemDescription>
+              </ItemIdentifiers>
+              <TotalQuantity>
+                <Quantity>
+                  <QuantityValue>1.0</QuantityValue>
+                  <UnitOfMeasurement>
+                    <UOMCoded>EA</UOMCoded>
+                  </UnitOfMeasurement>
+                </Quantity>
+              </TotalQuantity>
+              <ListOfItemReferences>
+                <ListOfReferenceCoded>
+                  <ReferenceCoded>
+                    <ReferenceTypeCoded>BuyersContractNumber</ReferenceTypeCoded>
+                    <PrimaryReference>
+                      <Reference>
+                        <RefNum>190052/OR/00205</RefNum>
+                        <RefDate>20070511T20:52:14-05:00</RefDate>
+                      </Reference>
+                    </PrimaryReference>
+                    <SupportingReference>
+                      <Reference>
+                        <RefNum>11.000</RefNum>
+                        <RefDate>20070511T20:52:14-05:00</RefDate>
+                      </Reference>
+                    </SupportingReference>
+                  </ReferenceCoded>
+                </ListOfReferenceCoded>
+              </ListOfItemReferences>
+            </BaseItemDetail>
+            <PricingDetail>
+              <ListOfPrice>
+                <Price>
+                  <UnitPrice>
+                    <UnitPriceValue>97.0300</UnitPriceValue>
+                    <Currency>
+                      <CurrencyCoded>CAD</CurrencyCoded>
+                    </Currency>
+                    <UnitOfMeasurement>
+                      <UOMCoded>EA</UOMCoded>
+                    </UnitOfMeasurement>
+                  </UnitPrice>
+                  <PriceBasisQuantity>
+                    <Quantity>
+                      <QuantityValue>1</QuantityValue>
+                      <UnitOfMeasurement>
+                        <UOMCoded>EA</UOMCoded>
+                      </UnitOfMeasurement>
+                    </Quantity>
+                  </PriceBasisQuantity>
+                </Price>
+              </ListOfPrice>
+              <TotalValue>
+                <MonetaryValue>
+                  <MonetaryAmount>97.03</MonetaryAmount>
+                </MonetaryValue>
+              </TotalValue>
+            </PricingDetail>
+            <DeliveryDetail>
+              <ListOfScheduleLine>
+                <ScheduleLine>
+                  <Quantity>
+                    <QuantityValue>1.0</QuantityValue>
+                    <UnitOfMeasurement>
+                      <UOMCoded>EA</UOMCoded>
+                    </UnitOfMeasurement>
+                  </Quantity>
+                  <RequestedDeliveryDate>20080116T12:00:00</RequestedDeliveryDate>
+                </ScheduleLine>
+              </ListOfScheduleLine>
+            </DeliveryDetail>
+          </ItemDetail>
+        </ItemDetailChanges>
+      </ChangeOrderItemDetail>
+    </ListOfChangeOrderItemDetail>
+  </ChangeOrderDetail>
+  <ChangeOrderSummary>
+    <RevisedOrderSummary>
+      <OrderSummary>
+        <TotalAmount>
+          <MonetaryValue>
+            <MonetaryAmount>2130.81</MonetaryAmount>
+            <Currency>
+              <CurrencyCoded>CAD</CurrencyCoded>
+            </Currency>
+          </MonetaryValue>
+        </TotalAmount>
+      </OrderSummary>
+    </RevisedOrderSummary>
+  </ChangeOrderSummary>
+</ChangeOrder>

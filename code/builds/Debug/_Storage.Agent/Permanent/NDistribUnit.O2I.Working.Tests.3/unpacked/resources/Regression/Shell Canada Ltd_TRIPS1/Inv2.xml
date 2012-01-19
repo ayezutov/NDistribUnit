@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?><?soxtype urn:x-commerceone:document:com:commerceone:XCBL30:XCBL30.sox$1.0?><Invoice><InvoiceHeader><InvoiceNumber><Reference><RefNum>100000142</RefNum></Reference></InvoiceNumber><InvoiceIssueDate>20100712T09:32:20+00:00</InvoiceIssueDate><InvoiceReferences><PurchaseOrderReference><PurchaseOrderNumber><Reference><RefNum>aca981ec-a819-49ba-8f95-ee5ce30b7eee</RefNum></Reference></PurchaseOrderNumber><PurchaseOrderDate>20070503T12:00:00+00:00</PurchaseOrderDate><PurchaseOrderLineItemNumber>1</PurchaseOrderLineItemNumber></PurchaseOrderReference><AccountNumber><Reference><RefNum>888881111</RefNum></Reference></AccountNumber></InvoiceReferences><InvoicePurpose><InvoicePurposeCoded>Original</InvoicePurposeCoded></InvoicePurpose><InvoiceType><InvoiceTypeCoded>DebitInvoice</InvoiceTypeCoded></InvoiceType><InvoiceCurrency><Currency><CurrencyCoded>CAD</CurrencyCoded></Currency></InvoiceCurrency><InvoiceLanguage><Language><LanguageCoded>en</LanguageCoded></Language></InvoiceLanguage><InvoiceTaxReference><TaxReference><TaxFunctionQualifierCoded>Tax</TaxFunctionQualifierCoded><TaxCategoryCoded>StandardRate</TaxCategoryCoded><ReasonTaxExemptCoded>NotTaxable</ReasonTaxExemptCoded><TaxTypeCoded>StateOrProvincialSalesTax</TaxTypeCoded><TaxPercent>5.00</TaxPercent><TaxPaymentMethodCoded>DirectPay</TaxPaymentMethodCoded><TaxAmount>0.00</TaxAmount><TaxTreatmentCoded>GrossInvoiceLevel</TaxTreatmentCoded></TaxReference></InvoiceTaxReference><InvoiceDates><InvoiceDueDate>20100712T09:32:43+00:00</InvoiceDueDate></InvoiceDates><InvoiceParty><BuyerParty><Party><PartyID><Identifier><Agency><AgencyCoded>DunAndBradstreet</AgencyCoded></Agency><Ident>888881111</Ident></Identifier></PartyID><NameAddress><Name1>Shell Canada Energy</Name1><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>210</Ident></Identifier><Street>Box 2522 Station M</Street><PostalCode>T2P 4L4</PostalCode><City>Calgary</City><Region><RegionCoded>Other</RegionCoded></Region><Country><CountryCoded>CA</CountryCoded></Country></NameAddress><OrderContact><Contact><ContactName>FENTON, DOUG</ContactName><ListOfContactNumber><ContactNumber><ContactNumberValue>403-722-7083        </ContactNumberValue><ContactNumberTypeCoded>TelephoneNumber</ContactNumberTypeCoded></ContactNumber><ContactNumber><ContactNumberValue>DOUG.FENTON@SHELL.COM                   </ContactNumberValue><ContactNumberTypeCoded>EmailAddress</ContactNumberTypeCoded></ContactNumber></ListOfContactNumber></Contact></OrderContact></Party></BuyerParty><SellerParty><Party><PartyID><Identifier><Agency><AgencyCoded>DunAndBradstreet</AgencyCoded></Agency><Ident>888884002</Ident></Identifier></PartyID><NameAddress><Name1>AGS Group Inc.</Name1><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>3001018</Ident></Identifier><Street>3 7703 Edgar Industrial Drive</Street><PostalCode>T4P 3R2</PostalCode><City>Red Deer</City><Region><RegionCoded>Other</RegionCoded></Region><Country><CountryCoded>CA</CountryCoded></Country></NameAddress><OrderContact><Contact><ContactName>Contact name</ContactName><ListOfContactNumber><ContactNumber><ContactNumberValue>ContactMail@Mail.tst</ContactNumberValue><ContactNumberTypeCoded>EmailAddress</ContactNumberTypeCoded></ContactNumber></ListOfContactNumber></Contact></OrderContact></Party></SellerParty><ShipToParty><Party><PartyID><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>15000039</Ident></Identifier></PartyID><NameAddress><Name1>Shell Canada Energy</Name1><Street>Caroline Complex                        Bag 500</Street><PostalCode>T0M 0M0</PostalCode><City>Caroline</City><Region><RegionCoded>Other</RegionCoded></Region><Country><CountryCoded>CA</CountryCoded></Country></NameAddress><OrderContact><Contact><ContactName>Contact name</ContactName><ListOfContactNumber><ContactNumber><ContactNumberValue>ContactMail@Mail.tst</ContactNumberValue><ContactNumberTypeCoded>EmailAddress</ContactNumberTypeCoded></ContactNumber></ListOfContactNumber></Contact></OrderContact></Party></ShipToParty><BillToParty><Party><PartyID><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>210</Ident></Identifier></PartyID><NameAddress><Name1>Shell Canada Energy</Name1><Street>Box 2522 Station M</Street><PostalCode>T2P 4L4</PostalCode><City>Calgary</City><Region><RegionCoded>Other</RegionCoded></Region><Country><CountryCoded>CA</CountryCoded></Country></NameAddress><OrderContact><Contact><ContactName>Contact name</ContactName><ListOfContactNumber><ContactNumber><ContactNumberValue>ContactMail@Mail.tst</ContactNumberValue><ContactNumberTypeCoded>EmailAddress</ContactNumberTypeCoded></ContactNumber></ListOfContactNumber></Contact></OrderContact></Party></BillToParty><RemitToParty><Party><PartyID><Identifier><Agency><AgencyCoded>DunAndBradstreet</AgencyCoded></Agency><Ident>888881111</Ident></Identifier></PartyID><NameAddress><Name1>Shell Canada Energy</Name1><Street>Box 2522 Station M</Street><PostalCode>T2P 4L4</PostalCode><City>Calgary</City><Region><RegionCoded>Other</RegionCoded></Region><Country><CountryCoded>CA</CountryCoded></Country></NameAddress><OrderContact><Contact><ContactName>FENTON, DOUG</ContactName><ListOfContactNumber><ContactNumber><ContactNumberValue>403-722-7083        </ContactNumberValue><ContactNumberTypeCoded>TelephoneNumber</ContactNumberTypeCoded></ContactNumber><ContactNumber><ContactNumberValue>DOUG.FENTON@SHELL.COM                   </ContactNumberValue><ContactNumberTypeCoded>EmailAddress</ContactNumberTypeCoded></ContactNumber></ListOfContactNumber></Contact></OrderContact></Party></RemitToParty></InvoiceParty><InvoiceTermsOfDelivery><TermsOfDelivery><TermsOfDeliveryFunctionCoded>DeliveryCondition</TermsOfDeliveryFunctionCoded><TransportTermsCoded>Other</TransportTermsCoded><TransportTermsCodedOther>PerContract</TransportTermsCodedOther><ShipmentMethodOfPaymentCoded>Other</ShipmentMethodOfPaymentCoded></TermsOfDelivery></InvoiceTermsOfDelivery><InvoicePaymentInstructions><PaymentInstructions><PaymentTerms><PaymentTerm><PaymentTermCoded>Basic</PaymentTermCoded><PaymentTermCodedOther>30 days from invoice</PaymentTermCodedOther><PaymentTermDetails><Discounts><DiscountPercent>0.00</DiscountPercent><DiscountDaysDue>0</DiscountDaysDue><DiscountDueDate>20100712T09:32:20+00:00</DiscountDueDate><NetDaysDue>0</NetDaysDue></Discounts></PaymentTermDetails></PaymentTerm></PaymentTerms><PaymentMethod><PaymentMeanCoded>InstrumentNotDefined</PaymentMeanCoded></PaymentMethod></PaymentInstructions></InvoicePaymentInstructions><InvoiceAllowancesOrCharges><ListOfAllowOrCharge>
+			<AllowOrCharge SeqNo="1">
+				<IndicatorCoded>Allowance</IndicatorCoded>
+				<BasisCoded>MonetaryAmount</BasisCoded>
+				<MethodOfHandlingCoded>OffInvoice</MethodOfHandlingCoded>
+				<AllowanceOrChargeDescription>
+					<AllowOrChgDesc>
+						<ServiceCoded>Other</ServiceCoded>
+						<ServiceCodedOther>Allowance</ServiceCodedOther>
+					</AllowOrChgDesc>
+				</AllowanceOrChargeDescription>
+				<TypeOfAllowanceOrCharge>
+					<MonetaryValue>
+						<MonetaryAmount>0.00</MonetaryAmount>
+						<Currency>
+							<CurrencyCoded>CAD</CurrencyCoded>
+						</Currency>
+					</MonetaryValue>
+				</TypeOfAllowanceOrCharge>
+			</AllowOrCharge>
+		
+			<AllowOrCharge SeqNo="2">
+				<IndicatorCoded>Charge</IndicatorCoded>
+				<BasisCoded>MonetaryAmount</BasisCoded>
+				<MethodOfHandlingCoded>OffInvoice</MethodOfHandlingCoded>
+				<AllowanceOrChargeDescription>
+					<AllowOrChgDesc>
+						<ServiceCoded>Other</ServiceCoded>
+						<ServiceCodedOther>Charge</ServiceCodedOther>
+					</AllowOrChgDesc>
+				</AllowanceOrChargeDescription>
+				<TypeOfAllowanceOrCharge>
+					<MonetaryValue>
+						<MonetaryAmount>0.00</MonetaryAmount>
+						<Currency>
+							<CurrencyCoded>CAD</CurrencyCoded>
+						</Currency>
+					</MonetaryValue>
+				</TypeOfAllowanceOrCharge>
+			</AllowOrCharge>
+		
+			<AllowOrCharge SeqNo="3">
+				<IndicatorCoded>Charge</IndicatorCoded>
+				<BasisCoded>MonetaryAmount</BasisCoded>
+				<MethodOfHandlingCoded>OffInvoice</MethodOfHandlingCoded>
+				<AllowanceOrChargeDescription>
+					<AllowOrChgDesc>
+						<ServiceCoded>Other</ServiceCoded>
+						<ServiceCodedOther>Freight</ServiceCodedOther>
+					</AllowOrChgDesc>
+				</AllowanceOrChargeDescription>
+				<TypeOfAllowanceOrCharge>
+					<MonetaryValue>
+						<MonetaryAmount>0.00</MonetaryAmount>
+						<Currency>
+							<CurrencyCoded>CAD</CurrencyCoded>
+						</Currency>
+					</MonetaryValue>
+				</TypeOfAllowanceOrCharge>
+			</AllowOrCharge>
+		</ListOfAllowOrCharge></InvoiceAllowancesOrCharges><InvoiceHeaderNote /></InvoiceHeader><InvoiceDetail><ListOfInvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><BuyerLineItemNum>1</BuyerLineItemNum></LineItemNum><LineItemType><LineItemTypeCoded>Item</LineItemTypeCoded></LineItemType><ItemIdentifiers><PartNumbers><SellerPartNumber><PartNum><PartID>N/A</PartID></PartNum></SellerPartNumber><BuyerPartNumber><PartNum><PartID>434454</PartID></PartNum></BuyerPartNumber></PartNumbers><ItemDescription>TAPE GRAPHITE 1/2" AGS 100FT  PER ROLL AGS GROUP</ItemDescription></ItemIdentifiers><TotalQuantity><Quantity><QuantityValue>2.00</QuantityValue><UnitOfMeasurement><UOMCoded>EA</UOMCoded></UnitOfMeasurement></Quantity></TotalQuantity><LineItemReferences><InvoiceReferences><PurchaseOrderReference><PurchaseOrderNumber><Reference><RefNum>aca981ec-a819-49ba-8f95-ee5ce30b7eee</RefNum></Reference></PurchaseOrderNumber><PurchaseOrderLineItemNumber>1</PurchaseOrderLineItemNumber></PurchaseOrderReference></InvoiceReferences></LineItemReferences></InvoiceBaseItemDetail><InvoicePricingDetail><ListOfPrice><Price><UnitPrice><UnitPriceValue>27.04</UnitPriceValue><Currency><CurrencyCoded>CAD</CurrencyCoded></Currency></UnitPrice><PriceBasisQuantity><Quantity><QuantityValue>1.00</QuantityValue><UnitOfMeasurement><UOMCoded>EA</UOMCoded></UnitOfMeasurement></Quantity></PriceBasisQuantity></Price></ListOfPrice><TotalValue><MonetaryValue><MonetaryAmount>54.08</MonetaryAmount><Currency><CurrencyCoded>CAD</CurrencyCoded></Currency></MonetaryValue></TotalValue><InvoiceCurrencyTotalValue><MonetaryValue><MonetaryAmount>54.08</MonetaryAmount></MonetaryValue></InvoiceCurrencyTotalValue><TotalTaxAmount><MonetaryValue><MonetaryAmount>0.00</MonetaryAmount></MonetaryValue></TotalTaxAmount></InvoicePricingDetail><DeliveryDetail><ListOfScheduleLine><ScheduleLine><Quantity><QuantityValue>2.0</QuantityValue><UnitOfMeasurement><UOMCoded>EA</UOMCoded></UnitOfMeasurement></Quantity><RequestedDeliveryDate>20070511T12:00:00+00:00</RequestedDeliveryDate><Transport><TransportID /></Transport></ScheduleLine></ListOfScheduleLine></DeliveryDetail><LineItemNote>----- Additional Item Information -----
+                    TAPE 
+                                                     TYPE:               1/2" 
+                                 MATERIAL:           GRAPHITE 
+                             MANUFACTURER:       AGS GROUP 
+                            Quantity:           100ft rolls 
+                           
+                                                         </LineItemNote></InvoiceItemDetail></ListOfInvoiceItemDetail></InvoiceDetail><InvoiceSummary><NumberOfLines>1</NumberOfLines><InvoiceTotals><NetValue><MonetaryValue><MonetaryAmount>54.08</MonetaryAmount><Currency><CurrencyCoded>CAD</CurrencyCoded></Currency></MonetaryValue></NetValue><GrossValue><MonetaryValue><MonetaryAmount>54.08</MonetaryAmount><Currency><CurrencyCoded>CAD</CurrencyCoded></Currency></MonetaryValue></GrossValue><TaxValue><MonetaryValue><MonetaryAmount>0.00</MonetaryAmount><Currency><CurrencyCoded>CAD</CurrencyCoded></Currency></MonetaryValue></TaxValue></InvoiceTotals></InvoiceSummary></Invoice>

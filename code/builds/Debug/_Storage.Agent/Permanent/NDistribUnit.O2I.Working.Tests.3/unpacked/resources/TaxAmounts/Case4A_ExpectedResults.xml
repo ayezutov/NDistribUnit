@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+
+  <taxResultsForCountries>
+    <countries>
+      <country name="USA"/>
+      <country name="Other"/>
+    </countries>
+    <taxResults>
+      <result tax="0" amount="0.0"/>
+      <result tax="1" amount="209.09"/>
+      <result tax="2" amount="424.32"/>
+      <result tax="3" amount="645.75"/>
+      <result tax="5" amount="3050.2"/>
+      <result tax="6" amount="3690.54"/>
+      <result tax="7" amount="4341.12"/>
+      <result tax="8" amount="5002.0"/>
+      <result tax="10" amount="12140.4"/>
+      <result tax="11" amount="13431.99"/>
+      <result tax="12" amount="14737.92"/>
+      <result tax="13" amount="16058.25"/>
+      <result tax="15" amount="30270.6"/>
+      <result tax="16" amount="32433.44"/>
+      <result tax="17" amount="34614.72"/>
+      <result tax="18" amount="36814.5"/>
+      <result tax="20" amount="60220.2"/>
+      <result tax="21" amount="88473.21"/>
+      <result tax="22" amount="123530.22"/>
+      <result tax="23" amount="165991.23"/>
+    </taxResults>
+  </taxResultsForCountries>
+
+</root>

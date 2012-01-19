@@ -7,9 +7,9 @@ bin
 obj
 
 _ReSharper.*
-/source/NDistribUnit.Server/dashboard/scripts/jquery-jquery-tmpl/demos
-/source/_dependencies/diagone-icons-by-yusuke-kamiyamane
-/source/builds
-/source/_dependencies/mono.cecil
-/source/_dependencies/NUnit-2.5.10.11092
+/code/NDistribUnit.Server/dashboard/scripts/jquery-jquery-tmpl/demos
+/code/_dependencies/diagone-icons-by-yusuke-kamiyamane
+/code/builds
+/code/_dependencies/mono.cecil
+/code/_dependencies/NUnit-2.5.10.11092
 /test

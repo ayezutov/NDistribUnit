@@ -1,0 +1,887 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cch.Commerster.Web</name>
+    </assembly>
+    <members>
+        <member name="T:Cch.Commerster.Web.CachePageStatePersister">
+            <summary>
+            Utilizes HttpCache to store page's view state with auto-expire
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.CachePageStatePersister.#ctor(System.Web.UI.Page)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="page"></param>
+        </member>
+        <member name="M:Cch.Commerster.Web.CachePageStatePersister.Load">
+            <summary>
+            Load override
+            </summary>
+            <exception cref="T:System.Web.UI.ViewStateException">ViewStateException is thrown if state is not available</exception>
+        </member>
+        <member name="M:Cch.Commerster.Web.CachePageStatePersister.Save">
+            <summary>
+            Save override
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.UI.GridViewPager">
+            <summary>
+            Statless component for showing the Pager
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.UI.GridViewPager.defaultPageSize">
+            <summary>
+            default page size
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.UI.GridViewPager.defaultPageIndex">
+            <summary>
+            default page index
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.UI.GridViewPager.defaultPageMaxCount">
+            <summary>
+            default page max count
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.UI.GridViewPager.pageIndex">
+            <summary>
+            page index
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.UI.GridViewPager.pageSize">
+            <summary>
+            page size
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.UI.GridViewPager.pageMaxCount">
+            <summary>
+            max page count
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.UI.GridViewPager.totalRows">
+            <summary>
+            total rows
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.UI.GridViewPager.OnPageIndexChanged(Cch.Commerster.Web.UI.PagerEventArgs)">
+            <summary>
+            Raises the <see cref="E:Cch.Commerster.Web.UI.GridViewPager.PageIndexChanged"/> event.
+            </summary>
+            <param name="args">The <see cref="T:Cch.Commerster.Web.UI.PagerEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Cch.Commerster.Web.UI.GridViewPager.OnInit(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.Init"></see> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"></see> object that contains the event data.</param>
+        </member>
+        <member name="M:Cch.Commerster.Web.UI.GridViewPager.SaveControlState">
+            <summary>
+            Saves any server control state changes that have occurred since the time the page was posted back to the server.
+            </summary>
+            <returns>
+            Returns the server control's current state. If there is no state associated with the control, this method returns null.
+            </returns>
+        </member>
+        <member name="M:Cch.Commerster.Web.UI.GridViewPager.LoadControlState(System.Object)">
+            <summary>
+            Restores control-state information from a previous page request that was saved by the <see cref="M:System.Web.UI.Control.SaveControlState"></see> method.
+            </summary>
+            <param name="savedState">An <see cref="T:System.Object"></see> that represents the control state to be restored.</param>
+        </member>
+        <member name="M:Cch.Commerster.Web.UI.GridViewPager.RenderContents(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders the contents.
+            </summary>
+            <param name="output">The output.</param>
+        </member>
+        <member name="E:Cch.Commerster.Web.UI.GridViewPager.PageIndexChanged">
+            <summary>
+            Fired when Page Number Clicked
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.UI.GridViewPager.PageSize">
+            <summary>
+            Gets or sets the size of the page.
+            </summary>
+            <value>The size of the page.</value>
+        </member>
+        <member name="P:Cch.Commerster.Web.UI.GridViewPager.PageMaxCount">
+            <summary>
+            Gets or sets the page max count.
+            </summary>
+            <value>The page max count.</value>
+        </member>
+        <member name="P:Cch.Commerster.Web.UI.GridViewPager.TotalRows">
+            <summary>
+            Gets or sets the total rows.
+            </summary>
+            <value>The total rows.</value>
+        </member>
+        <member name="P:Cch.Commerster.Web.UI.GridViewPager.PageIndex">
+            <summary>
+            Returns current page index
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.Controls.JQueryChangeTracker">
+            <summary>
+            Tracking form for changes
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.Controls.JQueryChangeTracker.OnLoad(System.EventArgs)">
+            <summary>
+            On load
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="T:Cch.Commerster.Web.Controls.NumberTextBox">
+            <summary>
+            TextBox controlls allowing only digits, and separators like '()- .'. Used for Fax/Phone number entering
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.Controls.NumberTextBox.SeratorlessValue">
+            <summary>
+            Returns value of Text property without separators
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.UI.CurrenciesSelection">
+            <summary>
+            Currencies selection control
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.UI.CurrenciesSelection.OnInit(System.EventArgs)">
+            <summary>
+            Handles the <see cref="E:System.Web.UI.Control.Init"></see> event.
+            </summary>
+            
+            <param name="e">An <see cref="T:System.EventArgs"></see> object that contains the event data.</param>
+        </member>
+        <member name="T:Cch.Commerster.Web.Graphs.BaseGraph">
+            <summary>
+            Base class for graphics drawing
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.Graphs.BaseGraph.#ctor(System.Int32,System.Int32,System.Drawing.Color)">
+            <summary>
+            Creates BaseGraph
+            </summary>
+            <param name="width">Width of the chart area</param>
+            <param name="height">Height of the chart area</param>
+            <param name="bgColor">Background color of the chart area (system color)</param>
+        </member>
+        <member name="M:Cch.Commerster.Web.Graphs.BaseGraph.#ctor(System.Int32,System.Int32,System.String)">
+            <summary>
+            Creates BaseGraph
+            </summary>
+            <param name="width">Width of the chart area</param>
+            <param name="height">Height of the chart area</param>
+            <param name="htmlBgColor">Background color of the chart area (HTML style color, like "#FFFFFF")</param>
+        </member>
+        <member name="M:Cch.Commerster.Web.Graphs.BaseGraph.GetBrush(System.Drawing.Color)">
+            <summary>
+            Returns cached brush by color
+            </summary>
+            <param name="color">System defined color</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cch.Commerster.Web.Graphs.BaseGraph.GetBrush(System.String)">
+            <summary>
+            Returns cached brush by color
+            </summary>
+            <param name="htmlColor">Html color (like "#00FF00")</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cch.Commerster.Web.Graphs.BaseGraph.Save(System.IO.Stream,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            Saves chart image
+            </summary>
+            <param name="output">Stream to save</param>
+            <param name="format">Image format</param>
+        </member>
+        <member name="M:Cch.Commerster.Web.Graphs.BaseGraph.Dispose">
+            <summary>
+            Dispose() calls Dispose(true)
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.Graphs.BaseGraph.Finalize">
+            <summary>
+            Destructor
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.Graphs.BaseGraph.Dispose(System.Boolean)">
+            <summary>
+            Cleans used objects
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="P:Cch.Commerster.Web.Graphs.BaseGraph.Graphics">
+            <summary>
+            Gets System.Drawing.Graphycs object to draw on current graph
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.Graphs.BaseGraph.Width">
+            <summary>
+            Graph width
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.Graphs.BaseGraph.Height">
+            <summary>
+            Graph height
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.Graphs.PieChart">
+            <summary>
+            Pie Chart generator
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.Graphs.PieChart.#ctor(System.Int32,System.Int32,System.Drawing.Color)">
+            <summary>
+            Creates PieChart
+            </summary>
+            <param name="width">Width of the chart area</param>
+            <param name="height">Height of the chart area</param>
+            <param name="bgColor">Background color of the chart area (system color)</param>
+        </member>
+        <member name="M:Cch.Commerster.Web.Graphs.PieChart.#ctor(System.Int32,System.Int32,System.String)">
+            <summary>
+            Creates PieChart
+            </summary>
+            <param name="width">Width of the chart area</param>
+            <param name="height">Height of the chart area</param>
+            <param name="htmlBgColor">Background color of the chart area (HTML style color, like "#FFFFFF")</param>
+        </member>
+        <member name="M:Cch.Commerster.Web.Graphs.PieChart.AddPie(System.String,System.Single,System.Drawing.Color)">
+            <summary>
+            Draws pie
+            </summary>
+            <param name="label">Label written inside pie</param>
+            <param name="percent">Percent of the chart used by this pie</param>
+            <param name="color">Pie color</param>
+        </member>
+        <member name="T:Cch.Commerster.Web.UI.CheckBox">
+            <summary>
+            A custom check box control which allows to set a specific client id
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.UI.CheckBox.customId">
+            <summary>
+            Custom ID property - sets custom Unique ID
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.UI.CheckBox.CustomId">
+            <summary>
+            Custom ID property - sets custom Unique ID
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.UI.CheckBox.UniqueID">
+            <summary>
+            Overriden to return custom ID
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.UI.PagerEventArgs">
+            <summary>
+            Events for GridViewPager
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.UI.PagerEventArgs.pageIndex">
+            <summary>
+            Page Index
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.UI.PagerEventArgs.PageIndex">
+            <summary>
+            Returns current page (1-based)
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.UI.PagerEventHandler">
+            <summary>
+            Delegate
+            </summary>
+            <param name="sender"></param>
+            <param name="args"></param>
+        </member>
+        <member name="T:Cch.Commerster.Web.Presentation.Master.Admin">
+            <summary>
+            UI Elements
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.Presentation.Commerster">
+            <summary>
+            Code Behind for Master Page UI
+            </summary>
+            <summary>
+            UI elements
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.Pages.ApplicationBaseMasterPage">
+            <summary>
+            Any other logic besides translation would be here
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.Pages.MultilingualMasterPage">
+            <summary>
+            This class represents a multilingual MasterPage.
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.Pages.MultilingualMasterPage.OnPreRender(System.EventArgs)">
+            <summary>
+            This class represents a multi linugal Master Page
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:Cch.Commerster.Web.Pages.ApplicationBaseMasterPage.MenuTabLabelId">
+            <summary>
+            The static (!!) labelId of the current application. It should be set by every Commerster 2007 page
+            (before the code for master page is loaded) in order to display the menu correctly.
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Presentation.Commerster.activeTabLabelId">
+            <summary>
+            activeTabLabelId
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Presentation.Commerster.isCompanyAdmin">
+            <summary>
+            Is CompanyAdmin for a PrimaryCompany
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.Presentation.Commerster.Page_Load(System.Object,System.EventArgs)">
+            <summary>
+            Page_Load
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cch.Commerster.Web.Presentation.Commerster.repTabs_ItemDataBound(System.Object,System.Web.UI.WebControls.DataListItemEventArgs)">
+            <summary>
+            repTabs_ItemDataBound
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cch.Commerster.Web.Presentation.Commerster.uiLogout_Click(System.Object,System.EventArgs)">
+            <summary>
+            uiLogout_Click
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="F:Cch.Commerster.Web.Presentation.Commerster.uiContactUs">
+            <summary>
+            uiContactUs
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Presentation.Commerster.uiUserName">
+            <summary>
+            uiUserName
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Presentation.Commerster.uiCompanyName">
+            <summary>
+            uiCompanyName
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Presentation.Commerster.repTabs">
+            <summary>
+            repTabs
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Presentation.Commerster.repApplicationMenuItem">
+            <summary>
+            repApplicationMenuItem
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Presentation.Commerster.MasterPageBody">
+            <summary>
+            MasterPageBody
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Presentation.Commerster.uiHelp">
+            <summary>
+            uiHelp
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Presentation.Commerster.uiCopyright">
+            <summary>
+            uiCopyright
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Presentation.Commerster.uiConditionsOfUse">
+            <summary>
+            uiConditionsOfUse
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Presentation.Commerster.uiPrivacyPolicy">
+            <summary>
+            uiPrivacyPolicy
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Presentation.Commerster.pnlSubMenu">
+            <summary>
+            pnlSubMenu
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.Presentation.Commerster.Body">
+            <summary>
+            Body
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.Menu.DHtmlMenu">
+            <summary>
+            Class for drawing DHTML menus for a Commerster Master Page.
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.Menu.DHtmlMenu.Tabs">
+            <summary>
+            Gets or sets the tabs.
+            </summary>
+            <value>The tabs.</value>
+        </member>
+        <member name="P:Cch.Commerster.Web.Menu.DHtmlMenu.ApplicationMenuEntries">
+            <summary>
+            Gets or sets the application menu entries.
+            </summary>
+            <value>The application menu entries.</value>
+        </member>
+        <member name="T:Cch.Commerster.Web.Menu.MenuEntry">
+            <summary>
+            Represents a MenuEntry
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Menu.MenuEntry.Advocate">
+            <summary>
+            Advocate constant
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Menu.MenuEntry.Designer">
+            <summary>
+            Designer constant
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Menu.MenuEntry.Moderator">
+            <summary>
+            Moderator constant
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Menu.MenuEntry.Administrator">
+            <summary>
+            Administrator constant
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Menu.MenuEntry.Help">
+            <summary>
+            Help constant
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Menu.MenuEntry.Library">
+            <summary>
+            Library TabMenuLabelId constant
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Menu.MenuEntry.BusinessIntelligence">
+            <summary>
+            Business Intelligence TabMenuLabelId constant
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Menu.MenuEntry.EventManagement">
+            <summary>
+            Event Management constant
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Menu.MenuEntry.Administration">
+            <summary>
+            Administration constant
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Menu.MenuEntry.O2i">
+            <summary>
+            O2i constant
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.Menu.MenuEntry.appId">
+            <summary>
+            application id
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.Menu.MenuEntry.#ctor">
+            <summary>
+            The constructor initializes an empty items list.
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.Menu.MenuEntry.AddSubItem(Cch.Commerster.Web.Menu.MenuEntry)">
+            <summary>
+            Adds a submenu entry to the menu.
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="P:Cch.Commerster.Web.Menu.MenuEntry.AppId">
+            <summary>
+            Application id
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.Menu.MenuEntry.ImagePath">
+            <summary>
+            Path to a image to show in the menu.
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.Menu.MenuEntry.SubItems">
+            <summary>
+            Returns the submenu entries.
+            </summary>
+            <returns>Type safe collection of menu entries.</returns>
+        </member>
+        <member name="P:Cch.Commerster.Web.Menu.MenuEntry.ID">
+            <summary>
+            The menu id.
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.Menu.MenuEntry.ParentId">
+            <summary>
+            The menu parentId.
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.Menu.MenuEntry.LabelId">
+            <summary>
+            The menu labelId.
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.Menu.MenuEntry.DisplayText">
+            <summary>
+            Returns the text that is displayed as the menu entry.
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.Menu.MenuEntry.Url">
+            <summary>
+            Returns the url that is called when clicking the menu.
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.Pages.AdminContentPage`1">
+            <summary>
+            Base class for all of Admin content pages
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.Pages.CacheViewStatePage">
+            <summary>
+            Page with CachePageStatePersister instead of HiddenFieldPageStatePersister for ViewState
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.Pages.CacheViewStatePage.PageStatePersister">
+            <summary>
+            returns CachePageStatePersister
+            </summary>
+        </member>
+        <member name="F:Cch.Commerster.Web.UI.AdminMenuUserControl.RequestKeyName">
+            <summary>
+            Managed Object Request Key Name
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.Pages.ApplicationBasePage">
+            <summary>
+            Any other logic besides translation would be here
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.Pages.MultilingualPage">
+            <summary>
+            This class represents a multilingual page.
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.Pages.MultilingualPage.OnPreRender(System.EventArgs)">
+            <summary>
+            Overridden Eventhandler. Used to call the translation process.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="T:Cch.Commerster.Web.Pages.CompanyAdminContentPage">
+            <summary>
+            Base Page for Company Administration Pages
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.Pages.SessionViewStatePage">
+            <summary>
+            Page with SessionPageStatePersister instead of HiddenFieldPageStatePersister for ViewState
+            </summary>
+        </member>
+        <member name="P:Cch.Commerster.Web.Pages.SessionViewStatePage.PageStatePersister">
+            <summary>
+            returns SessionPageStatePersister
+            </summary>
+        </member>
+        <member name="T:Cch.Commerster.Web.Menu.IMenuDal">
+            <summary>
+            Interface for menu generation.
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.Menu.IMenuDal.GetHtmlEntriesByParent(System.Int32,System.Nullable{System.Int32},System.Data.IDbTransaction)">
+            <summary>
+            Gets all menu entries for a given parent menu entry
+            </summary>
+            <param name="userId"></param>
+            <param name="parentId"></param>
+            <param name="transaction"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cch.Commerster.Web.Menu.MenuGenerator">
+            <summary>
+            Use this class to generate menus.
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.Menu.MenuGenerator.AddSubItems(Cch.Commerster.Web.Menu.MenuEntry,System.Int32)">
+            <summary>
+            Adds the sub items.to DHtmlMenu
+            </summary>
+            <param name="entry">The entry.</param>
+            <param name="userId">The user id.</param>
+        </member>
+        <member name="M:Cch.Commerster.Web.Menu.MenuGenerator.GetMenu(System.Int32)">
+            <summary>
+            Gets the menu.
+            </summary>
+            <param name="userId">The user id.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.Core.ErrorWebPart.OnPreRender(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.PreRender"></see> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"></see> object that contains the event data. </param>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.Core.ErrorWebPart.RenderContents(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders the contents of the control to the specified writer. This method is used primarily by control developers.
+            </summary>
+            <param name="writer">A <see cref="T:System.Web.UI.HtmlTextWriter"></see> that represents the output stream to render HTML content on the client. </param>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.Core.GenericWebPart.AllowClose">
+            <summary>
+            Gets or sets a value indicating whether an end user can close a <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control on a Web page.
+            </summary>
+            <returns>
+            true if the control can be closed on a Web page; otherwise, false. The default value is true.
+            </returns>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.Core.GenericWebPart.AllowMinimize">
+            <summary>
+            Gets or sets a value indicating whether end users can minimize a <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control.
+            </summary>
+            <returns>
+            true if the <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control can be minimized; otherwise, false. The default value is true.
+            </returns>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.Core.IWebPart.AllowClose">
+            <summary>
+            Gets a value indicating whether closing is allowed.
+            </summary>
+            <value><c>true</c> if closing this control is allowed; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.Core.IWebPart.AlloMinimize">
+            <summary>
+            Gets a value indicating whether minimizing is allowed.
+            </summary>
+            <value><c>true</c> if minimizing this control is allowed; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.Core.WebPartChrome.RenderWebPart(System.Web.UI.HtmlTextWriter,System.Web.UI.WebControls.WebParts.WebPart)">
+            <summary>
+            Renders a complete <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control with all its sections.
+            </summary>
+            <param name="writer">The <see cref="T:System.Web.UI.HtmlTextWriter"></see> that receives the webPart content. </param>
+            <param name="webPart">The control currently being rendered. </param>
+            <exception cref="T:System.ArgumentNullException">The control that webPart refers to is null. </exception>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.Core.WebPartChrome.FilterWebPartVerbs(System.Web.UI.WebControls.WebParts.WebPartVerbCollection,System.Web.UI.WebControls.WebParts.WebPart)">
+            <summary>
+            Excludes specific verbs from being rendered, based on criteria provided by a developer.
+            </summary>
+            <returns>
+            A <see cref="T:System.Web.UI.WebControls.WebParts.WebPartVerbCollection"></see> containing all verbs associated with the webPart.
+            </returns>
+            <param name="verbs">The collection of all verbs associated with the control referenced in the webPart parameter. </param>
+            <param name="webPart">The control currently being rendered. </param>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.Core.WebPartManager.MarkDirty">
+            <summary>
+            Marks the personalization data as dirty to save it to storage later.
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.Core.WebPartManager.CreateWebPart(System.Web.UI.Control)">
+            <summary>
+            Wraps a server control that is not a <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control with a <see cref="T:System.Web.UI.WebControls.WebParts.GenericWebPart"></see> object, so that the control can have Web Parts functionality.
+            </summary>
+            <returns>
+            A <see cref="T:System.Web.UI.WebControls.WebParts.GenericWebPart"></see> that wraps control and enables it to function as a true <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control.
+            </returns>
+            <param name="control">A server control that is not a <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control. </param>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.Core.WebPartManager.CopyWebPart(System.Web.UI.WebControls.WebParts.WebPart)">
+            <summary>
+            Used by the Web Parts control set to create a copy of a <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> or server control for the purpose of adding the control to a Web page.
+            </summary>
+            <returns>
+            A <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> to be added to a page.
+            </returns>
+            <param name="oldWebPart">The <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> or server control to be copied. </param>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.Core.WebPartZone.OnPreRender(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.PreRender"></see> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data. </param>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.Core.WebPartZone.CreateWebPartChrome">
+            <summary>
+            Enables derived zones to substitute a custom <see cref="T:System.Web.UI.WebControls.WebParts.WebPartChrome"></see> object to change the appearance of <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> controls in a zone.
+            </summary>
+            <returns>
+            A <see cref="T:System.Web.UI.WebControls.WebParts.WebPartChrome"></see> that determines how <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> controls in a zone are rendered.
+            </returns>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.Core.WebPartZone.RenderHeader(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overrides the base method to render the header of a <see cref="T:System.Web.UI.WebControls.WebParts.WebPartZoneBase"></see> zone that contains <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> controls.
+            </summary>
+            
+            <param name="writer">The <see cref="T:System.Web.UI.HtmlTextWriter"></see> that receives the content of the header. </param>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.Core.WebPartZone.RenderDropCue(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders user interface (UI) elements to indicate to an end user where a <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control that is being dragged can be dropped within a zone.
+            </summary>
+            <param name="writer">The <see cref="T:System.Web.UI.HtmlTextWriter"></see> that receives the UI elements that indicate where a control can be dropped. </param>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.Core.WebPartZone.RaisePostBackEvent(System.String)">
+            <summary>
+            Updates the status of the current collection of <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> controls in a zone, based on the changes that have occurred since the most recent postback event.
+            </summary>
+            <param name="eventArgument">The postback argument. </param>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.Core.WebPartZone.DropCueCssStyle">
+            <summary>
+            Gets or sets the drop cue CSS style.
+            </summary>
+            <value>The drop cue CSS style.</value>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.Core.WebPartZone.IsEnabled">
+            <summary>
+            Gets a value indicating whether the control is enabled.
+            </summary>
+            <value></value>
+            <returns>true if the <see cref="T:System.Web.UI.WebControls.WebControl"></see> object is enabled; otherwise, false.</returns>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.Core.WebPartZone.DesignMode">
+            <summary>
+            Gets a value indicating whether a control is being used on a design surface.
+            </summary>
+            <value></value>
+            <returns>true if the control is being used in a designer; otherwise, false.</returns>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.Core.WebPartZone.RenderClientScript">
+            <summary>
+            Gets a value that indicates whether to render client script on a Web Parts page.
+            </summary>
+            <value></value>
+            <returns>true if the zone renders client script when the page is in a given display mode; otherwise, false. The default value is false.</returns>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.JQuery.WebPartChrome.RenderWebPart(System.Web.UI.HtmlTextWriter,System.Web.UI.WebControls.WebParts.WebPart)">
+            <summary>
+            Renders a complete <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control with all its sections.
+            </summary>
+            <param name="writer">The <see cref="T:System.Web.UI.HtmlTextWriter"></see> that receives the webPart content. </param>
+            <param name="webPart">The control currently being rendered. </param>
+            <exception cref="T:System.ArgumentNullException">The control that webPart refers to is null. </exception>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.JQuery.WebPartChrome.FilterWebPartVerbs(System.Web.UI.WebControls.WebParts.WebPartVerbCollection,System.Web.UI.WebControls.WebParts.WebPart)">
+            <summary>
+            Excludes specific verbs from being rendered, based on criteria provided by a developer.
+            </summary>
+            <returns>
+            A <see cref="T:System.Web.UI.WebControls.WebParts.WebPartVerbCollection"></see> containing all verbs associated with the webPart.
+            </returns>
+            <param name="verbs">The collection of all verbs associated with the control referenced in the webPart parameter. </param>
+            <param name="webPart">The control currently being rendered. </param>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.JQuery.WebPartManager.MarkDirty">
+            <summary>
+            Marks the personalization data as dirty to save it to storage later.
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.JQuery.WebPartManager.RegisterClientScript">
+            <summary>
+            No register client script.
+            </summary>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.JQuery.WebPartManager.CreateWebPart(System.Web.UI.Control)">
+            <summary>
+            Wraps a server control that is not a <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control with a <see cref="T:System.Web.UI.WebControls.WebParts.GenericWebPart"></see> object, so that the control can have Web Parts functionality.
+            </summary>
+            <returns>
+            A <see cref="T:System.Web.UI.WebControls.WebParts.GenericWebPart"></see> that wraps control and enables it to function as a true <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control.
+            </returns>
+            <param name="control">A server control that is not a <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control. </param>
+        </member>
+        <member name="M:Cch.Commerster.Web.WebParts.JQuery.WebPartManager.CopyWebPart(System.Web.UI.WebControls.WebParts.WebPart)">
+            <summary>
+            Used by the Web Parts control set to create a copy of a <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> or server control for the purpose of adding the control to a Web page.
+            </summary>
+            <returns>
+            A <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> to be added to a page.
+            </returns>
+            <param name="oldWebPart">The <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> or server control to be copied. </param>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.WebPartUserControl.CatalogIconImageUrl">
+            <summary>
+            Gets or sets the URL to an image that represents a <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control in a catalog of controls.
+            </summary>
+            <value></value>
+            <returns>A string that represents the URL to an image used to represent the control in a catalog. The default value is an empty string ("").</returns>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.WebPartUserControl.Description">
+            <summary>
+            Gets or sets a brief phrase that summarizes what a control does, for use in ToolTips and catalogs of <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> controls.
+            </summary>
+            <value></value>
+            <returns>A string that briefly summarizes the control's functionality. The default value is an empty string ("").</returns>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.WebPartUserControl.Subtitle">
+            <summary>
+            Gets a string that is concatenated with the <see cref="P:System.Web.UI.WebControls.WebParts.IWebPart.Title"></see> property value to form a complete title for a <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control.
+            </summary>
+            <value></value>
+            <returns>A string that serves as a subtitle for the control. The default value is an empty string ("").</returns>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.WebPartUserControl.Title">
+            <summary>
+            Gets or sets the title of a <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control.
+            </summary>
+            <value></value>
+            <returns>A string that contains the title of the control. The default value is an empty string ("").</returns>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.WebPartUserControl.TitleIconImageUrl">
+            <summary>
+            Gets or sets the URL to an image used to represent a Web Parts control in the control's own title bar.
+            </summary>
+            <value></value>
+            <returns>A string that represents the URL to an image. The default value is an empty string ("").</returns>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.WebPartUserControl.TitleUrl">
+            <summary>
+            Gets or sets a URL to supplemental information about a <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control.
+            </summary>
+            <value></value>
+            <returns>A string that represents a URL to more information about a <see cref="T:System.Web.UI.WebControls.WebParts.WebPart"></see> control. The default value is an empty string ("").</returns>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.WebPartUserControl.AllowClose">
+            <summary>
+            Gets a value indicating whether closing is allowed.
+            </summary>
+            <value><c>true</c> if closing this control is allowed; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Cch.Commerster.Web.WebParts.WebPartUserControl.AlloMinimize">
+            <summary>
+            Gets a value indicating whether minimizing is allowed.
+            </summary>
+            <value><c>true</c> if minimizing this control is allowed; otherwise, <c>false</c>.</value>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+
+  <taxResultsForCountries>
+    <countries>
+      <country name="USA"/>
+      <country name="Other"/>
+    </countries>
+    <taxResults>
+      <result tax="0" amount="0.0"/>
+      <result tax="20" amount="13492.8"/>
+      <result tax="30" amount="20524.5"/>
+      <result tax="40" amount="27748.8"/>
+      <result tax="50" amount="35167.5"/>
+    </taxResults>
+  </taxResultsForCountries>
+
+  <taxResultsForCountries>
+    <countries>
+      <country name="Germany"/>
+    </countries>
+    <taxResults>
+      <result tax="0" amount="0.0"/>
+      <result tax="7" amount="4722.48"/>
+      <result tax="19" amount="12998.85"/>
+    </taxResults>
+  </taxResultsForCountries>
+
+  <taxResultsForCountries>
+    <countries>
+      <country name="Belgium"/>
+    </countries>
+    <taxResults>
+      <result tax="0" amount="0.0"/>
+      <result tax="6" amount="4047.84"/>
+      <result tax="12" amount="8209.8"/>
+      <result tax="21" amount="14568.12"/>
+    </taxResults>
+  </taxResultsForCountries>
+
+  <taxResultsForCountries>
+    <countries>
+      <country name="France"/>
+    </countries>
+    <taxResults>
+      <result tax="0" amount="0.0"/>
+      <result tax="2.1" amount="1416.74"/>
+      <result tax="5.5" amount="3762.82"/>
+      <result tax="19.6" amount="13596.9"/>
+    </taxResults>
+  </taxResultsForCountries>
+
+  <taxResultsForCountries>
+    <countries>
+      <country name="Netherlands"/>
+    </countries>
+    <taxResults>
+      <result tax="0" amount="0.0"/>
+      <result tax="6" amount="4047.84"/>
+      <result tax="19" amount="12998.85"/>
+    </taxResults>
+  </taxResultsForCountries>
+
+  <taxResultsForCountries>
+    <countries>
+      <country name="Norway"/>
+    </countries>
+    <taxResults>
+      <result tax="0" amount="0.0"/>
+      <result tax="8" amount="5397.12"/>
+      <result tax="14" amount="9578.1"/>
+      <result tax="25" amount="17343.0"/>
+    </taxResults>
+  </taxResultsForCountries>
+
+  <taxResultsForCountries>
+    <countries>
+      <country name="Spain"/>
+    </countries>
+    <taxResults>
+      <result tax="0" amount="0.0"/>
+      <result tax="2" amount="1349.28"/>
+      <result tax="4" amount="2736.6"/>
+      <result tax="5" amount="3468.6"/>
+      <result tax="8" amount="5626.8"/>
+      <result tax="18" amount="12834.72"/>
+    </taxResults>
+  </taxResultsForCountries>
+
+  <taxResultsForCountries>
+    <countries>
+      <country name="Switzerland"/>
+    </countries>
+    <taxResults>
+      <result tax="0" amount="0.0"/>
+      <result tax="2.5" amount="1686.6"/>
+      <result tax="3.8" amount="2599.77"/>
+      <result tax="8" amount="5549.76"/>
+    </taxResults>
+  </taxResultsForCountries>
+
+  <taxResultsForCountries>
+    <countries>
+      <country name="UnitedKingdom"/>
+    </countries>
+    <taxResults>
+      <result tax="0" amount="0.0"/>
+      <result tax="5" amount="3373.2"/>
+      <result tax="20" amount="13683.0"/>
+    </taxResults>
+  </taxResultsForCountries>
+
+</root>

@@ -1,0 +1,27 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Substituted with 2" />
+  <Config name="Default" configfile="UI.Test.dll.config" binpathtype="Auto">
+    <assembly path="UI.Test.dll" />
+  </Config>
+  <Config name="Local" configfile="UI.Test.dll.LOCAL.config" binpathtype="Auto">
+    <assembly path="UI.Test.dll" />
+  </Config>
+  <Config name="SMOKE" configfile="UI.Test.dll.SMOKE.config" binpathtype="Auto">
+    <assembly path="UI.Test.dll" />
+  </Config>
+  <Config name="STG" configfile="UI.Test.dll.STG.1.config" binpathtype="Auto">
+    <assembly path="UI.Test.dll" />
+  </Config>
+  <Config name="STG: AutoO2iBuyer2/AutoO2iSupplier2" configfile="UI.Test.dll.STG.2.config" binpathtype="Auto">
+    <assembly path="UI.Test.dll" />
+  </Config>
+  <Config name="STG: AutoO2iBuyer3/AutoO2iSupplier3" configfile="UI.Test.dll.STG.3.config" binpathtype="Auto">
+    <assembly path="UI.Test.dll" />
+  </Config>
+  <Config name="STG: AutoO2iBuyer4/AutoO2iSupplier4" configfile="UI.Test.dll.STG.4.config" binpathtype="Auto">
+    <assembly path="UI.Test.dll" />
+  </Config>
+  <Config name="Substituted with 2" configfile="UI.Test.dll.STG.1.Substituted.config" binpathtype="Auto" runtimeFramework="any">
+    <assembly path="UI.Test.dll" />
+  </Config>
+</NUnitProject>

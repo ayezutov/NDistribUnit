@@ -1,0 +1,209 @@
+Collection name: Diagone Icons
+Author: Yusuke Kamiyamane
+Author homepage: http://p.yusukekamiyamane.com/
+Services: 
+License: CC Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+License description: 
+Commercial usage: Allowed
+Readme: readme.txt
+Account: Account
+Address Book 1: Address Book 1
+Address Book 2: Address Book 2
+Alarm 1: Alarm 1
+Alarm 2: Alarm 2
+Align Bottom: Align Bottom
+Align Left: Align Left
+Align Right: Align Right
+Align Top: Align Top
+Book Blue: Book Blue
+Book Green: Book Green
+Book Open Blue: Book Open Blue
+Book Open Green: Book Open Green
+Briefcase: Briefcase
+Brush: Brush
+Burn: Burn
+Business User: Business User
+Button Add: Button Add
+Button Bottom: Button Bottom
+Button Down: Button Down
+Button Eject: Button Eject
+Button Forward: Button Forward
+Button Next: Button Next
+Button Pause: Button Pause
+Button Play Back Slow: Button Play Back Slow
+Button Play Back: Button Play Back
+Button Play Slow: Button Play Slow
+Button Play: Button Play
+Button Previous: Button Previous
+Button Remove: Button Remove
+Button Rewind: Button Rewind
+Button Stop: Button Stop
+Button Top: Button Top
+Button Up: Button Up
+Calculator: Calculator
+Calendar 1: Calendar 1
+Calendar 2: Calendar 2
+CD: CD
+Chart 2D 1: Chart 2D 1
+Chart 2D 2: Chart 2D 2
+Chat 1: Chat 1
+Chat 2: Chat 2
+Comment 1: Comment 1
+Comment 2: Comment 2
+Computer: Computer
+Crown: Crown
+Delete: Delete
+Document 1: Document 1
+Document 2: Document 2
+Document List 1: Document List 1
+Document List 2: Document List 2
+Document New 1: Document New 1
+Document New 2: Document New 2
+Document Table 1: Document Table 1
+Document Table 2: Document Table 2
+Edit 1: Edit 1
+Edit 2: Edit 2
+Edit Code 1: Edit Code 1
+Edit Code 2: Edit Code 2
+Email 1: Email 1
+Email 2: Email 2
+Email Read 1: Email Read 1
+Email Read 2: Email Read 2
+Emoticon Amazing: Emoticon Amazing
+Emoticon Laughter: Emoticon Laughter
+Emoticon Neutral: Emoticon Neutral
+Emoticon Sad: Emoticon Sad
+Emoticon Smile: Emoticon Smile
+Emoticon Tongue: Emoticon Tongue
+Favorites 1: Favorites 1
+Favorites 2: Favorites 2
+Filter: Filter
+Flag Blue: Flag Blue
+Flag Green: Flag Green
+Flag Light Red: Flag Light Red
+Flag Orange: Flag Orange
+Flag Pink: Flag Pink
+Flag Red: Flag Red
+Flag Yellow: Flag Yellow
+Folder Open: Folder Open
+Folder: Folder
+Graph 2D: Graph 2D
+Home: Home
+Image: Image
+Key 1: Key 1
+Key 2: Key 2
+Lamp 1: Lamp 1
+Lamp 2: Lamp 2
+Lightning 1: Lightning 1
+Lightning 2: Lightning 2
+Lock 1: Lock 1
+Lock 2: Lock 2
+Mobile: Mobile
+Music: Music
+Network: Network
+Note-book 1: Note-book 1
+Note-book 2: Note-book 2
+Note: Note
+Options: Options
+Paper Clip: Paper Clip
+Paste: Paste
+Phone: Phone
+Photocamera 1: Photocamera 1
+Photocamera 2: Photocamera 2
+Pie 2D: Pie 2D
+Player: Player
+Plugin 1: Plugin 1
+Plugin 2: Plugin 2
+Point Black: Point Black
+Point Blue: Point Blue
+Point Gray: Point Gray
+Point Green: Point Green
+Point Light Red: Point Light Red
+Point Orange: Point Orange
+Point Pink: Point Pink
+Point Red: Point Red
+Point White: Point White
+Point Yellow: Point Yellow
+Present 1: Present 1
+Present 2: Present 2
+Price 1: Price 1
+Price 2: Price 2
+Price 3: Price 3
+Price 4: Price 4
+Price 5: Price 5
+Price 6: Price 6
+Price 7: Price 7
+Printer 1: Printer 1
+Printer 2: Printer 2
+Protect: Protect
+Receipt: Receipt
+RSS: RSS
+Ruler Triangle: Ruler Triangle
+Save 1: Save 1
+Save 2: Save 2
+Script: Script
+Search: Search
+Setup: Setup
+Shape 1: Shape 1
+Shape 2: Shape 2
+Shopping 1: Shopping 1
+Shopping 2: Shopping 2
+Sort: Sort
+Special Offer 1: Special Offer 1
+Special Offer 2: Special Offer 2
+Special Offer 3: Special Offer 3
+Special Offer 4: Special Offer 4
+Star 1: Star 1
+Star 2: Star 2
+Symbol Add: Symbol Add
+Symbol Arrow 1: Symbol Arrow 1
+Symbol Arrow 2: Symbol Arrow 2
+Symbol Arrow 3: Symbol Arrow 3
+Symbol Arrow 4: Symbol Arrow 4
+Symbol Arrow Down: Symbol Arrow Down
+Symbol Arrow Left-Down: Symbol Arrow Left-Down
+Symbol Arrow Left-Up: Symbol Arrow Left-Up
+Symbol Arrow Left: Symbol Arrow Left
+Symbol Arrow Right-Down: Symbol Arrow Right-Down
+Symbol Arrow Right-Up: Symbol Arrow Right-Up
+Symbol Arrow Right: Symbol Arrow Right
+Symbol Arrow Up: Symbol Arrow Up
+Symbol Cancel: Symbol Cancel
+Symbol Flip 1: Symbol Flip 1
+Symbol Flip 2: Symbol Flip 2
+Symbol Flip 3: Symbol Flip 3
+Symbol Flip 4: Symbol Flip 4
+Symbol OK: Symbol OK
+Symbol Remove: Symbol Remove
+Symbol Rotate 1: Symbol Rotate 1
+Symbol Rotate 2: Symbol Rotate 2
+Symbol Rotate 3: Symbol Rotate 3
+Symbol Rotate 4: Symbol Rotate 4
+Symbol Turn 1: Symbol Turn 1
+Symbol Turn 2: Symbol Turn 2
+Symbol Turn 3: Symbol Turn 3
+Symbol Turn 4: Symbol Turn 4
+Table: Table
+Time: Time
+TV: TV
+UI Details: UI Details
+UI Icons: UI Icons
+UI List: UI List
+Unlock 1: Unlock 1
+Unlock 2: Unlock 2
+User 1: User 1
+User 2: User 2
+Warning: Warning
+Web: Web
+Window Form 1: Window Form 1
+Window Form 2: Window Form 2
+Window List: Window List
+Window New: Window New
+Window Table: Window Table
+Window: Window
+Woman User 1: Woman User 1
+Woman User 2: Woman User 2
+Woman User 3: Woman User 3
+Zoom In: Zoom In
+Zoom Out: Zoom Out

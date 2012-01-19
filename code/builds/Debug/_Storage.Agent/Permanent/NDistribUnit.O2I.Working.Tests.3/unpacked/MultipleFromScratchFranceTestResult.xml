@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="D:\TESTS\Commerster\UITests\O2I.UI.Tests\bin\Debug\UI.Test.dll" total="2" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2011-10-31" time="12:33:40">
+  <environment nunit-version="2.5.10.11092" clr-version="2.0.50727.5448" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.5.10\bin\net-2.0" machine-name="EPBYMINW2476" user="DZMITRY_TAUBKIN" user-domain="MINSK" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Assembly" name="D:\TESTS\Commerster\UITests\O2I.UI.Tests\bin\Debug\UI.Test.dll" executed="True" result="Success" success="True" time="65.567" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="TRR" executed="True" result="Success" success="True" time="65.564" asserts="0">
+        <results>
+          <test-suite type="Namespace" name="O2I" executed="True" result="Success" success="True" time="65.561" asserts="0">
+            <results>
+              <test-suite type="Namespace" name="UI" executed="True" result="Success" success="True" time="65.560" asserts="0">
+                <results>
+                  <test-suite type="Namespace" name="Test" executed="True" result="Success" success="True" time="65.559" asserts="0">
+                    <results>
+                      <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="65.557" asserts="0">
+                        <results>
+                          <test-suite type="Namespace" name="InvoiceTests" executed="True" result="Success" success="True" time="65.557" asserts="0">
+                            <results>
+                              <test-suite type="Namespace" name="MultipleInvFromScratch" executed="True" result="Success" success="True" time="65.556" asserts="0">
+                                <results>
+                                  <test-suite type="TestFixture" name="MultipleInvFromScratchFrance" executed="True" result="Success" success="True" time="65.555" asserts="7">
+                                    <results>
+                                      <test-case name="TRR.O2I.UI.Test.Tests.InvoiceTests.MultipleInvFromScratch.MultipleInvFromScratchFrance.MultipleInvFromScratchEUTestBase.MultipleInvoiceTest" executed="True" result="Success" success="True" time="43.382" asserts="8" />
+                                      <test-case name="TRR.O2I.UI.Test.Tests.InvoiceTests.MultipleInvFromScratch.MultipleInvFromScratchFrance.MultipleInvFromScratchEUTestBase.ValidationMessagesTest" executed="True" result="Success" success="True" time="13.779" asserts="22" />
+                                    </results>
+                                  </test-suite>
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

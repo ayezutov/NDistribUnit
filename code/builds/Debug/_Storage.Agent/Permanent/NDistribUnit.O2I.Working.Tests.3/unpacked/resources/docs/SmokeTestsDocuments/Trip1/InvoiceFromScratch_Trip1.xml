@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?><?soxtype urn:x-commerceone:document:com:commerceone:XCBL30:XCBL30.sox$1.0?><Invoice><InvoiceHeader><InvoiceNumber><Reference><RefNum>100000002</RefNum></Reference></InvoiceNumber><InvoiceIssueDate>20090422T08:48:48+00:00</InvoiceIssueDate><InvoiceReferences><AccountNumber><Reference><RefNum>888881111</RefNum></Reference></AccountNumber></InvoiceReferences><InvoicePurpose><InvoicePurposeCoded>Original</InvoicePurposeCoded></InvoicePurpose><InvoiceType><InvoiceTypeCoded>DebitInvoice</InvoiceTypeCoded></InvoiceType><InvoiceCurrency><Currency><CurrencyCoded>USD</CurrencyCoded></Currency></InvoiceCurrency><InvoiceLanguage><Language><LanguageCoded>aa</LanguageCoded></Language></InvoiceLanguage><InvoiceTaxReference><TaxReference><TaxFunctionQualifierCoded>Tax</TaxFunctionQualifierCoded><TaxCategoryCoded>StandardRate</TaxCategoryCoded><TaxTypeCoded>StateOrProvincialSalesTax</TaxTypeCoded><TaxPercent>5.00</TaxPercent><TaxPaymentMethodCoded>DirectPay</TaxPaymentMethodCoded><TaxAmount>0.00</TaxAmount><TaxTreatmentCoded>GrossInvoiceLevel</TaxTreatmentCoded></TaxReference></InvoiceTaxReference><InvoiceDates><InvoiceDueDate>20090422T08:49:43+00:00</InvoiceDueDate></InvoiceDates><InvoiceParty><BuyerParty><Party><PartyID><Identifier><Agency><AgencyCoded>DunAndBradstreet</AgencyCoded></Agency><Ident>888881111</Ident></Identifier></PartyID><NameAddress><Name1>CompanyName</Name1><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>0</Ident></Identifier><Street>Address1</Street><PostalCode>225320</PostalCode><City>City</City><Country><CountryCoded>Other</CountryCoded><CountryCodedOther>CountryOther</CountryCodedOther></Country></NameAddress><OrderContact><Contact><ContactName>Contact name</ContactName><ListOfContactNumber><ContactNumber><ContactNumberValue>123495623</ContactNumberValue><ContactNumberTypeCoded>TelephoneNumber</ContactNumberTypeCoded></ContactNumber></ListOfContactNumber></Contact></OrderContact></Party></BuyerParty><SellerParty><Party><PartyID><Identifier><Agency><AgencyCoded>DunAndBradstreet</AgencyCoded></Agency><Ident>888884002</Ident></Identifier></PartyID><NameAddress><Name1>CompanyName</Name1><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>0</Ident></Identifier><Street>Address1</Street><PostalCode>225320</PostalCode><City>City</City><Country><CountryCoded>Other</CountryCoded><CountryCodedOther>CountryOther</CountryCodedOther></Country></NameAddress><OrderContact><Contact><ContactName>Contact name</ContactName><ListOfContactNumber><ContactNumber><ContactNumberValue>123495623</ContactNumberValue><ContactNumberTypeCoded>TelephoneNumber</ContactNumberTypeCoded></ContactNumber></ListOfContactNumber></Contact></OrderContact></Party></SellerParty><ShipToParty><Party><PartyID><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>N/A</Ident></Identifier></PartyID><NameAddress><Name1>CompanyName</Name1><Street>Address1</Street><PostalCode>225320</PostalCode><City>City</City><Country><CountryCoded>Other</CountryCoded><CountryCodedOther>CountryOther</CountryCodedOther></Country></NameAddress><OrderContact><Contact><ContactName>Contact name</ContactName><ListOfContactNumber><ContactNumber><ContactNumberValue>123495623</ContactNumberValue><ContactNumberTypeCoded>TelephoneNumber</ContactNumberTypeCoded></ContactNumber></ListOfContactNumber></Contact></OrderContact></Party></ShipToParty><BillToParty><Party><PartyID><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>N/A</Ident></Identifier></PartyID><NameAddress><Name1>CompanyName</Name1><Street>Address1</Street><PostalCode>225320</PostalCode><City>City</City><Country><CountryCoded>Other</CountryCoded><CountryCodedOther>CountryOther</CountryCodedOther></Country></NameAddress><OrderContact><Contact><ContactName>Contact name</ContactName><ListOfContactNumber><ContactNumber><ContactNumberValue>123495623</ContactNumberValue><ContactNumberTypeCoded>TelephoneNumber</ContactNumberTypeCoded></ContactNumber></ListOfContactNumber></Contact></OrderContact></Party></BillToParty><RemitToParty><Party><PartyID><Identifier><Agency><AgencyCoded>DunAndBradstreet</AgencyCoded></Agency><Ident>888881111</Ident></Identifier></PartyID><NameAddress><Name1>CompanyName</Name1><Street>Address1</Street><PostalCode>225320</PostalCode><City>City</City><Country><CountryCoded>Other</CountryCoded><CountryCodedOther>CountryOther</CountryCodedOther></Country></NameAddress><OrderContact><Contact><ContactName>Contact name</ContactName><ListOfContactNumber><ContactNumber><ContactNumberValue>123495623</ContactNumberValue><ContactNumberTypeCoded>TelephoneNumber</ContactNumberTypeCoded></ContactNumber></ListOfContactNumber></Contact></OrderContact></Party></RemitToParty></InvoiceParty><InvoicePaymentInstructions><PaymentInstructions><PaymentTerms><PaymentTerm><PaymentTermCoded>Basic</PaymentTermCoded><PaymentTermDetails><Discounts><DiscountPercent>2.00</DiscountPercent><DiscountDaysDue>0</DiscountDaysDue><DiscountDueDate>20090422T08:48:48+00:00</DiscountDueDate><NetDaysDue>0</NetDaysDue></Discounts></PaymentTermDetails></PaymentTerm></PaymentTerms><PaymentMethod><PaymentMeanCoded>Other</PaymentMeanCoded></PaymentMethod></PaymentInstructions></InvoicePaymentInstructions><InvoiceAllowancesOrCharges><ListOfAllowOrCharge>
+			<AllowOrCharge SeqNo="1">
+				<IndicatorCoded>Allowance</IndicatorCoded>
+				<BasisCoded>MonetaryAmount</BasisCoded>
+				<MethodOfHandlingCoded>OffInvoice</MethodOfHandlingCoded>
+				<AllowanceOrChargeDescription>
+					<AllowOrChgDesc>
+						<ServiceCoded>Other</ServiceCoded>
+						<ServiceCodedOther>Allowance</ServiceCodedOther>
+					</AllowOrChgDesc>
+				</AllowanceOrChargeDescription>
+				<TypeOfAllowanceOrCharge>
+					<MonetaryValue>
+						<MonetaryAmount>0.00</MonetaryAmount>
+						<Currency>
+							<CurrencyCoded>USD</CurrencyCoded>
+						</Currency>
+					</MonetaryValue>
+				</TypeOfAllowanceOrCharge>
+			</AllowOrCharge>
+		
+			<AllowOrCharge SeqNo="2">
+				<IndicatorCoded>Charge</IndicatorCoded>
+				<BasisCoded>MonetaryAmount</BasisCoded>
+				<MethodOfHandlingCoded>OffInvoice</MethodOfHandlingCoded>
+				<AllowanceOrChargeDescription>
+					<AllowOrChgDesc>
+						<ServiceCoded>Other</ServiceCoded>
+						<ServiceCodedOther>Charge</ServiceCodedOther>
+					</AllowOrChgDesc>
+				</AllowanceOrChargeDescription>
+				<TypeOfAllowanceOrCharge>
+					<MonetaryValue>
+						<MonetaryAmount>0.00</MonetaryAmount>
+						<Currency>
+							<CurrencyCoded>USD</CurrencyCoded>
+						</Currency>
+					</MonetaryValue>
+				</TypeOfAllowanceOrCharge>
+			</AllowOrCharge>
+		
+			<AllowOrCharge SeqNo="3">
+				<IndicatorCoded>Charge</IndicatorCoded>
+				<BasisCoded>MonetaryAmount</BasisCoded>
+				<MethodOfHandlingCoded>OffInvoice</MethodOfHandlingCoded>
+				<AllowanceOrChargeDescription>
+					<AllowOrChgDesc>
+						<ServiceCoded>Other</ServiceCoded>
+						<ServiceCodedOther>Freight</ServiceCodedOther>
+					</AllowOrChgDesc>
+				</AllowanceOrChargeDescription>
+				<TypeOfAllowanceOrCharge>
+					<MonetaryValue>
+						<MonetaryAmount>0.00</MonetaryAmount>
+						<Currency>
+							<CurrencyCoded>USD</CurrencyCoded>
+						</Currency>
+					</MonetaryValue>
+				</TypeOfAllowanceOrCharge>
+			</AllowOrCharge>
+		</ListOfAllowOrCharge></InvoiceAllowancesOrCharges><InvoiceHeaderNote /></InvoiceHeader><InvoiceDetail><ListOfInvoiceItemDetail><InvoiceItemDetail><InvoiceBaseItemDetail><LineItemNum><BuyerLineItemNum>0</BuyerLineItemNum></LineItemNum><LineItemType><LineItemTypeCoded>Item</LineItemTypeCoded></LineItemType><ItemIdentifiers><PartNumbers><SellerPartNumber><PartNum><PartID>SupplierPartNo</PartID></PartNum></SellerPartNumber></PartNumbers></ItemIdentifiers><TotalQuantity><Quantity><QuantityValue>2.00</QuantityValue><UnitOfMeasurement><UOMCoded>EA</UOMCoded></UnitOfMeasurement></Quantity></TotalQuantity><LineItemReferences><InvoiceReferences><PurchaseOrderReference><PurchaseOrderNumber><Reference><RefNum>OrderNumber</RefNum></Reference></PurchaseOrderNumber><PurchaseOrderLineItemNumber>0</PurchaseOrderLineItemNumber></PurchaseOrderReference></InvoiceReferences></LineItemReferences></InvoiceBaseItemDetail><InvoicePricingDetail><ListOfPrice><Price><UnitPrice><UnitPriceValue>4.00</UnitPriceValue><Currency><CurrencyCoded>USD</CurrencyCoded></Currency></UnitPrice></Price></ListOfPrice><TotalValue><MonetaryValue><MonetaryAmount>7.84</MonetaryAmount></MonetaryValue></TotalValue><InvoiceCurrencyTotalValue><MonetaryValue><MonetaryAmount>7.84</MonetaryAmount></MonetaryValue></InvoiceCurrencyTotalValue><TotalTaxAmount><MonetaryValue><MonetaryAmount>0.00</MonetaryAmount></MonetaryValue></TotalTaxAmount></InvoicePricingDetail></InvoiceItemDetail></ListOfInvoiceItemDetail></InvoiceDetail><InvoiceSummary><NumberOfLines>1</NumberOfLines><InvoiceTotals><NetValue><MonetaryValue><MonetaryAmount>7.84</MonetaryAmount><Currency><CurrencyCoded>USD</CurrencyCoded></Currency></MonetaryValue></NetValue><GrossValue><MonetaryValue><MonetaryAmount>7.84</MonetaryAmount><Currency><CurrencyCoded>USD</CurrencyCoded></Currency></MonetaryValue></GrossValue><TaxValue><MonetaryValue><MonetaryAmount>0.00</MonetaryAmount><Currency><CurrencyCoded>USD</CurrencyCoded></Currency></MonetaryValue></TaxValue></InvoiceTotals></InvoiceSummary></Invoice>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<lines>
+  <line no="1" price="101" quantity="201" tax="@0" taxtype="11534" taxcategory="11517">
+    <subline no="1" price="102" quantity="202" tax="@1" taxtype="11525" taxcategory="12686"/>
+    <subline no="2" price="103" quantity="203" tax="@2" taxtype="11533" taxcategory="11518"/>
+    <subline no="3" price="104" quantity="204" tax="@3" taxtype="11529" taxcategory="11518"/>
+  </line>
+  <line no="2" price="201" quantity="301" tax="@0" taxtype="11524" taxcategory="11517">
+    <subline no="1" price="202" quantity="302" tax="@1" taxtype="11525" taxcategory="12686"/>
+    <subline no="2" price="203" quantity="303" tax="@1" taxtype="11525" taxcategory="12686"/>
+    <subline no="3" price="204" quantity="304" tax="@1" taxtype="11525" taxcategory="12686"/>
+    <subline no="4" price="205" quantity="305" tax="@1" taxtype="11525" taxcategory="12686"/>
+    <subline no="5" price="206" quantity="306" tax="@1" taxtype="11525" taxcategory="12686"/>
+    <subline no="6" price="207" quantity="307" tax="@1" taxtype="11525" taxcategory="12686"/>
+  </line>
+  <line no="3" price="301" quantity="401" tax="@0" taxtype="11537" taxcategory="11517">
+    <subline no="1" price="302" quantity="402" tax="@1" taxtype="11525" taxcategory="12686"/>
+    <subline no="2" price="303" quantity="403" tax="@5" taxtype="11525" taxcategory="12686"/>
+    <subline no="3" price="304" quantity="404" tax="@2" taxtype="11532" taxcategory="12686"/>
+    <subline no="4" price="305" quantity="405" tax="@5" taxtype="11537" taxcategory="12686"/>
+    <subline no="5" price="306" quantity="406" tax="@3" taxtype="11526" taxcategory="11516"/>
+    <subline no="6" price="307" quantity="407" tax="@4" taxtype="11534" taxcategory="11516"/>
+  </line>
+  <line no="4" price="401" quantity="501" tax="@0" taxtype="11529" taxcategory="11517"/>
+</lines>

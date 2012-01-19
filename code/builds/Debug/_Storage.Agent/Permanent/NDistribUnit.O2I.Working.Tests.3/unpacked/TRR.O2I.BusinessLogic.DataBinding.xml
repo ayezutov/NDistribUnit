@@ -1,0 +1,1009 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TRR.O2I.BusinessLogic.DataBinding</name>
+    </assembly>
+    <members>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.BindingDirection">
+            <summary>
+            Used to describe binding direction.
+            </summary>
+        </member>
+        <member name="F:TRR.O2I.BusinessLogic.DataBinding.BindingDirection.Both">
+            <summary>
+            Binded to view ande from view.
+            </summary>
+        </member>
+        <member name="F:TRR.O2I.BusinessLogic.DataBinding.BindingDirection.FromView">
+            <summary>
+            Bind from view.
+            </summary>
+        </member>
+        <member name="F:TRR.O2I.BusinessLogic.DataBinding.BindingDirection.ToView">
+            <summary>
+            Bind to view.
+            </summary>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.BindingItem">
+            <summary>
+            Contains information about one binding item
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.BindingItem.FormatterType">
+            <summary>
+            Gets or sets the type of the formatter.
+            </summary>
+            <value>The type of the formatter.</value>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.BindingItem.BindingDirection">
+            <summary>
+            Gets or sets the binding direction.
+            </summary>
+            <value>The binding direction.</value>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.BindingItem.ControlId">
+            <summary>
+            Gets or sets the control id.
+            </summary>
+            <value>The control id.</value>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.BindingItem.TargetProperty">
+            <summary>
+            Gets or sets the target property.
+            </summary>
+            <value>The target property.</value>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.BindingItem.Order">
+            <summary>
+            Gets or sets the order.
+            </summary>
+            <value>The order.</value>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.BindingItem.SourceProperty">
+            <summary>
+            Gets or sets the source property.
+            </summary>
+            <value>The source property.</value>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.BindingItem.InnerItems">
+            <summary>
+            Gets the inner items.
+            </summary>
+            <value>The inner items.</value>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.BindingItem.DataName">
+            <summary>
+            Gets or sets the name of the data.
+            </summary>
+            <value>The name of the data.</value>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.BindingItem.ContainerControlId">
+            <summary>
+            Gets or sets the container control id.
+            </summary>
+            <value>The container control id.</value>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.BindingItem.ClassName">
+            <summary>
+            Gets or sets the name of the class.
+            </summary>
+            <value>The name of the class.</value>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.BindingMapCachingProxy">
+            <summary>
+            Provides functionality of getting binding maps.
+            </summary>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.IBindingMapCachingProxy">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.IBindingMapCachingProxy.Parse(System.Func{System.String,System.String},System.String)">
+            <summary>
+            Creates binding map from xml.
+            </summary>
+            <param name="loadBindingMap">The load binding map function.</param>
+            <param name="mapName">Name of the map.</param>
+            <returns>
+            Binding map.
+            </returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.BindingMapCachingProxy.TRR#O2I#BusinessLogic#DataBinding#IBindingMapCachingProxy#Parse(System.Func{System.String,System.String},System.String)">
+            <summary>
+            Creates binding map from XML.
+            </summary>
+            <param name="loadBindingMapXml">The load binding map function.</param>
+            <param name="mapName">Name of the map.</param>
+            <returns>
+            Binding map.
+            </returns>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.BindingMapFactory">
+            <summary>
+            Creates instances of binding maps.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.BindingMapFactory.CreateDatabindingDescriptors(System.Collections.Generic.IEnumerable{TRR.O2I.BusinessLogic.DataBinding.BindingItem})">
+            <summary>
+            Creates the databinding descriptors.
+            </summary>
+            <param name="bindingItems">The binding items.</param>
+            <returns></returns>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.CompiledBindingMap">
+            <summary>
+            Data binding map
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.CompiledBindingMap.#ctor(System.Collections.Generic.IList{TRR.O2I.BusinessLogic.DataBinding.BindingItem})">
+            <summary>
+            Initializes a new instance of the <see cref="T:TRR.O2I.BusinessLogic.DataBinding.CompiledBindingMap"/> class.
+            </summary>
+            <param name="items">The items.</param>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.CompiledBindingMap.BindingItems">
+            <summary>
+            Gets the binding items.
+            </summary>
+            <value>The binding items.</value>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor">
+            <summary>
+            Represents data binding description for a single property (as it's stored in XML configuration file)
+            </summary>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor">
+            <summary>
+            Base interface for Databinding Descriptor
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor.GetFormatter">
+            <summary>
+            Gets or sets the formatter.
+            </summary>
+            <value>The formatter.</value>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor.Value">
+            <summary>
+            Gets or sets value.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor.Direction">
+            <summary>
+            Gets or sets binding direction option.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor.Order">
+            <summary>
+            Gets or sets binding direction.
+            </summary>
+            <value>The order.</value>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor.SourceClassName">
+            <summary>
+            Gets or Sets full class name (with assembly) for source object.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor.MapItemName">
+            <summary>
+            Gets or sets the canonical name of the data.
+            </summary>
+            <value>The name of the data canonical.</value>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor.ControlPropertyPath">
+            <summary>
+            Gets or sets control's property path.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor.ControlID">
+            <summary>
+            Gets or sets control's id.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor.ContainerControlId">
+            <summary>
+            Gets or sets control's container id.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor.SourceProperty">
+            <summary>
+            Gets or sets source object property path.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor.FormatterClassName">
+            <summary>
+            Gets or Sets formatter class name.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.#ctor(System.String,System.Object,System.String,System.String,System.String,System.String,System.String,System.Int32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor"/> class.
+            </summary>
+            <param name="dataCanonicalName">Name of the data canonical.</param>
+            <param name="value">The value.</param>
+            <param name="containerControlId">The container control id.</param>
+            <param name="controlId">The control id.</param>
+            <param name="controlPropertyPath">The control property path.</param>
+            <param name="controlType">Type of the control.</param>
+            <param name="sourceProperty">The source property.</param>
+            <param name="order">The order.</param>
+            <param name="sourceClassName">Name of the source class.</param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.#ctor(System.String,System.Object,System.String,System.String,System.String,System.String,System.String,System.Int32,System.String,System.String,TRR.O2I.BusinessLogic.DataBinding.BindingDirection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor"/> class.
+            </summary>
+            <param name="mapItemName">Name of the data canonical.</param>
+            <param name="dataValue">The value.</param>
+            <param name="containerControlId">The container control id.</param>
+            <param name="controlId">The control ID.</param>
+            <param name="controlPropertyPath">The control property path.</param>
+            <param name="controlType">Type of the control.</param>
+            <param name="sourceProperty">The source property.</param>
+            <param name="order">The order.</param>
+            <param name="objectClassName">Name of the source class.</param>
+            <param name="formatterClassName">Type of the formatter.</param>
+            <param name="direction">The direction.</param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.System#ICloneable#Clone">
+            <summary>
+            Creates a new copy of a current instance.
+            </summary>
+            <returns>
+            A new object that is a copy of this instance.
+            </returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.GetFormatter">
+            <summary>
+            Gets or sets binding direction.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.ToString">
+            <summary>
+            Returns string representation.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.LoadData(System.Object,TRR.O2I.BusinessLogic.DataBinding.DatabindingErrorLog)">
+            <summary>
+            Loads data into the databinding descriptor.
+            </summary>
+            <param name="dataToLoad">The data object.</param>
+            <param name="errorGatherer">The error gatherer.</param>
+            <returns></returns>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.MapItemName">
+            <summary>
+            Gets or sets value.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.Value">
+            <summary>
+            Gets or sets value.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.SourceClassName">
+            <summary>
+            Gets or Sets full class name (with assembly) for source object.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.ControlPropertyPath">
+            <summary>
+            Gets or sets control's property path.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.ControlID">
+            <summary>
+            Gets or sets control's id.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.ContainerControlId">
+            <summary>
+            Gets or sets control's container id.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.ControlType">
+            <summary>
+            Gets or sets required control type.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.SourceProperty">
+            <summary>
+            Gets or sets source object property path.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.Order">
+            <summary>
+            Gets or sets binding direction.
+            </summary>
+            <remarks>to be removed in future releases.</remarks>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.Direction">
+            <summary>
+            Gets or sets binding direction option.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.FormatterClassName">
+            <summary>
+            Gets or Sets formatter class name.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor.IsContainerControlIdDefined">
+            <summary>
+            Gets a value indicating whether this instance is container control id defined.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is container control id defined; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptorCollection">
+            <summary>
+            Represents a collection of <see cref="T:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptor"/> objects
+            </summary>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptorCollection">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptorCollection.LoadDataToBindingMap(System.Collections.Hashtable)">
+            <summary>
+            Clones binding map and loads data into it.
+            </summary>
+            <param name="data">Data to load into the map.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptorCollection.FindByControl(System.Web.UI.Control)">
+            <summary>
+            Selects databinding infos that belongs to given controlToFind
+            </summary>
+            <param name="controlToFind">The controlToFind.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptorCollection.Find(System.String,System.String)">
+            <summary>
+            Finds the specified control ID.
+            </summary>
+            <param name="controlId">Control ID.</param>
+            <param name="controlPropertyPath">Control property path.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptorCollection.Add(System.Object)">
+            <summary>
+            Adds the specified object to the collection.
+            </summary>
+            <param name="item">The object to add. </param>
+            <returns>The index at which the new element was inserted</returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptorCollection.GetViewData(System.Web.UI.Control)">
+            <summary>
+            Get data from the view using UI databinding descriptors.
+            </summary>
+            <param name="view">Source view instance.</param>
+            <returns>Data taken off the view.</returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptorCollection.System#ICloneable#Clone">
+            <summary>
+            <see cref="T:System.ICloneable"/> interface implementation.
+            </summary>
+            <returns>New instance this the same values.</returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptorCollection.Clone">
+            <summary>
+            Clones this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptorCollection.Add(System.Object)">
+            <summary>
+            Adds the specified object to the collection.
+            </summary>
+            <param name="item">The object to add. </param>
+            <returns>The index at which the new element was inserted</returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptorCollection.Find(System.String,System.String)">
+            <summary>
+            Finds the specified control ID.
+            </summary>
+            <param name="controlId">Control ID.</param>
+            <param name="controlPropertyPath">Control property path.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptorCollection.ToString">
+            <summary>
+            Returns string description.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptorCollection.FindByControl(System.Web.UI.Control)">
+            <summary>
+            Selects databinding infos that belongs to given control to find
+            </summary>
+            <param name="controlToFind">The control to find.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptorCollection.LoadDataToTheNodes(System.Collections.Hashtable,TRR.O2I.BusinessLogic.DataBinding.DatabindingErrorLog,System.String,System.Object)">
+            <summary>
+            Loads data to the node of the binding map.
+            </summary>
+            <param name="data">Data to bind.</param>
+            <param name="errorGatherer">Object to gather errors.</param>
+            <param name="collectionBindingName">Name of the parent collection. If empty - then ignored.</param>
+            <param name="collectionDataItem">Data item of the parent collection. If empty - then ignored.</param>
+            <returns>Collection of bindings with loaded data.</returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptorCollection.IsCollectionType(System.Object)">
+            <summary>
+            Determines whether [is collection type] [the specified old value].
+            </summary>
+            <param name="oldValue">The old value.</param>
+            <returns>
+            	<c>true</c> if [is collection type] [the specified old value]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptorCollection.LoadDataToBindingMap(System.Collections.Hashtable)">
+            <summary>
+            Clones binding map and loads data into it.
+            </summary>
+            <param name="data">Data to load into the map.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptorCollection.GetViewData(System.Web.UI.Control)">
+            <summary>
+            Get data from the view using UI databinding descriptors.
+            </summary>
+            <param name="view">Source view instance.</param>
+            <returns>Data taken off the view.</returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptorCollection.ReParseSubEntities(System.Object)">
+            <summary>
+            Res the parse sub entities.
+            </summary>
+            <param name="targetValue">The target value.</param>
+            <returns></returns>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingDescriptorCollection.Item(System.Int32)">
+            <summary>
+            Gets or sets the object at the specified index in the collection.
+            </summary>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.DatabindingErrorLog">
+            <summary>
+            Private class to gather errors
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingErrorLog.RenderErrors">
+            <summary>
+            Renders the errors.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingErrorLog.AddNotImplementedMapTypeError(TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor)">
+            <summary>
+            Adds the not implemented map type error.
+            </summary>
+            <param name="databindingDescriptorWithData">The databinding descriptor with data.</param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingErrorLog.AddSourcePropertyDoesNotExistError(TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor)">
+            <summary>
+            Adds the source property does not exist error.
+            </summary>
+            <param name="databindingDescriptorWithData">The databinding descriptor with data.</param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingErrorLog.AddFormatterExceptionError(TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor,System.Exception)">
+            <summary>
+            Adds the formatter exception error.
+            </summary>
+            <param name="databindingDescriptorWithData">The databinding descriptor with data.</param>
+            <param name="ex">The ex.</param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingErrorLog.AddProcessingDatabindingError(TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor,System.Exception)">
+            <summary>
+            Adds the processing databinding error.
+            </summary>
+            <param name="dbDesc">The db desc.</param>
+            <param name="e">The e.</param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingErrorLog.AddUnableToFindTargetContainerControlError(TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor)">
+            <summary>
+            Adds the unable to find target container control error.
+            </summary>
+            <param name="entity">The entity.</param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingErrorLog.AddUnableToFindTargetControlError(TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor)">
+            <summary>
+            Adds the unable to find target control error.
+            </summary>
+            <param name="entity">The entity.</param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingErrorLog.AddUnableToAccessTargetPropertyError(System.Object,TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor)">
+            <summary>
+            Adds the unable to access target property error.
+            </summary>
+            <param name="ctrl">The CTRL.</param>
+            <param name="entity">The entity.</param>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingErrorLog.HasErrors">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.DatabindingException">
+            <summary>
+            Databinding exception
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingException.#ctor(System.String)">
+            <summary>
+            Constructs exception class given exception detail message.
+            </summary>
+            <param name="details">Exception detail message.</param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingException.#ctor(System.String,System.Exception)">
+            <summary>
+            Constructs exception class given exception detail message and inner exception for enveloping.
+            </summary>
+            <param name="details">Exception detail message.</param>
+            <param name="innerException">Reference to inner exception to be enveloped.</param>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfo">
+            <summary>
+            Describes a single databind instance.
+            Supports association between control instance, 
+            control property and a descriptor how to bind data to this control.
+            </summary>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.IDatabindingInfo">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.IDatabindingInfo.RetrieveDataFromView">
+            <summary>
+            Retrieves the data from view.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.IDatabindingInfo.PassDataToView">
+            <summary>
+            Passes the data to view.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.IDatabindingInfo.ControlInstance">
+            <summary>
+            Gets or sets an instance of a control.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.IDatabindingInfo.Descriptor">
+            <summary>
+            Gets or sets databindgin descriptor.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfo.#ctor(System.Object,TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.IMemberDescriptor,TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptor)">
+            <summary>
+            Initializes a new instance of the DatabindingInfo class.
+            </summary>
+            <param name="controlInstance">An instance ofa  control.</param>
+            <param name="controlPropertyDesc">An instance of a control' property.</param>
+            <param name="descriptor">An instance of Databinding descriptor.</param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfo.#ctor(System.Object,TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.IMemberDescriptor)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfo"/> class.
+            </summary>
+            <param name="controlInstance">The control instance.</param>
+            <param name="controlPropertyDesc">The control property desc.</param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfo.TRR#O2I#BusinessLogic#DataBinding#IDatabindingInfo#RetrieveDataFromView">
+            <summary>
+            Retrieves the data from view.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfo.TRR#O2I#BusinessLogic#DataBinding#IDatabindingInfo#PassDataToView">
+            <summary>
+            Passes the data to view.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfo.EncodeTags(System.String)">
+            <summary>
+            Performs replace of characters in text string that may have special function in HTML
+            or SQL queries.
+            </summary>
+            <param name="text">string for processing.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfo.PassDataToView(System.ComponentModel.PropertyDescriptor,System.Object)">
+            <summary>
+            Passes the data to view.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="sourceObject">The source object.</param>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfo.ControlInstance">
+            <summary>
+            Gets or sets an instance of a control.
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfo.Descriptor">
+            <summary>
+            Gets or sets databindgin descriptor.
+            </summary>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfoCollection">
+            <summary>
+            Represents a collection of DatabindingInfo objects
+            </summary>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.IDatabindingInfoCollection">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.IDatabindingInfoCollection.Add(TRR.O2I.BusinessLogic.DataBinding.IDatabindingInfo)">
+            <summary>
+            Adds the specified DatabindingInfo to the collection.
+            </summary>
+            <param name="item">The DatabindingInfo to add. </param>
+            <returns>The index at which the new element was inserted</returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.IDatabindingInfoCollection.SortByOrder">
+            <summary>
+            Sorts the elements in the entire collection by order.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.IDatabindingInfoCollection.PassDataToView">
+            <summary>
+            Binds data to control (view).
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.IDatabindingInfoCollection.RetrieveDataFromView">
+            <summary>
+            Binds data from control (view).
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfoCollection.TRR#O2I#BusinessLogic#DataBinding#IDatabindingInfoCollection#Add(TRR.O2I.BusinessLogic.DataBinding.IDatabindingInfo)">
+            <summary>
+            Adds the specified DatabindingInfo to the collection.
+            </summary>
+            <param name="item">The DatabindingInfo to add. </param>
+            <returns>The index at which the new element was inserted</returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfoCollection.TRR#O2I#BusinessLogic#DataBinding#IDatabindingInfoCollection#SortByOrder">
+            <summary>
+            Sorts the elements in the entire collection by order.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfoCollection.TRR#O2I#BusinessLogic#DataBinding#IDatabindingInfoCollection#PassDataToView">
+            <summary>
+            Binds data to control (view).
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfoCollection.RetrieveDataFromView">
+            <summary>
+            Binds data from control (view).
+            </summary>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfoComparerByOrder">
+            <summary>
+            Exposes a method that compares two objects.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingInfoComparerByOrder.Compare(System.Object,System.Object)">
+            <summary>
+            Compares two objects and returns a value indicating whether one is less than, equal to or greater than the other.
+            </summary>
+            <param name="a">First object to compare.</param>
+            <param name="b">Second object to compare. </param>
+            <returns>
+            Less than zero if x is less than y. 
+            Zero if x equals y. 
+            Greater than zero if x is greater than y. 
+            </returns>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.DatabindingManager">
+            <summary>
+            Represents automated databinding technique.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingManager.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:TRR.O2I.BusinessLogic.DataBinding.DatabindingManager"/> class.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingManager.#ctor(TRR.O2I.BusinessLogic.DataBinding.IBindingMapCachingProxy)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TRR.O2I.BusinessLogic.DataBinding.DatabindingManager"/> class.
+            </summary>
+            <param name="proxy">The proxy.</param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingManager.DataToView(System.Collections.Hashtable,System.Web.UI.Control,System.Func{System.String,System.String},System.String)">
+            <summary>
+            Binds data to the view by the map mentioned.
+            </summary>
+            <param name="data">Data to bind.</param>
+            <param name="view">Controls to bind on.</param>
+            <param name="loadBindingMapXmlFunction">Binding map, to bind by.</param>
+            <param name="mapName">Name of the map.</param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingManager.ViewToData(System.Web.UI.Control,System.Func{System.String,System.String},System.String)">
+            <summary>
+            Gathers data from view by the map mentioned.
+            </summary>
+            <param name="view">The view.</param>
+            <param name="loadBindingMapXmlFunction">The binding map XML.</param>
+            <param name="mapName">Name of the map.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingManager.BindView(System.Web.UI.Control,TRR.O2I.BusinessLogic.DataBinding.IDatabindingDescriptorCollection,System.Boolean)">
+            <summary>
+            Binds to or from specified view passes databound entities. 
+            Yau : used from smartdatagrid only !? 
+            </summary>
+            <param name="view">An instance of a control to bind to or from.</param>
+            <param name="databindingEntities">A DatabindingDescriptorCollection to bind to or from.</param>
+            <param name="needToPassDataToView">Binding needToPassDataToView.</param>
+            
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.BindingMapParser">
+            <summary>
+            Provides parsing binding maps from XML files.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.BindingMapParser.LoadBindingMap(System.String)">
+            <summary>
+            Loads the binding map.
+            </summary>
+            <param name="xmlMap">The XML map.</param>
+            <returns></returns>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.DatabindingTypeConverter">
+            <summary>
+            Databinding helper class
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.DatabindingTypeConverter.Convert(System.Object@,System.Type)">
+            <summary>
+            Converts the source object to an object of the destination type
+            </summary>
+            <param name="srcObject">object to convert</param>
+            <param name="dstType">destination type for the conversion</param>
+            <returns>
+            true if the object was converted to an object of the destination type, otherwise false
+            </returns>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.FormatterFactory">
+            <summary>
+            Factory for formatters.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.FormatterFactory.CreateFormatter(System.String)">
+            <summary>
+            Creates the formatter.
+            </summary>
+            <param name="typeName">Name of the type.</param>
+            <returns></returns>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.IDatabindingFormatter">
+            <summary>
+            Class that implements this interface allows to format and parse data objects.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.IDatabindingFormatter.Format(System.Object)">
+            <summary>
+            Format object.
+            </summary>
+            <param name="data">Object to format.</param>
+            <returns>Formatted data.</returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.IDatabindingFormatter.Parse(System.Object)">
+            <summary>
+            Restore object from formatted data.
+            </summary>
+            <param name="formattedData">Formatted data.</param>
+            <returns>Object.</returns>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.CombinedMemberDescriptor">
+            <summary>
+             Represents a chain of Member Descriptors
+            </summary>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.IMemberDescriptor">
+            <summary>
+             Represents a member of a type
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.IMemberDescriptor.GetValue(System.Object)">
+            <summary>
+             Gets value of the member
+            </summary>
+            <param name="obj">Source object the value of which should be got</param>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.IMemberDescriptor.SetValue(System.Object,System.Object)">
+            <summary>
+             Sets value of the member
+            </summary>
+            <param name="obj">Target object the value of which should be set</param>
+            <param name="value"></param>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.IMemberDescriptor.Type">
+            <summary>
+             The type of the member
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.IMemberDescriptor.Name">
+            <summary>
+             The name of the member
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.CombinedMemberDescriptor.GetValue(System.Object)">
+            <summary>
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.CombinedMemberDescriptor.SetValue(System.Object,System.Object)">
+            <summary>
+            </summary>
+            <param name="obj"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.CombinedMemberDescriptor.AddMember(TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.IMemberDescriptor)">
+            <summary>
+            Adds a Member Descriptor to the chain
+            </summary>
+            <param name="member"></param>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.CombinedMemberDescriptor.Type">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.CombinedMemberDescriptor.Name">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.IndexerDescriptor">
+            <summary>
+             Represents an Indexer of a class
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.IndexerDescriptor.#ctor(System.Reflection.PropertyInfo,System.Object[])">
+            <summary>
+            Creates instance of IndexerDescriptor
+            </summary>
+            <param name="indexerProperty"></param>
+            <param name="parameters"></param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.IndexerDescriptor.GetValue(System.Object)">
+            <summary>
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.IndexerDescriptor.SetValue(System.Object,System.Object)">
+            <summary>
+            </summary>
+            <param name="obj"></param>
+            <param name="value"></param>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.IndexerDescriptor.Type">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.IndexerDescriptor.Name">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.MemberPathParser">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.MemberPathParser.Parse(System.String)">
+            <summary>
+            </summary>
+            <param name="memberPath"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.MemberPathElement">
+            <summary>
+             A part of a path: describes a single member
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.MemberPathElement.#ctor">
+            <summary>
+            Instantiates a new instance of member element
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.MemberPathElement.Type">
+            <summary>
+            The type of the member
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.MemberPathElement.Name">
+            <summary>
+            The name of the member ('Item' for indexer)
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.MemberPathElement.Parameters">
+            <summary>
+            The parameters, which are passed to the indexer
+            </summary>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.MemberType">
+            <summary>
+            The type of the member
+            </summary>
+        </member>
+        <member name="F:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.MemberType.Property">
+            
+        </member>
+        <member name="F:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.MemberType.Method">
+            
+        </member>
+        <member name="F:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.MemberType.Indexer">
+            
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.PropertyDescriptor">
+            <summary>
+            The descriptor of a property, which is ised while binding
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.PropertyDescriptor.#ctor(System.Reflection.PropertyInfo)">
+            <summary>
+             Instantiates the instance of <see cref="T:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.PropertyDescriptor"/>
+            </summary>
+            <param name="property"></param>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.PropertyDescriptor.GetValue(System.Object)">
+            <summary>
+             Gets value of the member
+            </summary>
+            <param name="obj">Source object the value of which should be got</param>
+            <returns></returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.PropertyDescriptor.SetValue(System.Object,System.Object)">
+            <summary>
+             Sets value of the member
+            </summary>
+            <param name="obj">Target object the value of which should be set</param>
+            <param name="value"></param>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.PropertyDescriptor.Type">
+            <summary>
+             The type of the member
+            </summary>
+        </member>
+        <member name="P:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.PropertyDescriptor.Name">
+            <summary>
+             The name of the member
+            </summary>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.ReflectionHelper">
+            <summary>
+            Helper class that provides simplified reflection methods.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.ReflectionHelper.GetPropertyEx(System.Object,System.String)">
+            <summary>Get a property or a field (even a complex one using recursion)</summary>
+            <param name="obj">source object</param>
+            <param name="memberPath">property or field to get</param>
+            <returns>desired property or field (or null if it hasn't been found)</returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.ReflectionHelper.ConvertTypes(System.Object,System.Type)">
+            <summary>
+            Converts the source object to an object of the destination type
+            </summary>
+            <param name="source">object to convert</param>
+            <param name="destType">destination type for the conversion</param>
+            <returns>
+            the object converted or null if the conversion can't be done
+            </returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.ReflectionHelper.GetCommonProperty(System.Object,System.String)">
+            <summary>Get a simple property or field</summary>
+            <param name="obj">source object</param>
+            <param name="member">property or field to get</param>
+            <returns>desired property or field (or null if it hasn't been found)</returns>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.DataBinding.ReflectionUtils.ReflectionHelper.GetCommonIndexer(System.Object,System.String)">
+            <summary>Get a simple property or field</summary>
+            <param name="obj">source object</param>
+            <param name="member">property or field to get</param>
+            <returns>desired property or field (or null if it hasn't been found)</returns>
+        </member>
+    </members>
+</doc>

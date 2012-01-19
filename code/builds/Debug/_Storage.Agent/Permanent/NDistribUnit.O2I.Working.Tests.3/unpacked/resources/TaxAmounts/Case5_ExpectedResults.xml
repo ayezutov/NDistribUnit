@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+
+  <taxResultsForCountries>
+    <countries>
+      <country name="USA"/>
+      <country name="Other"/>
+    </countries>
+    <taxResults>
+      <result tax="20" amount="808364.80"/>
+    </taxResults>
+  </taxResultsForCountries>
+
+	<taxResultsForCountries>
+		<countries>
+			<country name="Germany"/>
+		</countries>
+		<taxResults>
+			<result tax="7" amount="282927.68"/>
+		</taxResults>
+	</taxResultsForCountries>
+
+	<taxResultsForCountries>
+		<countries>
+			<country name="Belgium"/>
+		</countries>
+		<taxResults>
+			<result tax="6" amount="242509.44"/>
+		</taxResults>
+	</taxResultsForCountries>
+
+	<taxResultsForCountries>
+		<countries>
+			<country name="France"/>
+		</countries>
+		<taxResults>
+			<result tax="2.1" amount="84878.30"/>
+		</taxResults>
+	</taxResultsForCountries>
+
+	<taxResultsForCountries>
+		<countries>
+			<country name="Netherlands"/>
+		</countries>
+		<taxResults>
+			<result tax="6" amount="242509.44"/>
+		</taxResults>
+	</taxResultsForCountries>
+
+	<taxResultsForCountries>
+		<countries>
+			<country name="Norway"/>
+		</countries>
+		<taxResults>
+			<result tax="8" amount="323345.92"/>
+		</taxResults>
+	</taxResultsForCountries>
+
+	<taxResultsForCountries>
+		<countries>
+			<country name="Spain"/>
+		</countries>
+		<taxResults>
+			<result tax="2" amount="80836.48"/>
+		</taxResults>
+	</taxResultsForCountries>
+
+	<taxResultsForCountries>
+		<countries>
+			<country name="Switzerland"/>
+		</countries>
+		<taxResults>
+			<result tax="2.5" amount="101045.60"/>
+		</taxResults>
+	</taxResultsForCountries>
+
+	<taxResultsForCountries>
+		<countries>
+			<country name="UnitedKingdom"/>
+		</countries>
+		<taxResults>
+			<result tax="5" amount="202091.20"/>
+		</taxResults>
+	</taxResultsForCountries>
+</root>

@@ -1,0 +1,122 @@
+<?soxtype urn:x-commerceone:document:com:commerceone:XCBL30:XCBL30.sox$1.0?><OrderResponse><OrderResponseHeader><OrderResponseNumber><BuyerOrderResponseNumber>bf2b77e6-cf92-434d-9d3c-817e334d8f0b</BuyerOrderResponseNumber><SellerOrderResponseNumber>SupplierRefNo</SellerOrderResponseNumber></OrderResponseNumber><OrderResponseIssueDate>20080122T16:12:05+00:00</OrderResponseIssueDate><OrderResponseDocTypeCoded>OrderResponse</OrderResponseDocTypeCoded><OrderReference><Reference><RefNum>bf2b77e6-cf92-434d-9d3c-817e334d8f0b</RefNum><RefDate>20070510T12:00:00-03:00</RefDate></Reference></OrderReference><SellerParty><Party><PartyID><Identifier><Agency><AgencyCoded>DunAndBradstreet</AgencyCoded></Agency><Ident>888884002</Ident></Identifier></PartyID><NameAddress><Name1>INTEGRAL COMPUTACION SOCIEDAD ANONI - </Name1><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>3063069923</Ident></Identifier><Street>764 Paraguay</Street><PostalCode>1057</PostalCode><City>CIUDAD DE BUENOS AIRES</City><Country><CountryCoded>AR</CountryCoded></Country></NameAddress><OrderContact><Contact><ContactName>11 4893-2225</ContactName><ListOfContactNumber><ContactNumber><ContactNumberValue>11 4893-2225</ContactNumberValue><ContactNumberTypeCoded>TelephoneNumber</ContactNumberTypeCoded></ContactNumber><ContactNumber><ContactNumberValue>11 4893-2227</ContactNumberValue><ContactNumberTypeCoded>FaxNumber</ContactNumberTypeCoded></ContactNumber></ListOfContactNumber></Contact></OrderContact></Party></SellerParty><BuyerParty><Party><PartyID><Identifier><Agency><AgencyCoded>DunAndBradstreet</AgencyCoded></Agency><Ident>888881111</Ident></Identifier></PartyID><NameAddress><Name1>YPF S.A. - </Name1><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>0100</Ident></Identifier><Street>Av. Roque Saenz Pe�a 777</Street><StreetSupplement1>Buenos Aires</StreetSupplement1><StreetSupplement2>Argentina</StreetSupplement2><PostalCode>1364</PostalCode><City>Capital Federal</City></NameAddress></Party></BuyerParty><Purpose><PurposeCoded>Original</PurposeCoded></Purpose><ResponseType><ResponseTypeCoded>Accepted</ResponseTypeCoded></ResponseType><OrderHeaderChanges><OrderHeader><OrderNumber><BuyerOrderNumber>bf2b77e6-cf92-434d-9d3c-817e334d8f0b</BuyerOrderNumber></OrderNumber><OrderIssueDate>20070510T12:00:00-03:00</OrderIssueDate><OrderReferences><AccountCode><Reference><RefNum>888881111</RefNum></Reference></AccountCode></OrderReferences><ReleaseNumber>01</ReleaseNumber><Purpose><PurposeCoded>Original</PurposeCoded></Purpose><OrderType><OrderTypeCoded>Other</OrderTypeCoded><OrderTypeCodedOther>ZMIC</OrderTypeCodedOther></OrderType><OrderCurrency><Currency><CurrencyCoded>USD</CurrencyCoded></Currency></OrderCurrency><OrderLanguage><Language><LanguageCoded>es</LanguageCoded></Language></OrderLanguage><OrderParty><BuyerParty><Party><PartyID><Identifier><Agency><AgencyCoded>DunAndBradstreet</AgencyCoded></Agency><Ident>888881111</Ident></Identifier></PartyID><NameAddress><Name1>YPF S.A. - </Name1><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>0100</Ident></Identifier><Street>Av. Roque Saenz Pe�a 777</Street><StreetSupplement1>Buenos Aires</StreetSupplement1><StreetSupplement2>Argentina</StreetSupplement2><PostalCode>1364</PostalCode><City>Capital Federal</City></NameAddress></Party></BuyerParty><SellerParty><Party><PartyID><Identifier><Agency><AgencyCoded>DunAndBradstreet</AgencyCoded></Agency><Ident>888884002</Ident></Identifier></PartyID><NameAddress><Name1>INTEGRAL COMPUTACION SOCIEDAD ANONI - </Name1><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>3063069923</Ident></Identifier><Street>764 Paraguay</Street><PostalCode>1057</PostalCode><City>CIUDAD DE BUENOS AIRES</City><Country><CountryCoded>AR</CountryCoded></Country></NameAddress><OrderContact><Contact><ContactName>11 4893-2225</ContactName><ListOfContactNumber><ContactNumber><ContactNumberValue>11 4893-2225</ContactNumberValue><ContactNumberTypeCoded>TelephoneNumber</ContactNumberTypeCoded></ContactNumber><ContactNumber><ContactNumberValue>11 4893-2227</ContactNumberValue><ContactNumberTypeCoded>FaxNumber</ContactNumberTypeCoded></ContactNumber></ListOfContactNumber></Contact></OrderContact></Party></SellerParty><ShipToParty><Party><PartyID><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>0200</Ident></Identifier></PartyID><NameAddress><Name1>Ver informaci�n de destinatario - </Name1><Name2>final en cada �tem</Name2></NameAddress></Party></ShipToParty><BillToParty><Party><PartyID><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>0200</Ident></Identifier></PartyID><NameAddress><Name1>YPF S.A. - </Name1><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>0100</Ident></Identifier><Street>Av. Roque Saenz Pe�a 777</Street><StreetSupplement1>Buenos Aires</StreetSupplement1><StreetSupplement2>Argentina</StreetSupplement2><PostalCode>1364</PostalCode><City>Capital Federal</City></NameAddress></Party></BillToParty></OrderParty><OrderPaymentInstructions><PaymentInstructions><PaymentTerms><PaymentTerm><PaymentTermCoded>Other</PaymentTermCoded><PaymentTermCodedOther>SAP:30 D�as Fecha Pre</PaymentTermCodedOther><PaymentTermDetails><Discounts><NetDaysDue>30</NetDaysDue><NetDateTimeRefCoded>InvoiceDate</NetDateTimeRefCoded></Discounts></PaymentTermDetails></PaymentTerm><PaymentTermsNote>MONEDA DEL PEDIDO: USD</PaymentTermsNote></PaymentTerms><PaymentMethod><PaymentMeanCoded>InstrumentNotDefined</PaymentMeanCoded><PaymentMeanCodedOther>N/A</PaymentMeanCodedOther></PaymentMethod></PaymentInstructions></OrderPaymentInstructions><OrderHeaderNote>
+Provisi�n del siguiente material:
+
+TECLADO PS2 - CANTIDAD 1
+MINIMOUSE - CANTIDAD 1
+
+Lugar de entrega:
+Edificio Torreblanca - Tucum�n 744
+Recibe: Maximiliano Bley
+Internos: 10822
+Usuario: Rodriguez Liliana
+
+
+El presente Contrato Marco Surge del Cuncurso Privado: "Provisi�n de
+Accesorios y Repuestos para Microinform�tica", de acuerdo a la
+propuesta adjunta.
+
+Las cantidades mencionadas son s�lo indicativas YPF SA requerir� solo
+las cantidades de material que considere necesario.</OrderHeaderNote><ListOfStructuredNote><StructuredNote><GeneralNote /><NoteID>007</NoteID></StructuredNote><StructuredNote><GeneralNote>LIBRE</GeneralNote><NoteID>F23</NoteID></StructuredNote><StructuredNote><GeneralNote>Las Facturas deber�n ser presentadas en la oficina de Recepci�n de
+Facturas de YPF S.A. sita en esta Sede, Esmeralda 255 PB, los d�as
+Lunes, Miercoles y Viernes en el horario de 9:00 a 12:30 hs, debiendo
+acompa�ar las mismas por Remito detallado y conformado, el presente
+Pedio y n�mero de entrada de materiales el cual ser� otorgado a esa
+firma por personal receptor de los mismos.
+
+</GeneralNote><NoteID>Terms of delivery</NoteID></StructuredNote><StructuredNote><GeneralNote>Integral Computaci�n S.A., queda sujeta a las normas tributarias que
+resulten de aplicaci�n general.</GeneralNote><NoteID>Pricing types</NoteID></StructuredNote><StructuredNote><GeneralNote>El presente Contrato Marco contara con un Periodo de validez de 12
+meses contados a partir del 20 de Marzo de 2006.</GeneralNote><NoteID>Deadlines</NoteID></StructuredNote><StructuredNote><GeneralNote>Toda compra y/o contrataci�n efectuada en el mercado local y cuya
+facturaci�n sea pactada en D�lares Estadounidenses, ser� pagada a los
+30 (treinta) d�as de la fecha de presentaci�n de la factura.
+Las facturas de estas operaciones deber�n indicar el tipo de cambio
+considerado para la liquidaci�n de los impuestos correspondientes, que
+deber� ser igual a la cotizaci�n de cierre del d�lar estadounidense en
+el mercado libre de cambios -tipo vendedor- publicada por el Banco de
+la Naci�n Argentina y vigente al d�a anterior a la fecha de emisi�n de
+la factura.
+
+1�) La factura correspondiente a la compra o contrataci�n efectuada
+ser� abonada con la cantidad de Pesos (u otra moneda de curso legal en
+Argentina), conforme la cotizaci�n de cierre del d�lar estadounidense
+en el mercado libre de cambios - tipo vendedor - del Banco de la Naci�
+Argentina, del d�a h�bil anterior al de emisi�n de la factura.
+
+2�) En el caso indicado en el inciso 1�) precedente, el proveedor
+emitir� una Nota de D�bito o Cr�dito (seg�n corresponda), en Pesos,
+ajustando la diferencia entre el tipo de cambio indicado en la factura
+que dio origen al pago y la cotizaci�n del d�lar estadounidense en el
+mercado libre de cambios - tipo vendedor -, publicado por el Banco
+Naci�n Argentina, del cierre del d�a anterior a la fecha de puesta a
+disposici�n del pago de esa factura en la entidad bancaria determinada
+por YPF. Para que corresponda la aplicaci�n de lo previsto en este
+inciso 2�), ser� necesaria que la diferencia en la cotizaci�n del d�la
+estadounidense, supere el valor m�nimo de 5% y el monto de la
+diferencia en Pesos sea mayor a $ 100=.
+
+Esta Nota de D�bito o Cr�dito deber� contener en su texto
+imprescindiblemente los siguientes datos:
+
+�,,N�mero e importe de la factura que ajusta.-
+�,,Tipo de cambio de la factura original.-
+�,,Tipo de cambio aplicado para confeccionar la nota de d�bito o
+cr�dito.-
+�,,Texto indicando: ?La presente Nota de D�bito (Cr�dito) cancela en
+forma definitiva la/s factura/s Nros. xxxxxxxxxxxxxxxxxxxxxxxxxx?
+�,,N�mero de Pedido /Orden de Compra/ Contrato que origin� la
+obligaci�n
+
+Dicha Nota de D�bito o Cr�dito ser� cancelada a los SIETE (7) d�as de
+la fecha de presentaci�n (de la Nota de Cr�dito o D�bito) en Recepci�n
+de Facturas.  Si el vencimiento operara en s�bado, domingo o feriado,
+se cancelar� el d�a inmediato h�bil siguiente.-
+
+</GeneralNote><NoteID>Shipping instructions</NoteID></StructuredNote><StructuredNote><GeneralNote>Son validas las "Condiciones generales de la orden de compra para
+material de industria nacional y/o despachado a plaza"
+</GeneralNote><NoteID>Contract riders</NoteID></StructuredNote></ListOfStructuredNote></OrderHeader></OrderHeaderChanges></OrderResponseHeader><OrderResponseDetail><ListOfOrderResponseItemDetail><OrderResponseItemDetail><ItemDetailResponseCoded>ItemAccepted</ItemDetailResponseCoded><ItemDetailChanges><ItemDetail><BaseItemDetail><LineItemNum><BuyerLineItemNum>00010</BuyerLineItemNum><SellerLineItemNum>00010</SellerLineItemNum></LineItemNum><ItemIdentifiers><PartNumbers><SellerPartNumber><PartNum><PartID>ND</PartID></PartNum></SellerPartNumber><BuyerPartNumber><PartNum><PartID>000000001000034745</PartID></PartNum></BuyerPartNumber><OtherItemIdentifiers><ListOfProductIdentifierCoded><ProductIdentifierCoded><ProductIdentifierQualifierCoded>BuyersInternalProductGroupCode</ProductIdentifierQualifierCoded><ProductIdentifier>1403</ProductIdentifier></ProductIdentifierCoded></ListOfProductIdentifierCoded></OtherItemIdentifiers></PartNumbers><ItemDescription>TECLADO PS2</ItemDescription></ItemIdentifiers><TotalQuantity><Quantity><QuantityValue>1.00</QuantityValue><UnitOfMeasurement><UOMCoded>S7</UOMCoded></UnitOfMeasurement></Quantity></TotalQuantity><ListOfItemReferences><ListOfReferenceCoded><ReferenceCoded><ReferenceTypeCoded>BuyersContractNumber</ReferenceTypeCoded><PrimaryReference><Reference><RefNum>4600003439</RefNum><RefDate>20070511T20:52:14-05:00</RefDate></Reference></PrimaryReference><SupportingReference><Reference><RefNum>00320</RefNum><RefDate>20070511T20:52:14-05:00</RefDate></Reference></SupportingReference></ReferenceCoded></ListOfReferenceCoded></ListOfItemReferences><CountryOfDestination><Country><CountryCoded>AM</CountryCoded></Country></CountryOfDestination><FinalRecipient><Party><PartyID><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>0200</Ident></Identifier></PartyID><NameAddress><Name1>Tecnologia Informatica - </Name1><Street>Av. Roque Saenz Pe�a 777</Street><PostalCode>1364</PostalCode><City>Capital Federal</City><Region><RegionCoded>Other</RegionCoded><RegionCodedOther>00</RegionCodedOther></Region><Country><CountryCoded>AR</CountryCoded></Country></NameAddress></Party></FinalRecipient></BaseItemDetail><PricingDetail><ListOfPrice>
+			<Price>
+				<UnitPrice>
+					<UnitPriceValue>10.03</UnitPriceValue>
+					<Currency>
+						<CurrencyCoded>USD</CurrencyCoded>
+					</Currency>
+					<UnitOfMeasurement>
+						<UOMCoded>S7</UOMCoded>
+					</UnitOfMeasurement>
+				</UnitPrice>
+				<PriceBasisQuantity>
+					<Quantity>
+						<QuantityValue>1.00</QuantityValue>
+						<UnitOfMeasurement>
+							<UOMCoded>S7</UOMCoded>
+						</UnitOfMeasurement>
+					</Quantity>
+				</PriceBasisQuantity>
+			</Price>
+		</ListOfPrice><TotalValue><MonetaryValue><MonetaryAmount>10.03</MonetaryAmount><Currency><CurrencyCoded>USD</CurrencyCoded></Currency></MonetaryValue></TotalValue></PricingDetail><DeliveryDetail><ListOfScheduleLine><ScheduleLine><Quantity><QuantityValue>1.00</QuantityValue><UnitOfMeasurement><UOMCoded>S7</UOMCoded></UnitOfMeasurement></Quantity><ListOfOtherDeliveryDate><ListOfDateCoded><DateCoded><Date>20070524T15:00:00+00:00</Date><DateQualifier><DateQualifierCoded>PromisedForShipment</DateQualifierCoded></DateQualifier></DateCoded></ListOfDateCoded></ListOfOtherDeliveryDate><Transport><TransportID>0</TransportID></Transport></ScheduleLine></ListOfScheduleLine></DeliveryDetail><LineItemNote> - Contrato : 4600003439 - Posici�n : 00320</LineItemNote><ListOfStructuredNote><StructuredNote><GeneralNote>ACCESORIO para PC de ESCRITORIO.-
+Observaciones: En Argentina, c�digo de utilizaci�n exclusiva de la
+Vicepresidencia de Ingenier�a y Tecnolog�a - Proyectos Especiales.
+Grupo de Compras: 109.-</GeneralNote><NoteID>BEST</NoteID></StructuredNote></ListOfStructuredNote></ItemDetail></ItemDetailChanges></OrderResponseItemDetail><OrderResponseItemDetail><ItemDetailResponseCoded>ItemAccepted</ItemDetailResponseCoded><ItemDetailChanges><ItemDetail><BaseItemDetail><LineItemNum><BuyerLineItemNum>00020</BuyerLineItemNum><SellerLineItemNum>00020</SellerLineItemNum></LineItemNum><ItemIdentifiers><PartNumbers><SellerPartNumber><PartNum><PartID>ND</PartID></PartNum></SellerPartNumber><BuyerPartNumber><PartNum><PartID>000000001000034781</PartID></PartNum></BuyerPartNumber><OtherItemIdentifiers><ListOfProductIdentifierCoded><ProductIdentifierCoded><ProductIdentifierQualifierCoded>BuyersInternalProductGroupCode</ProductIdentifierQualifierCoded><ProductIdentifier>1403</ProductIdentifier></ProductIdentifierCoded></ListOfProductIdentifierCoded></OtherItemIdentifiers></PartNumbers><ItemDescription>MINIMOUSE</ItemDescription></ItemIdentifiers><TotalQuantity><Quantity><QuantityValue>1.00</QuantityValue><UnitOfMeasurement><UOMCoded>S7</UOMCoded></UnitOfMeasurement></Quantity></TotalQuantity><ListOfItemReferences><ListOfReferenceCoded><ReferenceCoded><ReferenceTypeCoded>BuyersContractNumber</ReferenceTypeCoded><PrimaryReference><Reference><RefNum>4600003439</RefNum><RefDate>20070511T20:52:14-05:00</RefDate></Reference></PrimaryReference><SupportingReference><Reference><RefNum>01600</RefNum><RefDate>20070511T20:52:14-05:00</RefDate></Reference></SupportingReference></ReferenceCoded></ListOfReferenceCoded></ListOfItemReferences><CountryOfDestination><Country><CountryCoded>AM</CountryCoded></Country></CountryOfDestination><FinalRecipient><Party><PartyID><Identifier><Agency><AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded></Agency><Ident>0200</Ident></Identifier></PartyID><NameAddress><Name1>Tecnologia Informatica - </Name1><Street>Av. Roque Saenz Pe�a 777</Street><PostalCode>1364</PostalCode><City>Capital Federal</City><Region><RegionCoded>Other</RegionCoded><RegionCodedOther>00</RegionCodedOther></Region><Country><CountryCoded>AR</CountryCoded></Country></NameAddress></Party></FinalRecipient></BaseItemDetail><PricingDetail><ListOfPrice>
+			<Price>
+				<UnitPrice>
+					<UnitPriceValue>27.00</UnitPriceValue>
+					<Currency>
+						<CurrencyCoded>USD</CurrencyCoded>
+					</Currency>
+					<UnitOfMeasurement>
+						<UOMCoded>S7</UOMCoded>
+					</UnitOfMeasurement>
+				</UnitPrice>
+				<PriceBasisQuantity>
+					<Quantity>
+						<QuantityValue>1.00</QuantityValue>
+						<UnitOfMeasurement>
+							<UOMCoded>S7</UOMCoded>
+						</UnitOfMeasurement>
+					</Quantity>
+				</PriceBasisQuantity>
+			</Price>
+		</ListOfPrice><TotalValue><MonetaryValue><MonetaryAmount>27.00</MonetaryAmount><Currency><CurrencyCoded>USD</CurrencyCoded></Currency></MonetaryValue></TotalValue></PricingDetail><DeliveryDetail><ListOfScheduleLine><ScheduleLine><Quantity><QuantityValue>1.00</QuantityValue><UnitOfMeasurement><UOMCoded>S7</UOMCoded></UnitOfMeasurement></Quantity><ListOfOtherDeliveryDate><ListOfDateCoded><DateCoded><Date>20070524T15:00:00+00:00</Date><DateQualifier><DateQualifierCoded>PromisedForShipment</DateQualifierCoded></DateQualifier></DateCoded></ListOfDateCoded></ListOfOtherDeliveryDate><Transport><TransportID>0</TransportID></Transport></ScheduleLine></ListOfScheduleLine></DeliveryDetail><LineItemNote> - Contrato : 4600003439 - Posici�n : 01600</LineItemNote><ListOfStructuredNote><StructuredNote><GeneralNote>MOUSE CABLEADO.-
+
+Observaciones: En Argentina, c�digo de utilizaci�n exclusiva de la
+Vicepresidencia de Ingenier�a y Tecnolog�a - Proyectos Especiales.
+Grupo de Compras: 109.-</GeneralNote><NoteID>BEST</NoteID></StructuredNote></ListOfStructuredNote></ItemDetail></ItemDetailChanges></OrderResponseItemDetail></ListOfOrderResponseItemDetail></OrderResponseDetail><OrderResponseSummary><RevisedOrderSummary><OrderSummary><NumberOfLines>2</NumberOfLines><TotalAmount><MonetaryValue><MonetaryAmount>37.03</MonetaryAmount><Currency><CurrencyCoded>USD</CurrencyCoded></Currency></MonetaryValue></TotalAmount></OrderSummary></RevisedOrderSummary></OrderResponseSummary></OrderResponse>

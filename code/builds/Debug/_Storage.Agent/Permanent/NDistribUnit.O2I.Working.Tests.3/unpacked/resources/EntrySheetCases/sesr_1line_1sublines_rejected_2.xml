@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?soxtype urn:x-commerceone:document:com:commerceone:XCBL40:XCBL40.sox$1.0?>
+<InvoiceResponse xsi:schemaLocation="rrn:org.xcbl:schemas/xcbl/v4_0/financial/v1_0/financial.xsd financial.xsd" xmlns="rrn:org.xcbl:schemas/xcbl/v4_0/financial/v1_0/financial.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="rrn:org.xcbl:schemas/xcbl/v4_0/core/core.xsd">
+	<InvoiceResponseHeader>
+		<InvoiceResponseID>d5c20508-25d7-4741-a0c0-c553acc9a3a8</InvoiceResponseID>
+		<InvoiceReference>
+			<core:RefNum>100006236</core:RefNum>
+		</InvoiceReference>
+		<InvoiceResponseIssueDate>2010-07-07T16:00:25-05:00</InvoiceResponseIssueDate>
+		<InvoiceType>
+			<InvoiceTypeCoded>CreditInvoice</InvoiceTypeCoded>
+			<InvoiceTypeCodedOther>ProformaInvoice</InvoiceTypeCodedOther>
+		</InvoiceType>
+		<Language>
+			<core:LanguageCoded>en</core:LanguageCoded>
+		</Language>
+		<InvoiceResponseCoded>Rejected</InvoiceResponseCoded>
+		<InvoiceResponseCodedOther/>
+		<InvoiceParty>
+			<BuyerParty>
+				<core:PartyID>
+					<core:Agency>
+						<core:AgencyCoded>DunAndBradstreet</core:AgencyCoded>
+					</core:Agency>
+					<core:Ident>888883332</core:Ident>
+				</core:PartyID>
+				<core:NameAddress>
+					<core:Name1>aaa_Test_Buyer Proprietary Name</core:Name1>
+					<core:Identifier>
+						<core:Agency>
+							<core:AgencyCoded>DunAndBradstreet</core:AgencyCoded>
+						</core:Agency>
+						<core:Ident>888883332</core:Ident>
+					</core:Identifier>
+				</core:NameAddress>
+			</BuyerParty>
+			<SellerParty>
+				<core:PartyID>
+					<core:Agency>
+						<core:AgencyCoded>DunAndBradstreet</core:AgencyCoded>
+					</core:Agency>
+					<core:Ident>888884001</core:Ident>
+				</core:PartyID>
+				<core:NameAddress>
+					<core:Name1>Supplier SoandSo</core:Name1>
+					<core:Identifier>
+						<core:Agency>
+							<core:AgencyCoded>DunAndBradstreet</core:AgencyCoded>
+						</core:Agency>
+						<core:Ident>888884001</core:Ident>
+					</core:Identifier>
+				</core:NameAddress>
+			</SellerParty>
+			<ShipToParty>
+				<core:PartyID>
+					<core:Agency>
+						<core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded>
+					</core:Agency>
+					<core:Ident>N/A</core:Ident>
+				</core:PartyID>
+				<core:NameAddress>
+					<core:Name1>Test_Buyer Company</core:Name1>
+				</core:NameAddress>
+			</ShipToParty>
+			<BillToParty>
+				<core:PartyID>
+					<core:Agency>
+						<core:AgencyCoded>AssignedByBuyerOrBuyersAgent</core:AgencyCoded>
+					</core:Agency>
+					<core:Ident>N/A</core:Ident>
+				</core:PartyID>
+				<core:NameAddress>
+					<core:Name1>Test_Buyer_Payer</core:Name1>
+				</core:NameAddress>
+			</BillToParty>
+			<RemitToParty>
+				<core:PartyID>
+					<core:Agency>
+						<core:AgencyCoded>DunAndBradstreet</core:AgencyCoded>
+					</core:Agency>
+					<core:Ident>N/A</core:Ident>
+				</core:PartyID>
+				<core:NameAddress>
+					<core:Name1>Supplier SoandSo</core:Name1>
+				</core:NameAddress>
+			</RemitToParty>
+		</InvoiceParty>
+	</InvoiceResponseHeader>
+	<ListOfInvoiceResponseDetail>
+		<InvoiceResponseDetail>
+			<InvoiceResponseCoded>Rejected</InvoiceResponseCoded>
+			<LineItemNum>
+				<core:BuyerLineItemNum>1</core:BuyerLineItemNum>
+			</LineItemNum>
+		</InvoiceResponseDetail>
+		<InvoiceResponseDetail>
+			<InvoiceResponseCoded>Rejected</InvoiceResponseCoded>
+			<LineItemNum>
+				<core:BuyerLineItemNum>1000</core:BuyerLineItemNum>
+			</LineItemNum>
+			<ParentItemNumber>1</ParentItemNumber>
+		</InvoiceResponseDetail>
+				
+	</ListOfInvoiceResponseDetail>
+</InvoiceResponse>
+
+

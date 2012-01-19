@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/repository/dotnetcode/!svn/ver/33438/commerster/src/trunk/UITests/O2I.UI.Tests/resources/EntrySheetCases/LineStatuses
+END
+CO.xml
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/repository/dotnetcode/!svn/ver/33438/commerster/src/trunk/UITests/O2I.UI.Tests/resources/EntrySheetCases/LineStatuses/CO.xml
+END
+PO_mixed_4x4.xml
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/repository/dotnetcode/!svn/ver/33438/commerster/src/trunk/UITests/O2I.UI.Tests/resources/EntrySheetCases/LineStatuses/PO_mixed_4x4.xml
+END
+CO_line_deleted_subline_deleted.xml
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/repository/dotnetcode/!svn/ver/33438/commerster/src/trunk/UITests/O2I.UI.Tests/resources/EntrySheetCases/LineStatuses/CO_line_deleted_subline_deleted.xml
+END
+CO_all_lines_deleted.xml
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/repository/dotnetcode/!svn/ver/33438/commerster/src/trunk/UITests/O2I.UI.Tests/resources/EntrySheetCases/LineStatuses/CO_all_lines_deleted.xml
+END
+CO_line_deleted.xml
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/repository/dotnetcode/!svn/ver/33438/commerster/src/trunk/UITests/O2I.UI.Tests/resources/EntrySheetCases/LineStatuses/CO_line_deleted.xml
+END

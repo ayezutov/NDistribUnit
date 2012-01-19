@@ -1,0 +1,7 @@
+<ndistribunit-project>
+    <specialFailureHandling>
+        <!--failure message="BrowserNotFoundException" messageType="Regex" retryCount="10"/-->
+        <failure message="BrowserNotFoundException" messageType="ContainsText" retryCount="98"/>
+    </specialFailureHandling>
+    <maximumAgentsCount>90</maximumAgentsCount>
+</ndistribunit-project>

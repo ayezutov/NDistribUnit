@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TRR.O2I.BusinessLogic.TRIPS</name>
+    </assembly>
+    <members>
+        <member name="T:TRR.O2I.BusinessLogic.TRIPS.TRIP_02.TRIP_02">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:TRR.O2I.BusinessLogic.TRIPS.TRIP_02.TRIP_02.TRIPName">
+            <summary>
+            Reference TRIP name.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.TRIPS.TRIP_02.TRIP_02.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.TRIPS.TRIP_02.TRIP_02.#ctor(System.String)">
+            <summary>
+            Initializes TRIP T1 instance.
+            </summary>
+            <param name="tripName">Default TRIP name.</param>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.TRIPS.TRIP_18.TRIP_18">
+            <summary>
+            Represents implementation of the TRIP T18.
+            </summary>
+        </member>
+        <member name="F:TRR.O2I.BusinessLogic.TRIPS.TRIP_18.TRIP_18.TRIPName">
+            <summary>
+            Reference TRIP name.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.TRIPS.TRIP_18.TRIP_18.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.TRIPS.TRIP_18.TRIP_18.#ctor(System.String)">
+            <summary>
+            Initializes TRIP T18 instance.
+            </summary>
+            <param name="tripName">Default TRIP name.</param>
+        </member>
+        <member name="T:TRR.O2I.BusinessLogic.TRIPS.TRIP_22.TRIP_22">
+            <summary>
+            Represents implementation of the TRIP T22.
+            </summary>
+        </member>
+        <member name="F:TRR.O2I.BusinessLogic.TRIPS.TRIP_22.TRIP_22.TRIPName">
+            <summary>
+            Reference TRIP name.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.TRIPS.TRIP_22.TRIP_22.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:TRR.O2I.BusinessLogic.TRIPS.TRIP_22.TRIP_22.#ctor(System.String)">
+            <summary>
+            Initializes TRIP T22 instance.
+            </summary>
+            <param name="tripName">Default TRIP name.</param>
+        </member>
+    </members>
+</doc>

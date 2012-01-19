@@ -1,0 +1,237 @@
+<html>
+<head>
+    <title>NDistribUnit dashboard</title>
+    <script type="text/javascript" src="scripts/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui-1.8.9.custom.min.js"></script>
+    <!-- http://docs.jquery.com/Plugins/Treeview -->
+    <link rel="stylesheet" href="scripts/jquery.treeview/jquery.treeview.css" type="text/css" />
+    <link rel="stylesheet" href="styles/NDistribUnit.Dashboard.css" type="text/css" />
+    <script type="text/javascript" src="scripts/jquery.treeview/jquery.treeview.js"></script>
+    <!-- http://layout.jquery-dev.net/documentation.cfm -->
+    <script type="text/javascript" src="scripts/jquery.layout-latest.js"></script>
+    <!-- http://tkyk.github.com/jquery-history-plugin/#documentation -->
+    <script type="text/javascript" src="scripts/jquery.history.js"></script>
+    <!-- http://jtemplates.tpython.com/ -->
+    <!--<script type="text/javascript" src="scripts/jquery-jtemplates.js"></script>-->
+    <!-- http://api.jquery.com/jquery.tmpl/ -->
+    <script type="text/javascript" src="scripts/jquery-jquery-tmpl/jquery.tmpl.min.js"></script>
+    <!-- http://www.bitstorm.org/jquery/color-animation/ -->
+    <script type="text/javascript" src="scripts/jquery.animate-colors-min.js"></script>
+
+
+    <script type="text/javascript" src="javascriptEnums.js"></script>
+    <script type="text/javascript" src="scripts/NDistribUnit.Helpers.js"></script>
+    <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.Server.js"></script>
+    <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.UI.js"></script>
+    <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.Dispatcher.js"></script>
+    <script type="text/javascript" src="scripts/NDistribUnit.Dashboard.js"></script>
+    <script type="text/javascript">
+        var dashboard = new Dashboard();
+
+        $(function () { dashboard.init(); });
+    </script>
+</head>
+<body>
+    <div id="menu-pane">
+        <div style="float: left;">
+            <img id="logo" alt="NDistribUnit" src="images/logo-medium.gif" /></div>
+        <div id="" class="menuCommandRight">
+            <a href="#settings">
+                <img alt="settings" src="images/settings.gif" />
+                Settings</a></div>
+        <div id="infoCommand" class="menuCommandRight">
+            <a href="#status">
+                <img alt="info" src="images/info.gif" />
+                Status</a></div>
+        <div id="homeCommand" class="menuCommandRight">
+            <a href="#tests">
+                <img alt="home" src="images/home.gif" />
+                Home</a></div>
+    </div>
+    <div id="content-pane">
+        <div id="tests-pane" class="content">
+            <div id="tests-tree-pane" class="left-menu-pane">
+                <ul>
+                    <li><span><a href="#tests/O2I_nightly">O2I nightly</a></span>
+                        <ul style="display: none;">
+                            <li><span><a href="#run_2791873">19 Feb 2010 [epmsd122/dev]</a></span>
+                                <ul style="display: none;">
+                                    <li><span class="success"><a href="#tests/O2I_nightly/Test.Suite.Namespace.Item1_1">item 1.1</a></span></li>
+                                    <li><span class="failed"><a href="#tests/O2I_nightly/Test.Suite.Namespace.Item1_2">item 1.2</a></span></li>
+                                    <li><span class="running"><a href="#tests/O2I_nightly/Test.Suite.Namespace.Item1_3">item 1.3</a></span></li>
+                                </ul>
+                            </li>
+                            <li><span class="failed">18 Feb 2010 [epmsd122/dev]</span>
+                                <ul style="display: none;">
+                                    <li><span class="success">item 1.1</span></li>
+                                    <li><span class="failed">item 1.2</span></li>
+                                    <li><span class="ignored">item 1.3</span></li>
+                                </ul>
+                            </li>
+                            <li><span class="success">17 Feb 2010 [epmsd122/dev]</span>
+                                <ul style="display: none;">
+                                    <li><span class="success">item 1.1</span></li>
+                                    <li><span class="success">item 1.2</span></li>
+                                    <li><span class="ignored">item 1.3</span></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><span>O2I for 6.0</span>
+                        <ul style="display: none;">
+                            <li><span>19 Feb 2010 [STG]</span>
+                                <ul style="display: none;">
+                                    <li><span class="success">item 1.1</span></li>
+                                    <li><span class="failed">item 1.2</span></li>
+                                    <li><span class="running">item 1.3</span></li>
+                                </ul>
+                            </li>
+                            <li><span class="failed">18 Feb 2010 [STG]</span>
+                                <ul style="display: none;">
+                                    <li><span class="success">item 1.1</span></li>
+                                    <li><span class="failed">item 1.2</span></li>
+                                    <li><span class="ignored">item 1.3</span></li>
+                                </ul>
+                            </li>
+                            <li><span class="success">17 Feb 2010 [TST]</span>
+                                <ul style="display: none;">
+                                    <li><span class="success">item 1.1</span></li>
+                                    <li><span class="success">item 1.2</span></li>
+                                    <li><span class="ignored">item 1.3</span></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="test-content-pane" class="right-content-pane">
+                Test results for selected run/suite/test
+            </div>
+        </div>
+        <div id="status-pane" class="content">
+            <div id="status-tree-pane" class="left-menu-pane">
+                <ul class="list-menu">
+                    <li><span id="server-status-menu">Server's status</span></li>
+                    <li>
+                        <ul>
+                            <li><a href="#status/server/log" id="server-log-link">Log</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#status/agents" id="clients-statuses-menu">Agents' statuses</a></li>
+                </ul>
+            </div>
+            <div id="status-content-pane">
+                <div id="status-home-page">
+                    You can find the statuses of all parts of NDistribUnit here.
+                </div>
+                <div id="server-status-pane" style="height:100%;">
+                    <div id="server-status-pane-wrapper">
+                    <h3>
+                            Log:
+                            <img id="server-log-progress" style="vertical-align: text-top" alt="sync" src="images/syncing.gif" />
+                            <div id="server-log-error" class="error" style="display: none">Oooops...</div>
+                        </h3>
+                        
+                    <div id="server-log-pane" class="ui-layout-content">
+                        
+                        
+                        <script id="log-entry-template" type="text/x-jquery-tmpl">
+                            <div id="server-log-${Id}" class="log ${ Helper.getEnumNameByValue(LogEntryType, Type)}">
+                          
+                          <span class="log-time">
+                              [<span class="agent-time">${LogTime.toLocaleTimeString()}</span>]
+                          </span>
+
+                          <span class="log-indicator"></span>
+                          <span class="log-message">${Message}</span>
+                          {{if Exception!=null}}
+                            <span class="log-exception">${Exception.Message}</span>
+                          {{/if}}
+                         </div>
+                        </script>
+                                                
+                    <div style="clear: both;"></div>
+                    
+                    <div id="server-log-display-area" class="console ">
+                            
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div id="agents-statuses-pane"  style="height:100%;">
+                    <script id="agents-statuses-template" type="text/x-jquery-tmpl">
+                        {{if data.length==0}}
+                            no agents are yet available
+                        {{else}}
+                            {{each data}} 
+                                <div id="agent-${Name}" class="agent ${ Helper.getEnumNameByValue(AgentState, State)}">
+                                  <span class="agent-name" title="${Name}: ${Helper.getEnumNameByValue(AgentState, State)}&#13;&#10;Click to show log">
+                                  {{if Helper.getEnumNameByValue(AgentState, State)!='Disconnected'}}
+                                    <a href="#status/agents/${Name}">${Name}</a>
+                                  {{else}}
+                                    ${Name}
+                                  {{/if}}
+                                  </span><span class="agent-address"> (${Address})</span><br/>
+                                  <span class="agent-timestamp">
+                                      <span class="agent-time">${LastStatusUpdate.toLocaleTimeString()},</span>
+                                      <span class="agent-date">${LastStatusUpdate.toLocaleDateString()}</span>
+                                  </span>
+                                 </div>
+                            {{/each}}
+                        {{/if}}             
+                    </script>
+                    <div id="agents-statuses-pane-wrapper">
+
+                    <h3>
+                        Agents' statuses:
+                        <img id="agents-statuses-progress" style="vertical-align: text-top" alt="sync" src="images/syncing.gif" />
+                        <div id="agents-statuses-error" class="error" style="display: none">
+                        Oooops...</div></h3>
+                    <div class="agents-legend">
+                        <span class="agent Connected">-&nbsp;Ready</span> <span class="agent Busy">-&nbsp;Busy</span>
+                        <span class="agent Disconnected">-&nbsp;Disconnected</span> <span class="agent Unknown">
+                            -&nbsp;Unknown</span>
+                    </div>
+                    <div style="clear: both;"></div>                    
+                    <div style="clear:both; height:10px;"></div>
+                    <div id="agents-statuses-display-area"  class="ui-layout-content">
+                    </div>
+                </div>
+                
+                    <div id="agents-log-pane">
+                        <h3 style="float: left;">
+                            Log for <span id="current-agent-name"></span>:
+                            <img id="agents-log-progress" style="vertical-align: text-top" alt="sync" src="images/syncing.gif" />
+                            <div id="agents-log-error" class="error" style="display: none">Oooops...</div>
+                        
+                            </h3>
+                        <div style="clear: both;">
+                        </div>
+                        <div id="agents-log-display-area"  class="ui-layout-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="settings-pane" class="content">
+            <div id="settings-tree-pane" class="left-menu-pane">
+             <ul class="list-menu">
+                    <li><a href="#settings/updates" id="settings-update-menu-item">Updates</a></li>
+                </ul>  
+            </div>
+            <div id="settings-content-pane" class="right-content-pane">
+                <div id="updates-settings-pane">
+                    <h3>Current version of application is <span id="updates-settings-current-version">unkonwn</span></h3>
+
+                    <div>
+                        <h3>Available versions:</h3>
+
+                        <script type="text/x-jquery-tmpl" id="updates-settings-update-info-template">
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

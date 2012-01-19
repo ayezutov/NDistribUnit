@@ -1,0 +1,475 @@
+<Order>
+	<OrderHeader>
+		<OrderNumber>
+			<BuyerOrderNumber>POCA_001</BuyerOrderNumber>
+		</OrderNumber>
+		<OrderIssueDate>20050902T12:00:00-03:00</OrderIssueDate>
+		<OrderReferences>
+			<AccountCode>
+				<Reference>
+					<RefNum>888881011-888884001</RefNum>
+				</Reference>
+			</AccountCode>
+		</OrderReferences>
+		<Purpose>
+			<PurposeCoded>Original</PurposeCoded>
+		</Purpose>
+		<OrderType>
+			<OrderTypeCoded>PurchaseOrder</OrderTypeCoded>
+		</OrderType>
+		<OrderCurrency>
+			<Currency>
+				<CurrencyCoded>VEB</CurrencyCoded>
+			</Currency>
+		</OrderCurrency>
+		<OrderLanguage>
+			<Language>
+				<LanguageCoded>es</LanguageCoded>
+			</Language>
+		</OrderLanguage>
+		<OrderParty>
+			<BuyerParty>
+				<Party>
+					<PartyID>
+						<Identifier>
+							<Agency>
+								<AgencyCoded>DunAndBradstreet</AgencyCoded>
+							</Agency>
+							<Ident>888881011</Ident>
+						</Identifier>
+					</PartyID>
+					<NameAddress>
+						<Name1>REPSOL YPF VENEZUELA, S.A</Name1>
+						<Identifier>
+							<Agency>
+								<AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded>
+							</Agency>
+							<Ident>3471</Ident>
+						</Identifier>
+						<Street>Piso 1 Av. Nueva Esparta con Cerro</Street>
+						<StreetSupplement2>Venezuela</StreetSupplement2>
+						<City>Barcelona - Anzoategui</City>
+					</NameAddress>
+				</Party>
+			</BuyerParty>
+			<SellerParty>
+				<Party>
+					<PartyID>
+						<Identifier>
+							<Agency>
+								<AgencyCoded>DunAndBradstreet</AgencyCoded>
+							</Agency>
+							<Ident>888884001</Ident>
+						</Identifier>
+					</PartyID>
+					<NameAddress>
+						<Name1>ABB Servicios VETCO GRAY DE VZLA.CA</Name1>
+						<Identifier>
+							<Agency>
+								<AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded>
+							</Agency>
+							<Ident>0102102247</Ident>
+						</Identifier>
+						<Street>Av Intercomunal Las Morochas Edo Zu</Street>
+						<StreetSupplement2>Venezuela</StreetSupplement2>
+						<City>Ciudad Ojeda</City>
+					</NameAddress>
+				</Party>
+			</SellerParty>
+			<ShipToParty>
+				<Party>
+					<PartyID>
+						<Identifier>
+							<Agency>
+								<AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded>
+							</Agency>
+							<Ident>DOC</Ident>
+						</Identifier>
+					</PartyID>
+					<NameAddress>
+						<Name1>BLOQUE QUIRIQUIRE GAS</Name1>
+						<Street>Campo 15 PDVSA</Street>
+						<City>Quiriquire- Monagas</City>
+						<Region>
+							<RegionCoded>Other</RegionCoded>
+							<RegionCodedOther>MON</RegionCodedOther>
+						</Region>
+						<Country>
+							<CountryCoded>VE</CountryCoded>
+						</Country>
+					</NameAddress>
+					<OrderContact>
+						<Contact>
+							<ContactName>BLOQUE QUIRIQUIRE GAS</ContactName>
+							<ListOfContactNumber>
+								<ContactNumber>
+									<ContactNumberValue>58 281 2625700</ContactNumberValue>
+									<ContactNumberTypeCoded>TelephoneNumber</ContactNumberTypeCoded>
+								</ContactNumber>
+								<ContactNumber>
+									<ContactNumberValue>58 281 2625700</ContactNumberValue>
+									<ContactNumberTypeCoded>FaxNumber</ContactNumberTypeCoded>
+								</ContactNumber>
+							</ListOfContactNumber>
+						</Contact>
+					</OrderContact>
+				</Party>
+			</ShipToParty>
+			<BillToParty>
+				<Party>
+					<PartyID>
+						<Identifier>
+							<Agency>
+								<AgencyCoded>AssignedByBuyerOrBuyersAgent</AgencyCoded>
+							</Agency>
+							<Ident>3471</Ident>
+						</Identifier>
+					</PartyID>
+					<NameAddress>
+						<Name1>REPSOL YPF VENEZUELA, S.A</Name1>
+						<Street>Piso 1 Av. Nueva Esparta con Cerro</Street>
+						<StreetSupplement2>Venezuela</StreetSupplement2>
+						<City>Barcelona - Anzoategui</City>
+					</NameAddress>
+				</Party>
+			</BillToParty>
+		</OrderParty>
+		<OrderPaymentInstructions>
+			<PaymentInstructions>
+				<PaymentTerms>
+					<PaymentTerm>
+						<PaymentTermCoded>Other</PaymentTermCoded>
+						<PaymentTermCodedOther>SAP:Z030</PaymentTermCodedOther>
+						<PaymentTermDetails>
+							<Discounts>
+								<NetDaysDue>30</NetDaysDue>
+								<NetDateTimeRefCoded>InvoiceDate</NetDateTimeRefCoded>
+							</Discounts>
+						</PaymentTermDetails>
+					</PaymentTerm>
+				</PaymentTerms>
+				<PaymentMethod>
+					<PaymentMeanCoded>Other</PaymentMeanCoded>
+					<PaymentMeanCodedOther>N/A</PaymentMeanCodedOther>
+				</PaymentMethod>
+			</PaymentInstructions>
+		</OrderPaymentInstructions>
+		<OrderHeaderNote>
+
+&lt;H&gt;CONDICIONES GENERALES:&lt;/&gt;
+
+&lt;H&gt;LUGAR DE ENTREGA:&lt;/&gt;
+&lt;H&gt;CROWLEY (ALMAC?‰N REPSOL-YPF)&lt;/&gt;
+&lt;H&gt;CARRETERA NACIONAL V??A PUERTO LA CRUZ, FRENTE A LA ZONA INDUSTRIAL
+DE MATUR??N, EDIF. ITC, PISO 1, MATUR??N, ESTADO MONAG
+AS - VENEZUELA. ATN.: STEVE PERSAUD, TLF.: (58-91) 514386,
+FAX.: (58-91) 515157.&lt;/&gt;
+
+SOLICITUD DE MATERIALES #10007509
+REQUIRIENTE: DPTO. DE OBRAS
+OBRA: INTERCONEXI?“N DE BRAZOS DE SURGENCIAS DE POZOS
+
+LA ENTREGA DEL MATERIAL DEBE REALIZARSE EN EL LUGAR INDICADO CON SU
+RESPECTIVA NOTA DE ENTREGA Y DEBE SER FIRMADA Y SELLADA POR EL ENTE
+RECEPTOR.
+
+ISO 14001: DADO QUE ESTAMOS APLICANDO PARA LA CERTIFICACI?“N DE NORMAS
+ISO 14001, ES IMPRESCINDIBLE AL MOMENTO DE LA ENTREGA DE ESTE MATERIAL
+ANEXAR LOS CERTIFICADOS ABAJO INDICADOS Y SEGUIR TODAS LAS
+INSTRUCCIONES DE TRANSPORTE Y ENTREGA; IGUALMENTE LES ANEXAMOS NUESTRA
+POL??TICA MEDIOAMBIENTAL.
+
+&lt;H&gt;CERTIFICADOS:&lt;/&gt; AL MOMENTO DE ENTREGAR EL MATERIAL, ?‰STE DEBE ESTA
+ACOMPA?‘ADO DE SUS RESPECTIVOS CERTIFICADOS DE CALIDAD Y PRUEBAS; DE NO
+SER AS?? PODR?? SER RECHAZADO.
+
+TRANSPORTE: EL TRANSPORTISTA DEBE CUMPLIR COMO M??NIMO LOS SIGUIENTES
+REQUISITOS: DOCUMENTOS EN REGLA (MANIFIESTO DE LA CARGA, ORDEN DE
+COMPRA Y/O SERVICIO, DOCUMENTOS DEL CONDUCTOR Y VEH??CULO, ETC.).,
+EQUIPOS DE PROTECCI?“N PERSONAL (CASCO DE SEGURIDAD, BOTAS, GAFAS,
+GUANTES, ETC)., EQUIPOS DE EMERGENCIA (EXTINTOR DE INCENDIO, TRI??NGULO
+REFLECTOR, CABLES DE EMERGENCI
+A, ETC.), CARGA (DEBIDAMENTE ATADA (ASEGURADA),
+CILINDROS VERTICALES, CON PROTECTOR Y ATADOS, PROTEGIDA DE LLUVIA
+(LONA)).
+
+&lt;H&gt;FAVOR FACTURAR A:&lt;/&gt;
+REPSOL YPF VENEZUELA, S. A.
+AVE. NUEVA EPARTA CON CALLE CERRO SUR, CENTRO EMPRESARIAL BAHIA
+POZUELO, PISO 1, BARCELONA, ESTADO ANZO??TEGUI - VENEZUELA.
+RIF: J-30228744-8
+NIT: 0199909231
+
+MONEDA DE PAGO: EL PROVEEDOR FACTURAR?? EN LA MONEDA EN QUE HAYA SIDO
+EMITIDA LA ORDEN DE COMPRA Y SER?? CANCELADA EN LA MISMA; A EXCEPCI?“N
+DEL MONTO CORRESPONDIENTE AL I.V.A. EL CUAL SER?? CANCELADO EN BOL??VARE
+A LA TASA DE CAMBIO DEL D??A DE LA FACTURACI?“N.
+
+LA FACTURA CORRESPONDIENTE A ESTE MATERIAL, DEBE SER PRESENTADA S?“LO A
+DEPARTAMENTO DE CUENTAS POR PAGAR EN LOS LUGARES Y D??AS INDICADOS A
+CONTINUACI?“N:
+&lt;H&gt;&lt;U&gt;* BARCELONA:&lt;/&gt;&lt;/&gt; AVENIDA NUEVA ESPARTA CON CALLE CERRO SUR,
+CENTRO EMPRESARI
+AL BAH??A DE POZUELO, PISO 1, SECTOR LAS GARZAS,
+BARCELONA, ESTADO ANZO??TEGUI. HORARIO: MI?‰RCOLES Y JUEVES DE 8:00 A
+11:30 am Y DE 2:00 A 4:30 pm. ATN.: MIL??NYELA HERRERA / MAR??A C.
+ROMERO.
+&lt;H&gt;&lt;U&gt;* QUIRIQUIRE:&lt;/&gt;&lt;/&gt; CAMPO 15 PDVSA, QUIRIQUIRE, ESTADO MONAGAS.
+HORARIO: MI?‰RCOLES Y JUEVES DE 8:00 A 11:30 am Y DE 2:00 A 4:30 pm.
+&lt;H&gt;&lt;U&gt;* MENE GRANDE:&lt;/&gt;&lt;/&gt; HORARIO: JUEVES DE 8:30 A 11:30 am Y DE 1:0
+A 3:30 pm. ATN.: YATCEL VALECILLOS.
+&lt;H&gt;&lt;U&gt;* MARACAIBO:&lt;/&gt;&lt;/&gt; ED
+IFICIO FINESTERRE, CALLE 65 ENTRE AVE. 3F Y AVE.
+4, BELLA VISTA, MARACAIBO, ESTADO ZULIA. HORARIO: MI?‰RCOLES DE 8:00 A
+11:00 am Y DE 1:30 a 4:00 pm. ATN.: LILIANA MOSCADELO.
+
+PARA CUALQUIER CONSULTA RELACIONADO CON LOS PAGOS DE LAS FA
+CTURAS FAVOR CONTACTAR A LA Srta. JEANNETTE POLLONAIS, TLF.:
+(58-281) 2625736 ?“ (58-281) 2625700 - CENTRAL.</OrderHeaderNote>
+	</OrderHeader>
+	<OrderDetail>
+		<ListOfItemDetail>
+			<ItemDetail>
+				<BaseItemDetail>
+					<LineItemNum>
+						<BuyerLineItemNum>00001</BuyerLineItemNum>
+					</LineItemNum>
+					<LineItemType>
+						<LineItemTypeCoded>Item</LineItemTypeCoded>
+					</LineItemType>
+					<ItemIdentifiers>
+						<PartNumbers>
+							<SellerPartNumber>
+								<PartNum>
+									<PartID>ND</PartID>
+								</PartNum>
+							</SellerPartNumber>
+							<OtherItemIdentifiers>
+								<ListOfProductIdentifierCoded>
+									<ProductIdentifierCoded>
+										<ProductIdentifierQualifierCoded>BuyersInternalProductGroupCode</ProductIdentifierQualifierCoded>
+										<ProductIdentifier>0807</ProductIdentifier>
+									</ProductIdentifierCoded>
+								</ListOfProductIdentifierCoded>
+							</OtherItemIdentifiers>
+						</PartNumbers>
+						<ItemDescription>Tubeia S/C 2", Gr. B, SCH-40 QQ-590</ItemDescription>
+					</ItemIdentifiers>
+					<TotalQuantity>
+						<Quantity>
+							<QuantityValue>10.000</QuantityValue>
+							<UnitOfMeasurement>
+								<UOMCoded>MTR</UOMCoded>
+							</UnitOfMeasurement>
+						</Quantity>
+					</TotalQuantity>
+				</BaseItemDetail>
+				<PricingDetail>
+					<ListOfPrice>
+						<Price>
+							<UnitPrice>
+								<UnitPriceValue>6143.76</UnitPriceValue>
+								<Currency>
+									<CurrencyCoded>VEB</CurrencyCoded>
+								</Currency>
+							</UnitPrice>
+							<PriceBasisQuantity>
+								<Quantity>
+									<QuantityValue>10</QuantityValue>
+									<UnitOfMeasurement>
+										<UOMCoded>MTR</UOMCoded>
+									</UnitOfMeasurement>
+								</Quantity>
+							</PriceBasisQuantity>
+						</Price>
+					</ListOfPrice>
+					<TotalValue>
+						<MonetaryValue>
+							<MonetaryAmount>614376</MonetaryAmount>
+							<Currency>
+								<CurrencyCoded>VEB</CurrencyCoded>
+							</Currency>
+						</MonetaryValue>
+					</TotalValue>
+				</PricingDetail>
+				<DeliveryDetail>
+					<ListOfScheduleLine>
+						<ScheduleLine>
+							<Quantity>
+								<QuantityValue>10.0</QuantityValue>
+								<UnitOfMeasurement>
+									<UOMCoded>MTR</UOMCoded>
+								</UnitOfMeasurement>
+							</Quantity>
+							<RequestedDeliveryDate>20010731T12:00:00-03:00</RequestedDeliveryDate>
+						</ScheduleLine>
+					</ListOfScheduleLine>
+				</DeliveryDetail>
+			</ItemDetail>
+<ItemDetail>
+				<BaseItemDetail>
+					<LineItemNum>
+						<BuyerLineItemNum>00002</BuyerLineItemNum>
+					</LineItemNum>
+					<LineItemType>
+						<LineItemTypeCoded>Item</LineItemTypeCoded>
+					</LineItemType>
+					<ItemIdentifiers>
+						<PartNumbers>
+							<SellerPartNumber>
+								<PartNum>
+									<PartID>ND</PartID>
+								</PartNum>
+							</SellerPartNumber>
+							<OtherItemIdentifiers>
+								<ListOfProductIdentifierCoded>
+									<ProductIdentifierCoded>
+										<ProductIdentifierQualifierCoded>BuyersInternalProductGroupCode</ProductIdentifierQualifierCoded>
+										<ProductIdentifier>0807</ProductIdentifier>
+									</ProductIdentifierCoded>
+								</ListOfProductIdentifierCoded>
+							</OtherItemIdentifiers>
+						</PartNumbers>
+						<ItemDescription>Test for line 2</ItemDescription>
+					</ItemIdentifiers>
+					<TotalQuantity>
+						<Quantity>
+							<QuantityValue>10.0</QuantityValue>
+							<UnitOfMeasurement>
+								<UOMCoded>MTR</UOMCoded>
+							</UnitOfMeasurement>
+						</Quantity>
+					</TotalQuantity>
+				</BaseItemDetail>
+				<PricingDetail>
+					<ListOfPrice>
+						<Price>
+							<UnitPrice>
+								<UnitPriceValue>6143.76</UnitPriceValue>
+								<Currency>
+									<CurrencyCoded>VEB</CurrencyCoded>
+								</Currency>
+							</UnitPrice>
+							<PriceBasisQuantity>
+								<Quantity>
+									<QuantityValue>10</QuantityValue>
+									<UnitOfMeasurement>
+										<UOMCoded>MTR</UOMCoded>
+									</UnitOfMeasurement>
+								</Quantity>
+							</PriceBasisQuantity>
+						</Price>
+					</ListOfPrice>
+					<TotalValue>
+						<MonetaryValue>
+							<MonetaryAmount>614376</MonetaryAmount>
+							<Currency>
+								<CurrencyCoded>VEB</CurrencyCoded>
+							</Currency>
+						</MonetaryValue>
+					</TotalValue>
+				</PricingDetail>
+				<DeliveryDetail>
+					<ListOfScheduleLine>
+						<ScheduleLine>
+							<Quantity>
+								<QuantityValue>10.0</QuantityValue>
+								<UnitOfMeasurement>
+									<UOMCoded>MTR</UOMCoded>
+								</UnitOfMeasurement>
+							</Quantity>
+							<RequestedDeliveryDate>20010731T12:00:00-03:00</RequestedDeliveryDate>
+						</ScheduleLine>
+					</ListOfScheduleLine>
+				</DeliveryDetail>
+			</ItemDetail>
+<ItemDetail>
+				<BaseItemDetail>
+					<LineItemNum>
+						<BuyerLineItemNum>00003</BuyerLineItemNum>
+					</LineItemNum>
+					<LineItemType>
+						<LineItemTypeCoded>Item</LineItemTypeCoded>
+					</LineItemType>
+					<ItemIdentifiers>
+						<PartNumbers>
+							<SellerPartNumber>
+								<PartNum>
+									<PartID>ND</PartID>
+								</PartNum>
+							</SellerPartNumber>
+							<OtherItemIdentifiers>
+								<ListOfProductIdentifierCoded>
+									<ProductIdentifierCoded>
+										<ProductIdentifierQualifierCoded>BuyersInternalProductGroupCode</ProductIdentifierQualifierCoded>
+										<ProductIdentifier>0807</ProductIdentifier>
+									</ProductIdentifierCoded>
+								</ListOfProductIdentifierCoded>
+							</OtherItemIdentifiers>
+						</PartNumbers>
+						<ItemDescription>Test for line 3</ItemDescription>
+					</ItemIdentifiers>
+					<TotalQuantity>
+						<Quantity>
+							<QuantityValue>10.0</QuantityValue>
+							<UnitOfMeasurement>
+								<UOMCoded>MTR</UOMCoded>
+							</UnitOfMeasurement>
+						</Quantity>
+					</TotalQuantity>
+				</BaseItemDetail>
+				<PricingDetail>
+					<ListOfPrice>
+						<Price>
+							<UnitPrice>
+								<UnitPriceValue>6143.76</UnitPriceValue>
+								<Currency>
+									<CurrencyCoded>VEB</CurrencyCoded>
+								</Currency>
+							</UnitPrice>
+							<PriceBasisQuantity>
+								<Quantity>
+									<QuantityValue>10</QuantityValue>
+									<UnitOfMeasurement>
+										<UOMCoded>MTR</UOMCoded>
+									</UnitOfMeasurement>
+								</Quantity>
+							</PriceBasisQuantity>
+						</Price>
+					</ListOfPrice>
+					<TotalValue>
+						<MonetaryValue>
+							<MonetaryAmount>614376</MonetaryAmount>
+							<Currency>
+								<CurrencyCoded>VEB</CurrencyCoded>
+							</Currency>
+						</MonetaryValue>
+					</TotalValue>
+				</PricingDetail>
+				<DeliveryDetail>
+					<ListOfScheduleLine>
+						<ScheduleLine>
+							<Quantity>
+								<QuantityValue>10.000</QuantityValue>
+								<UnitOfMeasurement>
+									<UOMCoded>MTR</UOMCoded>
+								</UnitOfMeasurement>
+							</Quantity>
+							<RequestedDeliveryDate>20010731T12:00:00-03:00</RequestedDeliveryDate>
+						</ScheduleLine>
+					</ListOfScheduleLine>
+				</DeliveryDetail>
+			</ItemDetail>
+		</ListOfItemDetail>
+	</OrderDetail>
+	<OrderSummary>
+		<TotalAmount>
+			<MonetaryValue>
+				<MonetaryAmount>614376</MonetaryAmount>
+				<Currency>
+					<CurrencyCoded>VEB</CurrencyCoded>
+				</Currency>
+			</MonetaryValue>
+		</TotalAmount>
+	</OrderSummary>
+</Order>
