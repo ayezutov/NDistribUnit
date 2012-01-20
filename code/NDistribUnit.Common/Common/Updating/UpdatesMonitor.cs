@@ -16,7 +16,7 @@ namespace NDistribUnit.Common.Common.Updating
 		private Guid guid = Guid.NewGuid();
 		private FileSystemWatcher fileSystemWatcher;
 		private readonly Timer timer;
-		private readonly Regex versionPattern = new Regex(@"(?<=[\\\/])(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)(?=([\\\/]|$))", RegexOptions.Compiled);
+	    internal static readonly Regex VersionPattern = new Regex(@"(?<=[\\\/])(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)(?=([\\\/]|$))", RegexOptions.Compiled);
 		private readonly ILog log;
 	    private readonly IVersionProvider versionProvider;
 
@@ -94,7 +94,7 @@ namespace NDistribUnit.Common.Common.Updating
 
 		private string GetVersionString(string fullPath)
 		{
-			var match = versionPattern.Match(fullPath.Replace(path, string.Empty));
+			var match = VersionPattern.Match(fullPath.Replace(path, string.Empty));
 			return match.Success ? match.Value : null;
 		}
 

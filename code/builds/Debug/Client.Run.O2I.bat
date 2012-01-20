@@ -1,1 +1,0 @@
-Client.exe  d:\work\personal\NDistribUnit\test\O2ITestsDebug2_dec_2011Debug\TRR.O2I.UiTest.nunit /alias:"NDistribUnit.Tests.Based.On.O2I" /server:"net.tcp://epbyminw1560:8009/"

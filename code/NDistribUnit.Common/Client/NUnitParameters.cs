@@ -16,7 +16,10 @@ namespace NDistribUnit.Common.Client
             NoShadow = false;
             IncludeCategories = null;
             ExcludeCategories = null;
+            TestToRun = null;
         }
+
+        public string TestToRun { get; set; }
 
         /// <summary>
         /// A collection of all files, which should be tested.

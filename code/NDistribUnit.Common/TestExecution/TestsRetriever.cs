@@ -47,7 +47,8 @@ namespace NDistribUnit.Common.TestExecution
 
             var testSuite = builder.Build(package);
             var filter = new NUnitTestsFilter(request.TestRun.NUnitParameters.IncludeCategories,
-                                              request.TestRun.NUnitParameters.ExcludeCategories);
+                                              request.TestRun.NUnitParameters.ExcludeCategories,
+                                              request.TestRun.NUnitParameters.TestToRun);
 
             return ToTestUnitList(testSuite, request, filter);
         }

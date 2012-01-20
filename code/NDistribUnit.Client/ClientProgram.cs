@@ -2,6 +2,8 @@
 using System.ServiceModel;
 using Autofac;
 using NDistribUnit.Common.Client;
+using NDistribUnit.Common.Common;
+using NDistribUnit.Common.Common.ConsoleProcessing;
 using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Dependencies;
@@ -13,12 +15,10 @@ namespace NDistribUnit.Client
 	/// <summary>
 	/// The entry point for the client
 	/// </summary>
-	public class ClientProgram
+	public class ClientProgram: GeneralProgram
 	{
 		private readonly ClientParameters options;
-		private readonly BootstrapperParameters bootstrapperParameters;
 		private readonly Common.Client.Client client;
-		private readonly ILog log;
 
 		static int Main(string[] args)
 		{
@@ -43,19 +43,20 @@ namespace NDistribUnit.Client
             }
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ClientProgram"/> class.
-		/// </summary>
-		/// <param name="options">Options, which were provided through command line</param>
-		/// <param name="bootstrapperParameters">The bootstrapper parameters.</param>
-		/// <param name="client">The client.</param>
-		/// <param name="log">The log.</param>
-		public ClientProgram(ClientParameters options, BootstrapperParameters bootstrapperParameters, Common.Client.Client client, ILog log)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientProgram"/> class.
+        /// </summary>
+        /// <param name="options">Options, which were provided through command line</param>
+        /// <param name="bootstrapperParameters">The bootstrapper parameters.</param>
+        /// <param name="client">The client.</param>
+        /// <param name="resolver">The resolver.</param>
+        /// <param name="catcher">The catcher.</param>
+        /// <param name="log">The log.</param>
+		public ClientProgram(ClientParameters options, BootstrapperParameters bootstrapperParameters, Common.Client.Client client, AssemblyResolver resolver, ExceptionCatcher catcher, ILog log)
+            : base(resolver, null, catcher, log, bootstrapperParameters)
 		{
 			this.options = options;
-			this.bootstrapperParameters = bootstrapperParameters;
 			this.client = client;
-			this.log = log;
 		}
 
 		/// <summary>

@@ -28,6 +28,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MsBuild Task|AnyCPU'">
     <OutputPath>bin\MsBuild Task\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug with NUnit|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug with NUnit\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -108,16 +115,16 @@
   <UsingTask Condition="'$(Configuration)'!='MsBuild Task'" AssemblyFile="$(SolutionDir)\_dependencies\MSBuildExtensionPack_4.0.3.0\NDistribUnit.MSBuild.Extensions.dll" TaskName="NDistribUnit.MSBuild.Extensions.CopyResourcesTask" />
   <Target Name="AfterBuild" Condition="'$(Configuration)'!='MsBuild Task'">
     <ItemGroup>
-      <FilesWithAnyContent Include="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Server\NDistribUnit.Server.exe.config" />
-      <FilesWithAnyContent Include="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Agent\NDistribUnit.Agent.exe.config" />
-      <FilesWithAnyContent Include="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Client\NDistribUnit.Client.exe.config" />
+      <FilesWithAnyContent Include="$(SolutionDir)..\..\builds\$(Configuration)\$(BuiltVersion)\Server\NDistribUnit.Server.exe.config" />
+      <FilesWithAnyContent Include="$(SolutionDir)..\..\builds\$(Configuration)\$(BuiltVersion)\Agent\NDistribUnit.Agent.exe.config" />
+      <FilesWithAnyContent Include="$(SolutionDir)..\..\builds\$(Configuration)\$(BuiltVersion)\Client\NDistribUnit.Client.exe.config" />
     </ItemGroup>
-    <HashCalculatorTask Path="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)" FilesWithAnyContents="@(FilesWithAnyContent)" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SolutionDir)builds\$(Configuration)\Server.exe" ContinueOnError="true" OverwriteReadOnlyFiles="true" />
-    <CopyResourcesTask SourceFiles="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Server\NDistribUnit.Server.exe" TargetFiles="$(SolutionDir)builds\$(Configuration)\Server.exe" ContinueOnError="true" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SolutionDir)builds\$(Configuration)\Agent.exe" ContinueOnError="true" OverwriteReadOnlyFiles="true" />
-    <CopyResourcesTask SourceFiles="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Agent\NDistribUnit.Agent.exe" TargetFiles="$(SolutionDir)builds\$(Configuration)\Agent.exe" ContinueOnError="true" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SolutionDir)builds\$(Configuration)\Client.exe" ContinueOnError="true" OverwriteReadOnlyFiles="true" />
-    <CopyResourcesTask SourceFiles="$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Client\NDistribUnit.Client.exe" TargetFiles="$(SolutionDir)builds\$(Configuration)\Client.exe" ContinueOnError="true" />
+    <HashCalculatorTask Path="$(SolutionDir)..\..\builds\$(Configuration)\$(BuiltVersion)" FilesWithAnyContents="@(FilesWithAnyContent)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SolutionDir)..\..\builds\$(Configuration)\Server.exe" ContinueOnError="true" OverwriteReadOnlyFiles="true" />
+    <CopyResourcesTask SourceFiles="$(SolutionDir)..\..\builds\$(Configuration)\$(BuiltVersion)\Server\NDistribUnit.Server.exe" TargetFiles="$(SolutionDir)..\..\builds\$(Configuration)\Server.exe" ContinueOnError="true" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SolutionDir)..\..\builds\$(Configuration)\Agent.exe" ContinueOnError="true" OverwriteReadOnlyFiles="true" />
+    <CopyResourcesTask SourceFiles="$(SolutionDir)..\..\builds\$(Configuration)\$(BuiltVersion)\Agent\NDistribUnit.Agent.exe" TargetFiles="$(SolutionDir)..\..\builds\$(Configuration)\Agent.exe" ContinueOnError="true" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SolutionDir)..\..\builds\$(Configuration)\Client.exe" ContinueOnError="true" OverwriteReadOnlyFiles="true" />
+    <CopyResourcesTask SourceFiles="$(SolutionDir)..\..\builds\$(Configuration)\$(BuiltVersion)\Client\NDistribUnit.Client.exe" TargetFiles="$(SolutionDir)..\..\builds\$(Configuration)\Client.exe" ContinueOnError="true" />
   </Target>
 </Project>

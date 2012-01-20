@@ -12,7 +12,7 @@ namespace NDistribUnit.Common.TestExecution
     [Serializable]
     public class NUnitTestsFilter : ITestFilter
     {
-        private readonly TestFilter filter;
+        private readonly TestFilter nativeFilter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NUnitTestsFilter"/> class.
@@ -34,14 +34,15 @@ namespace NDistribUnit.Common.TestExecution
                 filters.Add(new NotFilter(new CategoryExpression(exclude).Filter));
 
             if (filters.Count == 0)
-                filter = TestFilter.Empty;
+                nativeFilter = TestFilter.Empty;
             else if (filters.Count == 1)
-                filter = filters[0];
+                nativeFilter = filters[0];
             else
-                filter = new AndFilter(filters.ToArray());
-            
-            if (filter is NotFilter)
-                ((NotFilter)filter).TopLevel = true;
+                nativeFilter = new AndFilter(filters.ToArray());
+
+            var notFilter = nativeFilter as NotFilter;
+            if (notFilter != null)
+                notFilter.TopLevel = true;
         }
 
         /// <summary>
@@ -51,7 +52,7 @@ namespace NDistribUnit.Common.TestExecution
         /// <returns></returns>
         public bool Pass(ITest test)
         {
-            return filter.Pass(test);
+            return nativeFilter.Pass(test);
         }
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace NDistribUnit.Common.TestExecution
         /// <returns></returns>
         public bool Match(ITest test)
         {
-            return filter.Match(test);
+            return nativeFilter.Match(test);
         }
 
         /// <summary>
@@ -72,7 +73,15 @@ namespace NDistribUnit.Common.TestExecution
         /// </value>
         public bool IsEmpty
         {
-            get { return filter.IsEmpty; }
+            get { return nativeFilter.IsEmpty; }
+        }
+
+        /// <summary>
+        /// Gets the native filter.
+        /// </summary>
+        public TestFilter NativeFilter
+        {
+            get { return nativeFilter; }
         }
     }
 }

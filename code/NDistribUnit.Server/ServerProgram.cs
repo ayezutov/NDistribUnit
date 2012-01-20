@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using Autofac;
 using Autofac.Core;
+using NDistribUnit.Common.Common;
 using NDistribUnit.Common.Common.ConsoleProcessing;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication;
@@ -48,18 +49,13 @@ namespace NDistribUnit.Server
             }
         }
 
-        private readonly BootstrapperParameters bootstrapperParameters;
-        private readonly ILog log;
         private readonly ServerHost serverHost;
 
         public ServerProgram(ServerHost serverHost, BootstrapperParameters bootstrapperParameters,
-                             UpdatesMonitor updatesMonitor, ILog log, ExceptionCatcher exceptionCatcher)
+                             UpdatesMonitor updatesMonitor, ILog log, ExceptionCatcher exceptionCatcher, AssemblyResolver assemblyResolver)
+            :base(assemblyResolver, updatesMonitor, exceptionCatcher, log, bootstrapperParameters)
         {
-            this.bootstrapperParameters = bootstrapperParameters;
-            this.updatesMonitor = updatesMonitor;
-            this.log = log;
             this.serverHost = serverHost;
-            this.exceptionCatcher = exceptionCatcher;
         }
 
         private int Run()

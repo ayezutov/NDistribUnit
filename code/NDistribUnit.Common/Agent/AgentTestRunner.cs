@@ -1,11 +1,13 @@
 using System;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using NDistribUnit.Common.Common.ConsoleProcessing;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 using NDistribUnit.Common.TestExecution.Storage;
+using NDistribUnit.Common.Updating;
 using NUnit.Core;
 using NUnit.Util;
 
@@ -21,6 +23,7 @@ namespace NDistribUnit.Common.Agent
         private readonly ITestSystemInitializer initializer;
         private readonly IDistributedConfigurationOperator configurationOperator;
         private readonly ExceptionCatcher exceptionCatcher;
+        private readonly BootstrapperParameters bootstrapperParameters;
         private readonly ILog log;
 
         /// <summary>
@@ -31,6 +34,7 @@ namespace NDistribUnit.Common.Agent
         /// <param name="initializer">The initializer.</param>
         /// <param name="configurationOperator">The configuration operator.</param>
         /// <param name="exceptionCatcher">The exception catcher.</param>
+        /// <param name="bootstrapperParameters">The bootstrapper parameters.</param>
         /// <param name="log">The log.</param>
         public AgentTestRunner(
             IProjectsStorage projects,
@@ -38,6 +42,7 @@ namespace NDistribUnit.Common.Agent
             ITestSystemInitializer initializer,
             IDistributedConfigurationOperator configurationOperator,
             ExceptionCatcher exceptionCatcher,
+            BootstrapperParameters bootstrapperParameters,
             ILog log)
         {
             this.projects = projects;
@@ -45,6 +50,7 @@ namespace NDistribUnit.Common.Agent
             this.initializer = initializer;
             this.configurationOperator = configurationOperator;
             this.exceptionCatcher = exceptionCatcher;
+            this.bootstrapperParameters = bootstrapperParameters;
             this.log = log;
         }
 
@@ -109,12 +115,17 @@ namespace NDistribUnit.Common.Agent
                                                              }
                                                              
                                                              package.Settings["ShadowCopyFiles"] = true;
-                                                             package.BasePath = package.PrivateBinPath = project.Path;
-
+                                                             package.AutoBinPath = false;
+                                                             package.BasePath = bootstrapperParameters.RootFolder;
+                                                             package.PrivateBinPath = string.Join(";", 
+                                                                 new[]
+                                                                     {
+                                                                         project.Path,
+                                                                         Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
+                                                                     });
                                                              if (!string.IsNullOrEmpty(configurationFileName))
                                                              {
                                                                  package.ConfigurationFile = configurationFileName;
-                                                                     /*?? Path.ChangeExtension(mappedAssemblyFile, ".config");*/
                                                              }
 
                                                              var nativeTestRunner = new DefaultTestRunnerFactory().MakeTestRunner(package);
@@ -133,7 +144,7 @@ namespace NDistribUnit.Common.Agent
                                                                        new NUnitTestsFilter(
                                                                            testOptions.IncludeCategories,
                                                                            testOptions.ExcludeCategories,
-                                                                           test.UniqueTestId));
+                                                                           test.UniqueTestId).NativeFilter);
                                      };
 
                 if (Thread.CurrentThread.GetApartmentState() != ApartmentState.STA

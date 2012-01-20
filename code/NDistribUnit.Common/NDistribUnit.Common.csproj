@@ -42,6 +42,18 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MsBuild Task|AnyCPU'">
     <OutputPath>bin\MsBuild Task\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug with NUnit|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug with NUnit\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;FIRSTPROJECTINSOLUTION</DefineConstants>
+    <DocumentationFile>bin\Debug\NDistribUnit.Common.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
       <HintPath>..\_dependencies\Autofac-2.4.4.705-NET40\Autofac.dll</HintPath>
@@ -87,6 +99,7 @@
     <Compile Include="Agent\Agent.cs" />
     <Compile Include="Client\ClientParameters.cs" />
     <Compile Include="Client\NUnitParameters.cs" />
+    <Compile Include="Common\AssemblyResolver.cs" />
     <Compile Include="Common\Communication\ServiceConfiguration.cs" />
     <Compile Include="Common\ConsoleProcessing\ExceptionCatcher.cs" />
     <Compile Include="Common\Extensions\EnumExtensions.cs" />
@@ -238,6 +251,7 @@
     <ProjectReference Include="..\_dependencies\NUnit-2.5.9.10348\src\NUnitCore\core\nunit.core.dll.csproj">
       <Project>{EBD43A7F-AFCA-4281-BB53-5CDD91F966A3}</Project>
       <Name>nunit.core.dll</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\_dependencies\NUnit-2.5.9.10348\src\NUnitCore\interfaces\nunit.core.interfaces.dll.csproj">
       <Project>{435428F8-5995-4CE4-8022-93D595A8CC0F}</Project>

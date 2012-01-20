@@ -106,12 +106,16 @@
       <FilesInOutputDirExcludes Include="$(OutDir)\*.xml" />
       <FilesInOutputDirExcludes Include="$(OutDir)\*.lnk" />
     </ItemGroup>
-    <ItemGroup Condition="'$(Configuration)' != 'Debug'">
+    <ItemGroup Condition="'$(Configuration)' != 'Debug' And '$(Configuration)' != 'Debug with NUnit'">
       <FilesInOutputDirExcludes Include="$(OutDir)\*.pdb" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' != 'Debug with NUnit'">
+      <FilesInOutputDirExcludes Include="$(OutDir)\nunit*.dll" />
+      <FilesInOutputDirExcludes Include="$(OutDir)\nunit*.pdb" />
     </ItemGroup>
     <ItemGroup>
       <FilesInOutputDir Include="$(OutDir)\**\*.*" Exclude="@(FilesInOutputDirExcludes)" />
     </ItemGroup>
-    <Copy SourceFiles="@(FilesInOutputDir)" DestinationFiles="@(FilesInOutputDir->'$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Agent\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(FilesInOutputDir)" DestinationFiles="@(FilesInOutputDir->'$(SolutionDir)..\..\builds\$(Configuration)\$(BuiltVersion)\Agent\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 </Project>

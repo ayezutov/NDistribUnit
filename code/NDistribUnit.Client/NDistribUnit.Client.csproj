@@ -43,6 +43,18 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MsBuild Task|AnyCPU'">
     <OutputPath>bin\MsBuild Task\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug with NUnit|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug with NUnit\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\NDistribUnit.Client.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
       <HintPath>..\_dependencies\Autofac-2.4.4.705-NET40\Autofac.dll</HintPath>
@@ -107,12 +119,16 @@
       <FilesInOutputDirExcludes Include="$(OutDir)\*.xml" />
       <FilesInOutputDirExcludes Include="$(OutDir)\*.lnk" />
     </ItemGroup>
-    <ItemGroup Condition="'$(Configuration)' != 'Debug'">
+    <ItemGroup Condition="'$(Configuration)' != 'Debug' And '$(Configuration)' != 'Debug with NUnit'">
       <FilesInOutputDirExcludes Include="$(OutDir)\*.pdb" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' != 'Debug with NUnit'">
+      <FilesInOutputDirExcludes Include="$(OutDir)\nunit*.dll" />
+      <FilesInOutputDirExcludes Include="$(OutDir)\nunit*.pdb" />
     </ItemGroup>
     <ItemGroup>
       <FilesInOutputDir Include="$(OutDir)\**\*.*" Exclude="@(FilesInOutputDirExcludes)" />
     </ItemGroup>
-    <Copy SourceFiles="@(FilesInOutputDir)" DestinationFiles="@(FilesInOutputDir->'$(SolutionDir)builds\$(Configuration)\$(BuiltVersion)\Client\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(FilesInOutputDir)" DestinationFiles="@(FilesInOutputDir->'$(SolutionDir)..\..\builds\$(Configuration)\$(BuiltVersion)\Client\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 </Project>

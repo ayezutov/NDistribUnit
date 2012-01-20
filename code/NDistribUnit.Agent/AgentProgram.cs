@@ -3,6 +3,7 @@ using System.Configuration;
 using Autofac;
 using NDistribUnit.Common.Agent;
 using NDistribUnit.Common.Agent.Naming;
+using NDistribUnit.Common.Common;
 using NDistribUnit.Common.Common.ConsoleProcessing;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication;
@@ -40,16 +41,13 @@ namespace NDistribUnit.Agent
                 throw;
             }
         }
-
-        private readonly BootstrapperParameters bootstrapperParameters;
-        private readonly ILog log;
-
+        
         /// <summary>
         ///  The host, which enables all communication services
         /// </summary>
         public AgentHost AgentHost { get; set; }
 
-
+        
         /// <summary>
         /// Initializes a new instance of an agent program
         /// </summary>
@@ -57,20 +55,19 @@ namespace NDistribUnit.Agent
         /// <param name="bootstrapperParameters">The bootstrapper parameters.</param>
         /// <param name="updatesMonitor">The updates availability monitor.</param>
         /// <param name="exceptionCatcher">The exception catcher.</param>
+        /// <param name="resolver">The resolver.</param>
         /// <param name="log">The log.</param>
         public AgentProgram(AgentHost agentHost, BootstrapperParameters bootstrapperParameters,
-                            UpdatesMonitor updatesMonitor, ExceptionCatcher exceptionCatcher, ILog log)
+                            UpdatesMonitor updatesMonitor, ExceptionCatcher exceptionCatcher, AssemblyResolver resolver,
+            ILog log): base(resolver, updatesMonitor, exceptionCatcher, log, bootstrapperParameters)
         {
-            this.bootstrapperParameters = bootstrapperParameters;
-            this.updatesMonitor = updatesMonitor;
-            this.exceptionCatcher = exceptionCatcher;
-            this.log = log;
             AgentHost = agentHost;
         }
 
 
         private int Run()
         {
+
             return exceptionCatcher.Run(
                 () =>
                 {

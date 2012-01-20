@@ -62,7 +62,7 @@ namespace NDistribUnit.Common.Client
 					{"include", (string includes) => result.NUnitParameters.IncludeCategories = includes },
 					{"exclude", (string excludes) => result.NUnitParameters.ExcludeCategories = excludes },
 					{"alias", (string alias) => result.Alias = alias },
-						
+					{"run", (string run) => result.NUnitParameters.TestToRun = run},
                     {ConsoleOption.UnnamedOptionName, (string assembly) => result.NUnitParameters.AssembliesToTest.Add(assembly), false},
                 };
 

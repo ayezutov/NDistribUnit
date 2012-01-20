@@ -83,7 +83,7 @@
       <AssemblyInfoFiles Include="@(Compile)" Condition="'%(Filename)'=='AssemblyInfoInc'"/>
     </ItemGroup>
     <RemoveFoldersOfAssemblyVersionPatternTask 
-      Path="$(SolutionDir)builds\$(Configuration)"
+      Path="$(SolutionDir)..\..\builds\$(Configuration)"
       FoldersCountToLeave="2"
       Condition="$(DefineConstants.Contains('FIRSTPROJECTINSOLUTION'))">
     </RemoveFoldersOfAssemblyVersionPatternTask>

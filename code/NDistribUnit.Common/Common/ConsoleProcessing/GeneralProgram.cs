@@ -4,6 +4,8 @@ using System.IO;
 using System.Threading;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication;
+using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.Updating;
 
 namespace NDistribUnit.Common.Common.ConsoleProcessing
 {
@@ -12,11 +14,72 @@ namespace NDistribUnit.Common.Common.ConsoleProcessing
     /// </summary>
     public class GeneralProgram
     {
+        // field to prevent garbage collection
+        private readonly AssemblyResolver resolver;
+
         /// 
-        protected UpdatesMonitor updatesMonitor;
+        protected readonly UpdatesMonitor updatesMonitor;
 
         ///
-        protected ExceptionCatcher exceptionCatcher;
+        protected readonly ExceptionCatcher exceptionCatcher;
+
+        ///
+        protected readonly ILog log;
+
+        ///
+        protected readonly BootstrapperParameters bootstrapperParameters;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeneralProgram"/> class.
+        /// </summary>
+        /// <param name="resolver">The resolver.</param>
+        /// <param name="updatesMonitor">The updates monitor.</param>
+        /// <param name="exceptionCatcher">The exception catcher.</param>
+        /// <param name="log">The log.</param>
+        /// <param name="bootstrapperParameters"> </param>
+        protected GeneralProgram(AssemblyResolver resolver, UpdatesMonitor updatesMonitor, ExceptionCatcher exceptionCatcher, ILog log, BootstrapperParameters bootstrapperParameters)
+        {
+            this.resolver = resolver;
+            this.updatesMonitor = updatesMonitor;
+            this.exceptionCatcher = exceptionCatcher;
+            this.log = log;
+            this.bootstrapperParameters = bootstrapperParameters;
+            resolver.AddDirectory(GetNUnitFolder(bootstrapperParameters));
+        }
+
+        private string GetNUnitFolder(BootstrapperParameters bootstrapperParameters)
+        {
+            string versionFolder = GetFolderWithMaximumVersionPattern(Path.Combine(bootstrapperParameters.RootFolder, "NUnit"));
+
+            string temp = Path.Combine(versionFolder, "net-2.0");
+            if (Directory.Exists(temp))
+                return temp;
+            
+            return versionFolder;
+        }
+
+        private string GetFolderWithMaximumVersionPattern(string rootFolder)
+        {
+            Tuple<Version, string> result = null;
+            foreach (var directory in new DirectoryInfo(rootFolder).GetDirectories())
+            {
+                if (UpdatesMonitor.VersionPattern.IsMatch(directory.FullName))
+                {
+                    var current = new Tuple<Version, string>(Version.Parse(directory.Name), directory.FullName);
+                    if (result == null)
+                    {
+                        result = current;
+                    }
+                    else if (result.Item1 < current.Item1)
+                    {
+                        result = current;
+                    }
+                }
+            }
+
+            return result == null ? null : result.Item2;
+        }
+
 
         /// <summary>
         /// Waits until console input or available update and get return code.
@@ -143,6 +206,6 @@ namespace NDistribUnit.Common.Common.ConsoleProcessing
             return line;
         }
     }
-
+    
 
 }
