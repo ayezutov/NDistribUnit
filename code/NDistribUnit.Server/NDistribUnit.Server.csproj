@@ -356,9 +356,11 @@
     <Content Include="dashboard\scripts\NDistribUnit.Helpers.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="dashboard\scripts\yez.layout.js" />
     <Content Include="dashboard\styles\NDistribUnit.Dashboard.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="dashboard\test.html" />
     <Content Include="icon.ico" />
   </ItemGroup>
   <ItemGroup />

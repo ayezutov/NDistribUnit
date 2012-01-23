@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html>
+    <head>
+        <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="scripts/yez.layout.js"></script>
+        <title>Just a test page</title>
+        <script type="text/javascript">
+            $(function () {
+                $(document.body).layout();
+            });
+        </script>
+        <style>
+            html, body{ margin: 0px;height: 100%;}
+            div { border: solid 5px red;padding: 3px;}
+        </style>
+    </head>
+    <body>
+        <div data-layout-position="left" style="margin: 10px">Left menu</div>
+        <div data-layout-position="top" style="margin: 10px">Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu </div>
+        <div data-layout-position="fill" style="border: solid 12px green; margin: 10px">
+            <div data-layout-view="results" style="border: solid 2px goldenrod;">
+              <div data-layout-position="left" data-layout-draggable="true" id="results-left" style="border: solid 2px yellow;"></div>
+              <div data-layout-position="fill"  id="results-fill"  style="border: solid 2px olivedrab;"></div>  
+            </div>
+            <div data-layout-view="status" style="border: solid 2px fuchsia;">
+              <div data-layout-position="left" data-layout-draggable="true" style="border: solid 2px palegreen;"></div>
+              <div data-layout-position="fill"></div>  
+            </div>
+        </div>
+        <div data-layout-position="bottom" style="padding: 10px">Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu </div>
+        <div data-layout-position="right" style="padding: 10px">Right menu</div>
+    </body>
+</html>

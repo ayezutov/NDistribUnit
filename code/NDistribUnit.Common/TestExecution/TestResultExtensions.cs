@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Core;
 
 namespace NDistribUnit.Common.TestExecution
@@ -137,6 +139,19 @@ namespace NDistribUnit.Common.TestExecution
                 result.Test.Properties.Remove(CompletedPropertyName);
 
             return result;
+        }
+
+        static readonly BinaryFormatter formatter = new BinaryFormatter();
+        /// <summary>
+        /// Clones this instance.
+        /// </summary>
+        /// <returns></returns>
+        public static TestResult DeepClone(this TestResult result)
+        {
+            var ms = new MemoryStream();
+            formatter.Serialize(ms, result);
+            ms.Seek(0, SeekOrigin.Begin);
+            return (TestResult)formatter.Deserialize(ms);
         }
     }
 }

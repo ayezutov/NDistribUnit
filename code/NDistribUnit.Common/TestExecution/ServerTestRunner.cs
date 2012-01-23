@@ -200,7 +200,7 @@ namespace NDistribUnit.Common.TestExecution
             results.Add(result, test.Test.Run);
             var request = requests.GetBy(test.Test.Run);
             if (request != null)
-                request.PipeToClient.Publish(result.SetFinal(false));
+                request.PipeToClient.Publish(result.DeepClone().SetFinal(false));
 
             if (isRequestCompleted)
                 ProcessCompletedTestRun(test.Test.Run);

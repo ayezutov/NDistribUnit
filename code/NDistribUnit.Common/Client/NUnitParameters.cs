@@ -19,6 +19,12 @@ namespace NDistribUnit.Common.Client
             TestToRun = null;
         }
 
+        /// <summary>
+        /// Gets or sets the test to run.
+        /// </summary>
+        /// <value>
+        /// The test to run.
+        /// </value>
         public string TestToRun { get; set; }
 
         /// <summary>

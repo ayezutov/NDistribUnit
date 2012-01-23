@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
 using NUnit.Core;
 
@@ -59,25 +58,39 @@ namespace NDistribUnit.Common.TestExecution
             }
         }
 
+        private Task task;
         private void MergeAsync()
         {
-            Task.Factory.StartNew(() =>
-                                      {
-                                          try
-                                          {
-                                              lock (syncObject)
-                                              {
-                                                  MergeNext();
-                                                  if (unmerged.Count > 0)
-                                                      MergeAsync();
-                                              }
-                                          }
-                                          catch (Exception ex)
-                                          {
-                                              log.Warning("An error occurred while merging results", ex);
-                                              throw;
-                                          }
-                                      });
+            lock (syncObject)
+            {
+                if (unmerged.Count == 0)
+                    return;
+
+                task = task == null || task.IsCompleted
+                    ? Task.Factory.StartNew(PerformAsyncMerging) 
+                    : task.ContinueWith(t => PerformAsyncMerging());
+            }
+        }
+
+        private void PerformAsyncMerging()
+        {
+            lock (syncObject)
+            {
+                try
+                {
+                    if (unmerged.Count == 0)
+                        return;
+
+                    MergeNext();
+                    if (unmerged.Count > 0)
+                        MergeAsync();
+
+                }
+                catch (Exception ex)
+                {
+                    log.Warning("An error occurred while merging results", ex);
+                }
+            }
         }
 
         private void MergeSynchronously()
