@@ -8,7 +8,8 @@
     $.extend(Layouter, {
         layouterInstance: "layouter.instance",
         layoutPositionAttribute: "layout-position",
-        layoutViewAttribute: "layout-view"
+        layoutViewAttribute: "layout-view",
+        layouterAnimationTarget: "layouter.animation.target"
     });
 
     Layouter.prototype = {
@@ -84,7 +85,7 @@
                             window.layoutRepositioningTimeout = null;
                         }
                         me.repositionElements();
-                    }, 10);
+                    }, 30);
                 });
             }
         },
@@ -106,17 +107,17 @@
             });
         },
         repositionElements: function () {
+            var $children = this.$element.children();
+            $children.each(function (childIndex, childElement) {
+                var $child = $(childElement);
+                $child.css("position", "absolute");
+            });
 
             var me = this;
             var totalHeight = this.$element.height();
             var totalWidth = this.$element.width();
 
-            var rect = {
-                top: 0,
-                left: 0,
-                right: totalWidth,
-                bottom: totalHeight
-            };
+            var rect = { top: 0, left: 0, right: totalWidth, bottom: totalHeight };
 
             if (!this.isChild) {
                 this.$element.css("position", "relative");
@@ -124,21 +125,25 @@
             this.$element.css("overflow", "hidden");
             var fills = [];
 
-            var $children = this.$element.children();
+            if (me.counts.views > 0) {
+                var $visible = $children.filter(":visible");
+
+                if ($visible.length > 1) {
+                    $visible.each(function (i, e) {
+                        if (i > 0)
+                            $(e).hide();
+                    });
+                }
+            }
+
             $children.each(function (childIndex, childElement) {
                 var $child = $(childElement);
-                $child.css("position", "absolute");
                 $child.css("overflow", "auto");
 
                 if (me.counts.views) {
-                    me.setOffset($child, 0, parseFloat(totalWidth) / $children.length * childIndex);
-                    me.setWidth($child, parseFloat(totalWidth) / $children.length);
+                    me.setOffset($child, 0, 0);
+                    me.setWidth($child, totalWidth);
                     me.setHeight($child, totalHeight);
-
-                    //                    if (childIndex > 0)
-                    //                        $child.hide();
-                    //                    else
-                    //                        $child.show();
                 } else {
                     var position = $child.data(Layouter.layoutPositionAttribute);
 
@@ -209,6 +214,96 @@
                     childLayouter.repositionElements();
                 }
             });
+        },
+
+        showView: function (pathArray) {
+            if (!$.isArray(pathArray))
+                return;
+
+            if (pathArray.length == 0)
+                return;
+
+            var $view = $("*[data-" + Layouter.layoutViewAttribute + "='" + pathArray[0] + "']");
+
+            if ($view.length == 0)
+                return;
+
+            this.__makeVisible($view, pathArray[0]);
+
+            var furtherPathArray = $.grep(pathArray, function (e, i) { return i > 0; });
+            if (furtherPathArray.length == 0)
+                return;
+
+            var layouter = $view.data(Layouter.layouterInstance);
+            if (layouter) {
+                layouter.showView(furtherPathArray);
+            }
+
+        },
+
+        __makeVisible: function ($view, viewName) {
+            var $parent = $view.parent();
+            
+            var target = $parent.data(Layouter.layouterAnimationTarget);
+            if (target && target === viewName) {
+                return;
+            }
+
+            $parent.children(":animated").stop(true, true);
+            $parent.data(Layouter.layouterAnimationTarget, viewName);
+
+            if ($view.is(":visible"))
+                return;
+            var $visibleView = $view.parent().children(":visible");
+            var visibleIndex = $visibleView.index();
+            var index = $view.index();
+            var animation = $parent.data("layout-view-animation") || "none";
+
+            var animationDescription = {};
+            var animationOptions = { duration: "slow" };
+            var animationInitialOffset = { top: 0, left: 0 };
+
+            var parentDimensions = { width: $parent.width(), height: $parent.height() };
+
+            var animationSign = index > visibleIndex ? "-" : "+";
+
+            switch (animation) {
+                case "vertical":
+                    {
+                        animationDescription = { top: animationSign + "=" + parentDimensions.height };
+                        animationInitialOffset.top = animationSign == "-" ? parentDimensions.height : -parentDimensions.height;
+                    }
+                    break;
+
+                case "horizontal":
+                    {
+                        animationDescription = { left: animationSign + "=" + parentDimensions.width };
+                        animationInitialOffset.left = animationSign == "-" ? parentDimensions.width : -parentDimensions.width;
+                    }
+                    break;
+
+                default:
+                    animationOptions.duration = 0;
+            }
+
+            $view.show();
+
+            var layouter = $view.data(Layouter.layouterInstance);
+            if (layouter) {
+                layouter.repositionElements();
+            }
+
+            this.setOffset($view, animationInitialOffset.top, animationInitialOffset.left);
+            this.setWidth($view, parentDimensions.width);
+            this.setHeight($view, parentDimensions.height);
+
+            $view.animate(animationDescription, animationOptions);
+            $visibleView.animate(animationDescription,
+                $.extend({ complete: function () {
+                    $visibleView.hide();
+                    $parent.removeData(Layouter.layouterAnimationTarget);
+                }
+                }, animationOptions));
         }
     };
 
@@ -220,7 +315,18 @@
         },
 
         refreshLayout: function () {
+            var layouter = this.data(Layouter.layouterInstance);
+            if (layouter) {
+                layouter.repositionElements();
+            }
+        },
 
+        showLayoutView: function (viewName) {
+            var splitted = viewName.split("/");
+            var layouter = this.data(Layouter.layouterInstance);
+            if (layouter) {
+                layouter.showView(splitted);
+            }
         }
     });
 })(jQuery, window);

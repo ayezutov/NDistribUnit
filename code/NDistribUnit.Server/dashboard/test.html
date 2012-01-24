@@ -7,6 +7,10 @@
         <script type="text/javascript">
             $(function () {
                 $(document.body).layout();
+                $("A").click(function (e) {
+                    $(document.body).showLayoutView($(e.target).data("target-pane"));
+                    e.preventDefault();
+                });
             });
         </script>
         <style>
@@ -15,19 +19,36 @@
         </style>
     </head>
     <body>
+        <div data-layout-position="top" style="margin: 10px">
+            <a href="#" data-target-pane="results">Show 'results'</a>
+            <a href="#" data-target-pane="status">Show 'status'</a>
+            <a href="#" data-target-pane="status/MACHINE #001">Show 'status/Machine 1'</a>
+            <a href="#" data-target-pane="status/MACHINE #002">Show 'status/Machine 2'</a>
+            <a href="#" data-target-pane="status/MACHINE #003">Show 'status/Machine 3'</a>
+        </div>
         <div data-layout-position="left" style="margin: 10px">Left menu</div>
-        <div data-layout-position="top" style="margin: 10px">Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu Top menu </div>
-        <div data-layout-position="fill" style="border: solid 12px green; margin: 10px">
+        <div data-layout-position="right" style="padding: 10px">Right menu</div>
+        <div data-layout-position="fill" data-layout-view-animation="horizontal" style="border: solid 12px green; margin: 10px">
             <div data-layout-view="results" style="border: solid 2px goldenrod;">
-              <div data-layout-position="left" data-layout-draggable="true" id="results-left" style="border: solid 2px yellow;"></div>
-              <div data-layout-position="fill"  id="results-fill"  style="border: solid 2px olivedrab;"></div>  
+                <div data-layout-position="left" data-layout-draggable="true" id="results-left" style="border: solid 2px yellow;">Results menu</div>
+                <div data-layout-position="fill"  id="results-fill"  style="border: solid 2px olivedrab;">Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content Results content </div>  
             </div>
             <div data-layout-view="status" style="border: solid 2px fuchsia;">
-              <div data-layout-position="left" data-layout-draggable="true" style="border: solid 2px palegreen;"></div>
-              <div data-layout-position="fill"></div>  
+                <div data-layout-position="left" data-layout-draggable="true" style="border: solid 2px palegreen;"></div>
+                <div data-layout-position="fill" data-layout-view-animation="vertical">
+                    <div data-layout-view="MACHINE #001" style="border: solid 2px blue;">
+                        Machine #001
+                    </div>
+                    <div data-layout-view="MACHINE #002" style="border: solid 2px blue;">
+                        Machine #002
+                    </div>
+                    <div data-layout-view="MACHINE #003" style="border: solid 2px blue;">
+                        Machine #003
+                    </div>
+                </div>  
             </div>
         </div>
         <div data-layout-position="bottom" style="padding: 10px">Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu Bottom menu </div>
-        <div data-layout-position="right" style="padding: 10px">Right menu</div>
+        
     </body>
 </html>
