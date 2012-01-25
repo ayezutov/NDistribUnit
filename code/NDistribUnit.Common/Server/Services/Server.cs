@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
 using System.Threading.Tasks;
-using NDistribUnit.Common.Common.ConsoleProcessing;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
@@ -46,7 +45,6 @@ namespace NDistribUnit.Common.Server.Services
         /// <param name="resultsStorage">The results.</param>
         /// <param name="log">The log.</param>
         /// <param name="projects">The projects.</param>
-        /// <param name="exceptionCatcher"> </param>
         public Server(
             IUpdateSource updateSource, 
             IVersionProvider versionProvider,
@@ -54,8 +52,7 @@ namespace NDistribUnit.Common.Server.Services
             IRequestsStorage requests,
             IResultsStorage resultsStorage,
             ILog log, 
-            IProjectsStorage projects,
-            ExceptionCatcher exceptionCatcher)
+            IProjectsStorage projects)
 		{
 			this.updateSource = updateSource;
             this.versionProvider = versionProvider;
@@ -114,7 +111,7 @@ namespace NDistribUnit.Common.Server.Services
         {
             log.BeginActivity(string.Format("Receiving project for test: {0} ({1})", project.TestRun.Id, project.TestRun.NUnitParameters.AssembliesToTest[0]));
     	    
-            projects.Store(project.TestRun, new StreamWrapper(project.Project, log));
+            projects.Store(project.TestRun, project.Project);
 
             log.EndActivity(string.Format("Received project for test: {0} ({1})", project.TestRun.Id, project.TestRun.NUnitParameters.AssembliesToTest[0]));
         }
@@ -128,7 +125,13 @@ namespace NDistribUnit.Common.Server.Services
         /// </returns>
         public bool HasProject(TestRun run)
         {
-            return projects.HasProject(run);
+            log.BeginActivity(string.Format("Checking for project '{0}'{1}...", run.Id, !string.IsNullOrEmpty(run.Alias) ? string.Format(" with alias '{0}'", run.Alias) : string.Empty));
+            
+            bool result = projects.HasProject(run);
+            
+            log.EndActivity(result ? "Project is available" : "Project was not found on server");
+
+            return result;
         }
     }
 }

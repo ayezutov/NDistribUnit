@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.ServiceModel;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.ConsoleProcessing;
@@ -113,28 +112,31 @@ namespace NDistribUnit.Common.TestExecution
                         }
                         catch (NoAvailableAgentsException ex)
                         {
+                            log.BeginActivity("Tests are being marked as not run due to not available agents...");
                             foreach (var test in ex.Tests)
                             {
                                 ProcessResult(test, null,
                                               TestResultFactory.GetNoAvailableAgentsFailure(test, ex));
                             }
+                            log.EndActivity("Completed marking tests as not run due to not available agents");
                             return;
                         }
 
                         if (pair == null)
                             return;
 
-                        tests.MarkRunning(pair.Item2);
-                        agents.MarkAsBusy(pair.Item1);
-
-                        if (tests.HasAvailable)
-                            RunAsynchronously(TryToRunIfAvailable);
                     }
                     catch(Exception ex)
                     {
                         log.Error("Exception while running test", ex);
                         throw;
                     }
+
+                    tests.MarkRunning(pair.Item2);
+                    agents.MarkAsBusy(pair.Item1);
+
+                    if (tests.HasAvailable)
+                        RunAsynchronously(TryToRunIfAvailable);
                 }
             }
 
@@ -144,24 +146,36 @@ namespace NDistribUnit.Common.TestExecution
         // Should be started in a separate thread
         private void Run(TestUnitWithMetadata test, AgentMetadata agent, DistributedConfigurationSubstitutions configurationSubstitutions)
         {
+            log.BeginActivity(string.Format("[{0}] Started test {1}", test.Test.Run, test.Test.Info.TestName.FullName));
             var request = requests.GetBy(test.Test.Run);
             if (request != null)
                 request.Status = TestRunRequestStatus.Pending;
-            TestResult result = null;
             try
             {
-                var testRunnerAgent =
-                    connectionProvider.GetConnection<IAgent>(agent.Address);
+                log.BeginActivity(string.Format("Connecting to agent [{0}]...", agent));
+                var testRunnerAgent = connectionProvider.GetConnection<IAgent>(agent.Address);
+                log.BeginActivity(string.Format("Connected to agent [{0}]", agent));
 
+                log.BeginActivity(string.Format("Checking project existence ('{0}') on agent {1}", test.Test.Run, agent));
                 if (!testRunnerAgent.HasProject(test.Test.Run))
                 {
-                    testRunnerAgent.ReceiveProject(new ProjectMessage()
+                    log.EndActivity(string.Format("Project '{0}' doesn't exist on agent {1}", test.Test.Run, agent));
+
+                    log.BeginActivity(string.Format("Sending project ('{0}') to agent {1}", test.Test.Run, agent));
+                    testRunnerAgent.ReceiveProject(new ProjectMessage
                                                        {
                                                            TestRun = test.Test.Run,
                                                            Project = projects.GetStreamToPacked(test.Test.Run) ?? new MemoryStream(1)
                                                        });
+                    log.EndActivity(string.Format("Sent project ('{0}') to agent {1}", test.Test.Run, agent));
                 }
-                result = testRunnerAgent.RunTests(test.Test, configurationSubstitutions);
+                else
+                    log.EndActivity(string.Format("Project '{0}' exist on agent {1}", test.Test.Run, agent));
+
+                log.BeginActivity(string.Format("Running {0} on {1} with variables ({2})...", test.Test.UniqueTestId, agent, configurationSubstitutions));
+                TestResult result = testRunnerAgent.RunTests(test.Test, configurationSubstitutions);
+                log.EndActivity(string.Format("Finished running {0} on {1}...", test.Test.UniqueTestId, agent));
+
 
                 ProcessResult(test, agent, result);
             }
@@ -255,6 +269,7 @@ namespace NDistribUnit.Common.TestExecution
             
             if (project == null)
             {
+                log.Error("Unable to get test project");
                 Complete(TestResultFactory.GetProjectRetrievalFailure(request), request.TestRun);
                 return;
             }
@@ -271,6 +286,7 @@ namespace NDistribUnit.Common.TestExecution
                 }
 
                 request.ConfigurationSetup = configurationOperator.ReadConfigurationSetup(project, request.TestRun.NUnitParameters);
+                log.Info(string.Format("There were {0} tests found in {1}", testUnits != null ? testUnits.Count : 0, request.TestRun));
                 tests.AddRange(testUnits);
                 log.EndActivity("Finished parsing project into separate test units");
             }
@@ -295,7 +311,7 @@ namespace NDistribUnit.Common.TestExecution
             request.PipeToClient.Publish(result.SetFinal());
             request.PipeToClient.Close();
 
-            log.EndActivity(string.Format("Finished running request: {0}", testRun.Id));
+            log.EndActivity(string.Format("Finished running request: {0}", testRun));
         }
     }
 }

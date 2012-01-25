@@ -15,7 +15,6 @@ using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.AgentsTracking;
-using NDistribUnit.Common.ServiceContracts;
 using System.Linq;
 
 namespace NDistribUnit.Common.Server.Services

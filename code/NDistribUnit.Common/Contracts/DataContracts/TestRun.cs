@@ -91,5 +91,16 @@ namespace NDistribUnit.Common.Contracts.DataContracts
 		{
 			return Id.GetHashCode();
 		}
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+	    public override string ToString()
+	    {
+	        return string.Format("{0}{1}", Id, string.IsNullOrEmpty(Alias) ? string.Format(", Alias: {0}", Alias) : string.Empty);
+	    }
 	}
 }

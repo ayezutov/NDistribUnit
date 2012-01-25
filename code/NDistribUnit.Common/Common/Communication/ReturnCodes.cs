@@ -21,6 +21,15 @@
 		IncompleteParameterList = int.MaxValue - 3,
 
         ///
-        RestartDueToConfigChange = int.MaxValue - 4
+        RestartDueToConfigChange = int.MaxValue - 4,
+	    
+        ///
+        ServerNotAvailable = int.MaxValue - 5,
+
+        ///
+        NetworkConnectivityError = int.MaxValue - 6,
+        
+        ///
+        NoTestsAvailable = int.MaxValue - 7,
 	}
 }

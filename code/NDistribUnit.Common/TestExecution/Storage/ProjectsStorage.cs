@@ -1,9 +1,11 @@
 using System;
 using System.IO;
 using System.Threading;
+using NDistribUnit.Common.Common;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Updating;
+using NUnit.Util;
 
 namespace NDistribUnit.Common.TestExecution.Storage
 {
@@ -92,7 +94,7 @@ namespace NDistribUnit.Common.TestExecution.Storage
         {
             if (string.IsNullOrEmpty(testRun.Alias))
                 return Path.Combine(RootPath, GetStorageFolderName(), TemporaryStorageFolderName, testRun.Id.ToString());
-            return Path.Combine(RootPath, GetStorageFolderName(), PermanentStorageFolderName, testRun.Alias);
+            return Path.Combine(RootPath, GetStorageFolderName(), PermanentStorageFolderName, PathUtilities.EscapeFileName(testRun.Alias));
         }
 
         private string GetStorageFolderName()

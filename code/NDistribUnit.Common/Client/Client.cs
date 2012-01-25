@@ -4,6 +4,7 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.Updating;
+using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
@@ -12,7 +13,7 @@ using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.Configuration;
 using NDistribUnit.Common.TestExecution.Storage;
 using NUnit.Core;
-using System.Linq;
+using NUnit.Util;
 
 namespace NDistribUnit.Common.Client
 {
@@ -77,7 +78,7 @@ namespace NDistribUnit.Common.Client
         /// <summary>
         /// Runs this instance.
         /// </summary>
-        public void Run()
+        public int Run()
         {
             var server = connectionProvider.GetConnection<IServer>(new EndpointAddress(options.ServerUri));
 
@@ -85,7 +86,10 @@ namespace NDistribUnit.Common.Client
                           {
                               NUnitParameters = options.NUnitParameters,
                               Alias = options.Alias
-                          }; //TODO: load saved state here
+                          }; 
+            //TODO: load saved state here
+
+            log.Info(string.Format("Test run was given the following unqiue identifier: '{0}'", testRun.Id));
 
             if (options.NUnitParameters.AssembliesToTest == null || options.NUnitParameters.AssembliesToTest.Count != 1
                 /*|| !NUnitProject.IsNUnitProjectFile(options.AssembliesToTest[0])*/)
@@ -97,47 +101,57 @@ namespace NDistribUnit.Common.Client
             testRun.Parameters = File.Exists(parametersFileName)
                                      ? parametersReader.Read(parametersFileName)
                                      : TestRunParameters.Default;
-
-
             
-
             try
             {
+                log.BeginActivity("Checking project existence on server...");
                 bool hasProject = server.HasProject(testRun);
                 if (!hasProject)
                 {
+                    log.EndActivity("Project is absent on server");
+
+                    log.BeginActivity("Packaging project...");
                     Stream packageStream = packager.GetPackage(testRun.NUnitParameters.AssembliesToTest);
+                    log.EndActivity("Project packaging completed.");
+
                     try
                     {
+                        log.BeginActivity("Sending project to server...");
                         server.ReceiveProject(new ProjectMessage
                                                   {
-                                                      Project = new StreamWrapper(packageStream, log),
+                                                      Project = packageStream,
                                                       TestRun = testRun
                                                   });
+                        log.EndActivity("Project was successfully sent to server");
                     }
                     finally
                     {
                         packageStream.Close();
                     }
                 }
+                else
+                {
+                    log.EndActivity("Project is already on server");
+                }
             }
             catch (EndpointNotFoundException)
             {
                 log.Error("It seems, that the server is not available");
                 //TODO: Save a failed test run here
-                return;
+                return (int)ReturnCodes.ServerNotAvailable;
             }
             catch(CommunicationException ex)
             {
                 log.Error("There was an error, when trying to send the package to client", ex);
                 //TODO: Save a failed test run here
-                return;
+                return (int)ReturnCodes.NetworkConnectivityError;
             }
 
             var testRunningTask = Task.Factory.StartNew(() =>
                                                             {
                                                                 try
                                                                 {
+                                                                    log.BeginActivity("Started running tests...");
                                                                     TestResult tempResult;
                                                                     while ((tempResult = server.RunTests(testRun)) != null)
                                                                     {
@@ -148,17 +162,9 @@ namespace NDistribUnit.Common.Client
                                                                             break;
                                                                         }
 
-                                                                        log.Info(
-                                                                            string.Format(
-                                                                                "Test '{0}' completed: {1} run, {2} successful, {3} failed",
-                                                                                tempResult.FullName,
-                                                                                tempResult.FindDescedants(
-                                                                                    d => !d.Test.IsSuite).Count(),
-                                                                                tempResult.FindDescedants(
-                                                                                    d => !d.Test.IsSuite && d.IsSuccess).Count(),
-                                                                                tempResult.FindDescedants(
-                                                                                    d => !d.Test.IsSuite && d.IsFailure).Count()));
+                                                                        PrintSummaryInfoForResult(tempResult, new ResultSummarizer(tempResult));
                                                                     }
+                                                                    log.EndActivity("Finished running tests");
                                                                 }
                                                                 catch(Exception ex)
                                                                 {
@@ -169,10 +175,19 @@ namespace NDistribUnit.Common.Client
                                           {
                                               try
                                               {
+                                                  log.BeginActivity("Checking for updates...");
                                                   var updatePackage =
                                                       server.GetUpdatePackage(new UpdateRequest {Version = versionProvider.GetVersion()});
                                                   if (updatePackage.IsAvailable)
+                                                  {
+                                                      log.EndActivity("Update package available");
+                                                      
+                                                      log.BeginActivity(string.Format("Receiving update to {0}...", updatePackage.Version));
                                                       updateReceiver.SaveUpdatePackage(updatePackage);
+                                                      log.EndActivity(string.Format("Update {0} was successfully received", updatePackage.Version));
+                                                  }
+                                                  else
+                                                      log.EndActivity("No updates available.");
                                               }
                                               catch (Exception ex)
                                               {
@@ -196,30 +211,66 @@ namespace NDistribUnit.Common.Client
                 log.Error("Error while running tests", ex);
                 throw;
             }
-            SaveResult();
-            PrintResult();
-        }
 
-        private void PrintResult()
-        {
+            SaveResult();
+
             if (result == null)
             {
                 log.Info("Result is not available. Maybe not all tests were run?");
-                return;
+                return (int)ReturnCodes.NoTestsAvailable;
             }
 
-            var total = 0;
-            var success = 0;
-            result.ForSelfAndAllDescedants(r =>
-                                               {
-                                                   if (!r.Test.IsSuite)
-                                                   {
-                                                       total++;
-                                                       if (r.IsSuccess)
-                                                           success++;
-                                                   }
-                                               });
-            log.Info(string.Format("{0} test cases were run. {1} of them completed successfully.", total, success));
+            var summary = new ResultSummarizer(result);
+            PrintSummaryInfoForResult(result, summary);
+            return summary.ErrorsAndFailures;
+        }
+
+        private void PrintSummaryInfoForResult(TestResult testResult, ResultSummarizer summary)
+        {
+            log.Info(string.Format("Tests run: {0}, Errors: {1}, Failures: {2}, Inconclusive: {3}, Time: {4} seconds",
+                                   summary.TestsRun, summary.Errors, summary.Failures, summary.Inconclusive, summary.Time));
+            log.Info(string.Format("  Not run: {0}, Invalid: {1}, Ignored: {2}, Skipped: {3}",
+                                   summary.TestsNotRun, summary.NotRunnable, summary.Ignored, summary.Skipped));
+
+            if (summary.ErrorsAndFailures > 0 || testResult.IsError || testResult.IsFailure)
+                WriteErrorsAndFailures(testResult);
+        }
+
+        private void WriteErrorsAndFailures(TestResult testResult)
+        {
+            if (testResult.Executed)
+            {
+                if (testResult.HasResults)
+                {
+                    if (testResult.IsFailure || testResult.IsError)
+                        if (testResult.FailureSite == FailureSite.SetUp || testResult.FailureSite == FailureSite.TearDown)
+                            WriteSingleResult(testResult);
+
+                    foreach (TestResult childResult in testResult.Results)
+                        WriteErrorsAndFailures(childResult);
+                }
+                else if (testResult.IsFailure || testResult.IsError)
+                {
+                    WriteSingleResult(testResult);
+                }
+            }
+        }
+
+        private void WriteSingleResult(TestResult testResult)
+        {
+            string status = testResult.IsFailure || testResult.IsError
+                ? string.Format("{0} {1}", testResult.FailureSite, testResult.ResultState)
+                : testResult.ResultState.ToString();
+
+            log.Info(string.Format("{0} : {1}", status, testResult.FullName));
+
+            if (!string.IsNullOrEmpty(testResult.Message))
+                log.Info(string.Format("   {0}", testResult.Message));
+
+            if (!string.IsNullOrEmpty(testResult.StackTrace))
+                log.Info(testResult.IsFailure
+                    ? StackTraceFilter.Filter(testResult.StackTrace)
+                    : testResult.StackTrace + Environment.NewLine);
         }
 
         private void SaveResult()
@@ -229,8 +280,9 @@ namespace NDistribUnit.Common.Client
 
             if (!string.IsNullOrEmpty(options.NUnitParameters.XmlFileName))
             {
-                var xml = serializer.GetXml(result);
+                log.BeginActivity(string.Format("Saving results to '{0}'...", options.NUnitParameters.XmlFileName));
 
+                var xml = serializer.GetXml(result);
                 var writer = new StreamWriter(options.NUnitParameters.XmlFileName);
                 try
                 {
@@ -240,6 +292,8 @@ namespace NDistribUnit.Common.Client
                 {
                     writer.Close();
                 }
+
+                log.EndActivity("Results were saved");
 
             }
         }

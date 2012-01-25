@@ -6,7 +6,7 @@ using NDistribUnit.Common.Logging;
 namespace NDistribUnit.Common
 {
     /// <summary>
-    /// 
+    /// Wraps a stream and writes service information
     /// </summary>
     public class StreamWrapper : Stream
     {

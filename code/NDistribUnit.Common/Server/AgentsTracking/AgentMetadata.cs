@@ -67,6 +67,17 @@ namespace NDistribUnit.Common.Server.AgentsTracking
         {
             set { Status = value; }
         }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Format("'{0}' at '{1}'", Name, Address);
+        }
     }
 
     /// <summary>

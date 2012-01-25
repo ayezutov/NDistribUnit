@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Concurrent;
+using System.Globalization;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading;
+using NDistribUnit.Common.Common;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Updating;
 using NUnit.Core;
+using System.Linq;
 
 namespace NDistribUnit.Common.TestExecution
 {
@@ -144,7 +148,10 @@ namespace NDistribUnit.Common.TestExecution
 
         private string GetResultsStorageFolderName(TestRun testRun)
         {
-            return Path.Combine(parameters.RootFolder, folderName, testRun.Id.ToString());
+            var now = DateTime.Now;
+            var dateFolderName = now.ToString("yyyy-MM-dd");
+            var leafFolderName = PathUtilities.EscapeFileName(string.Format("{0}-{1}{2}", now.ToString("HH-mm-ss"), testRun.Id, !string.IsNullOrEmpty(testRun.Alias) ? "-"+testRun.Alias : string.Empty));
+            return Path.Combine(parameters.RootFolder, folderName, dateFolderName, leafFolderName);
         }
 
         private string GetXmlFileName(TestRun testRun)
