@@ -34,7 +34,9 @@ namespace NDistribUnit.Common.TestExecution.Storage
             if (projectFiles.Count > 1)
                 throw new NotImplementedException();
 
-            return zip.GetPackedFolder(new DirectoryInfo(Path.GetDirectoryName(projectFiles[0])), true);
+            Stream packedFolder = zip.GetPackedFolder(new DirectoryInfo(Path.GetDirectoryName(projectFiles[0])), true);
+            
+            return packedFolder;
         }
     }
 }

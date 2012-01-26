@@ -72,7 +72,15 @@ namespace NDistribUnit.Common.TestExecution
             results.TryRemove(testRun.Id, out temp);
 
             var result = resultsForTestRun.Close();
-            Store(testRun, resultsForTestRun.MergedResult);
+            try
+            {
+                Store(testRun, resultsForTestRun.MergedResult);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception while saving tests:", ex);
+            }
+            
             return result;
         }
 
@@ -126,6 +134,7 @@ namespace NDistribUnit.Common.TestExecution
 
                 var xmlFile = GetXmlFileName(testRun);
                 var xml = serializer.GetXml(mergedResult);
+
                 var xmlStream = new StreamWriter(xmlFile, false);
                 xmlStream.Write(xml);
                 xmlStream.Close();
@@ -148,10 +157,10 @@ namespace NDistribUnit.Common.TestExecution
 
         private string GetResultsStorageFolderName(TestRun testRun)
         {
-            var now = DateTime.Now;
-            var dateFolderName = now.ToString("yyyy-MM-dd");
-            var leafFolderName = PathUtilities.EscapeFileName(string.Format("{0}-{1}{2}", now.ToString("HH-mm-ss"), testRun.Id, !string.IsNullOrEmpty(testRun.Alias) ? "-"+testRun.Alias : string.Empty));
-            return Path.Combine(parameters.RootFolder, folderName, dateFolderName, leafFolderName);
+            //var now = DateTime.Now;
+            //var dateFolderName = now.ToString("yyyy-MM-dd");
+            //var leafFolderName = PathUtilities.EscapeFileName(string.Format("{0}-{1}{2}", now.ToString("HH-mm-ss"), testRun.Id, !string.IsNullOrEmpty(testRun.Alias) ? "-"+testRun.Alias : string.Empty));
+            return Path.Combine(parameters.RootFolder, folderName, testRun.Id.ToString()/*dateFolderName, leafFolderName*/);
         }
 
         private string GetXmlFileName(TestRun testRun)

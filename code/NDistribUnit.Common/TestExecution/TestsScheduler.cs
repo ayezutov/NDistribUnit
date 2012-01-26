@@ -39,7 +39,7 @@ namespace NDistribUnit.Common.TestExecution
             lock (tests.SyncObject)
             {
                 var availableTests = tests.GetAvailable();
-                if (availableTests.Count == 0)
+                if (availableTests == null || availableTests.Count == 0)
                     return null;
 
                 var testToRun = availableTests[0];
@@ -51,7 +51,7 @@ namespace NDistribUnit.Common.TestExecution
 
                     var freeAgents = agents.GetFree();
 
-                    if (freeAgents.Count == 0)
+                    if (freeAgents == null || freeAgents.Count == 0)
                         return null;
 
                     var agentToRun = freeAgents[0];

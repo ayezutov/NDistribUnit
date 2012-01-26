@@ -305,9 +305,10 @@ namespace NDistribUnit.Common.TestExecution
 
         private void ProcessCompletedTestRun(TestRun testRun)
         {
-            var request = requests.RemoveBy(testRun);
+            var request = requests.GetBy(testRun);
+
             var result = results.StoreAsCompleted(testRun);
-            
+
             request.PipeToClient.Publish(result.SetFinal());
             request.PipeToClient.Close();
 

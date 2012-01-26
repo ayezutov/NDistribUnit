@@ -77,8 +77,8 @@ namespace NDistribUnit.Common.Common
         private Timer timer;
 
         /// <summary>
-        /// Closes this instance disallowing to publish any more results 
-        /// and removing the last waiting results after the closeTimeout 
+        /// Closes this instance disallowing to publish any more results
+        /// and removing the last waiting results after the closeTimeout
         /// time span.
         /// </summary>
         public void Close()
@@ -130,9 +130,7 @@ namespace NDistribUnit.Common.Common
 
             do
             {
-                Debug.Write("Waiting...");
                 bufferHasItems.WaitOne();
-                Debug.Write("Wait completed");
                 var taskWeWaitFor = latterTask;
                 if (taskWeWaitFor != null)
                 {

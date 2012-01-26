@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Ionic.Zip;
+using Ionic.Zlib;
 
 namespace NDistribUnit.Common.Common.Communication
 {
@@ -25,8 +26,9 @@ namespace NDistribUnit.Common.Common.Communication
                 throw new DirectoryNotFoundException(string.Format("Directory was not found: {0}", directory));
 
             using (var zipFile = new ZipFile())
-			{
-				zipFile.AddDirectory(directory.FullName, zipContentOnly ? string.Empty : directory.Name);
+            {
+                ConfigureZip(zipFile);
+                zipFile.AddDirectory(directory.FullName, zipContentOnly ? string.Empty : directory.Name);
 			    var stream = fileStream ?? File.Create(Path.GetTempFileName(), 1024*1024,
 			                             FileOptions.DeleteOnClose | FileOptions.SequentialScan);
 				zipFile.Save(stream);
@@ -35,7 +37,15 @@ namespace NDistribUnit.Common.Common.Communication
 			}
 		}
 
-        /// <summary>
+	    private static void ConfigureZip(ZipFile zipFile)
+	    {
+	        zipFile.ParallelDeflateThreshold = -1;
+	        zipFile.CompressionLevel = CompressionLevel.BestCompression;
+	        zipFile.CompressionMethod = CompressionMethod.Deflate;
+	        zipFile.Encryption = EncryptionAlgorithm.None;
+	    }
+
+	    /// <summary>
         /// Unpacks the folder.
         /// </summary>
         /// <param name="zipStream">The zip stream.</param>
@@ -46,6 +56,7 @@ namespace NDistribUnit.Common.Common.Communication
             {
                 using (var zipFile = ZipFile.Read(zipStream))
                 {
+                    ConfigureZip(zipFile);
                     zipFile.ExtractAll(folderPath, ExtractExistingFileAction.OverwriteSilently);
                 }
             }

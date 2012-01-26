@@ -38,14 +38,29 @@ namespace NDistribUnit.Common.TestExecution
         {
             initializer.Initialize();
 
+
             var projectFileNameOnly = Path.GetFileName(request.TestRun.NUnitParameters.AssembliesToTest[0]);
             var projectFileNameMapped = Path.Combine(project.Path, projectFileNameOnly);
 
-
             var package = GetTestPackage(projectFileNameMapped, request.TestRun.NUnitParameters);
-            var builder = new TestSuiteBuilder();
 
-            var testSuite = builder.Build(package);
+//            var domainManager = new DomainManager();
+//            var domain = domainManager.CreateDomain(package);
+
+            TestSuite testSuite = null;
+//            try
+//            {
+//                domain.DoCallBack(()=>
+//                                      {
+                                          var builder = new TestSuiteBuilder();
+                                          testSuite = builder.Build(package);
+//                                      });
+//            }
+//            finally
+//            {
+//                domainManager.Unload(domain);
+//            }
+
             var filter = new NUnitTestsFilter(request.TestRun.NUnitParameters.IncludeCategories,
                                               request.TestRun.NUnitParameters.ExcludeCategories,
                                               request.TestRun.NUnitParameters.TestToRun);
@@ -116,30 +131,5 @@ namespace NDistribUnit.Common.TestExecution
             }
         }
 
-//        /// <summary>
-//        /// Finds the specified test.
-//        /// </summary>
-//        /// <param name="test">The test.</param>
-//        /// <param name="filter">The filter.</param>
-//        /// <param name="result">The result.</param>
-//        /// <param name="assemblyName">Name of the assembly, where the test belongs to.</param>
-//        private static void Find(ITest test, ITestFilter filter, ICollection<ITest> result, string assemblyName = null)
-//        {
-//            var ass = test as TestAssembly;
-//            var ns = test as NamespaceSuite;
-//
-//            if (ass == null && ns == null && filter.Pass(test) && test.IsSuite &&
-//                (test.Tests == null || test.Tests.Count == 0 || !((ITest) test.Tests[0]).IsSuite))
-//            {
-//                result.Add(test);
-//                return;
-//            }
-//            if (!test.IsSuite || test.Tests == null) return;
-//
-//            foreach (ITest innerTest in test.Tests)
-//            {
-//                Find(innerTest, filter, result, ass != null ? ass.TestName.FullName : null);
-//            }
-//        }
     }
 }

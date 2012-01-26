@@ -104,22 +104,6 @@ namespace NDistribUnit.Common.TestExecution.Storage
                        : string.Format("{0}.{1}", StorageFolderName, storageName);
         }
 
-        private static byte[] ReadBytes(string fullFilePath)
-        {
-            FileStream fs = File.OpenRead(fullFilePath);
-            try
-            {
-                var bytes = new byte[fs.Length];
-                fs.Read(bytes, 0, (int) fs.Length);
-                fs.Close();
-                return bytes;
-            }
-            finally
-            {
-                fs.Close();
-            }
-        }
-
         /// <summary>
         /// Runs the synchronized.
         /// </summary>

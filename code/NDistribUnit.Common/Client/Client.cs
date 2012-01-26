@@ -86,7 +86,7 @@ namespace NDistribUnit.Common.Client
                           {
                               NUnitParameters = options.NUnitParameters,
                               Alias = options.Alias
-                          }; 
+                          };
             //TODO: load saved state here
 
             log.Info(string.Format("Test run was given the following unqiue identifier: '{0}'", testRun.Id));
@@ -101,7 +101,7 @@ namespace NDistribUnit.Common.Client
             testRun.Parameters = File.Exists(parametersFileName)
                                      ? parametersReader.Read(parametersFileName)
                                      : TestRunParameters.Default;
-            
+
             try
             {
                 log.BeginActivity("Checking project existence on server...");
@@ -112,7 +112,12 @@ namespace NDistribUnit.Common.Client
 
                     log.BeginActivity("Packaging project...");
                     Stream packageStream = packager.GetPackage(testRun.NUnitParameters.AssembliesToTest);
+
                     log.EndActivity("Project packaging completed.");
+
+                    var fs = packageStream as FileStream;
+                    if (fs != null)
+                        log.Info(string.Format("Stream '{0}': {1}", fs.Name, fs.Length));
 
                     try
                     {
@@ -138,13 +143,13 @@ namespace NDistribUnit.Common.Client
             {
                 log.Error("It seems, that the server is not available");
                 //TODO: Save a failed test run here
-                return (int)ReturnCodes.ServerNotAvailable;
+                return (int) ReturnCodes.ServerNotAvailable;
             }
-            catch(CommunicationException ex)
+            catch (CommunicationException ex)
             {
                 log.Error("There was an error, when trying to send the package to client", ex);
                 //TODO: Save a failed test run here
-                return (int)ReturnCodes.NetworkConnectivityError;
+                return (int) ReturnCodes.NetworkConnectivityError;
             }
 
             var testRunningTask = Task.Factory.StartNew(() =>
@@ -153,7 +158,8 @@ namespace NDistribUnit.Common.Client
                                                                 {
                                                                     log.BeginActivity("Started running tests...");
                                                                     TestResult tempResult;
-                                                                    while ((tempResult = server.RunTests(testRun)) != null)
+                                                                    while ((tempResult = server.RunTests(testRun)) !=
+                                                                           null)
                                                                     {
                                                                         if (tempResult.IsFinal())
                                                                         {
@@ -162,38 +168,53 @@ namespace NDistribUnit.Common.Client
                                                                             break;
                                                                         }
 
-                                                                        PrintSummaryInfoForResult(tempResult, new ResultSummarizer(tempResult));
+                                                                        PrintSummaryInfoForResult(tempResult,
+                                                                                                  new ResultSummarizer(
+                                                                                                      tempResult));
                                                                     }
                                                                     log.EndActivity("Finished running tests");
                                                                 }
-                                                                catch(Exception ex)
+                                                                catch (Exception ex)
                                                                 {
-                                                                    log.Error("An error occurred while running tests", ex);
+                                                                    log.Error("An error occurred while running tests",
+                                                                              ex);
                                                                 }
                                                             });
             var updateTask = Task.Factory.StartNew(() =>
-                                          {
-                                              try
-                                              {
-                                                  log.BeginActivity("Checking for updates...");
-                                                  var updatePackage =
-                                                      server.GetUpdatePackage(new UpdateRequest {Version = versionProvider.GetVersion()});
-                                                  if (updatePackage.IsAvailable)
-                                                  {
-                                                      log.EndActivity("Update package available");
-                                                      
-                                                      log.BeginActivity(string.Format("Receiving update to {0}...", updatePackage.Version));
-                                                      updateReceiver.SaveUpdatePackage(updatePackage);
-                                                      log.EndActivity(string.Format("Update {0} was successfully received", updatePackage.Version));
-                                                  }
-                                                  else
-                                                      log.EndActivity("No updates available.");
-                                              }
-                                              catch (Exception ex)
-                                              {
-                                                  log.Warning("There was an exception when trying to get an update", ex);
-                                              }
-                                          });
+                                                       {
+                                                           try
+                                                           {
+                                                               log.BeginActivity("Checking for updates...");
+                                                               var updatePackage =
+                                                                   server.GetUpdatePackage(new UpdateRequest
+                                                                                               {
+                                                                                                   Version =
+                                                                                                       versionProvider.
+                                                                                                       GetVersion()
+                                                                                               });
+                                                               if (updatePackage.IsAvailable)
+                                                               {
+                                                                   log.EndActivity("Update package available");
+
+                                                                   log.BeginActivity(
+                                                                       string.Format("Receiving update to {0}...",
+                                                                                     updatePackage.Version));
+                                                                   updateReceiver.SaveUpdatePackage(updatePackage);
+                                                                   log.EndActivity(
+                                                                       string.Format(
+                                                                           "Update {0} was successfully received",
+                                                                           updatePackage.Version));
+                                                               }
+                                                               else
+                                                                   log.EndActivity("No updates available.");
+                                                           }
+                                                           catch (Exception ex)
+                                                           {
+                                                               log.Warning(
+                                                                   "There was an exception when trying to get an update",
+                                                                   ex);
+                                                           }
+                                                       });
             try
             {
                 Task.WaitAll(new[] {testRunningTask, updateTask}, options.TimeoutPeriod);
@@ -217,7 +238,7 @@ namespace NDistribUnit.Common.Client
             if (result == null)
             {
                 log.Info("Result is not available. Maybe not all tests were run?");
-                return (int)ReturnCodes.NoTestsAvailable;
+                return (int) ReturnCodes.NoTestsAvailable;
             }
 
             var summary = new ResultSummarizer(result);
@@ -228,7 +249,8 @@ namespace NDistribUnit.Common.Client
         private void PrintSummaryInfoForResult(TestResult testResult, ResultSummarizer summary)
         {
             log.Info(string.Format("Tests run: {0}, Errors: {1}, Failures: {2}, Inconclusive: {3}, Time: {4} seconds",
-                                   summary.TestsRun, summary.Errors, summary.Failures, summary.Inconclusive, summary.Time));
+                                   summary.TestsRun, summary.Errors, summary.Failures, summary.Inconclusive,
+                                   summary.Time));
             log.Info(string.Format("  Not run: {0}, Invalid: {1}, Ignored: {2}, Skipped: {3}",
                                    summary.TestsNotRun, summary.NotRunnable, summary.Ignored, summary.Skipped));
 
@@ -243,7 +265,8 @@ namespace NDistribUnit.Common.Client
                 if (testResult.HasResults)
                 {
                     if (testResult.IsFailure || testResult.IsError)
-                        if (testResult.FailureSite == FailureSite.SetUp || testResult.FailureSite == FailureSite.TearDown)
+                        if (testResult.FailureSite == FailureSite.SetUp ||
+                            testResult.FailureSite == FailureSite.TearDown)
                             WriteSingleResult(testResult);
 
                     foreach (TestResult childResult in testResult.Results)
@@ -259,8 +282,8 @@ namespace NDistribUnit.Common.Client
         private void WriteSingleResult(TestResult testResult)
         {
             string status = testResult.IsFailure || testResult.IsError
-                ? string.Format("{0} {1}", testResult.FailureSite, testResult.ResultState)
-                : testResult.ResultState.ToString();
+                                ? string.Format("{0} {1}", testResult.FailureSite, testResult.ResultState)
+                                : testResult.ResultState.ToString();
 
             log.Info(string.Format("{0} : {1}", status, testResult.FullName));
 
@@ -269,8 +292,8 @@ namespace NDistribUnit.Common.Client
 
             if (!string.IsNullOrEmpty(testResult.StackTrace))
                 log.Info(testResult.IsFailure
-                    ? StackTraceFilter.Filter(testResult.StackTrace)
-                    : testResult.StackTrace + Environment.NewLine);
+                             ? StackTraceFilter.Filter(testResult.StackTrace)
+                             : testResult.StackTrace + Environment.NewLine);
         }
 
         private void SaveResult()
@@ -294,7 +317,6 @@ namespace NDistribUnit.Common.Client
                 }
 
                 log.EndActivity("Results were saved");
-
             }
         }
     }

@@ -91,7 +91,9 @@ namespace NDistribUnit.Common.Agent
         /// <param name="project">The project.</param>
         public void ReceiveProject(ProjectMessage project)
         {
+            log.BeginActivity(string.Format("Receiving project for test: {0} ({1})", project.TestRun.Id, project.TestRun.NUnitParameters.AssembliesToTest[0]));
             projects.Store(project.TestRun, project.Project);
+            log.EndActivity(string.Format("Received project for test: {0} ({1})", project.TestRun.Id, project.TestRun.NUnitParameters.AssembliesToTest[0]));
         }
 
         /// <summary>

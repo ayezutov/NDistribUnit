@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -72,7 +73,7 @@ namespace NDistribUnit.Common.Agent
             log.BeginActivity("Starting test execution...");
             var nUnitTestResult = GetNUnitTestResult(test, project, configurationSubstitutions);
             log.EndActivity("Test execution was finished");
-            
+
             return nUnitTestResult;
         }
 
@@ -117,12 +118,14 @@ namespace NDistribUnit.Common.Agent
                                                              package.Settings["ShadowCopyFiles"] = true;
                                                              package.AutoBinPath = false;
                                                              package.BasePath = bootstrapperParameters.RootFolder;
-                                                             package.PrivateBinPath = string.Join(";", 
-                                                                 new[]
-                                                                     {
-                                                                         project.Path,
-                                                                         Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
-                                                                     });
+                                                             package.PrivateBinPath =
+                                                                 DomainManager.GetPrivateBinPath(
+                                                                     bootstrapperParameters.RootFolder,
+                                                                     new ArrayList()
+                                                                         {
+                                                                             Assembly.GetExecutingAssembly().Location,
+                                                                             mappedAssemblyFile
+                                                                         });
                                                              if (!string.IsNullOrEmpty(configurationFileName))
                                                              {
                                                                  package.ConfigurationFile = configurationFileName;
