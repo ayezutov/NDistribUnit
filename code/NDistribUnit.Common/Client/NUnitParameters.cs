@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace NDistribUnit.Common.Client
@@ -5,6 +6,7 @@ namespace NDistribUnit.Common.Client
     /// <summary>
     /// Parameters, which are same as standard NUnit parameters
     /// </summary>
+    [Serializable]
     public class NUnitParameters
     {
         /// <summary>

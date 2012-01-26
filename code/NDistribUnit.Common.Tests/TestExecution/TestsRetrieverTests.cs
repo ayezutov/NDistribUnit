@@ -6,6 +6,7 @@ using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.Data;
 using NDistribUnit.Common.TestExecution.Storage;
+using NDistribUnit.Common.Updating;
 using NDistribUnit.SampleTestAssembly.CategorizedTests;
 using NUnit.Framework;
 
@@ -21,7 +22,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
         [SetUp]
         public void Init()
         {
-            retriever = new TestsRetriever(new NUnitInitializer(), new ConsoleLog());
+            retriever = new TestsRetriever(new NUnitInitializer(), new BootstrapperParameters(), new ConsoleLog());
             string targetAssembly = typeof(TestFixtureWithCategoriesOnTests).Assembly.Location;
             project = new TestProject(Path.GetDirectoryName(targetAssembly));
             request = new TestRunRequest(new TestRun

@@ -1,11 +1,18 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using NDistribUnit.Common.Client;
+using NDistribUnit.Common.Common.ConsoleProcessing;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution.Data;
 using NDistribUnit.Common.TestExecution.Storage;
+using NDistribUnit.Common.Updating;
 using NUnit.Core;
 using NUnit.Util;
+using AssemblyResolver = NDistribUnit.Common.Common.AssemblyResolver;
 
 namespace NDistribUnit.Common.TestExecution
 {
@@ -15,16 +22,19 @@ namespace NDistribUnit.Common.TestExecution
     public class TestsRetriever : ITestsRetriever
     {
         private readonly ITestSystemInitializer initializer;
+        private readonly BootstrapperParameters parameters;
         private readonly ILog log;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestsRetriever"/> class.
         /// </summary>
         /// <param name="initializer">The initializer.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <param name="log">The log.</param>
-        public TestsRetriever(ITestSystemInitializer initializer, ILog log)
+        public TestsRetriever(ITestSystemInitializer initializer, BootstrapperParameters parameters, ILog log)
         {
             this.initializer = initializer;
+            this.parameters = parameters;
             this.log = log;
         }
 
@@ -43,29 +53,47 @@ namespace NDistribUnit.Common.TestExecution
             var projectFileNameMapped = Path.Combine(project.Path, projectFileNameOnly);
 
             var package = GetTestPackage(projectFileNameMapped, request.TestRun.NUnitParameters);
+            package.AutoBinPath = false;
+            package.PrivateBinPath = DomainManager.GetPrivateBinPath(
+                parameters.RootFolder
+                ?? Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                new ArrayList(request.TestRun.NUnitParameters.AssembliesToTest)
+                    {
+                        Assembly.GetExecutingAssembly().Location
+                    });
+            package.BasePath = parameters.RootFolder;
 
-//            var domainManager = new DomainManager();
-//            var domain = domainManager.CreateDomain(package);
+            var domainManager = new DomainManager();
 
-            TestSuite testSuite = null;
-//            try
-//            {
-//                domain.DoCallBack(()=>
-//                                      {
-                                          var builder = new TestSuiteBuilder();
-                                          testSuite = builder.Build(package);
-//                                      });
-//            }
-//            finally
-//            {
-//                domainManager.Unload(domain);
-//            }
+            // A separate domain is used to free the assemblies after tests retrieval
+            var domain = domainManager.CreateDomain(package);
 
-            var filter = new NUnitTestsFilter(request.TestRun.NUnitParameters.IncludeCategories,
-                                              request.TestRun.NUnitParameters.ExcludeCategories,
-                                              request.TestRun.NUnitParameters.TestToRun);
 
-            return ToTestUnitList(testSuite, request, filter);
+            try
+            {
+                var testsResolverCreatorType = typeof (InAnotherDomainResolverCreator);
+                var testsResolverCreator =
+                    (InAnotherDomainResolverCreator)
+                    domain.CreateInstanceAndUnwrap(testsResolverCreatorType.Assembly.FullName,
+                                                   testsResolverCreatorType.FullName);
+                
+                testsResolverCreator.CreateAssemblyResolver(new[] {GeneralProgram.GetNUnitFolder(parameters)});
+
+                using (testsResolverCreator)
+                {
+                    var testsRetrieverType = typeof (InAnotherDomainTestsRetriever);
+
+                    var testsRetriever =
+                        (InAnotherDomainTestsRetriever)
+                        domain.CreateInstanceAndUnwrap(testsRetrieverType.Assembly.FullName, testsRetrieverType.FullName);
+
+                    return testsRetriever.Get(package, request.TestRun);
+                }
+            }
+            finally
+            {
+                domainManager.Unload(domain);
+            }
         }
 
         private TestPackage GetTestPackage(string projectFileName, NUnitParameters nUnitParameters)
@@ -81,18 +109,57 @@ namespace NDistribUnit.Common.TestExecution
 
             return nunitProject.ActiveConfig.MakeTestPackage();
         }
+    }
 
-        private IList<TestUnitWithMetadata> ToTestUnitList(ITest test, TestRunRequest request, ITestFilter filter)
+    internal class InAnotherDomainResolverCreator : MarshalByRefObject, IDisposable
+    {
+        private AssemblyResolver resolver;
+
+        public void CreateAssemblyResolver(IEnumerable<string> paths)
+        {
+            resolver = new AssemblyResolver(new ConsoleLog());
+            foreach (var path in paths)
+            {
+                resolver.AddDirectory(path);
+            }
+        }
+
+        public void UnloadResolver()
+        {
+            resolver.Dispose();
+        }
+
+        public void Dispose()
+        {
+            resolver.Dispose();
+        }
+    }
+
+    internal class InAnotherDomainTestsRetriever : MarshalByRefObject
+    {
+        public IList<TestUnitWithMetadata> Get(TestPackage package, TestRun testRun)
+        {
+            new NUnitInitializer().Initialize();
+            var builder = new TestSuiteBuilder();
+            TestSuite testSuite = builder.Build(package);
+            var filter = new NUnitTestsFilter(testRun.NUnitParameters.IncludeCategories,
+                                              testRun.NUnitParameters.ExcludeCategories,
+                                              testRun.NUnitParameters.TestToRun);
+            return ToTestUnitList(testSuite, filter, testRun);
+        }
+
+        private IList<TestUnitWithMetadata> ToTestUnitList(ITest test, ITestFilter filter, TestRun testRun)
         {
             var result = new List<TestUnitWithMetadata>();
 
-            FindTestUnits(test, request, filter, result);
+            FindTestUnits(test, filter, result, testRun);
 
             return result;
         }
 
-        private static void FindTestUnits(ITest test, TestRunRequest request, ITestFilter filter,
-                                          List<TestUnitWithMetadata> result, string assemblyName = null)
+
+        private static void FindTestUnits(ITest test, ITestFilter filter,
+                                          List<TestUnitWithMetadata> result, TestRun testRun, string assemblyName = null)
         {
             var assembly = test as TestAssembly;
 
@@ -101,11 +168,11 @@ namespace NDistribUnit.Common.TestExecution
 
             if (filter.Pass(test))
             {
-                
-                var isTestSuiteWithAtLeastOneTestMethod = (test.IsSuite && test.Tests != null && test.Tests.Count != 0 && !((ITest) test.Tests[0]).IsSuite);
+                var isTestSuiteWithAtLeastOneTestMethod = (test.IsSuite && test.Tests != null && test.Tests.Count != 0 &&
+                                                           !((ITest) test.Tests[0]).IsSuite);
 
-                string testToRun = request.TestRun.NUnitParameters.TestToRun;
-                
+                string testToRun = testRun.NUnitParameters.TestToRun;
+
                 if ((string.IsNullOrEmpty(testToRun) && (isTestSuiteWithAtLeastOneTestMethod || !test.IsSuite))
                     || (!string.IsNullOrEmpty(testToRun) && test.TestName.FullName.StartsWith(testToRun)))
                 {
@@ -115,21 +182,20 @@ namespace NDistribUnit.Common.TestExecution
                         subTests = new List<TestUnitWithMetadata>();
                         foreach (ITest child in test.Tests)
                         {
-                            FindTestUnits(child, request, filter, subTests, assemblyName);
+                            FindTestUnits(child, filter, subTests, testRun, assemblyName);
                         }
                     }
-                    var testUnitWithMetadata = new TestUnitWithMetadata(request.TestRun, test, assemblyName, subTests);
+                    var testUnitWithMetadata = new TestUnitWithMetadata(testRun, test, assemblyName, subTests);
                     result.Add(testUnitWithMetadata);
                 }
                 else if ((test.Tests != null && test.Tests.Count > 0))
                 {
                     foreach (ITest child in test.Tests)
                     {
-                        FindTestUnits(child, request, filter, result, assemblyName);
+                        FindTestUnits(child, filter, result, testRun, assemblyName);
                     }
                 }
             }
         }
-
     }
 }

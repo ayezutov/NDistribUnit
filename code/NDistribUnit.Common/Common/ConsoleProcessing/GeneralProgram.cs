@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Updating;
+using NUnit.Util;
 
 namespace NDistribUnit.Common.Common.ConsoleProcessing
 {
@@ -28,7 +30,7 @@ namespace NDistribUnit.Common.Common.ConsoleProcessing
 
         ///
         protected readonly BootstrapperParameters bootstrapperParameters;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="GeneralProgram"/> class.
         /// </summary>
@@ -47,9 +49,17 @@ namespace NDistribUnit.Common.Common.ConsoleProcessing
             resolver.AddDirectory(GetNUnitFolder(bootstrapperParameters));
         }
 
-        private string GetNUnitFolder(BootstrapperParameters bootstrapperParameters)
+        /// <summary>
+        /// Gets the N unit folder.
+        /// </summary>
+        /// <param name="bootstrapperParameters">The bootstrapper parameters.</param>
+        /// <returns></returns>
+        public static string GetNUnitFolder(BootstrapperParameters bootstrapperParameters)
         {
-            string versionFolder = GetFolderWithMaximumVersionPattern(Path.Combine(bootstrapperParameters.RootFolder, "NUnit"));
+            string versionFolder = 
+                !string.IsNullOrEmpty(bootstrapperParameters.RootFolder)
+                ? GetFolderWithMaximumVersionPattern(Path.Combine(bootstrapperParameters.RootFolder, "NUnit"))
+                : Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             string temp = Path.Combine(versionFolder, "net-2.0");
             if (Directory.Exists(temp))
@@ -58,7 +68,7 @@ namespace NDistribUnit.Common.Common.ConsoleProcessing
             return versionFolder;
         }
 
-        private string GetFolderWithMaximumVersionPattern(string rootFolder)
+        private static string GetFolderWithMaximumVersionPattern(string rootFolder)
         {
             Tuple<Version, string> result = null;
             foreach (var directory in new DirectoryInfo(rootFolder).GetDirectories())

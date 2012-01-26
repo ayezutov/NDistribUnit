@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NUnit.Core;
@@ -7,6 +8,7 @@ namespace NDistribUnit.Common.TestExecution
     /// <summary>
     /// 
     /// </summary>
+    [Serializable] // to enable retrieving test in a separate app domain
     public class TestUnitWithMetadata
     {
         /// <summary>

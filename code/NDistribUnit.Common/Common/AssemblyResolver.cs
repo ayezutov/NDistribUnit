@@ -12,27 +12,37 @@ namespace NDistribUnit.Common.Common
     /// <summary>
     /// Resolves assemblies
     /// </summary>
-    public class AssemblyResolver : IDisposable
+    public class AssemblyResolver : MarshalByRefObject, IDisposable
     {
         private readonly ILog log;
         private readonly Dictionary<string, Assembly> cache = new Dictionary<string, Assembly>();
         private readonly ArrayList directories = new ArrayList();
+        private AppDomain domain;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AssemblyResolver"/> class.
         /// </summary>
-        public AssemblyResolver(ILog log)
+        public AssemblyResolver(ILog log): this(log, AppDomain.CurrentDomain)
+        {
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssemblyResolver"/> class.
+        /// </summary>
+        public AssemblyResolver(ILog log, AppDomain domain)
         {
             this.log = log;
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomainAssemblyResolve;
+            this.domain = domain;
+            this.domain.AssemblyResolve += DomainAssemblyResolve;
         }
+
+
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
-            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomainAssemblyResolve;
+            domain.AssemblyResolve -= DomainAssemblyResolve;
         }
 
         /// <summary>
@@ -49,7 +59,8 @@ namespace NDistribUnit.Common.Common
             }
             catch(Exception ex)
             {
-                log.Warning("Error while adding assembly", ex);
+                if (log != null)
+                    log.Warning("Error while adding assembly", ex);
                 return;
             }
 
@@ -78,7 +89,7 @@ namespace NDistribUnit.Common.Common
                 directories.Add(directory);
         }
 
-        private Assembly CurrentDomainAssemblyResolve(object sender, ResolveEventArgs args)
+        private Assembly DomainAssemblyResolve(object sender, ResolveEventArgs args)
         {
             string fullName = args.Name;
             var assemblyName = new AssemblyName(fullName);
@@ -97,7 +108,8 @@ namespace NDistribUnit.Common.Common
                     }
                     catch(Exception ex)
                     {
-                        log.Warning("Assembly check failed", ex);
+                        if (log != null)
+                            log.Warning("Assembly check failed", ex);
                         continue;
                     }
 
@@ -106,14 +118,16 @@ namespace NDistribUnit.Common.Common
                             && AreEqual(pretendentFullName.GetPublicKeyToken(), assemblyName.GetPublicKeyToken()) 
                             && AreEqual(pretendentFullName.CultureInfo, pretendentFullName.CultureInfo)))
                     {
-                        log.Info(string.Format("Added to Cache: {0}", file));
+                        if (log != null)
+                            log.Info(string.Format("Added to Cache: {0}", file));
                         cache[fullName] = Assembly.LoadFrom(file);
                         return cache[fullName];
                     }
                 }
             }
 
-            log.Debug(string.Format("Not in Cache: {0}", fullName));
+            if (log != null)
+                log.Debug(string.Format("Not in Cache: {0}", fullName));
             return null;
         }
 

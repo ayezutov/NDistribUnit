@@ -59,7 +59,7 @@ namespace NDistribUnit.Common.Dependencies
             
             builder.RegisterType<NUnitInitializer>().As<ITestSystemInitializer>().InstancePerLifetimeScope();
             builder.RegisterType<ExceptionCatcher>().InstancePerLifetimeScope();
-            builder.RegisterType<AssemblyResolver>().InstancePerLifetimeScope();
+            builder.Register(c => new AssemblyResolver(c.Resolve<ILog>())).InstancePerLifetimeScope();
         }
     }
 }

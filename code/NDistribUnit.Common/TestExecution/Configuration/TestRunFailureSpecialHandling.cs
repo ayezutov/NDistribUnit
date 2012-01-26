@@ -1,3 +1,4 @@
+using System;
 using System.Xml.Serialization;
 
 namespace NDistribUnit.Common.TestExecution.Configuration
@@ -5,6 +6,7 @@ namespace NDistribUnit.Common.TestExecution.Configuration
     /// <summary>
     /// 
     /// </summary>
+    [Serializable]
     public class TestRunFailureSpecialHandling
     {
         /// <summary>
