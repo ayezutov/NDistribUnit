@@ -15,7 +15,7 @@ namespace NDistribUnit.Common.Agent
         private class TestRunnerMetadata
         {
             public TestRunner Runner { get; set; }
-            public Timer Timer { get; set; }
+            //public Timer Timer { get; set; }
         }
 
         private readonly ConcurrentDictionary<string, ConcurrentDictionary<int, TestRunnerMetadata>> cache = new ConcurrentDictionary<string, ConcurrentDictionary<int, TestRunnerMetadata>>();
@@ -30,27 +30,50 @@ namespace NDistribUnit.Common.Agent
         public TestRunner GetOrLoad(TestRun testRun, DistributedConfigurationSubstitutions substitutions, Func<TestRunner> loadRunner)
         {
             var key = GetKey(testRun);
-            var timeSpan = TimeSpan.FromMinutes(59);
+            //var timeSpan = TimeSpan.FromHours(4);
             var cacheByParameters = cache.GetOrAdd(key, guid => new ConcurrentDictionary<int, TestRunnerMetadata>());
-            int hashCode = substitutions == null ? 0 : substitutions.GetHashCode();
+            int hashCode = GetKeyForSubstitutions(substitutions);
 
             var metadata = cacheByParameters.GetOrAdd(hashCode, hash =>
                                                  {
                                                      var runner = loadRunner();
-                                                     var timer = new Timer(obj=>
-                                                                               {
-                                                                                   TestRunnerMetadata removed;
-                                                                                   if (cacheByParameters.TryRemove(hashCode, out removed))
-                                                                                       removed.Runner.Unload();
-                                                                               }, null, timeSpan, TimeSpan.FromMilliseconds(-1));
+//                                                     var timer = new Timer(obj=>
+//                                                                               {
+//                                                                                   TestRunnerMetadata removed;
+//                                                                                   if (cacheByParameters.TryRemove(hashCode, out removed))
+//                                                                                       removed.Runner.Unload();
+//                                                                               }, null, timeSpan, TimeSpan.FromMilliseconds(-1));
                                                      return new TestRunnerMetadata
                                                                 {
                                                                     Runner = runner,
-                                                                    Timer = timer
+//                                                                    Timer = timer
                                                                 };
                                                  });
-            metadata.Timer.Change(timeSpan, TimeSpan.FromMilliseconds(-1));
+//            metadata.Timer.Change(timeSpan, TimeSpan.FromMilliseconds(-1));
             return metadata.Runner;
+        }
+
+        private static int GetKeyForSubstitutions(DistributedConfigurationSubstitutions substitutions)
+        {
+            return substitutions == null ? 0 : substitutions.GetHashCode();
+        }
+
+        /// <summary>
+        /// Removes the cached runner for the specified run and configuration.
+        /// </summary>
+        /// <param name="run">The run.</param>
+        /// <param name="configurationSubstitutions">The configuration substitutions.</param>
+        public void Remove(TestRun run, DistributedConfigurationSubstitutions configurationSubstitutions)
+        {
+            ConcurrentDictionary<int, TestRunnerMetadata> byParametersCache;
+            if (cache.TryGetValue(GetKey(run), out byParametersCache))
+            {
+                TestRunnerMetadata metadata;
+                if (byParametersCache.TryRemove(GetKeyForSubstitutions(configurationSubstitutions), out metadata))
+                {
+                    metadata.Runner.Unload();
+                }
+            }
         }
 
         /// <summary>
@@ -62,17 +85,17 @@ namespace NDistribUnit.Common.Agent
             ConcurrentDictionary<int, TestRunnerMetadata> removed;
             if (cache.TryRemove(GetKey(run), out removed))
             {
-                foreach (var testRunnerMetadata in removed)
+                foreach (var testRunnerMetadata in removed.Values)
                 {
-                    testRunnerMetadata.Value.Timer.Change(Timeout.Infinite, Timeout.Infinite);
-                    testRunnerMetadata.Value.Runner.Unload(); 
+//                    testRunnerMetadata.Value.Timer.Change(Timeout.Infinite, Timeout.Infinite);
+                    testRunnerMetadata.Runner.Unload(); 
                 }
             }
         }
 
         private static string GetKey(TestRun testRun)
         {
-            return string.IsNullOrEmpty(testRun.Alias) ? testRun.Id.ToString() : testRun.Alias;
+            return /*string.IsNullOrEmpty(testRun.Alias) ?*/ testRun.Id.ToString() /*: testRun.Alias*/;
         }
     }
 }

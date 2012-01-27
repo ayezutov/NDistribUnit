@@ -18,5 +18,12 @@ namespace NDistribUnit.Common.Agent
         /// <param name="loadRunner">The action.</param>
         /// <returns></returns>
         TestRunner GetOrLoad(TestRun testRun, DistributedConfigurationSubstitutions substitutions, Func<TestRunner> loadRunner);
+
+        /// <summary>
+        /// Removes the specified run.
+        /// </summary>
+        /// <param name="run">The run.</param>
+        /// <param name="configurationSubstitutions">The configuration substitutions.</param>
+        void Remove(TestRun run, DistributedConfigurationSubstitutions configurationSubstitutions);
     }
 }

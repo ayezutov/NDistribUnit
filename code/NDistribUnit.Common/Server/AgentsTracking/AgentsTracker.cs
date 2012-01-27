@@ -113,7 +113,8 @@ namespace NDistribUnit.Common.Server.AgentsTracking
                                        }
                                        catch(Exception ex)
                                        {
-                                           log.Warning(string.Format("An error occurred, while initially pinging and adding to collection the endpoint ({0}): {1}", agent.Address, ex.Message));
+                                           // this should be traced as error
+                                           log.Debug(string.Format("An error occurred, while initially pinging and adding to collection the endpoint ({0}): {1}", agent.Address, ex.Message));
                                        }
                                    }, null);
         }

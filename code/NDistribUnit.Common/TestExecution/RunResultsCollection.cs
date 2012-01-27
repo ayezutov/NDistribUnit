@@ -31,6 +31,11 @@ namespace NDistribUnit.Common.TestExecution
         private TestResult mergedResult;
 
         /// <summary>
+        /// Occurs when all items are merged.
+        /// </summary>
+        public event EventHandler<EventArgs<TestResult>> AllItemsMerged;
+
+        /// <summary>
         /// Gets the result.
         /// </summary>
         public TestResult MergedResult
@@ -84,7 +89,12 @@ namespace NDistribUnit.Common.TestExecution
                     MergeNext();
                     if (unmerged.Count > 0)
                         MergeAsync();
-
+                    else
+                    {
+                        var handler = AllItemsMerged;
+                        if (handler != null)
+                            handler(this, new EventArgs<TestResult>(MergedResult));
+                    }
                 }
                 catch (Exception ex)
                 {

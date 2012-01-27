@@ -56,7 +56,12 @@ namespace NDistribUnit.Common.TestExecution
 
         private RunResultsCollection GetCollection(TestRun testRun)
         {
-            return results.GetOrAdd(testRun.Id, guid => new RunResultsCollection(processor, log));
+            return results.GetOrAdd(testRun.Id, guid =>
+                                                    {
+                                                        var runResultsCollection = new RunResultsCollection(processor, log);
+                                                        runResultsCollection.AllItemsMerged += (sender, args) => Store(testRun, args.Data);
+                                                        return runResultsCollection;
+                                                    });
         }
 
         /// <summary>

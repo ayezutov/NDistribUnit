@@ -179,16 +179,16 @@ namespace NDistribUnit.Common.TestExecution
 
                 ProcessResult(test, agent, result);
             }
+            catch (FaultException ex)
+            {
+                log.Error("Exception while running test", ex);
+                agents.MarkAsFailure(agent);
+                tests.Add(test);
+            }
             catch (CommunicationException ex)
             {
                 log.Error("Exception while running test", ex);
                 agents.MarkAsDisconnected(agent);
-                tests.Add(test);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Exception while running test", ex);
-                agents.MarkAsFailure(agent);
                 tests.Add(test);
             }
 
@@ -230,9 +230,11 @@ namespace NDistribUnit.Common.TestExecution
 
             foreach (var child in test.Children)
             {
-                var foundChild = FindByName(found, child.Test.UniqueTestId);
-                if (foundChild == null)
+                var foundChildResult = FindByName(found, child.Test.UniqueTestId);
+                if (foundChildResult == null)
                     continue;
+
+                child.Results.Add(foundChildResult);
             }
         }
 

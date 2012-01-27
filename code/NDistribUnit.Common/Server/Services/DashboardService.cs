@@ -27,6 +27,7 @@ namespace NDistribUnit.Common.Server.Services
     {
         private readonly AgentsCollection agents;
         private readonly RollingLog log;
+        private readonly ServerConfiguration serverConfiguration;
         private readonly IConnectionProvider connectionProvider;
 
         private static readonly IDictionary<string, string> allowed =
@@ -46,13 +47,16 @@ namespace NDistribUnit.Common.Server.Services
         /// </summary>
         /// <param name="agents">The <see cref="AgentsCollection">connections tracker</see> for the server</param>
         /// <param name="log">The log to display for requests</param>
+        /// <param name="serverConfiguration">The server configuration.</param>
         /// <param name="connectionProvider">The connection provider.</param>
         public DashboardService(AgentsCollection agents, 
             RollingLog log,
+            ServerConfiguration serverConfiguration,
             IConnectionProvider connectionProvider)
         {
             this.agents = agents;
             this.log = log;
+            this.serverConfiguration = serverConfiguration;
             this.connectionProvider = connectionProvider;
         }
 
@@ -179,11 +183,12 @@ namespace NDistribUnit.Common.Server.Services
             var physicalPathToFile =
                 Path.Combine(
                     Path.Combine(Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().CodeBase).AbsolutePath),
-#if !DEBUG
-                                 "dashboard"), fileName);
-#else
-                                 "../../../../NDistribUnit.Server/dashboard"), fileName);
-#endif
+                        serverConfiguration.DashboardFilesPath), fileName);
+//#if !DEBUG
+//                                 "dashboard"), fileName);
+//#else
+//                                 "../../../../source/code/NDistribUnit.Server/dashboard"), fileName);
+//#endif
             var response = WebOperationContext.Current.OutgoingResponse;
 
             if (!File.Exists(physicalPathToFile))

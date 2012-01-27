@@ -33,6 +33,16 @@ namespace NDistribUnit.Common.Server
         }
 
         /// <summary>
+        /// Gets the test runner port.
+        /// </summary>
+        [ConfigurationProperty("dashboardFilesPath", DefaultValue = "dashboard", IsRequired = false)]
+        public string DashboardFilesPath
+        {
+            get { return (string)base["dashboardFilesPath"]; }
+            set { base["dashboardFilesPath"] = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the scope.
         /// </summary>
         /// <value>

@@ -82,9 +82,10 @@ namespace NDistribUnit.Common.Agent
         /// </summary>
         /// <param name="test">The test.</param>
         /// <param name="project">The project.</param>
-        /// <param name="configurationSubstitutions"></param>
+        /// <param name="configurationSubstitutions">The configuration substitutions.</param>
+        /// <param name="isChild">if set to <c>true</c> [is child].</param>
         /// <returns></returns>
-        public TestResult GetNUnitTestResult(TestUnit test, TestProject project, DistributedConfigurationSubstitutions configurationSubstitutions)
+        public TestResult GetNUnitTestResult(TestUnit test, TestProject project, DistributedConfigurationSubstitutions configurationSubstitutions, bool isChild = false)
         {
             var nativeRunner = runnerCache.GetOrLoad(test.Run, configurationSubstitutions,
                                                      () =>
@@ -143,11 +144,28 @@ namespace NDistribUnit.Common.Agent
             {
                 Action runTest = ()=>
                                      {
-                                         testResult = nativeRunner.Run(new NullListener(),
-                                                                       new NUnitTestsFilter(
-                                                                           testOptions.IncludeCategories,
-                                                                           testOptions.ExcludeCategories,
-                                                                           test.UniqueTestId).NativeFilter);
+                                         try
+                                         {
+                                             testResult = nativeRunner.Run(new NullListener(),
+                                                                           new NUnitTestsFilter(
+                                                                               testOptions.IncludeCategories,
+                                                                               testOptions.ExcludeCategories,
+                                                                               test.UniqueTestId).NativeFilter);
+                                         }
+                                         //TODO: remove this. This is for tracking purposes only
+                                         catch(AppDomainUnloadedException ex)
+                                         {
+                                             log.Warning("AppDomainUnloadedException is still being thrown", ex);
+                                             if (!isChild)
+                                             {
+                                                 runnerCache.Remove(test.Run, configurationSubstitutions);
+                                                 testResult = GetNUnitTestResult(test, project,
+                                                                                 configurationSubstitutions,
+                                                                                 isChild: true);
+                                             }
+                                             else
+                                                 throw;
+                                         }
                                      };
 
                 if (Thread.CurrentThread.GetApartmentState() != ApartmentState.STA
