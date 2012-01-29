@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Text;
+using System.ServiceModel;
 
 namespace NDistribUnit.Common.Logging
 {
@@ -33,6 +34,30 @@ namespace NDistribUnit.Common.Logging
 
             stringBuilder.AppendLine();
             stringBuilder.AppendLine(exception.GetType().FullName);
+            stringBuilder.AppendLine(exception.Message);
+            stringBuilder.AppendLine(exception.StackTrace);
+
+            var faultException = exception as FaultException<ExceptionDetail>;
+            if (faultException != null)
+            {
+                var detail = faultException.Detail;
+                GetExceptionText(detail, stringBuilder);
+            }
+
+            if (exception.InnerException != null)
+            {
+                stringBuilder.AppendLine("------------");
+                GetExceptionText(exception.InnerException, stringBuilder);
+            }
+        }
+
+        private static void GetExceptionText(ExceptionDetail exception, StringBuilder stringBuilder)
+        {
+            Debug.Assert(exception != null);
+            Debug.Assert(stringBuilder != null);
+
+            stringBuilder.AppendLine();
+            stringBuilder.AppendLine(exception.Type);
             stringBuilder.AppendLine(exception.Message);
             stringBuilder.AppendLine(exception.StackTrace);
 

@@ -17,7 +17,7 @@ namespace NDistribUnit.Common.Client
         {
             NUnitParameters = new NUnitParameters();
             UnknownOptions = new List<ConsoleOption>();
-            TimeoutPeriod = TimeSpan.FromHours(5);
+            TimeoutPeriod = TimeSpan.FromHours(10);
         }
 
         /// <summary>

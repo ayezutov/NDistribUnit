@@ -24,6 +24,6 @@ namespace NDistribUnit.Common.Agent
         /// </summary>
         /// <param name="run">The run.</param>
         /// <param name="configurationSubstitutions">The configuration substitutions.</param>
-        void Remove(TestRun run, DistributedConfigurationSubstitutions configurationSubstitutions);
+        void Remove(TestRun run, DistributedConfigurationSubstitutions configurationSubstitutions = null);
     }
 }

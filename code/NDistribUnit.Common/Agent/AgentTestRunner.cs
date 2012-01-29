@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using NDistribUnit.Common.Common.ConsoleProcessing;
+using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
@@ -117,16 +118,16 @@ namespace NDistribUnit.Common.Agent
                                                              }
                                                              
                                                              package.Settings["ShadowCopyFiles"] = true;
-                                                             package.AutoBinPath = false;
-                                                             package.BasePath = bootstrapperParameters.RootFolder;
-                                                             package.PrivateBinPath =
-                                                                 DomainManager.GetPrivateBinPath(
-                                                                     bootstrapperParameters.RootFolder,
-                                                                     new ArrayList()
-                                                                         {
-                                                                             Assembly.GetExecutingAssembly().Location,
-                                                                             mappedAssemblyFile
-                                                                         });
+                                                             package.AutoBinPath = true;
+//                                                             package.BasePath = bootstrapperParameters.RootFolder;
+//                                                             package.PrivateBinPath =
+//                                                                 DomainManager.GetPrivateBinPath(
+//                                                                     bootstrapperParameters.RootFolder,
+//                                                                     new ArrayList()
+//                                                                         {
+//                                                                             Assembly.GetExecutingAssembly().Location,
+//                                                                             mappedAssemblyFile
+//                                                                         });
                                                              if (!string.IsNullOrEmpty(configurationFileName))
                                                              {
                                                                  package.ConfigurationFile = configurationFileName;
@@ -187,6 +188,15 @@ namespace NDistribUnit.Common.Agent
                 throw;
             }
             return testResult;
+        }
+
+        /// <summary>
+        /// Unloads the specified test run.
+        /// </summary>
+        /// <param name="testRun">The test run.</param>
+        public void Unload(TestRun testRun)
+        {
+            runnerCache.Remove(testRun);
         }
     }
 }

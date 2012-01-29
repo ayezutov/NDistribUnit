@@ -1,5 +1,6 @@
 using System;
 using System.ServiceModel;
+using NDistribUnit.Common.Common.ConsoleProcessing;
 using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Contracts.DataContracts;
@@ -22,10 +23,11 @@ namespace NDistribUnit.Common.Agent
     public class Agent : IAgent, IRemoteAppPart
     {
         private readonly ILog log;
-    	private readonly RollingLog logStorage;
-		private readonly IUpdateReceiver updateReceiver;
+        private readonly RollingLog logStorage;
+        private readonly IUpdateReceiver updateReceiver;
         private readonly IVersionProvider versionProvider;
         private readonly AgentTestRunner runner;
+        private readonly ExceptionCatcher exceptionCatcher;
         private readonly IProjectsStorage projects;
 
         /// <summary>
@@ -37,21 +39,24 @@ namespace NDistribUnit.Common.Agent
         /// <param name="configuration">The configuration.</param>
         /// <param name="versionProvider">The version provider.</param>
         /// <param name="runner">The runner.</param>
+        /// <param name="exceptionCatcher">The exception catcher.</param>
         /// <param name="projects">The projects.</param>
         public Agent(
-            ILog log, 
-            RollingLog logStorage, 
-            IUpdateReceiver updateReceiver, 
-            AgentConfiguration configuration, 
-            IVersionProvider versionProvider, 
-            AgentTestRunner runner, 
+            ILog log,
+            RollingLog logStorage,
+            IUpdateReceiver updateReceiver,
+            AgentConfiguration configuration,
+            IVersionProvider versionProvider,
+            AgentTestRunner runner,
+            ExceptionCatcher exceptionCatcher,
             IProjectsStorage projects)
         {
             this.log = log;
-			this.logStorage = logStorage;
-    		this.updateReceiver = updateReceiver;
+            this.logStorage = logStorage;
+            this.updateReceiver = updateReceiver;
             this.versionProvider = versionProvider;
             this.runner = runner;
+            this.exceptionCatcher = exceptionCatcher;
             this.projects = projects;
             Name = configuration.AgentName;
         }
@@ -68,7 +73,7 @@ namespace NDistribUnit.Common.Agent
         {
             get { return versionProvider.GetVersion(); }
         }
-        
+
         /// <summary>
         /// Runs tests on agent
         /// </summary>
@@ -79,10 +84,32 @@ namespace NDistribUnit.Common.Agent
         {
             log.Info(string.Format("Run Tests command Received: {0}", test.UniqueTestId));
 
-            var result = runner.Run(test, configurationSubstitutions);
-            result.ForSelfAndAllDescedants(r => r.SetAgentName(Name));
+            TestResult result = null;
 
+            exceptionCatcher.Run(() =>
+                                     {
+                                         result = runner.Run(test, configurationSubstitutions);
+                                         result.ForSelfAndAllDescedants(r => r.SetAgentName(Name));
+                                     });
             return result;
+        }
+
+        /// <summary>
+        /// Releases the resources.
+        /// </summary>
+        /// <param name="testRun">The test run.</param>
+        public void ReleaseResources(TestRun testRun)
+        {
+            log.BeginActivity(string.Format("Releasing resources for test run {0}", testRun));
+            exceptionCatcher.Run(() =>
+                                     {
+                                         runner.Unload(testRun);
+                                         if (!testRun.IsAliasedTest)
+                                         {
+                                             projects.RemoveProject(testRun);
+                                         }
+                                     });
+            log.EndActivity(string.Format("Finished releasing resources for test run {0}", testRun));
         }
 
         /// <summary>
@@ -119,12 +146,12 @@ namespace NDistribUnit.Common.Agent
             return logStorage.GetEntries(lastFetchedEntryId, maxItemsCount);
         }
 
-    	/// <summary>
-    	/// Receives the update pakage.
-    	/// </summary>
-    	/// <param name="updatePackage"></param>
-    	public void ReceiveUpdatePackage(UpdatePackage updatePackage)
-    	{
+        /// <summary>
+        /// Receives the update pakage.
+        /// </summary>
+        /// <param name="updatePackage"></param>
+        public void ReceiveUpdatePackage(UpdatePackage updatePackage)
+        {
             try
             {
                 UpdateStarted.SafeInvoke(this);
@@ -134,7 +161,7 @@ namespace NDistribUnit.Common.Agent
             {
                 UpdateFinished.SafeInvoke(this);
             }
-    	}
+        }
 
 
 
@@ -148,7 +175,7 @@ namespace NDistribUnit.Common.Agent
         /// </summary>
         public event EventHandler UpdateFinished;
 
-    	/// <summary>
+        /// <summary>
         /// Pings the tracking side
         /// </summary>
         /// <param name="pingInterval"></param>
@@ -159,9 +186,11 @@ namespace NDistribUnit.Common.Agent
             if (@event != null)
                 @event(this, new EventArgs<TimeSpan>(pingInterval));
 
-            return new PingResult { 
-				Name = Name, 
-				Version = Version};
+            return new PingResult
+            {
+                Name = Name,
+                Version = Version
+            };
         }
 
         /// <summary>

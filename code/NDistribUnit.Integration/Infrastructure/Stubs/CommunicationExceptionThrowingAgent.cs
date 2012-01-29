@@ -53,6 +53,11 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Stubs
             throw new CommunicationException();
         }
 
+        public void ReleaseResources(TestRun testRun)
+        {
+            throw new CommunicationException();
+        }
+
         public void ReceiveProject(ProjectMessage project)
         {
             throw new CommunicationException();

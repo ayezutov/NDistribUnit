@@ -4,8 +4,10 @@ using System.Linq;
 using System.ServiceModel;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.ConsoleProcessing;
+using NDistribUnit.Common.Common.Extensions;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
+using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution.Data;
@@ -176,20 +178,26 @@ namespace NDistribUnit.Common.TestExecution
                 TestResult result = testRunnerAgent.RunTests(test.Test, configurationSubstitutions);
                 log.EndActivity(string.Format("Finished running {0} on {1}...", test.Test.UniqueTestId, agent));
 
+                if (result == null)
+                    throw new FaultException("Result is not available");
 
                 ProcessResult(test, agent, result);
             }
             catch (FaultException ex)
             {
-                log.Error("Exception while running test", ex);
+                log.Error(string.Format("Exception while running test {0} on {1}", test.Test.UniqueTestId, agent), ex);
                 agents.MarkAsFailure(agent);
                 tests.Add(test);
             }
             catch (CommunicationException ex)
             {
-                log.Error("Exception while running test", ex);
+                log.Error(string.Format("Exception in communication while running test {0} on {1}", test.Test.UniqueTestId, agent), ex);
                 agents.MarkAsDisconnected(agent);
                 tests.Add(test);
+            }
+            catch(Exception ex)
+            {
+                log.Error(string.Format("Something bad and unhandled happened while running test {0} on {1}", test.Test.UniqueTestId, agent), ex);
             }
 
         }
@@ -307,14 +315,40 @@ namespace NDistribUnit.Common.TestExecution
 
         private void ProcessCompletedTestRun(TestRun testRun)
         {
+            log.EndActivity(string.Format("Finished running request: {0}", testRun));
+            log.BeginActivity("Performing cleanup operations on server and agents...");
             var request = requests.GetBy(testRun);
 
+            log.BeginActivity(string.Format("Storing test results for request {0}", testRun));
             var result = results.StoreAsCompleted(testRun);
+            log.EndActivity(string.Format("Completed storing test results for request {0}", testRun));
 
             request.PipeToClient.Publish(result.SetFinal());
             request.PipeToClient.Close();
 
-            log.EndActivity(string.Format("Finished running request: {0}", testRun));
+            log.BeginActivity("Releasing resources on agents...");
+            var agentsToFree = agents.GetAgents(a => a.Status.IsOneOf(
+                AgentState.Ready,
+                AgentState.Busy,
+                AgentState.Error,
+                AgentState.Updating));
+            foreach (var agentToFree in agentsToFree)
+            {
+                var agentConnection = connectionProvider.GetConnection<IAgent>(agentToFree.Address);
+                agentConnection.ReleaseResources(testRun);
+            }
+
+            log.EndActivity("Finished releasing resources on agents...");
+
+            log.BeginActivity("Releasing resources on server...");
+            if (!testRun.IsAliasedTest)
+                projects.RemoveProject(testRun);
+            log.EndActivity("Finished releasing resources on server...");
+
+
+
+            log.EndActivity(string.Format("Cleanup operations were completed for request {0}", testRun));
+            
         }
     }
 }

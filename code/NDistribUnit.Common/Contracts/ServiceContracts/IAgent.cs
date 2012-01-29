@@ -24,5 +24,12 @@ namespace NDistribUnit.Common.Contracts.ServiceContracts
         /// <returns></returns>
         [OperationContract]
         TestResult RunTests(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions);
+
+        /// <summary>
+        /// Releases the resources.
+        /// </summary>
+        /// <param name="testRun">The test run.</param>
+        [OperationContract(IsOneWay = true)]
+        void ReleaseResources(TestRun testRun);
     }
 }

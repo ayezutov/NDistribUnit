@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Threading;
@@ -104,6 +105,19 @@ namespace NDistribUnit.Common.Server.AgentsTracking
         public AgentMetadata GetAgentByName(string name)
         {
             return GetAgent(a => string.Equals(a.Name, name));
+        }
+
+        /// <summary>
+        /// Gets the agents.
+        /// </summary>
+        /// <param name="condition">The condition.</param>
+        /// <returns></returns>
+        public IEnumerable<AgentMetadata> GetAgents(Func<AgentMetadata, bool> condition)
+        {
+            lock (syncObject)
+            {
+                return allAgents.Where(condition);
+            }
         }
 
         /// <summary>

@@ -54,6 +54,17 @@ namespace NDistribUnit.Common.Contracts.DataContracts
 	    /// </summary>
         public string Alias { get; set; }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is aliased test.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is aliased test; otherwise, <c>false</c>.
+        /// </value>
+	    public bool IsAliasedTest
+	    {
+            get { return !string.IsNullOrEmpty(Alias); }
+	    }
+
 	    /// <summary>
 		/// Equalses the specified other.
 		/// </summary>
@@ -100,7 +111,7 @@ namespace NDistribUnit.Common.Contracts.DataContracts
         /// </returns>
 	    public override string ToString()
 	    {
-	        return string.Format("{0}{1}", Id, string.IsNullOrEmpty(Alias) ? string.Format(", Alias: {0}", Alias) : string.Empty);
+	        return string.Format("{0}{1}", Id, IsAliasedTest ? string.Format(", Alias: {0}", Alias) : string.Empty);
 	    }
 	}
 }

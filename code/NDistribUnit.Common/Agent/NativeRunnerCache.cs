@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
@@ -63,32 +64,29 @@ namespace NDistribUnit.Common.Agent
         /// </summary>
         /// <param name="run">The run.</param>
         /// <param name="configurationSubstitutions">The configuration substitutions.</param>
-        public void Remove(TestRun run, DistributedConfigurationSubstitutions configurationSubstitutions)
+        public void Remove(TestRun run, DistributedConfigurationSubstitutions configurationSubstitutions = null)
         {
             ConcurrentDictionary<int, TestRunnerMetadata> byParametersCache;
-            if (cache.TryGetValue(GetKey(run), out byParametersCache))
+            if (configurationSubstitutions == null 
+                ? cache.TryRemove(GetKey(run), out byParametersCache)
+                : cache.TryGetValue(GetKey(run), out byParametersCache))
             {
-                TestRunnerMetadata metadata;
-                if (byParametersCache.TryRemove(GetKeyForSubstitutions(configurationSubstitutions), out metadata))
+                IEnumerable<TestRunnerMetadata> toFree = new TestRunnerMetadata[0];
+                if (configurationSubstitutions != null)
+                {
+                    TestRunnerMetadata metadata;
+                    if (byParametersCache.TryRemove(GetKeyForSubstitutions(configurationSubstitutions), out metadata))
+                    {
+                        toFree = new[] { metadata };
+                    }
+                }
+                else
+                    toFree = byParametersCache.Values;
+
+                foreach (var metadata in toFree)
                 {
                     metadata.Runner.Unload();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Clears the specified run.
-        /// </summary>
-        /// <param name="run">The run.</param>
-        public void Clear(TestRun run)
-        {
-            ConcurrentDictionary<int, TestRunnerMetadata> removed;
-            if (cache.TryRemove(GetKey(run), out removed))
-            {
-                foreach (var testRunnerMetadata in removed.Values)
-                {
-//                    testRunnerMetadata.Value.Timer.Change(Timeout.Infinite, Timeout.Infinite);
-                    testRunnerMetadata.Runner.Unload(); 
+                    metadata.Runner.Dispose();
                 }
             }
         }

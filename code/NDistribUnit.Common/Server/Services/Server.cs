@@ -109,11 +109,11 @@ namespace NDistribUnit.Common.Server.Services
         /// <param name="project">The project.</param>
         public void ReceiveProject(ProjectMessage project)
         {
-            log.BeginActivity(string.Format("Receiving project for test: {0} ({1})", project.TestRun.Id, project.TestRun.NUnitParameters.AssembliesToTest[0]));
+            log.BeginActivity(string.Format("Receiving project for test: {0} ({1})", project.TestRun, project.TestRun.NUnitParameters.AssembliesToTest[0]));
     	    
             projects.Store(project.TestRun, project.Project);
 
-            log.EndActivity(string.Format("Received project for test: {0} ({1})", project.TestRun.Id, project.TestRun.NUnitParameters.AssembliesToTest[0]));
+            log.EndActivity(string.Format("Received project for test: {0} ({1})", project.TestRun, project.TestRun.NUnitParameters.AssembliesToTest[0]));
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace NDistribUnit.Common.Server.Services
         /// </returns>
         public bool HasProject(TestRun run)
         {
-            log.BeginActivity(string.Format("Checking for project '{0}'{1}...", run.Id, !string.IsNullOrEmpty(run.Alias) ? string.Format(" with alias '{0}'", run.Alias) : string.Empty));
+            log.BeginActivity(string.Format("Checking for project '{0}'...", run));
             
             bool result = projects.HasProject(run);
             

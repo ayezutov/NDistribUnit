@@ -8,6 +8,7 @@ using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Updating;
 using NUnit.Util;
+using NDistribUnit.Common.Common.Extensions;
 
 namespace NDistribUnit.Common.Common.ConsoleProcessing
 {
@@ -146,6 +147,8 @@ namespace NDistribUnit.Common.Common.ConsoleProcessing
                     do
                     {
                         line = ReadLineNonBlocking();
+                        if (Thread.CurrentThread.ThreadState.IsOneOf(ThreadState.AbortRequested, ThreadState.Aborted))
+                            return;
                     } while (line == null || !line.Equals("exit", StringComparison.OrdinalIgnoreCase));
 
                     returnCodeAccessMutex.WaitOne();
@@ -174,8 +177,12 @@ namespace NDistribUnit.Common.Common.ConsoleProcessing
             string line = String.Empty;
             do
             {
-                while (!System.Console.KeyAvailable)
+                while (!System.Console.KeyAvailable 
+                    && !Thread.CurrentThread.ThreadState.IsOneOf(ThreadState.AbortRequested, ThreadState.Aborted))
                     Thread.Sleep(100);
+
+                if (Thread.CurrentThread.ThreadState.IsOneOf(ThreadState.AbortRequested, ThreadState.Aborted))
+                    return null;
 
                 ConsoleKeyInfo key = System.Console.ReadKey(true);
 

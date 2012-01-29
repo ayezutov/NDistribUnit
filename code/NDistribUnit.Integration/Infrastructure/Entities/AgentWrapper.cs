@@ -190,13 +190,24 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
             throw new CommunicationException("Agent seems to be not available");
         }
 
+        public void ReleaseResources(TestRun testRun)
+        {
+            if (IsStarted)
+                TestRunner.ReleaseResources(testRun);
+            else
+                throw new CommunicationException("Agent seems to be not available");
+        }
+
         /// <summary>
         /// Receives the project.
         /// </summary>
         /// <param name="project">The project.</param>
         public void ReceiveProject(ProjectMessage project)
         {
-            TestRunner.ReceiveProject(project);
+            if (IsStarted)
+                TestRunner.ReceiveProject(project);
+            else
+                throw new CommunicationException("Agent seems to be not available");
         }
 
         /// <summary>
@@ -208,7 +219,10 @@ namespace NDistribUnit.Integration.Tests.Infrastructure.Entities
         /// </returns>
         public bool HasProject(TestRun run)
         {
-            return TestRunner.HasProject(run);
+            if (IsStarted)
+                return TestRunner.HasProject(run);
+
+            throw new CommunicationException("Agent seems to be not available");
         }
     }
 }

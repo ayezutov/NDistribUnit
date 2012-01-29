@@ -39,5 +39,11 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// <param name="run">The run.</param>
         /// <returns></returns>
         Stream GetStreamToPacked(TestRun run);
+
+        /// <summary>
+        /// Removes the project.
+        /// </summary>
+        /// <param name="testRun">The test run.</param>
+        void RemoveProject(TestRun testRun);
     }
 }

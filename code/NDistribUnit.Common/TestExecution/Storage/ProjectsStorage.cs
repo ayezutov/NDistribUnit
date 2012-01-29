@@ -5,7 +5,6 @@ using NDistribUnit.Common.Common;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Updating;
-using NUnit.Util;
 
 namespace NDistribUnit.Common.TestExecution.Storage
 {
@@ -46,55 +45,12 @@ namespace NDistribUnit.Common.TestExecution.Storage
         }
 
 
-
-        /// <summary>
-        /// Gets the project.
-        /// </summary>
-        /// <param name="testRun"></param>
-        /// <returns></returns>
-        public TestProject Get(TestRun testRun)
-        {
-            return RunSynchronized(testRun,
-                                   () =>
-                                       {
-                                           string path = GetPathToProject(testRun);
-
-                                           string unpackedDirectory = Path.Combine(path, UnpackedFolder);
-
-                                           if (Directory.Exists(unpackedDirectory))
-                                               return new TestProject(unpackedDirectory);
-
-                                           string packedFile = Path.Combine(path, PackedFileName);
-                                           if (File.Exists(packedFile))
-                                           {
-                                               using(FileStream fileStream = File.OpenRead(packedFile))
-                                               {
-                                                   zip.UnpackFolder(fileStream, unpackedDirectory);
-                                               }
-                                               return new TestProject(unpackedDirectory);
-                                           }
-                                           
-                                           return null;
-                                       });
-        }
-
-        /// <summary>
-        /// Determines whether the specified test run has project.
-        /// </summary>
-        /// <param name="testRun">The test run.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified test run has project; otherwise, <c>false</c>.
-        /// </returns>
-        public bool HasProject(TestRun testRun)
-        {
-            return Get(testRun) != null;
-        }
-
         private string GetPathToProject(TestRun testRun)
         {
-            if (string.IsNullOrEmpty(testRun.Alias))
+            if (!testRun.IsAliasedTest)
                 return Path.Combine(RootPath, GetStorageFolderName(), TemporaryStorageFolderName, testRun.Id.ToString());
-            return Path.Combine(RootPath, GetStorageFolderName(), PermanentStorageFolderName, PathUtilities.EscapeFileName(testRun.Alias));
+            return Path.Combine(RootPath, GetStorageFolderName(), PermanentStorageFolderName,
+                                PathUtilities.EscapeFileName(testRun.Alias));
         }
 
         private string GetStorageFolderName()
@@ -124,24 +80,84 @@ namespace NDistribUnit.Common.TestExecution.Storage
         }
 
         /// <summary>
+        /// Runs the synchronized.
+        /// </summary>
+        /// <param name="testRun">The test run.</param>
+        /// <param name="action">The action.</param>
+        private void RunSynchronized(TestRun testRun, Action action)
+        {
+            RunSynchronized(testRun, () =>
+                                         {
+                                             action();
+                                             return true;
+                                         });
+        }
+
+        /// <summary>
+        /// Determines whether the specified test run has project.
+        /// </summary>
+        /// <param name="testRun">The test run.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified test run has project; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasProject(TestRun testRun)
+        {
+            return Get(testRun) != null;
+        }
+
+        /// <summary>
+        /// Gets the project.
+        /// </summary>
+        /// <param name="testRun"></param>
+        /// <returns></returns>
+        public TestProject Get(TestRun testRun)
+        {
+            return RunSynchronized(testRun,
+                                   () =>
+                                       {
+                                           string path = GetPathToProject(testRun);
+
+                                           string unpackedDirectory = Path.Combine(path, UnpackedFolder);
+
+                                           if (Directory.Exists(unpackedDirectory))
+                                               return new TestProject(unpackedDirectory);
+
+                                           string packedFile = Path.Combine(path, PackedFileName);
+                                           if (File.Exists(packedFile))
+                                           {
+                                               using (FileStream fileStream = File.OpenRead(packedFile))
+                                               {
+                                                   zip.UnpackFolder(fileStream, unpackedDirectory);
+                                               }
+                                               return new TestProject(unpackedDirectory);
+                                           }
+
+                                           return null;
+                                       });
+        }
+
+        /// <summary>
         /// Stores the specified test run.
         /// </summary>
         /// <param name="testRun">The test run.</param>
         /// <param name="projectStream">The project stream.</param>
         public void Store(TestRun testRun, Stream projectStream)
         {
-            var path = GetPathToProject(testRun);
-            var packedFile = Path.Combine(path, PackedFileName);
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-            var file = new FileStream(packedFile, FileMode.CreateNew, FileAccess.Write);
-            var buffer = new byte[1024*1024];
-            int readBytes;
-            while ((readBytes = projectStream.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                file.Write(buffer, 0, readBytes);
-            }
-            file.Close();
+            RunSynchronized(testRun, () =>
+                                         {
+                                             var path = GetPathToProject(testRun);
+                                             var packedFile = Path.Combine(path, PackedFileName);
+                                             if (!Directory.Exists(path))
+                                                 Directory.CreateDirectory(path);
+                                             var file = new FileStream(packedFile, FileMode.CreateNew, FileAccess.Write);
+                                             var buffer = new byte[1024*1024];
+                                             int readBytes;
+                                             while ((readBytes = projectStream.Read(buffer, 0, buffer.Length)) > 0)
+                                             {
+                                                 file.Write(buffer, 0, readBytes);
+                                             }
+                                             file.Close();
+                                         });
         }
 
         /// <summary>
@@ -153,27 +169,54 @@ namespace NDistribUnit.Common.TestExecution.Storage
         {
             return RunSynchronized(testRun,
                                    () =>
-                                   {
-                                       string path = GetPathToProject(testRun);
-
-                                       string packedFile = Path.Combine(path, PackedFileName);
-
-                                       if (File.Exists(packedFile))
-                                           return File.OpenRead(packedFile);
-
-                                       string unpackedDirectory = Path.Combine(path, UnpackedFolder);
-
-                                       if (Directory.Exists(unpackedDirectory))
                                        {
-                                           using (FileStream fileStream = File.Create(packedFile))
-                                           {
-                                               zip.GetPackedFolder(new DirectoryInfo(unpackedDirectory), true, fileStream);
-                                           }
-                                           return File.OpenRead(packedFile);
-                                       }
+                                           string path = GetPathToProject(testRun);
 
-                                       return null;
-                                   });
+                                           string packedFile = Path.Combine(path, PackedFileName);
+
+                                           if (File.Exists(packedFile))
+                                               return File.OpenRead(packedFile);
+
+                                           string unpackedDirectory = Path.Combine(path, UnpackedFolder);
+
+                                           if (Directory.Exists(unpackedDirectory))
+                                           {
+                                               using (FileStream fileStream = File.Create(packedFile))
+                                               {
+                                                   zip.GetPackedFolder(new DirectoryInfo(unpackedDirectory), true,
+                                                                       fileStream);
+                                               }
+                                               return File.OpenRead(packedFile);
+                                           }
+
+                                           return null;
+                                       });
+        }
+
+        /// <summary>
+        /// Removes the project.
+        /// </summary>
+        /// <param name="testRun">The test run.</param>
+        public void RemoveProject(TestRun testRun)
+        {
+            RunSynchronized(testRun, () =>
+                                         {
+                                             string path = GetPathToProject(testRun);
+
+                                             string packedFile = Path.Combine(path, PackedFileName);
+
+                                             if (File.Exists(packedFile))
+                                                 File.Delete(packedFile);
+
+                                             string unpackedDirectory = Path.Combine(path, UnpackedFolder);
+
+                                             if (Directory.Exists(unpackedDirectory))
+                                             {
+                                                 Directory.Delete(unpackedDirectory, true);
+                                             }
+
+                                             Directory.Delete(path);
+                                         });
         }
     }
 }
