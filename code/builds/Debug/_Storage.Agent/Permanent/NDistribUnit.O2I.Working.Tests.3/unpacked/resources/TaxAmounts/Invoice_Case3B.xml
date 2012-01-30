@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<lines>
-  <line no="5" price="501" quantity="601" tax="@2" taxtype="11525" taxcategory="12686"/>
-  <line no="6" price="601" quantity="701" tax="@0" taxtype="11530" taxcategory="12686"/>
-  <line no="7" price="701" quantity="801" tax="@3" taxtype="11525" taxcategory="11518"/>
-  <line no="8" price="801" quantity="901" tax="@4" taxtype="11527" taxcategory="12686"/>
-</lines>
