@@ -15,32 +15,32 @@ namespace NDistribUnit.Common.TestExecution
         /// <summary>
         /// Merges the specified other.
         /// </summary>
-        /// <param name="other">The other.</param>
-        /// <param name="merged">The result.</param>
-        public void Merge(TestResult other, TestResult merged)
+        /// <param name="source"> </param>
+        /// <param name="target"> </param>
+        public void Merge(TestResult source, TestResult target)
         {
-            var mergedType = GetType(merged);
-            var otherType = GetType(other);
+            var mergedType = GetType(target);
+            var otherType = GetType(source);
 
             if (mergedType == TestType.Project && otherType == TestType.Project)
             {
-                if (string.IsNullOrEmpty(merged.FullName) && !string.IsNullOrEmpty(other.FullName))
+                if (string.IsNullOrEmpty(target.FullName) && !string.IsNullOrEmpty(source.FullName))
                 {
-                    merged.Test.TestName.FullName = other.FullName;
-                    merged.Test.TestName.Name = other.Name;
+                    target.Test.TestName.FullName = source.FullName;
+                    target.Test.TestName.Name = source.Name;
                 }
             }
 
             if (mergedType != otherType)
                 throw new NotSupportedException("Only merging of results with same test type are supported");
 
-            if (!merged.IsSuccess && other.IsSuccess)
+            if (!target.IsSuccess && source.IsSuccess)
             {
-                merged.Success(other.Message);
-                merged.SetAgentName(other.GetAgentName());
+                target.Success(source.Message);
+                target.SetAgentName(source.GetAgentName());
             }
 
-            MergeChildren(other, merged);
+            MergeChildren(source, target);
         }
 
         private static TestType GetType(TestResult result)

@@ -125,6 +125,23 @@ namespace NDistribUnit.Common.TestExecution
             return result.Test.Properties.Contains(CompletedPropertyName);
         }
 
+
+        /// <summary>
+        /// Finds the bottom level test suites.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <returns></returns>
+        public static IEnumerable<TestResult> FindBottomLevelTestSuites(this TestResult result)
+        {
+            if (result.HasResults && ((TestResult)result.Results[0]).Test.IsSuite)
+                return new[] {result};
+
+            if (result.HasResults)
+                return result.Results.Cast<TestResult>().SelectMany(r => r.FindBottomLevelTestSuites());
+            
+            return new TestResult[0];
+        }
+
         /// <summary>
         /// Marks the result as completed by adding the "ndistribunit-completed-merged" property.
         /// </summary>

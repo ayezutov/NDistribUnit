@@ -1,6 +1,5 @@
 using System;
 using System.ServiceModel.Discovery;
-using System.Threading;
 
 namespace NDistribUnit.Common.Agent.ExternalModules
 {

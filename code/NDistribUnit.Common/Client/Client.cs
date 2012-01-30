@@ -28,6 +28,7 @@ namespace NDistribUnit.Common.Client
         private readonly IVersionProvider versionProvider;
         private readonly ITestRunParametersFileReader parametersReader;
         private readonly IProjectPackager packager;
+        private readonly TestResultsProcessor resultsProcessor;
         private readonly ITestResultsSerializer serializer;
         private readonly ILog log;
         private TestResult result;
@@ -42,6 +43,7 @@ namespace NDistribUnit.Common.Client
         /// <param name="versionProvider">The version provider.</param>
         /// <param name="parametersReader">The file reader.</param>
         /// <param name="packager">The packager.</param>
+        /// <param name="resultsProcessor">The results processor.</param>
         /// <param name="serializer">The serializer.</param>
         /// <param name="log">The log.</param>
         public Client(ClientParameters options,
@@ -50,6 +52,7 @@ namespace NDistribUnit.Common.Client
                       IVersionProvider versionProvider,
                       ITestRunParametersFileReader parametersReader,
                       IProjectPackager packager,
+                      TestResultsProcessor resultsProcessor,
                       ITestResultsSerializer serializer,
                       ILog log)
         {
@@ -59,6 +62,7 @@ namespace NDistribUnit.Common.Client
             this.versionProvider = versionProvider;
             this.parametersReader = parametersReader;
             this.packager = packager;
+            this.resultsProcessor = resultsProcessor;
             this.serializer = serializer;
             this.log = log;
         }
@@ -157,6 +161,7 @@ namespace NDistribUnit.Common.Client
                                                                 try
                                                                 {
                                                                     log.BeginActivity("Started running tests...");
+                                                                    
                                                                     TestResult tempResult;
                                                                     while ((tempResult = server.RunTests(testRun)) !=
                                                                            null)
@@ -168,9 +173,14 @@ namespace NDistribUnit.Common.Client
                                                                             break;
                                                                         }
 
-                                                                        PrintSummaryInfoForResult(tempResult,
-                                                                                                  new ResultSummarizer(
-                                                                                                      tempResult));
+                                                                        if (result == null)
+                                                                            result = tempResult;
+                                                                        else
+                                                                            resultsProcessor.Merge(tempResult, result);
+
+                                                                        SaveResult(result);
+
+                                                                        PrintSummaryInfoForResult(tempResult);
                                                                     }
                                                                     log.EndActivity("Finished running tests");
                                                                 }
@@ -233,7 +243,7 @@ namespace NDistribUnit.Common.Client
                 throw;
             }
 
-            SaveResult();
+            SaveResult(result);
 
             if (result == null)
             {
@@ -241,21 +251,39 @@ namespace NDistribUnit.Common.Client
                 return (int) ReturnCodes.NoTestsAvailable;
             }
 
-            var summary = new ResultSummarizer(result);
-            PrintSummaryInfoForResult(result, summary);
+            var summary = PrintSummaryInfoForResult(result, false);
             return summary.ErrorsAndFailures;
         }
 
-        private void PrintSummaryInfoForResult(TestResult testResult, ResultSummarizer summary)
+        private ResultSummarizer PrintSummaryInfoForResult(TestResult testResult, bool mentionNames = true)
         {
+            var summary = new ResultSummarizer(testResult);
+
             log.Info(string.Format("Tests run: {0}, Errors: {1}, Failures: {2}, Inconclusive: {3}, Time: {4} seconds",
                                    summary.TestsRun, summary.Errors, summary.Failures, summary.Inconclusive,
                                    summary.Time));
             log.Info(string.Format("  Not run: {0}, Invalid: {1}, Ignored: {2}, Skipped: {3}",
                                    summary.TestsNotRun, summary.NotRunnable, summary.Ignored, summary.Skipped));
 
+            if (!mentionNames)
+                return summary;
+
             if (summary.ErrorsAndFailures > 0 || testResult.IsError || testResult.IsFailure)
                 WriteErrorsAndFailures(testResult);
+            else if (testResult.IsSuccess)
+                WriteSuccessName(testResult);
+
+            return summary;
+        }
+
+        private void WriteSuccessName(TestResult testResult)
+        {
+            var bottomSuites = testResult.FindBottomLevelTestSuites();
+
+            foreach (var bottomSuite in bottomSuites)
+            {
+                log.Info(string.Format("SUCCESS: {0}", bottomSuite.FullName));
+            }
         }
 
         private void WriteErrorsAndFailures(TestResult testResult)
@@ -296,16 +324,16 @@ namespace NDistribUnit.Common.Client
                              : testResult.StackTrace + Environment.NewLine);
         }
 
-        private void SaveResult()
+        private void SaveResult(TestResult testResult)
         {
-            if (result == null)
+            if (testResult == null)
                 return;
 
             if (!string.IsNullOrEmpty(options.NUnitParameters.XmlFileName))
             {
                 log.BeginActivity(string.Format("Saving results to '{0}'...", options.NUnitParameters.XmlFileName));
 
-                var xml = serializer.GetXml(result);
+                var xml = serializer.GetXml(testResult);
                 var writer = new StreamWriter(options.NUnitParameters.XmlFileName);
                 try
                 {
