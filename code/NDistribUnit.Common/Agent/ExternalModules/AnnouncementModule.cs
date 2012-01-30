@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.ServiceModel;
 using System.ServiceModel.Discovery;
 using System.Threading;
 using NDistribUnit.Common.Logging;
@@ -38,11 +39,11 @@ namespace NDistribUnit.Common.Agent.ExternalModules
         {
             lock (this)
             {
-                client = new AnnouncementClient(new UdpAnnouncementEndpoint());
+                client = CreateAnnouncementClient();
                 client.Open();
                 host.TestRunner.PingReceived += PingReceived;
-                host.TestRunner.UpdateStarted += UpdateStarted;
-                host.TestRunner.UpdateFinished += UpdateFinished;
+                host.TestRunner.CommunicationStarted += CommunicationStarted;
+                host.TestRunner.CommunicationFinished += CommunicationFinished;
                 
                 endpointDiscoveryMetadata = EndpointDiscoveryMetadata.FromServiceEndpoint(host.Endpoint);
                 announcementTimer = new Timer(o => Announce(), null, Timeout.Infinite, Timeout.Infinite);
@@ -56,21 +57,27 @@ namespace NDistribUnit.Common.Agent.ExternalModules
             }
         }
 
-        private volatile bool isUpdating;
-        private void UpdateFinished(object sender, EventArgs e)
+        private static AnnouncementClient CreateAnnouncementClient()
+        {
+            return new AnnouncementClient(new UdpAnnouncementEndpoint());
+        }
+
+        private volatile int communicationsCount;
+        private void CommunicationFinished(object sender, EventArgs e)
         {
             lock (this)
             {
-                isUpdating = false;
-                announcementTimer.Change((int)announcementInterval.TotalMilliseconds, Timeout.Infinite);
+                communicationsCount--;
+                if (communicationsCount == 0)
+                    announcementTimer.Change((int)announcementInterval.TotalMilliseconds, Timeout.Infinite);
             }
         }
 
-        private void UpdateStarted(object sender, EventArgs e)
+        private void CommunicationStarted(object sender, EventArgs e)
         {
             lock (this)
             {
-                isUpdating = true;
+                communicationsCount++;
                 announcementTimer.Change(Timeout.Infinite, Timeout.Infinite);
             }
         }
@@ -79,10 +86,11 @@ namespace NDistribUnit.Common.Agent.ExternalModules
         {
             lock (this)
             {
-                if (isUpdating)
+                log.Debug(string.Format("Ping received: {0}, Ping interval: {1}", endpointDiscoveryMetadata.Address, eventArgs.Data));
+
+                if (communicationsCount > 0)
                     return;
 
-                log.Debug(string.Format("Ping received: {0}, Ping interval: {1}", endpointDiscoveryMetadata.Address, eventArgs.Data));
                 var timeoutBeforeAnnouncement = eventArgs.Data.Add(TimeSpan.FromSeconds(2));
                 if (timeoutBeforeAnnouncement < announcementInterval)
                     timeoutBeforeAnnouncement = announcementInterval;
@@ -98,17 +106,21 @@ namespace NDistribUnit.Common.Agent.ExternalModules
         {
             lock (this)
             {
-                if (announcementTimer != null && !isUpdating)
+                if (announcementTimer != null && communicationsCount==0)
                 {
                     try
                     {
                         log.Debug(string.Format("Announcing endpoint {0}", endpointDiscoveryMetadata.Address));
+                        if (client.InnerChannel.State == CommunicationState.Faulted)
+                        {
+                            client.Close();
+                            client = CreateAnnouncementClient();
+                        }
                         client.AnnounceOnline(endpointDiscoveryMetadata);
                     }
                     catch(Exception ex)
                     {
                         log.Debug(string.Format("There was an exception while announcing: {0}", ex.Message));
-                        throw;
                     }
                     finally
                     {

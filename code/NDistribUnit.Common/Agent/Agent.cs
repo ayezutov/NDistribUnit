@@ -154,12 +154,12 @@ namespace NDistribUnit.Common.Agent
         {
             try
             {
-                UpdateStarted.SafeInvoke(this);
+                CommunicationStarted.SafeInvoke(this);
                 updateReceiver.SaveUpdatePackage(updatePackage);
             }
             finally
             {
-                UpdateFinished.SafeInvoke(this);
+                CommunicationFinished.SafeInvoke(this);
             }
         }
 
@@ -168,12 +168,12 @@ namespace NDistribUnit.Common.Agent
         /// <summary>
         /// Occurs when an update is started.
         /// </summary>
-        public event EventHandler UpdateStarted;
+        public event EventHandler CommunicationStarted;
 
         /// <summary>
         /// Occurs when an update is finished.
         /// </summary>
-        public event EventHandler UpdateFinished;
+        public event EventHandler CommunicationFinished;
 
         /// <summary>
         /// Pings the tracking side

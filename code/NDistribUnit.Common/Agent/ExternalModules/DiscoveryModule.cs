@@ -1,5 +1,6 @@
 using System;
 using System.ServiceModel.Discovery;
+using System.Threading;
 
 namespace NDistribUnit.Common.Agent.ExternalModules
 {
@@ -20,6 +21,7 @@ namespace NDistribUnit.Common.Agent.ExternalModules
             scope = options.Scope;
         }
 
+        private int counter;
         /// <summary>
         /// Starts the module for the given host.
         /// </summary>
@@ -38,8 +40,23 @@ namespace NDistribUnit.Common.Agent.ExternalModules
             host.TestRunnerHost.Description.Behaviors.Add(new ServiceDiscoveryBehavior());
             host.TestRunnerHost.AddServiceEndpoint(new UdpDiscoveryEndpoint());
 
-            host.TestRunner.UpdateStarted += (sender, args) => { discoveryBehavior.Enabled = false; };
-            host.TestRunner.UpdateFinished += (sender, args) => { discoveryBehavior.Enabled = true; };
+            host.TestRunner.CommunicationStarted += (sender, args) =>
+                                                        {
+                                                            lock (this)
+                                                            {
+                                                                counter++;
+                                                                discoveryBehavior.Enabled = false;
+                                                            }
+                                                        };
+            host.TestRunner.CommunicationFinished += (sender, args) =>
+                                                         {
+                                                             lock (this)
+                                                             {
+                                                                 counter--;
+                                                                 if (counter == 0)
+                                                                     discoveryBehavior.Enabled = true;
+                                                             }
+                                                         };
         }
 
         /// <summary>
