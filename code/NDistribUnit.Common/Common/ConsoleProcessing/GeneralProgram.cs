@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Threading;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Updating;
-using NUnit.Util;
 using NDistribUnit.Common.Common.Extensions;
 
 namespace NDistribUnit.Common.Common.ConsoleProcessing
@@ -17,9 +15,6 @@ namespace NDistribUnit.Common.Common.ConsoleProcessing
     /// </summary>
     public class GeneralProgram
     {
-        // field to prevent garbage collection
-        private readonly AssemblyResolver resolver;
-
         /// 
         protected readonly UpdatesMonitor updatesMonitor;
 
@@ -31,64 +26,20 @@ namespace NDistribUnit.Common.Common.ConsoleProcessing
 
         ///
         protected readonly BootstrapperParameters bootstrapperParameters;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GeneralProgram"/> class.
         /// </summary>
-        /// <param name="resolver">The resolver.</param>
         /// <param name="updatesMonitor">The updates monitor.</param>
         /// <param name="exceptionCatcher">The exception catcher.</param>
         /// <param name="log">The log.</param>
         /// <param name="bootstrapperParameters"> </param>
-        protected GeneralProgram(AssemblyResolver resolver, UpdatesMonitor updatesMonitor, ExceptionCatcher exceptionCatcher, ILog log, BootstrapperParameters bootstrapperParameters)
+        protected GeneralProgram(UpdatesMonitor updatesMonitor, ExceptionCatcher exceptionCatcher, ILog log, BootstrapperParameters bootstrapperParameters)
         {
-            this.resolver = resolver;
             this.updatesMonitor = updatesMonitor;
             this.exceptionCatcher = exceptionCatcher;
             this.log = log;
             this.bootstrapperParameters = bootstrapperParameters;
-            resolver.AddDirectory(GetNUnitFolder(bootstrapperParameters));
-        }
-
-        /// <summary>
-        /// Gets the N unit folder.
-        /// </summary>
-        /// <param name="bootstrapperParameters">The bootstrapper parameters.</param>
-        /// <returns></returns>
-        public static string GetNUnitFolder(BootstrapperParameters bootstrapperParameters)
-        {
-            string versionFolder = 
-                !string.IsNullOrEmpty(bootstrapperParameters.RootFolder)
-                ? GetFolderWithMaximumVersionPattern(Path.Combine(bootstrapperParameters.RootFolder, "NUnit"))
-                : Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            string temp = Path.Combine(versionFolder, "net-2.0");
-            if (Directory.Exists(temp))
-                return temp;
-            
-            return versionFolder;
-        }
-
-        private static string GetFolderWithMaximumVersionPattern(string rootFolder)
-        {
-            Tuple<Version, string> result = null;
-            foreach (var directory in new DirectoryInfo(rootFolder).GetDirectories())
-            {
-                if (UpdatesMonitor.VersionPattern.IsMatch(directory.FullName))
-                {
-                    var current = new Tuple<Version, string>(Version.Parse(directory.Name), directory.FullName);
-                    if (result == null)
-                    {
-                        result = current;
-                    }
-                    else if (result.Item1 < current.Item1)
-                    {
-                        result = current;
-                    }
-                }
-            }
-
-            return result == null ? null : result.Item2;
         }
 
 
@@ -146,9 +97,14 @@ namespace NDistribUnit.Common.Common.ConsoleProcessing
                     string line;
                     do
                     {
-                        line = ReadLineNonBlocking();
-                        if (Thread.CurrentThread.ThreadState.IsOneOf(ThreadState.AbortRequested, ThreadState.Aborted))
+                        try
+                        {
+                            line = ReadLineNonBlocking();
+                        }
+                        catch(ThreadAbortException)
+                        {
                             return;
+                        }
                     } while (line == null || !line.Equals("exit", StringComparison.OrdinalIgnoreCase));
 
                     returnCodeAccessMutex.WaitOne();

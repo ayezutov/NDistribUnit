@@ -7,7 +7,6 @@ using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
-using NDistribUnit.Common.ServiceContracts;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 using NDistribUnit.Common.TestExecution.Storage;
@@ -82,16 +81,19 @@ namespace NDistribUnit.Common.Agent
         /// <returns></returns>
         public TestResult RunTests(TestUnit test, DistributedConfigurationSubstitutions configurationSubstitutions)
         {
-            log.Info(string.Format("Run Tests command Received: {0}", test.UniqueTestId));
+            return ExecuteWithEvents(() =>
+            {
+                log.Info(string.Format("Run Tests command Received: {0}", test.UniqueTestId));
 
-            TestResult result = null;
+                TestResult result = null;
 
-            exceptionCatcher.Run(() =>
-                                     {
-                                         result = runner.Run(test, configurationSubstitutions);
-                                         result.ForSelfAndAllDescedants(r => r.SetAgentName(Name));
-                                     });
-            return result;
+                exceptionCatcher.Run(() =>
+                                         {
+                                             result = runner.Run(test, configurationSubstitutions);
+                                             result.ForSelfAndAllDescedants(r => r.SetAgentName(Name));
+                                         });
+                return result;
+            });
         }
 
         /// <summary>
@@ -100,16 +102,19 @@ namespace NDistribUnit.Common.Agent
         /// <param name="testRun">The test run.</param>
         public void ReleaseResources(TestRun testRun)
         {
-            log.BeginActivity(string.Format("Releasing resources for test run {0}", testRun));
-            exceptionCatcher.Run(() =>
-                                     {
-                                         runner.Unload(testRun);
-                                         if (!testRun.IsAliasedTest)
+            ExecuteWithEvents(() =>
+            {
+                log.BeginActivity(string.Format("Releasing resources for test run {0}", testRun));
+                exceptionCatcher.Run(() =>
                                          {
-                                             projects.RemoveProject(testRun);
-                                         }
-                                     });
-            log.EndActivity(string.Format("Finished releasing resources for test run {0}", testRun));
+                                             runner.Unload(testRun);
+                                             if (!testRun.IsAliasedTest)
+                                             {
+                                                 projects.RemoveProject(testRun);
+                                             }
+                                         });
+                log.EndActivity(string.Format("Finished releasing resources for test run {0}", testRun));
+            });
         }
 
         /// <summary>
@@ -118,9 +123,12 @@ namespace NDistribUnit.Common.Agent
         /// <param name="project">The project.</param>
         public void ReceiveProject(ProjectMessage project)
         {
-            log.BeginActivity(string.Format("Receiving project for test: {0} ({1})", project.TestRun.Id, project.TestRun.NUnitParameters.AssembliesToTest[0]));
-            projects.Store(project.TestRun, project.Project);
-            log.EndActivity(string.Format("Received project for test: {0} ({1})", project.TestRun.Id, project.TestRun.NUnitParameters.AssembliesToTest[0]));
+            ExecuteWithEvents(() =>
+            {
+                log.BeginActivity(string.Format("Receiving project for test: {0} ({1})", project.TestRun.Id, project.TestRun.NUnitParameters.AssembliesToTest[0]));
+                projects.Store(project.TestRun, project.Project);
+                log.EndActivity(string.Format("Received project for test: {0} ({1})", project.TestRun.Id, project.TestRun.NUnitParameters.AssembliesToTest[0]));
+            });
         }
 
         /// <summary>
@@ -132,7 +140,7 @@ namespace NDistribUnit.Common.Agent
         /// </returns>
         public bool HasProject(TestRun run)
         {
-            return projects.HasProject(run);
+            return ExecuteWithEvents(() => projects.HasProject(run));
         }
 
         /// <summary>
@@ -152,18 +160,30 @@ namespace NDistribUnit.Common.Agent
         /// <param name="updatePackage"></param>
         public void ReceiveUpdatePackage(UpdatePackage updatePackage)
         {
+            ExecuteWithEvents(() => updateReceiver.SaveUpdatePackage(updatePackage));
+        }
+
+        private void ExecuteWithEvents(Action action)
+        {
+            ExecuteWithEvents(() =>
+                                  {
+                                      action();
+                                      return true;
+                                  });
+        }
+
+        private TResult ExecuteWithEvents<TResult>(Func<TResult> func)
+        {
             try
             {
                 CommunicationStarted.SafeInvoke(this);
-                updateReceiver.SaveUpdatePackage(updatePackage);
+                return func();
             }
             finally
             {
                 CommunicationFinished.SafeInvoke(this);
             }
         }
-
-
 
         /// <summary>
         /// Occurs when an update is started.

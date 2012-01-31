@@ -5,7 +5,6 @@ using System.ServiceModel.Description;
 using NDistribUnit.Common.Common.Networking;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.Logging;
-using NDistribUnit.Common.ServiceContracts;
 
 namespace NDistribUnit.Common.Agent
 {
@@ -21,6 +20,7 @@ namespace NDistribUnit.Common.Agent
 
         private readonly IEnumerable<IAgentExternalModule> modules;
         private readonly AgentConfiguration configuration;
+        private readonly AgentParameters parameters;
 
         private ILog log;
         internal ServiceHost TestRunnerHost { get; set; }
@@ -36,12 +36,18 @@ namespace NDistribUnit.Common.Agent
         /// <param name="testRunner">The test runner.</param>
         /// <param name="modules">The agents' external modules.</param>
         /// <param name="configuration">The configuration.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <param name="log">The log.</param>
-        public AgentHost(Agent testRunner, IEnumerable<IAgentExternalModule> modules, AgentConfiguration configuration,  ILog log)
+        public AgentHost(Agent testRunner,
+            IEnumerable<IAgentExternalModule> modules,
+            AgentConfiguration configuration,
+            AgentParameters parameters,
+            ILog log)
         {
             TestRunner = testRunner;
             this.modules = modules;
             this.configuration = configuration;
+            this.parameters = parameters;
             this.log = log;
         }
 
@@ -50,25 +56,58 @@ namespace NDistribUnit.Common.Agent
         /// </summary>
         public void Start()
         {
-            var port = configuration.Port;
-            if (!port.HasValue || !WcfUtilities.IsFreePort(port.Value))
-                port = WcfUtilities.FindPort();
+            var ports = new List<int>();
+            if (parameters.Port.HasValue)
+                ports.Add(parameters.Port.Value);
 
+            if (configuration.Port.HasValue)
+                ports.Add(configuration.Port.Value);
+
+            foreach (var port in GetPorts(ports))
+            {
+                try
+                {
+                    StartHost(port);
+                    return;
+                }
+                catch (CommunicationException ex)
+                {
+                    log.Warning(string.Format("Unable to launch agent on {0}", port), ex);
+                }
+            }
+        }
+
+        private static IEnumerable<int> GetPorts(IEnumerable<int> ports)
+        {
+            foreach (var port in ports)
+            {
+                yield return port;
+            }
+            while (true)
+            {
+                yield return WcfUtilities.FindPort();
+            }
+        }
+
+        private void StartHost(int port)
+        {
             var baseAddress = new Uri(string.Format("net.tcp://{0}:{1}", Environment.MachineName, port));
 
             log.BeginActivity(string.Format("Starting agent {1} on '{0}'...", baseAddress, TestRunner.Name));
             TestRunnerHost = new ServiceHost(TestRunner, baseAddress);
-            
-			Endpoint = TestRunnerHost.AddServiceEndpoint(typeof(IAgent), new NetTcpBinding("NDistribUnit.Default"), "");
-            TestRunnerHost.AddServiceEndpoint(typeof(IRemoteAppPart), new NetTcpBinding("NDistribUnit.Default"), RemoteParticleAddress);
-        	TestRunnerHost.Description.Behaviors.Find<ServiceDebugBehavior>().IncludeExceptionDetailInFaults = true;
-            log.BeginActivity("Starting external modules...");
+
+            Endpoint = TestRunnerHost.AddServiceEndpoint(typeof(IAgent), new NetTcpBinding("NDistribUnit.Default"), "");
+            TestRunnerHost.AddServiceEndpoint(typeof(IRemoteAppPart), new NetTcpBinding("NDistribUnit.Default"),
+                                              RemoteParticleAddress);
+            TestRunnerHost.Description.Behaviors.Find<ServiceDebugBehavior>().IncludeExceptionDetailInFaults = true;
+            log.BeginActivity("Initializing external modules...");
             foreach (var module in modules)
             {
                 module.Start(this);
             }
-            log.EndActivity("External modules were started.");
+            log.EndActivity("External modules were initialized.");
 
+            log.BeginActivity("Starting host...");
             TestRunnerHost.Open();
             log.EndActivity("Agent host was started.");
         }

@@ -83,7 +83,7 @@
     <Compile Include="..\NDistribUnit.Common\Properties\AssemblyInfoInc.cs">
       <Link>Properties\AssemblyInfoInc.cs</Link>
     </Compile>
-    <Compile Include="AgentProgram.cs" />
+    <Compile Include="AgentEntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

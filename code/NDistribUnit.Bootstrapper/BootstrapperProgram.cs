@@ -77,7 +77,7 @@ namespace NDistribUnit.Bootstrapper
 
 		    var currentFileConfig = GetConfigurationFilename(assemblyFile);
 
-            targetFileConfig = new ConfigurationFileMerger().MergeFiles(targetFileConfig, currentFileConfig);
+            //targetFileConfig = new ConfigurationFileMerger().MergeFiles(targetFileConfig, currentFileConfig);
             
 		    try
 			{
@@ -89,19 +89,22 @@ namespace NDistribUnit.Bootstrapper
                                                             ApplicationBase = targetFolder,
 				                                    	});
 
-			    UnhandledExceptionLogger logger = (UnhandledExceptionLogger)domain.CreateInstanceFromAndUnwrap(Assembly.GetExecutingAssembly().Location,
+			    var logger = (UnhandledExceptionLogger)domain.CreateInstanceFromAndUnwrap(Assembly.GetExecutingAssembly().Location,
                                                    typeof(UnhandledExceptionLogger).FullName,
 			                                       false, BindingFlags.Default, null, null,
 			                                       Thread.CurrentThread.CurrentCulture, null);
 			    logger.ProcessUnhandledExceptions();
 
-				var newArgs = new List<string>(args);
-				newArgs.AddRange(new BootstrapperParameters
-				                 	{
-				                 		BootstrapperFile = assemblyFile,
-				                 		ConfigurationFile = assemblyFile + ".config"
-				                 	}.ToArray());
-				var returnValue = domain.ExecuteAssembly(targetFile, newArgs.ToArray());
+			    BootstrapperParameters.WriteToDomain(new BootstrapperParameters
+			        {
+			            BootstrapperFile = assemblyFile,
+			            ConfigurationFile = currentFileConfig,
+			        }, domain);
+                
+
+//				var newArgs = new List<string>(args);
+//				newArgs.AddRange(.ToArray());
+				var returnValue = domain.ExecuteAssembly(targetFile, args);
 				AppDomain.Unload(domain);
 			    if (returnValue == (int) ReturnCodes.RestartDueToAvailableUpdate || returnValue == (int) ReturnCodes.RestartDueToConfigChange)
 			        Main(args);

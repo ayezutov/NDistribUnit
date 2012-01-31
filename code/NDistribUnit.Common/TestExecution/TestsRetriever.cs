@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Common.ConsoleProcessing;
+using NDistribUnit.Common.Common.Domains;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution.Data;
@@ -13,6 +14,7 @@ using NDistribUnit.Common.Updating;
 using NUnit.Core;
 using NUnit.Util;
 using AssemblyResolver = NDistribUnit.Common.Common.AssemblyResolver;
+using DomainManager = NDistribUnit.Common.Common.Domains.DomainManager;
 
 namespace NDistribUnit.Common.TestExecution
 {
@@ -48,13 +50,12 @@ namespace NDistribUnit.Common.TestExecution
         {
             initializer.Initialize();
 
-
             var projectFileNameOnly = Path.GetFileName(request.TestRun.NUnitParameters.AssembliesToTest[0]);
             var projectFileNameMapped = Path.Combine(project.Path, projectFileNameOnly);
 
             var package = GetTestPackage(projectFileNameMapped, request.TestRun.NUnitParameters);
             package.AutoBinPath = false;
-            package.PrivateBinPath = DomainManager.GetPrivateBinPath(
+            package.PrivateBinPath = NUnit.Util.DomainManager.GetPrivateBinPath(
                 parameters.RootFolder
                 ?? Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 new ArrayList(request.TestRun.NUnitParameters.AssembliesToTest)
@@ -63,36 +64,25 @@ namespace NDistribUnit.Common.TestExecution
                     });
             package.BasePath = parameters.RootFolder;
 
-            var domainManager = new DomainManager();
+            var domainManager = new NUnit.Util.DomainManager();
 
             // A separate domain is used to free the assemblies after tests retrieval
             var domain = domainManager.CreateDomain(package);
-
-
+            
             try
             {
-                var testsResolverCreatorType = typeof (InAnotherDomainResolverCreator);
-                var testsResolverCreator =
-                    (InAnotherDomainResolverCreator)
-                    domain.CreateInstanceAndUnwrap(testsResolverCreatorType.Assembly.FullName,
-                                                   testsResolverCreatorType.FullName);
+                DomainManager.AddResolverForPaths(domain, DomainManager.GetNUnitFolders(parameters));
                 
-                testsResolverCreator.CreateAssemblyResolver(new[] {GeneralProgram.GetNUnitFolder(parameters)});
+                var testsRetrieverType = typeof (InAnotherDomainTestsRetriever);
 
-                using (testsResolverCreator)
-                {
-                    var testsRetrieverType = typeof (InAnotherDomainTestsRetriever);
-
-                    var testsRetriever =
-                        (InAnotherDomainTestsRetriever)
+                var testsRetriever = (InAnotherDomainTestsRetriever)
                         domain.CreateInstanceAndUnwrap(testsRetrieverType.Assembly.FullName, testsRetrieverType.FullName);
 
-                    return testsRetriever.Get(package, request.TestRun);
-                }
+                return testsRetriever.Get(package, request.TestRun);
             }
             finally
             {
-                domainManager.Unload(domain);
+                DomainManager.UnloadDomain(domain);
             }
         }
 
@@ -111,29 +101,7 @@ namespace NDistribUnit.Common.TestExecution
         }
     }
 
-    internal class InAnotherDomainResolverCreator : MarshalByRefObject, IDisposable
-    {
-        private AssemblyResolver resolver;
-
-        public void CreateAssemblyResolver(IEnumerable<string> paths)
-        {
-            resolver = new AssemblyResolver(new ConsoleLog());
-            foreach (var path in paths)
-            {
-                resolver.AddDirectory(path);
-            }
-        }
-
-        public void UnloadResolver()
-        {
-            resolver.Dispose();
-        }
-
-        public void Dispose()
-        {
-            resolver.Dispose();
-        }
-    }
+    
 
     internal class InAnotherDomainTestsRetriever : MarshalByRefObject
     {
@@ -171,10 +139,11 @@ namespace NDistribUnit.Common.TestExecution
                 var isTestSuiteWithAtLeastOneTestMethod = (test.IsSuite && test.Tests != null && test.Tests.Count != 0 &&
                                                            !((ITest) test.Tests[0]).IsSuite);
 
-                string testToRun = testRun.NUnitParameters.TestToRun;
+//                string testToRun = testRun.NUnitParameters.TestToRun;
 
-                if ((string.IsNullOrEmpty(testToRun) && (isTestSuiteWithAtLeastOneTestMethod || !test.IsSuite))
-                    || (!string.IsNullOrEmpty(testToRun) && test.TestName.FullName.StartsWith(testToRun)))
+                if (!test.IsSuite || isTestSuiteWithAtLeastOneTestMethod)
+//                    || (string.IsNullOrEmpty(testToRun) && isTestSuiteWithAtLeastOneTestMethod)
+//                    || (!string.IsNullOrEmpty(testToRun) && test.TestName.FullName.StartsWith(testToRun) && isTestSuiteWithAtLeastOneTestMethod))
                 {
                     List<TestUnitWithMetadata> subTests = null;
                     if (test.IsSuite && test.Tests != null)

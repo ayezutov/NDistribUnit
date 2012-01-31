@@ -164,11 +164,14 @@ namespace NDistribUnit.Common.TestExecution
                     log.EndActivity(string.Format("Project '{0}' doesn't exist on agent {1}", test.Test.Run, agent));
 
                     log.BeginActivity(string.Format("Sending project ('{0}') to agent {1}", test.Test.Run, agent));
-                    testRunnerAgent.ReceiveProject(new ProjectMessage
-                                                       {
-                                                           TestRun = test.Test.Run,
-                                                           Project = projects.GetStreamToPacked(test.Test.Run) ?? new MemoryStream(1)
-                                                       });
+                    using (Stream project = projects.GetStreamToPacked(test.Test.Run) ?? new MemoryStream(1))
+                    {
+                        testRunnerAgent.ReceiveProject(new ProjectMessage
+                                                           {
+                                                               TestRun = test.Test.Run,
+                                                               Project = project
+                                                           });
+                    }
                     log.EndActivity(string.Format("Sent project ('{0}') to agent {1}", test.Test.Run, agent));
                 }
                 else

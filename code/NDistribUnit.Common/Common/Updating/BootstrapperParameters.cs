@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using NDistribUnit.Common.ConsoleProcessing.Options;
 
 namespace NDistribUnit.Common.Updating
 {
@@ -10,11 +8,10 @@ namespace NDistribUnit.Common.Updating
 	/// </summary>
 	public class BootstrapperParameters
 	{
-		private const string bootstrapperFileKeyName = "bootstrapperFile";
-		private const string configurationFileKeyName = "configurationFile";
-		private const string isDebugKeyName = "isDebug";
+	    private const string bootstrapperDataKey = "ndistribunit.bootstrapped.bootstrapper";
+	    private const string bootstrapperConfigurationDataKey = "ndistribunit.bootstrapped.configuration";
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the boot strapper path.
 		/// </summary>
 		/// <value>
@@ -38,7 +35,7 @@ namespace NDistribUnit.Common.Updating
 		/// </value>
 		public bool AllParametersAreFilled
 		{
-			get { return !string.IsNullOrEmpty(BootstrapperFile) && !string.IsNullOrEmpty(ConfigurationFile); }
+			get { return !string.IsNullOrEmpty(BootstrapperFile); }
 		}
 
 		/// <summary>
@@ -54,48 +51,30 @@ namespace NDistribUnit.Common.Updating
 			}
 		}
 
-		/// <summary>
-		/// Parses the specified arguments.
-		/// </summary>
-		/// <param name="arguments">The arguments.</param>
-		/// <returns></returns>
-		public static BootstrapperParameters Parse(IEnumerable<string> arguments)
-		{
-			var result = new BootstrapperParameters();
-			new ConsoleParametersParser
-				{
-					{bootstrapperFileKeyName, (string bootstrapperFile) => result.BootstrapperFile = bootstrapperFile},
-					{configurationFileKeyName, (string configurationFile) => result.ConfigurationFile = configurationFile}
-				}.Parse(arguments);
+        /// <summary>
+        /// Writes to domain.
+        /// </summary>
+        /// <param name="parameters">The parameters.</param>
+        /// <param name="domain">The domain.</param>
+	    public static void WriteToDomain(BootstrapperParameters parameters, AppDomain domain)
+	    {
+            domain.SetData(bootstrapperDataKey, parameters.BootstrapperFile);
+            domain.SetData(bootstrapperConfigurationDataKey, parameters.ConfigurationFile);
+	    }
 
-			return result;
-		}
-
-		/// <summary>
-		/// Returns a <see cref="System.String"/> that represents this instance.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="System.String"/> that represents this instance.
-		/// </returns>
-		public override string ToString()
-		{
-			return string.Format("/{0}:{1} /{2}:{3}", bootstrapperFileKeyName, BootstrapperFile, 
-				configurationFileKeyName, ConfigurationFile);
-		}
-
-		/// <summary>
-		/// Toes the array.
-		/// </summary>
-		/// <returns></returns>
-		public string[] ToArray()
-		{
-			
-			return new string[]
-			       	{
-			       		string.Format("/{0}:{1}", bootstrapperFileKeyName, BootstrapperFile),
-						string.Format("/{0}:{1}", configurationFileKeyName, ConfigurationFile)
-			       	};
-
-		}
+        /// <summary>
+        /// Inits from domain.
+        /// </summary>
+        /// <param name="domain">The domain.</param>
+        /// <returns></returns>
+	    public static BootstrapperParameters InitFromDomain(AppDomain domain)
+	    {
+            return new BootstrapperParameters()
+                       {
+                           BootstrapperFile = (string)domain.GetData(bootstrapperDataKey),
+                           ConfigurationFile = (string)domain.GetData(bootstrapperConfigurationDataKey)
+                       };
+	        
+	    }
 	}
 }

@@ -25,12 +25,10 @@ namespace NDistribUnit.Common.Dependencies
         /// Initializes a new instance of the <see cref="ServerDependenciesModule"/> class.
         /// </summary>
         /// <param name="serverConfiguration">The server configuration.</param>
-        /// <param name="commandLineArgs">The command line args.</param>
         /// <param name="configuration">The configuration.</param>
-        public ServerDependenciesModule(ServerConfiguration serverConfiguration, string[] commandLineArgs, Configuration configuration = null)
+        public ServerDependenciesModule(ServerConfiguration serverConfiguration, Configuration configuration = null)
         {
             ServerConfiguration = serverConfiguration;
-            CommandLineArgs = commandLineArgs;
             Configuration = configuration;
         }
 
@@ -42,14 +40,7 @@ namespace NDistribUnit.Common.Dependencies
         /// </value>
         public ServerConfiguration ServerConfiguration { get; set; }
 
-        /// <summary>
-        /// Gets or sets the args.
-        /// </summary>
-        /// <value>
-        /// The args.
-        /// </value>
-        public string[] CommandLineArgs { get; set; }
-
+        
         /// <summary>
         /// Gets or sets the configuration.
         /// </summary>
@@ -90,8 +81,8 @@ namespace NDistribUnit.Common.Dependencies
             builder.RegisterType<ServerTestRunner>().InstancePerLifetimeScope();
             builder.RegisterType<ServerHost>().InstancePerLifetimeScope();
             builder.Register(c => new WindowsLog("Server")).InstancePerLifetimeScope();
-            builder.RegisterModule(new CommonDependenciesModule(CommandLineArgs));
-            builder.Register(c=> new ProjectsStorage("Server", c.Resolve<BootstrapperParameters>(), c.Resolve<ZipSource>())).As<IProjectsStorage>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterModule(new CommonDependenciesModule());
+            builder.Register(c=> new ProjectsStorage("Server", c.Resolve<BootstrapperParameters>(), c.Resolve<ZipSource>(), c.Resolve<ILog>())).As<IProjectsStorage>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<DistributedConfigurationOperator>().As<IDistributedConfigurationOperator>();
 
             foreach (ConnectionTrackerElement connectionTracker in ServerConfiguration.ConnectionTrackers)

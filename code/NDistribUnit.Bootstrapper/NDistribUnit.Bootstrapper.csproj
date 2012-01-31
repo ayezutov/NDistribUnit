@@ -106,7 +106,6 @@
       <Link>LinkedItems\VersionDirectoryFinder.cs</Link>
     </Compile>
     <Compile Include="BootstrapperProgram.cs" />
-    <Compile Include="ConfigurationFileMerger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

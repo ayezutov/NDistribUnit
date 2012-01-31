@@ -95,5 +95,27 @@ namespace NDistribUnit.Common.Tests.TestExecution
                 Is.True);
 
         }
+
+        [Test]
+        public void EnsureTestByRunReturnsCorrectNumberOfTestsWhenSingleSuite()
+        {
+            request.TestRun.NUnitParameters.TestToRun = typeof(TestFixtureWithCategoriesOnTests).FullName;
+
+            var testUnits = retriever.Get(project, request);
+
+            Assert.That(testUnits, Is.Not.Null);
+            Assert.That(testUnits.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void EnsureTestByRunReturnsCorrectNumberOfTestsWhenMultipleSuites()
+        {
+            request.TestRun.NUnitParameters.TestToRun = typeof(TestFixtureWithCategoriesOnTests).Namespace;
+
+            var testUnits = retriever.Get(project, request);
+
+            Assert.That(testUnits, Is.Not.Null);
+            Assert.That(testUnits.Count, Is.GreaterThan(1));
+        }
     }
 }

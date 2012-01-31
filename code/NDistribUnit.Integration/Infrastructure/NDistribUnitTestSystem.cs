@@ -51,11 +51,11 @@ namespace NDistribUnit.Integration.Tests.Infrastructure
             CurrentBuilder = new ContainerBuilder();
             var commandLineArgs = new string[0];
             CurrentBuilder.RegisterInstance(this);
-            CurrentBuilder.RegisterModule(new CommonDependenciesModule(commandLineArgs));
+            CurrentBuilder.RegisterModule(new CommonDependenciesModule());
             CurrentBuilder.RegisterInstance(serverConfiguration).As<IConnectionsHostOptions>().AsSelf();
             CurrentBuilder.RegisterInstance(clientParameters);
             CurrentBuilder.RegisterModule(new AgentDependenciesModule(AgentConfiguration, commandLineArgs));
-            CurrentBuilder.RegisterModule(new ServerDependenciesModule(serverConfiguration, commandLineArgs));
+            CurrentBuilder.RegisterModule(new ServerDependenciesModule(serverConfiguration));
             CurrentBuilder.RegisterModule(new ClientDependenciesModule());
             CurrentBuilder.RegisterModule(new TestingDefaultDependencies());
 

@@ -119,23 +119,15 @@ namespace NDistribUnit.Common.Client
 
                     log.EndActivity("Project packaging completed.");
 
-                    var fs = packageStream as FileStream;
-                    if (fs != null)
-                        log.Info(string.Format("Stream '{0}': {1}", fs.Name, fs.Length));
-
-                    try
+                    using (packageStream)
                     {
                         log.BeginActivity("Sending project to server...");
                         server.ReceiveProject(new ProjectMessage
-                                                  {
-                                                      Project = packageStream,
-                                                      TestRun = testRun
-                                                  });
+                        {
+                            Project = packageStream,
+                            TestRun = testRun
+                        });
                         log.EndActivity("Project was successfully sent to server");
-                    }
-                    finally
-                    {
-                        packageStream.Close();
                     }
                 }
                 else

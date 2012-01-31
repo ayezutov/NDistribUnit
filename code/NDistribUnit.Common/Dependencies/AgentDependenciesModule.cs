@@ -45,8 +45,12 @@ namespace NDistribUnit.Common.Dependencies
             builder.RegisterType<NativeRunnerCache>().As<INativeRunnerCache>().InstancePerLifetimeScope();
             builder.RegisterType<DistributedConfigurationOperator>().As<IDistributedConfigurationOperator>().InstancePerLifetimeScope();
             builder.Register(c => new WindowsLog("Agent")).InstancePerLifetimeScope();
-            builder.Register(c => new ProjectsStorage("Agent", c.Resolve<BootstrapperParameters>(), c.Resolve<ZipSource>())).As<IProjectsStorage>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterModule(new CommonDependenciesModule(args));
+            builder.Register(c => new ProjectsStorage("Agent", 
+                c.Resolve<BootstrapperParameters>(), 
+                c.Resolve<ZipSource>(),
+                c.Resolve<ILog>())).As<IProjectsStorage>().AsSelf().InstancePerLifetimeScope();
+            builder.Register(c => AgentParameters.Parse(args)).InstancePerLifetimeScope();
+            builder.RegisterModule(new CommonDependenciesModule());
         }
 
         /// <summary>

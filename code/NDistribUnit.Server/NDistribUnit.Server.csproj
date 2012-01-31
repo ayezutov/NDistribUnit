@@ -12,7 +12,8 @@
     <AssemblyName>NDistribUnit.Server</AssemblyName>
     <StartArguments>/client:"WcfTestClient.exe"</StartArguments>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <StartupObject>NDistribUnit.Server.ServerProgram</StartupObject>
+    <StartupObject>
+    </StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -102,7 +103,7 @@
     <Compile Include="..\NDistribUnit.Common\Properties\AssemblyInfoInc.cs">
       <Link>Properties\AssemblyInfoInc.cs</Link>
     </Compile>
-    <Compile Include="ServerProgram.cs" />
+    <Compile Include="ServerEntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

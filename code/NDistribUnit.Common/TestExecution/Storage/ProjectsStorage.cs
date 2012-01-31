@@ -4,6 +4,7 @@ using System.Threading;
 using NDistribUnit.Common.Common;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Contracts.DataContracts;
+using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Updating;
 
 namespace NDistribUnit.Common.TestExecution.Storage
@@ -22,6 +23,7 @@ namespace NDistribUnit.Common.TestExecution.Storage
         private readonly string storageName;
         private readonly BootstrapperParameters parameters;
         private readonly ZipSource zip;
+        private readonly ILog log;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectsStorage"/> class.
@@ -29,11 +31,13 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// <param name="storageName">Name of the storage.</param>
         /// <param name="parameters">The parameters.</param>
         /// <param name="zip">The zip.</param>
-        public ProjectsStorage(string storageName, BootstrapperParameters parameters, ZipSource zip)
+        /// <param name="log">The log.</param>
+        public ProjectsStorage(string storageName, BootstrapperParameters parameters, ZipSource zip, ILog log)
         {
             this.storageName = storageName;
             this.parameters = parameters;
             this.zip = zip;
+            this.log = log;
         }
 
         /// <summary>
@@ -123,17 +127,21 @@ namespace NDistribUnit.Common.TestExecution.Storage
                                                return new TestProject(unpackedDirectory);
 
                                            string packedFile = Path.Combine(path, PackedFileName);
-                                           if (File.Exists(packedFile))
-                                           {
-                                               using (FileStream fileStream = File.OpenRead(packedFile))
-                                               {
-                                                   zip.UnpackFolder(fileStream, unpackedDirectory);
-                                               }
-                                               return new TestProject(unpackedDirectory);
-                                           }
-
-                                           return null;
+                                           return Unpack(packedFile, unpackedDirectory);
                                        });
+        }
+
+        private TestProject Unpack(string packedFile, string unpackedDirectory)
+        {
+            if (File.Exists(packedFile))
+            {
+                using (FileStream fileStream = File.OpenRead(packedFile))
+                {
+                    zip.UnpackFolder(fileStream, unpackedDirectory);
+                }
+                return new TestProject(unpackedDirectory);
+            }
+            return null;
         }
 
         /// <summary>
@@ -146,10 +154,15 @@ namespace NDistribUnit.Common.TestExecution.Storage
             RunSynchronized(testRun, () =>
                                          {
                                              var path = GetPathToProject(testRun);
-                                             var packedFile = Path.Combine(path, PackedFileName);
+                                             var packedFileName = Path.Combine(path, PackedFileName);
+                                             var fileName = packedFileName;
                                              if (!Directory.Exists(path))
                                                  Directory.CreateDirectory(path);
-                                             var file = new FileStream(packedFile, FileMode.CreateNew, FileAccess.Write);
+
+                                             if (File.Exists(fileName))
+                                                 fileName = Path.GetTempFileName();
+
+                                             var file = new FileStream(fileName, FileMode.Create, FileAccess.Write);
                                              var buffer = new byte[1024*1024];
                                              int readBytes;
                                              while ((readBytes = projectStream.Read(buffer, 0, buffer.Length)) > 0)
@@ -157,6 +170,30 @@ namespace NDistribUnit.Common.TestExecution.Storage
                                                  file.Write(buffer, 0, readBytes);
                                              }
                                              file.Close();
+
+                                             if (!fileName.Equals(packedFileName))
+                                             {
+                                                 if (new FileInfo(fileName).Length != new FileInfo(packedFileName).Length)
+                                                 {
+                                                     try
+                                                     {
+                                                         File.Delete(packedFileName);
+                                                     }
+                                                     catch(IOException ex)
+                                                     {
+                                                         log.Warning("Error while trying to replace the file", ex);
+                                                         return;
+                                                     }
+                                                     try
+                                                     {
+                                                         File.Move(fileName, packedFileName);
+                                                     }
+                                                     catch(IOException ex)
+                                                     {
+                                                         log.Warning("Error while trying to move a file", ex);
+                                                     }
+                                                 }
+                                             }
                                          });
         }
 
@@ -183,10 +220,9 @@ namespace NDistribUnit.Common.TestExecution.Storage
                                            {
                                                using (FileStream fileStream = File.Create(packedFile))
                                                {
-                                                   zip.GetPackedFolder(new DirectoryInfo(unpackedDirectory), true,
+                                                   return zip.GetPackedFolder(new DirectoryInfo(unpackedDirectory), true,
                                                                        fileStream);
                                                }
-                                               return File.OpenRead(packedFile);
                                            }
 
                                            return null;
@@ -199,6 +235,17 @@ namespace NDistribUnit.Common.TestExecution.Storage
         /// <param name="testRun">The test run.</param>
         public void RemoveProject(TestRun testRun)
         {
+            Action<Action> withLog = a =>
+                                         {
+                                             try
+                                             {
+                                                 a();
+                                             }
+                                             catch (IOException ex)
+                                             {
+                                                 log.Warning(string.Format("Exception while cleaning project {0}", testRun), ex);
+                                             }
+                                         };
             RunSynchronized(testRun, () =>
                                          {
                                              string path = GetPathToProject(testRun);
@@ -206,17 +253,22 @@ namespace NDistribUnit.Common.TestExecution.Storage
                                              string packedFile = Path.Combine(path, PackedFileName);
 
                                              if (File.Exists(packedFile))
-                                                 File.Delete(packedFile);
+                                             {
+                                                 withLog(()=>File.Delete(packedFile));
+                                             }
 
                                              string unpackedDirectory = Path.Combine(path, UnpackedFolder);
 
                                              if (Directory.Exists(unpackedDirectory))
                                              {
-                                                 Directory.Delete(unpackedDirectory, true);
+                                                 withLog(()=>Directory.Delete(unpackedDirectory, true));
                                              }
 
-                                             Directory.Delete(path);
+                                             if (Directory.Exists(path))
+                                                withLog(()=>Directory.Delete(path));
                                          });
         }
+
+
     }
 }

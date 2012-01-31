@@ -1,16 +1,12 @@
 ﻿using System;
 using System.ServiceModel;
-using Autofac;
-using NDistribUnit.Common.Client;
 using NDistribUnit.Common.Common;
 using NDistribUnit.Common.Common.ConsoleProcessing;
-using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Communication;
-using NDistribUnit.Common.Dependencies;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Updating;
 
-namespace NDistribUnit.Client
+namespace NDistribUnit.Common.Client
 {
     /// <summary>
     /// The entry point for the client
@@ -18,30 +14,7 @@ namespace NDistribUnit.Client
     public class ClientProgram : GeneralProgram
     {
         private readonly ClientParameters options;
-        private readonly Common.Client.Client client;
-
-        static int Main(string[] args)
-        {
-            var builder = new ContainerBuilder();
-            builder.Register(c => ClientParameters.Parse(args)).InstancePerLifetimeScope();
-            builder.Register(c => new LogConfiguration { RollingLogItemsCount = 1000 }).InstancePerLifetimeScope();
-            builder.RegisterType<ClientProgram>();
-            builder.RegisterModule(new ClientDependenciesModule());
-            builder.RegisterModule(new CommonDependenciesModule(args));
-            var container = builder.Build();
-            try
-            {
-                return container.Resolve<ClientProgram>().Run();
-            }
-            catch (Exception ex)
-            {
-                var log = container.Resolve<ConsoleLog>();
-                log.Error("Some error, while running tests", ex);
-                Console.WriteLine("Please press any key to continue");
-                Console.ReadKey();
-                return (int)ReturnCodes.UnhandledException;
-            }
-        }
+        private readonly Client client;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientProgram"/> class.
@@ -52,8 +25,8 @@ namespace NDistribUnit.Client
         /// <param name="resolver">The resolver.</param>
         /// <param name="catcher">The catcher.</param>
         /// <param name="log">The log.</param>
-        public ClientProgram(ClientParameters options, BootstrapperParameters bootstrapperParameters, Common.Client.Client client, AssemblyResolver resolver, ExceptionCatcher catcher, ILog log)
-            : base(resolver, null, catcher, log, bootstrapperParameters)
+        public ClientProgram(ClientParameters options, BootstrapperParameters bootstrapperParameters, Client client, AssemblyResolver resolver, ExceptionCatcher catcher, ILog log)
+            : base(null, catcher, log, bootstrapperParameters)
         {
             this.options = options;
             this.client = client;
@@ -63,14 +36,8 @@ namespace NDistribUnit.Client
         /// Runs the program with specified options
         /// </summary>
         /// <returns>A return code</returns>
-        private int Run()
+        public int Run()
         {
-            if (!bootstrapperParameters.AllParametersAreFilled)
-            {
-                log.Error("Bootstrapped application cannot be launched directly");
-                return (int)ReturnCodes.CannotLaunchBootstrappedApplicationDirectly;
-            }
-
             log.EndActivity("Client was started");
 
             log.BeginActivity(string.Format("Starting running test: {0}" +
@@ -111,7 +78,7 @@ namespace NDistribUnit.Client
                 return (int)ReturnCodes.IncompleteParameterList;
             }
 
-            Console.Write("Test run was finished");
+            System.Console.Write("Test run was finished");
             return failsAndErrorsCount;
         }
     }

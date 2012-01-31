@@ -1,16 +1,24 @@
 using System;
 using System.Configuration;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Xml.Linq;
 using System.Linq;
 
-namespace NDistribUnit.Bootstrapper
+namespace NDistribUnit.Common.Common
 {
-    internal class ConfigurationFileMerger
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ConfigurationFileMerger
     {
+        /// <summary>
+        /// Merges the files.
+        /// </summary>
+        /// <param name="base">The @base.</param>
+        /// <param name="part">The part.</param>
+        /// <returns></returns>
         public string MergeFiles(string @base, string part)
         {
             if (@base == null)
@@ -45,29 +53,50 @@ namespace NDistribUnit.Bootstrapper
                                                 AppDomain.CurrentDomain.Evidence,
                                                 new AppDomainSetup
                                                     {
-                                                        ApplicationBase =basePath,
+                                                        ApplicationBase = basePath,
                                                         PrivateBinPath = Path.GetDirectoryName(part),
                                                         ConfigurationFile = @base,
                                                     });
-            var inAnotherDomainMerger =
-                (InAnotherDomainConfigurationMerger)
-                domain.CreateInstanceFromAndUnwrap(Assembly.GetExecutingAssembly().Location,
-                                                   typeof (InAnotherDomainConfigurationMerger).FullName,
-                                                   false, BindingFlags.Default, null, null,
-                                                   Thread.CurrentThread.CurrentCulture, null);
+            try
+            {
+                var inAnotherDomainMerger =
+                    (InAnotherDomainConfigurationMerger)
+                    domain.CreateInstanceFromAndUnwrap(Assembly.GetExecutingAssembly().Location,
+                                                       typeof (InAnotherDomainConfigurationMerger).FullName,
+                                                       false, BindingFlags.Default, null, null,
+                                                       Thread.CurrentThread.CurrentCulture, null);
 
-            var resultingDocument = inAnotherDomainMerger.Merge(@base, part);
-            return resultingDocument;
+                var resultingDocument = inAnotherDomainMerger.Merge(@base, part);
+                return resultingDocument;
+            }
+            finally
+            {
+                AppDomain.Unload(domain);
+            }
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class InAnotherDomainConfigurationMerger: MarshalByRefObject
     {
+        /// <summary>
+        /// Gets the name of the merged file.
+        /// </summary>
+        /// <param name="baseName">Name of the base.</param>
+        /// <returns></returns>
         public static string GetMergedFileName(string baseName)
         {
             return Path.ChangeExtension(baseName, ".merged.config");
         }
 
+        /// <summary>
+        /// Merges the specified @base.
+        /// </summary>
+        /// <param name="base">The @base.</param>
+        /// <param name="part">The part.</param>
+        /// <returns></returns>
         public string Merge(string @base, string part)
         {
             var configuration = ConfigurationManager.OpenMappedExeConfiguration(new ExeConfigurationFileMap

@@ -112,7 +112,7 @@ namespace NDistribUnit.Common.Server.Services
             log.BeginActivity(string.Format("Receiving project for test: {0} ({1})", project.TestRun, project.TestRun.NUnitParameters.AssembliesToTest[0]));
     	    
             projects.Store(project.TestRun, project.Project);
-
+            
             log.EndActivity(string.Format("Received project for test: {0} ({1})", project.TestRun, project.TestRun.NUnitParameters.AssembliesToTest[0]));
         }
 

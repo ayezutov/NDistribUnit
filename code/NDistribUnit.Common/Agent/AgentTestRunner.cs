@@ -25,7 +25,6 @@ namespace NDistribUnit.Common.Agent
         private readonly ITestSystemInitializer initializer;
         private readonly IDistributedConfigurationOperator configurationOperator;
         private readonly ExceptionCatcher exceptionCatcher;
-        private readonly BootstrapperParameters bootstrapperParameters;
         private readonly ILog log;
 
         /// <summary>
@@ -52,7 +51,6 @@ namespace NDistribUnit.Common.Agent
             this.initializer = initializer;
             this.configurationOperator = configurationOperator;
             this.exceptionCatcher = exceptionCatcher;
-            this.bootstrapperParameters = bootstrapperParameters;
             this.log = log;
         }
 

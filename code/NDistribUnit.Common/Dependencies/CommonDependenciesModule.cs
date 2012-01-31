@@ -19,15 +19,11 @@ namespace NDistribUnit.Common.Dependencies
     /// </summary>
     public class CommonDependenciesModule : Module
     {
-        private readonly string[] commandLineArgs;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CommonDependenciesModule"/> class.
         /// </summary>
-        /// <param name="commandLineArgs">The command line args.</param>
-        public CommonDependenciesModule(string[] commandLineArgs)
+        public CommonDependenciesModule()
         {
-            this.commandLineArgs = commandLineArgs;
         }
 
         /// <summary>
@@ -37,7 +33,7 @@ namespace NDistribUnit.Common.Dependencies
         /// registered.</param>
         protected override void Load(ContainerBuilder builder)
         {
-            builder.Register(c => BootstrapperParameters.Parse(commandLineArgs))
+            builder.Register(c => BootstrapperParameters.InitFromDomain(AppDomain.CurrentDomain))
                 .SingleInstance();
             builder.RegisterType<UpdatesMonitor>();
             builder.RegisterType<VersionDirectoryFinder>();

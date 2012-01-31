@@ -119,7 +119,7 @@ namespace NDistribUnit.Common.Common
                             && AreEqual(pretendentFullName.CultureInfo, pretendentFullName.CultureInfo)))
                     {
                         if (log != null)
-                            log.Info(string.Format("Added to Cache: {0}", file));
+                            log.Debug(string.Format("Added to Cache: {0}", file));
                         cache[fullName] = Assembly.LoadFrom(file);
                         return cache[fullName];
                     }
