@@ -333,7 +333,7 @@ namespace NDistribUnit.Integration.Tests.Tests
             }
         }
 
-        [Test]
+        [Test, Explicit]
         public void ChangeVersion()
         {
             var sourceFile =

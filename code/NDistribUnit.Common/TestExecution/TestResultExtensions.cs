@@ -133,12 +133,15 @@ namespace NDistribUnit.Common.TestExecution
         /// <returns></returns>
         public static IEnumerable<TestResult> FindBottomLevelTestSuites(this TestResult result)
         {
-            if (result.HasResults && ((TestResult)result.Results[0]).Test.IsSuite)
+            if (result.HasResults && !((TestResult)result.Results[0]).Test.IsSuite)
                 return new[] {result};
 
             if (result.HasResults)
                 return result.Results.Cast<TestResult>().SelectMany(r => r.FindBottomLevelTestSuites());
-            
+
+            if (!result.HasResults && result.Test.IsSuite)
+                return new[]{result};
+
             return new TestResult[0];
         }
 

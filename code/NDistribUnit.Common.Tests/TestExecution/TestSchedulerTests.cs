@@ -7,6 +7,7 @@ using NDistribUnit.Common.Server;
 using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.Exceptions;
+using NDistribUnit.Common.TestExecution.Scheduling;
 using NDistribUnit.Common.TestExecution.Storage;
 using NUnit.Core;
 using NUnit.Framework;

@@ -13,6 +13,7 @@ using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution.Data;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 using NDistribUnit.Common.TestExecution.Exceptions;
+using NDistribUnit.Common.TestExecution.Scheduling;
 using NDistribUnit.Common.TestExecution.Storage;
 using NUnit.Core;
 
@@ -33,7 +34,7 @@ namespace NDistribUnit.Common.TestExecution
         private readonly ITestsRetriever testsRetriever;
         private readonly IDistributedConfigurationOperator configurationOperator;
         private readonly ITestsScheduler scheduler;
-        private readonly IReprocessor reprocessor;
+        private readonly ITestReprocessor reprocessor;
         private readonly ExceptionCatcher exceptionCatcher;
         private readonly IConnectionProvider connectionProvider;
 
@@ -61,7 +62,7 @@ namespace NDistribUnit.Common.TestExecution
                                 ITestsRetriever testsRetriever,
                                 IDistributedConfigurationOperator configurationOperator,
                                 ITestsScheduler scheduler,
-                                IReprocessor reprocessor,
+                                ITestReprocessor reprocessor,
                                 ExceptionCatcher exceptionCatcher,
                                 IConnectionProvider connectionProvider)
         {
@@ -216,7 +217,7 @@ namespace NDistribUnit.Common.TestExecution
                     tests.MarkCompleted(test);
                     agents.MarkAsReady(agent);
 
-                    reprocessor.AddForReprocessingIfRequired(test, result);
+                    reprocessor.AddForReprocessingIfRequired(test, result, agent);
 
                     isRequestCompleted = !tests.IsAnyAvailableFor(test.Test.Run);
                 }

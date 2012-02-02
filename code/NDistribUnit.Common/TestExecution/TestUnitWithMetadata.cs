@@ -23,7 +23,7 @@ namespace NDistribUnit.Common.TestExecution
             Children = children ?? new List<TestUnitWithMetadata>();
             Test = new TestUnit(test, testRun, assemblyName);
             Results = new List<TestResult>();
-            SchedulerHints = new SchedulerHints();
+            AttachedData = new TestUnitAttachedData();
         }
 
         /// <summary>
@@ -48,12 +48,38 @@ namespace NDistribUnit.Common.TestExecution
         /// </value>
         public List<TestResult> Results { get; private set; }
 
+        [NonSerialized]
+        private TestUnitAttachedData attachedData;
+
         /// <summary>
         /// Gets or sets the scheduler hints.
         /// </summary>
         /// <value>
         /// The scheduler hints.
         /// </value>
-        public SchedulerHints SchedulerHints { get; private set; }
+        public TestUnitAttachedData AttachedData
+        {
+            get { return attachedData; }
+            private set { attachedData = value; }
+        }
+
+        /// <summary>
+        /// Gets the full name.
+        /// </summary>
+        public string FullName
+        {
+            get { return Test.Info.TestName.FullName; }
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return FullName;
+        }
     }
 }

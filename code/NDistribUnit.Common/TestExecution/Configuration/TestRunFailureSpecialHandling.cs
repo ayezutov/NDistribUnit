@@ -1,4 +1,6 @@
 using System;
+using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace NDistribUnit.Common.TestExecution.Configuration
@@ -53,5 +55,66 @@ namespace NDistribUnit.Common.TestExecution.Configuration
         /// </value>
         [XmlAttribute("stackTraceType")]
         public MatchType FailureStackTraceType { get; set; }
+
+        /// <summary>
+        /// Determines whether the specified message is matching.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="stackTrace">The stack trace.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified message is matching; otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsMatching(string message, string stackTrace)
+        {
+            Initialize();
+
+            if (isMessageMatching == null && isStackTraceMatching == null)
+                return false;
+
+            if (isStackTraceMatching != null && isMessageMatching != null)
+                return isMessageMatching(message) && isStackTraceMatching(stackTrace);
+
+            if (isMessageMatching != null)
+                return isMessageMatching(message);
+
+            if (isStackTraceMatching != null)
+                return isStackTraceMatching(stackTrace);
+
+            return false;
+        }
+
+        private void Initialize()
+        {
+            if (initialized)
+                return;
+            lock(this)
+            {
+                if (initialized)
+                    return;
+
+                isMessageMatching = GetMatchingFunction(FailureMessage, FailureMessageType);
+                isStackTraceMatching = GetMatchingFunction(FailureStackTrace, FailureStackTraceType);
+
+                initialized = true;
+            }
+        }
+
+        private Func<string, bool> GetMatchingFunction(string value, MatchType matchingType)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+
+            if (matchingType == MatchType.Regex)
+            {
+                var regex = new Regex(value, RegexOptions.Compiled);
+                return s => s != null && regex.IsMatch(s);
+            }
+
+            return s => s != null && s.Contains(value);
+        }
+
+        private bool initialized;
+        private Func<string, bool> isMessageMatching;
+        private Func<string, bool> isStackTraceMatching;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using System.Linq;
 
@@ -48,20 +47,17 @@ namespace NDistribUnit.Common.TestExecution.Configuration
         /// <returns></returns>
         public TestRunFailureSpecialHandling GetSpecialHandling(Exception exception)
         {
-            return SpecialHandlings.FirstOrDefault(h =>
-                                                       {
-                                                           if (h.FailureMessageType == MatchType.ContainsText)
-                                                               return exception.Message.Contains(h.FailureMessage) 
-                                                                   || exception.StackTrace.Contains(h.FailureMessage);
-                                                            if (h.FailureMessageType == MatchType.Regex)
-                                                            {
-                                                                var regex = new Regex(h.FailureMessage);
-                                                                return regex.IsMatch(exception.Message) 
-                                                                    || regex.IsMatch(exception.StackTrace);
-                                                            }
+            return GetSpecialHandling(exception.Message, exception.StackTrace);
+        }
 
-                                                           return false;
-                                                       });
+        /// <summary>
+        /// Gets the special handling.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="stackTrace">The stack trace.</param>
+        public TestRunFailureSpecialHandling GetSpecialHandling(string message, string stackTrace)
+        {
+            return SpecialHandlings.FirstOrDefault(h => h.IsMatching(message, stackTrace));
         }
     }
 }

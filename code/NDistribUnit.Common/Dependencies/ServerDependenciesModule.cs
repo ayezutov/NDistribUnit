@@ -1,9 +1,6 @@
 using System.Configuration;
 using Autofac;
 using NDistribUnit.Common.Common.Communication;
-using NDistribUnit.Common.Common.Logging;
-using NDistribUnit.Common.Contracts.DataContracts;
-using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server;
 using NDistribUnit.Common.Server.AgentsTracking;
@@ -12,6 +9,7 @@ using NDistribUnit.Common.Server.Communication;
 using NDistribUnit.Common.Server.Services;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
+using NDistribUnit.Common.TestExecution.Scheduling;
 using NDistribUnit.Common.TestExecution.Storage;
 using NDistribUnit.Common.Updating;
 
@@ -62,14 +60,14 @@ namespace NDistribUnit.Common.Dependencies
             builder.RegisterInstance(ServerConfiguration.LogConfiguration);
 
             builder.RegisterType<Server.Services.Server>().InstancePerLifetimeScope();
-            builder.RegisterType<TestUnitsCollection>().InstancePerLifetimeScope();
+            builder.RegisterType<TestUnitsCollection>().AsSelf().As<ITestUnitsCollection>().InstancePerLifetimeScope();
             builder.RegisterType<AgentsCollection>().InstancePerLifetimeScope();
             builder.RegisterType<AgentUpdater>().As<IAgentUpdater>().InstancePerLifetimeScope();
             builder.RegisterType<DashboardService>().InstancePerLifetimeScope();
             builder.RegisterType<AgentsTracker>().InstancePerLifetimeScope();
             builder.RegisterType<UpdateSource>().As<IUpdateSource>();
             builder.RegisterType<RequestsStorage>().As<IRequestsStorage>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterType<Reprocessor>().As<IReprocessor>().InstancePerLifetimeScope();
+            builder.RegisterType<TestReprocessor>().As<ITestReprocessor>().InstancePerLifetimeScope();
             builder.Register(c => 
                 new ResultsStorage(c.Resolve<TestResultsProcessor>(), 
                     c.Resolve<ITestResultsSerializer>(),

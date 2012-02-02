@@ -59,7 +59,7 @@ namespace NDistribUnit.Common.TestExecution
         /// <param name="fullName">The full name.</param>
         /// <param name="isSuite">if set to <c>true</c> [is suite].</param>
         /// <returns></returns>
-        private static TestResult GetResult(Exception exception, string description, string testType, string fullName, bool isSuite = true)
+        public static TestResult GetResult(Exception exception, string description, string testType, string fullName, bool isSuite = true)
         {
             var result = new TestResult(new TestDataProvider
                                             {
@@ -120,7 +120,7 @@ namespace NDistribUnit.Common.TestExecution
             return result;
         }
 
-        private static TestResult GetResultForTest(TestUnit test, Exception exception)
+        internal static TestResult GetResultForTest(TestUnit test, Exception exception)
         {
             var description = string.Format("There was an error, when running '{0}'", test.UniqueTestId);
 

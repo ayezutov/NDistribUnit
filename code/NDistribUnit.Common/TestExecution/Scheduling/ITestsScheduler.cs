@@ -2,7 +2,7 @@ using System;
 using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 
-namespace NDistribUnit.Common.TestExecution
+namespace NDistribUnit.Common.TestExecution.Scheduling
 {
     /// <summary>
     /// 

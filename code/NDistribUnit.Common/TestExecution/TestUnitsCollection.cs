@@ -9,7 +9,7 @@ namespace NDistribUnit.Common.TestExecution
 	/// <summary>
 	/// 
 	/// </summary>
-	public class TestUnitsCollection
+	public class TestUnitsCollection: ITestUnitsCollection
 	{
         /// <summary>
         /// The synchronization object, which is used for thread safe access to that collection
@@ -55,6 +55,12 @@ namespace NDistribUnit.Common.TestExecution
 	    {
 	        lock (SyncObject)
 	        {
+                if (available.Contains(testUnit))
+                    return;
+
+                if (running.Contains(testUnit))
+                    running.Remove(testUnit);
+
 	            available.Add(testUnit);
 	        }
             AvailableAdded.SafeInvoke(this);
@@ -110,4 +116,16 @@ namespace NDistribUnit.Common.TestExecution
             return available.Any(belongsToSameTestRun) || running.Any(belongsToSameTestRun);
 	    }
 	}
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface ITestUnitsCollection
+    {
+        /// <summary>
+        /// Adds the specified test unit.
+        /// </summary>
+        /// <param name="testUnit">The test unit.</param>
+        void Add(TestUnitWithMetadata testUnit);
+    }
 }

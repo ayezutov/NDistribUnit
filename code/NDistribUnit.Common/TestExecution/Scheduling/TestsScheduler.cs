@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Concurrent;
-using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
 using NDistribUnit.Common.TestExecution.Exceptions;
 using NDistribUnit.Common.TestExecution.Storage;
 
-namespace NDistribUnit.Common.TestExecution
+namespace NDistribUnit.Common.TestExecution.Scheduling
 {
     /// <summary>
     /// 

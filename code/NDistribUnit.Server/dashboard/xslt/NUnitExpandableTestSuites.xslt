@@ -101,12 +101,12 @@
                 .button-collapse { width: 15px; height: 15px; background-repeat: no-repeat; background-image: url(data:image/gif;base64,R0lGODlhDwAPAPcAAAAAAAAACBAQEBAQGBgYGBgYISEhITExMTExOTExQjk5OUJCUkpKUlJSUlJSa1paWmNjY2Njc2tre2trhHNzc3NzjHt7e4SEhKWlpa2trbW1tb29vcbGxs7OztbW1t7e3ufn5+/v7/f39////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////yH5BAEAACMALAAAAAAPAA8AAAiIAEcIHEiwoMGDA0OAWMiwIYgQIj4oMECxokUDED6AUCAgAYOPC0AaCPBAg4gNCAxEqMCwwoIBDyyYDJEBQQEHFSpMSEDgAQUMHUaIAKGhAQEHEhAQgPCzQwiBQzcYJYDRQgYPTwcO5QCBAYULGT5kJSgiRIcMGDZ8EIGwLEO2CKHCjUu3LsGAAAA7);
 }
 
-                .img-success { width: 16px;height: 16px;background-repeat: no-repeat; display:inline; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAipJREFUOE+Vks1rE0EYxvdP0EJFim1Fwa3VxOzOZpOmIlsQlKattODBil5Fdrd4UNSLzUGsrVA10dTNB0VQsQcL6inRXlRE04MkShS14EcXkeIHVLQxJo8zm3ZNTFvoLM/Ozsvym2eeeTkA3Er1/tsbDD8awLQ5DW7seRStcQnbYzJaY14qT5kq1764DCb5CoHPL8MwDHDXM1FI5x2oVxrB+/lltfXIZpAIgRgU4N/TTo2DowAD7kEeqqoil8strrk5jGduQb5M0Ni7HkLIic7ujn8AmQL0vj5WqBqFQgFPPjxECz1a3c618OzzQLwoVAKYgxKgWHqKRQtUoPPrmVdou6qAP7wBLV4v7mbvUIBIAZ2VR9B0HTOzJtLmJNiubHz9+QXdY10QzjlR27AG2ZdZJN4mqgHyWR4dB3ejbXQH5Jgb4duXkM//xsn7R0EMCXXeGoRCQctZcioBYjkoy8A9REPUVQw9OAPJELHtVDMGbp6m3xKatU1QFMUKl43kVHIRAMtA1/Dj13e0X9sFMkIgBF2Qwi6srl+FdDpth7s0YP4WRp9FIVIXxCDY2NsATdXsTJZ3MA/4PPsJvpgPW040oXZdDUzTtG9lAVC6hfIMBpvsPsj/ySM+EYbD5UQqlarYfQlAFO5hBw7178fTjxOWHr9L4N6LcXu9UGfzyOQFKx/bwY1MBGJEoBL/E+35qhr7R6AA2ok9XaVGYq9jgePoObB3ReoPBCzAX052pd0ZB2HYAAAAAElFTkSuQmCC);
+                .img-success { width: 16px;height: 16px;background-repeat: no-repeat; display:inline-block; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAipJREFUOE+Vks1rE0EYxvdP0EJFim1Fwa3VxOzOZpOmIlsQlKattODBil5Fdrd4UNSLzUGsrVA10dTNB0VQsQcL6inRXlRE04MkShS14EcXkeIHVLQxJo8zm3ZNTFvoLM/Ozsvym2eeeTkA3Er1/tsbDD8awLQ5DW7seRStcQnbYzJaY14qT5kq1764DCb5CoHPL8MwDHDXM1FI5x2oVxrB+/lltfXIZpAIgRgU4N/TTo2DowAD7kEeqqoil8strrk5jGduQb5M0Ni7HkLIic7ujn8AmQL0vj5WqBqFQgFPPjxECz1a3c618OzzQLwoVAKYgxKgWHqKRQtUoPPrmVdou6qAP7wBLV4v7mbvUIBIAZ2VR9B0HTOzJtLmJNiubHz9+QXdY10QzjlR27AG2ZdZJN4mqgHyWR4dB3ejbXQH5Jgb4duXkM//xsn7R0EMCXXeGoRCQctZcioBYjkoy8A9REPUVQw9OAPJELHtVDMGbp6m3xKatU1QFMUKl43kVHIRAMtA1/Dj13e0X9sFMkIgBF2Qwi6srl+FdDpth7s0YP4WRp9FIVIXxCDY2NsATdXsTJZ3MA/4PPsJvpgPW040oXZdDUzTtG9lAVC6hfIMBpvsPsj/ySM+EYbD5UQqlarYfQlAFO5hBw7178fTjxOWHr9L4N6LcXu9UGfzyOQFKx/bwY1MBGJEoBL/E+35qhr7R6AA2ok9XaVGYq9jgePoObB3ReoPBCzAX052pd0ZB2HYAAAAAElFTkSuQmCC);
 }
-                .img-warning { width: 16px; height: 16px; background-repeat: no-repeat;  display:inline; background-image: url(data:image/gif;base64,R0lGODlhEAAQAOb/AEk7PcDAwEk7TlVPV2Zfa1FNVGZfbVFNVmReblxWb19acJSRnl5ZcV5ZcF5acSIUcg8Aaj8vq05JbUVDZQQAVQMAOjEwYUhHcgAAPQAAEwAACAAAB3N0tUZNlv/8AP//AOzpAv//A//9Bf//Bf//Bt7bBv//Cf/+EP/+Ev//EvXzFP//Hf//LWFhRpeXj//4AP/5AP/6AOrjALKvAf/5AvryAv/3A//7BurkB//2DP/wAP/0AP/1APLlAP/0Cv/0Db63E//qAP/sAP/tAMS3APvrBP/rBf/tDt7ODqmgGf/kAP/nAP/oAP/pAOnSAOfTAOrSAv/nA//kB/jjCv/lDP/eAP/fAP/gAP/fAezOA+jMBfPWBvzfDtW9DoJ3JP/ZANO3EMKqHP/TAP/VAP/XAPfLAOjDAOzGAs6uEu7QNf/OAP/RAP7MAPjGAO6/AOvGHq2SG+/KMvzHAPnGAPjFAPfEAEU9H1pWTCAZEWNTRFpPTAAAAAAAAAAAAAAAAAAAACH5BAEAAAEALAAAAAAQABAAQAe1gAGCg4SFgz1QPh9eD143I10chgE9NiUzJjiShD1nVGRVTBsYYTovNCJom5wqLCCrhj1FJBkUAiFIsJRZR1ZBW3AxOz8kYJtxbnVtc2tkbGJybXRqYxaTPR8uk4UyJisfLduCPSYaFXofd9tOOR92EHkpHwWGWlNGHkkAQDUnHgeEzHCR8kXIEyJDeMBAAWOAoDdlsHy50gRPhDRMviiJsmSCoAUSEjBwgICAAgYMGhi40CFAIAA7);
+                .img-warning { width: 16px; height: 16px; background-repeat: no-repeat;  display:inline-block; background-image: url(data:image/gif;base64,R0lGODlhEAAQAOb/AEk7PcDAwEk7TlVPV2Zfa1FNVGZfbVFNVmReblxWb19acJSRnl5ZcV5ZcF5acSIUcg8Aaj8vq05JbUVDZQQAVQMAOjEwYUhHcgAAPQAAEwAACAAAB3N0tUZNlv/8AP//AOzpAv//A//9Bf//Bf//Bt7bBv//Cf/+EP/+Ev//EvXzFP//Hf//LWFhRpeXj//4AP/5AP/6AOrjALKvAf/5AvryAv/3A//7BurkB//2DP/wAP/0AP/1APLlAP/0Cv/0Db63E//qAP/sAP/tAMS3APvrBP/rBf/tDt7ODqmgGf/kAP/nAP/oAP/pAOnSAOfTAOrSAv/nA//kB/jjCv/lDP/eAP/fAP/gAP/fAezOA+jMBfPWBvzfDtW9DoJ3JP/ZANO3EMKqHP/TAP/VAP/XAPfLAOjDAOzGAs6uEu7QNf/OAP/RAP7MAPjGAO6/AOvGHq2SG+/KMvzHAPnGAPjFAPfEAEU9H1pWTCAZEWNTRFpPTAAAAAAAAAAAAAAAAAAAACH5BAEAAAEALAAAAAAQABAAQAe1gAGCg4SFgz1QPh9eD143I10chgE9NiUzJjiShD1nVGRVTBsYYTovNCJom5wqLCCrhj1FJBkUAiFIsJRZR1ZBW3AxOz8kYJtxbnVtc2tkbGJybXRqYxaTPR8uk4UyJisfLduCPSYaFXofd9tOOR92EHkpHwWGWlNGHkkAQDUnHgeEzHCR8kXIEyJDeMBAAWOAoDdlsHy50gRPhDRMviiJsmSCoAUSEjBwgICAAgYMGhi40CFAIAA7);
 }
            
-                .img-failure { width: 16px;height: 16px;background-repeat: no-repeat; display:inline; background-image: url(data:image/gif;base64,R0lGODlhEAAQAMQAAAAAANMjI8wAAOV7e9pEROucnOBlZdxPT9c5OemSku2np9EYGNYyMuJwcPCyss8SEt5aWueGhv///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAUUABIALAAAAAAQABAAAAVaoCSOZGkCaGqOgKMUSTQAa/uiQ2PQpA2jOsiBJ/HFUAYhAcEDvGIzgBLBaMJkDdRhyQg0oToUN7BoYpNbKvnRzKHHi0eV9Uat2SVAGhUXEHtqfX95KSgrhyYhADs=);
+                .img-failure { width: 16px;height: 16px;background-repeat: no-repeat; display:inline-block; background-image: url(data:image/gif;base64,R0lGODlhEAAQAMQAAAAAANMjI8wAAOV7e9pEROucnOBlZdxPT9c5OemSku2np9EYGNYyMuJwcPCyss8SEt5aWueGhv///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAUUABIALAAAAAAQABAAAAVaoCSOZGkCaGqOgKMUSTQAa/uiQ2PQpA2jOsiBJ/HFUAYhAcEDvGIzgBLBaMJkDdRhyQg0oToUN7BoYpNbKvnRzKHHi0eV9Uat2SVAGhUXEHtqfX95KSgrhyYhADs=);
 }
 
 				.col0 { width: 20px;min-width: 20px; max-width: 20px; float:left;}
@@ -207,6 +207,7 @@
 					<xsl:attribute name="class"><xsl:text>clickable</xsl:text></xsl:attribute>
 					<div title="Toggle display of Tests contained within this assembly" class="button-collapse">
 						<xsl:attribute name="id"><xsl:text>img-</xsl:text><xsl:value-of select="$divId"/></xsl:attribute>
+						<xsl:text> </xsl:text>
 					</div>
 					<xsl:text>&#0160;</xsl:text>
 					<strong>
@@ -247,6 +248,7 @@
 									<div class="col0">
 										<div title="Toggle display of the tests within this text fixture" class="button-expand">
 											<xsl:attribute name="id"><xsl:text>img-</xsl:text><xsl:value-of select="$testsId"/></xsl:attribute>
+											<xsl:text> </xsl:text>
 										</div>
 									</div>
 									<div class="col3">
@@ -406,13 +408,13 @@
 		<xsl:param name="Succeeded"/>
 		<xsl:choose>
 			<xsl:when test="$Executed='False'">
-			    <div class="img-warning" title="The test wasn't run"></div>
+			    <div class="img-warning" title="The test wasn't run"><xsl:text> </xsl:text></div>
 			</xsl:when>
 			<xsl:when test="$Executed='True' and $Succeeded='False'">
-				<div class="img-failure" title="The test failed"></div>
+				<div class="img-failure" title="The test failed"><xsl:text> </xsl:text></div>
 			</xsl:when>
 			<xsl:when test="$Executed='True' and $Succeeded='True'">
-			    <div class="img-success" title="The test succeeded"></div>
+			    <div class="img-success" title="The test succeeded"><xsl:text> </xsl:text></div>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>

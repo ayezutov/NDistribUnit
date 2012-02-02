@@ -1,19 +1,20 @@
 using NDistribUnit.Common.Contracts.DataContracts;
+using NDistribUnit.Common.Server.AgentsTracking;
 using NUnit.Core;
 
 namespace NDistribUnit.Common.TestExecution
 {
     /// <summary>
-    /// A reprocessing strategy
+    /// 
     /// </summary>
-    public class Reprocessor : IReprocessor
+    public interface ITestReprocessor
     {
         /// <summary>
         /// Adds for reprocessing if required.
         /// </summary>
         /// <param name="test">The test.</param>
         /// <param name="result">The result.</param>
-        public void AddForReprocessingIfRequired(TestUnitWithMetadata test, TestResult result)
-        {}
+        /// <param name="agent"> </param>
+        void AddForReprocessingIfRequired(TestUnitWithMetadata test, TestResult result, AgentMetadata agent);
     }
 }

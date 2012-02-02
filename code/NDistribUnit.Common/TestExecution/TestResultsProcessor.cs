@@ -88,8 +88,7 @@ namespace NDistribUnit.Common.TestExecution
                 // Finding result by ReferenceEquals not to be tight to private variable name
                 var resultsField = model.GetType()
                     .GetFields(BindingFlags.Default | BindingFlags.Instance | BindingFlags.NonPublic)
-                    .Where(f => ReferenceEquals(f.GetValue(model), model.Results))
-                    .FirstOrDefault();
+                    .FirstOrDefault(f => ReferenceEquals(f.GetValue(model), model.Results));
 
                 if (resultsField != null)
                     resultsField.SetValue(model, results);

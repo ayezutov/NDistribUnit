@@ -169,6 +169,7 @@
     <Compile Include="TestExecution\DistributedConfiguration\DistributedConfigurationVariablesValue.cs" />
     <Compile Include="TestExecution\DistributedConfiguration\IDistributedConfigurationOperator.cs" />
     <Compile Include="TestExecution\DistributedConfiguration\SequenceDistributedConfigurationVariable.cs" />
+    <Compile Include="TestExecution\Scheduling\SchedulingHint.cs" />
     <Compile Include="TestExecution\TestDataProvider.cs" />
     <Compile Include="TestExecution\TestResultExtensions.cs" />
     <Compile Include="TestExecution\TestResultFactory.cs" />
@@ -207,16 +208,16 @@
     <Compile Include="TestExecution\Configuration\TestRunParametersFileReader.cs" />
     <Compile Include="TestExecution\Configuration\TestRunParametersXmlReader.cs" />
     <Compile Include="TestExecution\Exceptions\NoAvailableAgentsException.cs" />
-    <Compile Include="TestExecution\IReprocessor.cs" />
+    <Compile Include="TestExecution\ITestReprocessor.cs" />
     <Compile Include="TestExecution\IResultsStorage.cs" />
     <Compile Include="TestExecution\ITestResultsSerializer.cs" />
     <Compile Include="TestExecution\ITestsRetriever.cs" />
-    <Compile Include="TestExecution\ITestsScheduler.cs" />
+    <Compile Include="TestExecution\Scheduling\ITestsScheduler.cs" />
     <Compile Include="TestExecution\NUnitTestsFilter.cs" />
-    <Compile Include="TestExecution\Reprocessor.cs" />
+    <Compile Include="TestExecution\TestReprocessor.cs" />
     <Compile Include="TestExecution\ResultsStorage.cs" />
     <Compile Include="TestExecution\RunResultsCollection.cs" />
-    <Compile Include="TestExecution\SchedulerHints.cs" />
+    <Compile Include="TestExecution\TestUnitAttachedData.cs" />
     <Compile Include="TestExecution\Storage\IProjectPackager.cs" />
     <Compile Include="TestExecution\Storage\IRequestsStorage.cs" />
     <Compile Include="TestExecution\Storage\ProjectPackager.cs" />
@@ -230,7 +231,7 @@
     <Compile Include="TestExecution\TestResultsSerializer.cs" />
     <Compile Include="TestExecution\TestsRetriever.cs" />
     <Compile Include="TestExecution\NUnitInitializer.cs" />
-    <Compile Include="TestExecution\TestsScheduler.cs" />
+    <Compile Include="TestExecution\Scheduling\TestsScheduler.cs" />
     <Compile Include="TestExecution\TestType.cs" />
     <Compile Include="TestExecution\TestUnit.cs" />
     <Compile Include="TestExecution\TestUnitsCollection.cs" />
