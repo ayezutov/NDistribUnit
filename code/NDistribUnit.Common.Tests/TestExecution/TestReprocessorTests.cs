@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using Moq;
 using NDistribUnit.Common.Contracts.DataContracts;
+using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.Configuration;
@@ -35,7 +36,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
             resultsfactory = new TestResultsFixture();
 
             collectionMock = new Mock<ITestUnitsCollection>();
-            reprocessor = new TestReprocessor(collectionMock.Object);
+            reprocessor = new TestReprocessor(collectionMock.Object, new ConsoleLog());
         }
 
         [Test]

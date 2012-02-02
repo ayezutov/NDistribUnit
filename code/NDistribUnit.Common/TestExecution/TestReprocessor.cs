@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NDistribUnit.Common.Common.Extensions;
 using NDistribUnit.Common.Contracts.DataContracts;
+using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution.Scheduling;
 using NUnit.Core;
@@ -15,14 +16,17 @@ namespace NDistribUnit.Common.TestExecution
     public class TestReprocessor : ITestReprocessor
     {
         private readonly ITestUnitsCollection collection;
+        private readonly ILog log;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestReprocessor"/> class.
         /// </summary>
         /// <param name="collection">The collection.</param>
-        public TestReprocessor(ITestUnitsCollection collection)
+        /// <param name="log">The log.</param>
+        public TestReprocessor(ITestUnitsCollection collection, ILog log)
         {
             this.collection = collection;
+            this.log = log;
         }
 
         /// <summary>
@@ -113,6 +117,7 @@ namespace NDistribUnit.Common.TestExecution
 
         private void AddTestForReprocessing(TestUnitWithMetadata test, AgentMetadata agent)
         {
+            log.Info(string.Format("REPROCESSING: '{0}' was added for reprocessing. [{1}]", test.FullName, test.Test.Run));
             test.AttachedData.MarkAgentAs(agent, SchedulingHint.NotRecommended);
             collection.Add(test);
         }
