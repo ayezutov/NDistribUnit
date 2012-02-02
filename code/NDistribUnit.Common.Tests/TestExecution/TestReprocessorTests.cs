@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ServiceModel;
-using Moq;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.Configuration;
 using NDistribUnit.Common.Tests.TestExecution.Fixtures;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace NDistribUnit.Common.Tests.TestExecution
@@ -16,7 +16,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
     public class TestReprocessorTests
     {
         private TestReprocessor reprocessor;
-        private Mock<ITestUnitsCollection> collectionMock;
+        private ITestUnitsCollection collectionMock;
         private TestUnitsFixture unitsFixture;
         private TestResultsFixture resultsfactory;
         private TestRun testRun;
@@ -35,8 +35,9 @@ namespace NDistribUnit.Common.Tests.TestExecution
             unitsFixture = new TestUnitsFixture(testRun);
             resultsfactory = new TestResultsFixture();
 
-            collectionMock = new Mock<ITestUnitsCollection>();
-            reprocessor = new TestReprocessor(collectionMock.Object, new ConsoleLog());
+            collectionMock = Substitute.For<ITestUnitsCollection>();
+            
+            reprocessor = new TestReprocessor(collectionMock, new ConsoleLog());
         }
 
         [Test]
@@ -55,7 +56,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
 
             reprocessor.AddForReprocessingIfRequired(unit, resultsfactory.Build(), new AgentMetadata(new EndpointAddress("net.tcp://test/")));
 
-            collectionMock.Verify(c => c.Add(It.IsAny<TestUnitWithMetadata>()), Times.Never());
+            collectionMock.DidNotReceiveWithAnyArgs().Add(Arg.Any<TestUnitWithMetadata>());
         }
 
         [Test]
@@ -74,7 +75,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
 
             reprocessor.AddForReprocessingIfRequired(unit, resultsfactory.Build(), new AgentMetadata(new EndpointAddress("net.tcp://test/")));
 
-            collectionMock.Verify(c => c.Add(It.IsAny<TestUnitWithMetadata>()), Times.Never());
+            collectionMock.DidNotReceiveWithAnyArgs().Add(Arg.Any<TestUnitWithMetadata>());
         }
 
         [Test]
@@ -105,7 +106,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
             reprocessor.AddForReprocessingIfRequired(units[0], result, agent);
             reprocessor.AddForReprocessingIfRequired(units[1], result, agent);
 
-            collectionMock.Verify(c => c.Add(It.IsAny<TestUnitWithMetadata>()), Times.Never());
+            collectionMock.DidNotReceiveWithAnyArgs().Add(Arg.Any<TestUnitWithMetadata>());
         }
 
         [Test]
@@ -151,10 +152,10 @@ namespace NDistribUnit.Common.Tests.TestExecution
             reprocessor.AddForReprocessingIfRequired(units[0], result, agent);
             reprocessor.AddForReprocessingIfRequired(units[1], result, agent);
 
-            collectionMock.Verify(c => c.Add(It.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1"))),
-                Times.Once());
-            collectionMock.Verify(c => c.Add(It.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S2"))),
-                Times.Once());
+            collectionMock.Received(1)
+                .Add(Arg.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1")));
+            collectionMock.Received(1)
+                .Add(Arg.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S2")));
         }
 
 
@@ -197,10 +198,10 @@ namespace NDistribUnit.Common.Tests.TestExecution
             var agent = new AgentMetadata(new EndpointAddress("net.tcp://test/"));
             reprocessor.AddForReprocessingIfRequired(units[0], result, agent);
 
-            collectionMock.Verify(c => c.Add(It.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1.tc1"))), 
-                Times.Once());
-            collectionMock.Verify(c => c.Add(It.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1.tc3"))),
-                Times.Once());
+            collectionMock.Received(1)
+                .Add(Arg.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1.tc1")));
+            collectionMock.Received(1)
+                .Add(Arg.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1.tc3")));
         }
 
         [Test]
@@ -242,8 +243,9 @@ namespace NDistribUnit.Common.Tests.TestExecution
             var agent = new AgentMetadata(new EndpointAddress("net.tcp://test/"));
             reprocessor.AddForReprocessingIfRequired(units[0], result, agent);
 
-            collectionMock.Verify(c => c.Add(It.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1"))), 
-                Times.Once());
+
+            collectionMock.Received(1)
+                .Add(Arg.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1")));
         }
 
         [Test]
@@ -278,8 +280,9 @@ namespace NDistribUnit.Common.Tests.TestExecution
             var agent = new AgentMetadata(new EndpointAddress("net.tcp://test/"));
             reprocessor.AddForReprocessingIfRequired(units[0].Children[1], result, agent);
 
-            collectionMock.Verify(c => c.Add(It.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1.tc2"))), 
-                Times.Once());
+
+            collectionMock.Received(1)
+                .Add(Arg.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1.tc2")));
         }
 
         [Test]
@@ -319,8 +322,9 @@ namespace NDistribUnit.Common.Tests.TestExecution
                 reprocessor.AddForReprocessingIfRequired(units[0], result, agent);
             }
 
-            collectionMock.Verify(c => c.Add(It.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1.tc3"))),
-                Times.Exactly(2));
+
+            collectionMock.Received(2)
+                .Add(Arg.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1.tc3")));
         }
 
         [Test]
@@ -359,9 +363,13 @@ namespace NDistribUnit.Common.Tests.TestExecution
             {
                 reprocessor.AddForReprocessingIfRequired(units[0].Children[2], result, agent);
             }
+            
 
-            collectionMock.Verify(c => c.Add(It.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1.tc3"))),
-                Times.Exactly(2));
+            collectionMock.Received(2)
+                .Add(Arg.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1.tc3")));
+
+            collectionMock.DidNotReceive()
+                .Add(Arg.Is<TestUnitWithMetadata>(v => !v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1.tc3")));
         }
 
         [Test]
@@ -401,8 +409,10 @@ namespace NDistribUnit.Common.Tests.TestExecution
                 reprocessor.AddForReprocessingIfRequired(units[0], result, agent);
             }
 
-            collectionMock.Verify(c => c.Add(It.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1"))),
-                Times.Exactly(2));
+            collectionMock.Received(2)
+                .Add(Arg.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1")));
+            collectionMock.DidNotReceive()
+                .Add(Arg.Is<TestUnitWithMetadata>(v => !v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1")));
         }
     }
 }

@@ -47,7 +47,8 @@ namespace NDistribUnit.Common.TestExecution
             if (!test.Test.Info.IsSuite)
             {
                 var childResult = result.FindDescedant(d => d.FullName.Equals(test.FullName));
-                if (childResult != null && ProcessResult(childResult, test.Test.Run, test))
+                if (childResult != null 
+                    && ProcessResult(childResult, test.Test.Run, test) == ReprocessingVerdict.PerformReprocessing)
                 {
                     AddTestForReprocessing(test, agent);
                 }
@@ -57,11 +58,17 @@ namespace NDistribUnit.Common.TestExecution
 
             foreach (var suiteResult in result.FindBottomLevelTestSuites())
             {
-                if (test.FullName.Equals(suiteResult.FullName)
-                    && ProcessResult(suiteResult, test.Test.Run, test))
+                if (test.FullName.Equals(suiteResult.FullName))
                 {
-                    AddTestForReprocessing(test, agent);
-                    continue;
+                    var reprocessingVerdict = ProcessResult(suiteResult, test.Test.Run, test);
+                    if (reprocessingVerdict == ReprocessingVerdict.MaximumCountWasReached)
+                        return;
+                    
+                    if (reprocessingVerdict == ReprocessingVerdict.PerformReprocessing)
+                    {
+                        AddTestForReprocessing(test, agent);
+                        continue;
+                    }
                 }
 
                 var childrenForReprocessing = new List<Tuple<TestResult, TestUnitWithMetadata>>();
@@ -74,7 +81,7 @@ namespace NDistribUnit.Common.TestExecution
                                 childTest = new TestUnitWithMetadata(test.Test.Run, childResult.Test, test.Test.AssemblyName);
                                 test.Children.Add(childTest);
                                 return childTest;
-                            })) 
+                            })==ReprocessingVerdict.PerformReprocessing) 
                         
                         childrenForReprocessing.Add(new Tuple<TestResult, TestUnitWithMetadata>(childResult, childTest));
                 }
@@ -91,28 +98,30 @@ namespace NDistribUnit.Common.TestExecution
             }
         }
 
-        private bool ProcessResult(TestResult result, TestRun testRun, TestUnitWithMetadata test,
+        private ReprocessingVerdict ProcessResult(TestResult result, TestRun testRun, TestUnitWithMetadata test,
                                    Func<TestUnitWithMetadata> createTestUnit = null)
         {
             if (result.ResultState.IsOneOf(
                 ResultState.Ignored,
                 ResultState.Success,
                 ResultState.Cancelled))
-                return false;
+                return ReprocessingVerdict.Skipped;
 
             var specialHandling = testRun.Parameters.GetSpecialHandling(result.Message, result.StackTrace);
 
             if (specialHandling == null)
-                return false;
+                return ReprocessingVerdict.NoHandlingFound;
 
             test = test ?? (createTestUnit != null
                                 ? createTestUnit()
                                 : null);
 
             if (test == null)
-                return false;
+                return ReprocessingVerdict.Other;
 
-            return test.AttachedData.GetCountAndIncrease(specialHandling) <= specialHandling.RetryCount;
+            return test.AttachedData.GetCountAndIncrease(specialHandling) <= specialHandling.RetryCount
+                ? ReprocessingVerdict.PerformReprocessing 
+                : ReprocessingVerdict.MaximumCountWasReached;
         }
 
         private void AddTestForReprocessing(TestUnitWithMetadata test, AgentMetadata agent)
@@ -120,6 +129,15 @@ namespace NDistribUnit.Common.TestExecution
             log.Info(string.Format("REPROCESSING: '{0}' was added for reprocessing. [{1}]", test.FullName, test.Test.Run));
             test.AttachedData.MarkAgentAs(agent, SchedulingHint.NotRecommended);
             collection.Add(test);
+        }
+
+        private enum ReprocessingVerdict
+        {
+            NoHandlingFound,
+            Skipped,
+            MaximumCountWasReached,
+            PerformReprocessing,
+            Other
         }
     }
 }
