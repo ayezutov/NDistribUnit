@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.TestExecution;
 using NUnit.Core;
 using NUnit.Framework;
@@ -162,6 +161,88 @@ namespace NDistribUnit.Common.Tests.TestExecution
 
             
             processor.Merge(branch2, branch1);
+
+            Assert.That(mergePoint.Results.Cast<TestResult>().Select(r => r.FullName).ToArray(), 
+                Is.EquivalentTo(new[]
+                                    {
+                                        "NDistribUnit.Namespace.TestSuite.TestMethod1",
+                                        "NDistribUnit.Namespace.TestSuite.TestMethod2"
+                                    }));
+            var firstChild = ((TestResult)mergePoint.Results[0]);
+            Assert.That(firstChild.ResultState, Is.EqualTo(ResultState.Success));
+            Assert.That(firstChild.GetAgentName(), Is.EqualTo("FIRST"));
+
+            var secondChild = ((TestResult)mergePoint.Results[1]);
+            Assert.That(secondChild.ResultState, Is.EqualTo(ResultState.Success));
+            Assert.That(secondChild.GetAgentName(), Is.EqualTo("SECOND"));
+        }
+        
+        [Test]
+        public void EnsureThatMergingOfFailedAndSuccessfulTestsLeavesSuccess()
+        {
+            TestResult mergePoint = null;
+
+            var branch1 = 
+            data.CreateTestResult(TestType.Project, "D:/ndistribunit/somepath/project.nunit", 
+            children:
+            ()=> new[]
+            {
+                data.CreateTestResult(TestType.Assembly, "D:/ndistribunit/somepath/assembly1.dll",
+                children:
+                ()=>new[]
+                {
+                    data.CreateTestResult(TestType.Namespace, "NDistribUnit",
+                    children: 
+                    ()=>new[]
+                    {
+                        data.CreateTestResult(TestType.Namespace, "NDistribUnit.Namespace",
+                        children: 
+                        ()=>new[]
+                        {
+                            data.CreateTestResult(TestType.TestFixture, "NDistribUnit.Namespace.TestSuite",
+                            children: 
+                            ()=>new[]
+                            {
+                                data.CreateTestResult(TestType.TestMethod, "NDistribUnit.Namespace.TestSuite.TestMethod1", agentName: "FIRST"),
+                                data.CreateTestResult(TestType.TestMethod, "NDistribUnit.Namespace.TestSuite.TestMethod2", ResultState.Failure, agentName:"FIRST")
+                            })
+                        })
+                    })
+                })
+            });
+
+
+            var branch2 =
+            data.CreateTestResult(TestType.Project, "D:/ndistribunit/somepath/project.nunit",
+            children:
+            () => new[]
+            {
+                data.CreateTestResult(TestType.Assembly, "D:/ndistribunit/somepath/assembly1.dll",
+                children:
+                ()=>new[]
+                {
+                    data.CreateTestResult(TestType.Namespace, "NDistribUnit",
+                    children: 
+                    ()=>new[]
+                    {
+                        data.CreateTestResult(TestType.Namespace, "NDistribUnit.Namespace",
+                        children: 
+                        ()=>new[]
+                        {
+                            mergePoint = data.CreateTestResult(TestType.TestFixture, "NDistribUnit.Namespace.TestSuite",
+                            children: 
+                            ()=>new[]
+                            {
+                                data.CreateTestResult(TestType.TestMethod, "NDistribUnit.Namespace.TestSuite.TestMethod1", ResultState.Failure, agentName:"SECOND"),
+                                data.CreateTestResult(TestType.TestMethod, "NDistribUnit.Namespace.TestSuite.TestMethod2", agentName:"SECOND")
+                            })
+                        })
+                    })
+                })
+            });
+
+            
+            processor.Merge(branch1, branch2);
 
             Assert.That(mergePoint.Results.Cast<TestResult>().Select(r => r.FullName).ToArray(), 
                 Is.EquivalentTo(new[]

@@ -113,8 +113,11 @@ namespace NDistribUnit.Common.TestExecution.Configuration
             return s => s != null && s.Contains(value);
         }
 
+        [NonSerialized]
         private bool initialized;
+        [NonSerialized]
         private Func<string, bool> isMessageMatching;
+        [NonSerialized]
         private Func<string, bool> isStackTraceMatching;
     }
 }

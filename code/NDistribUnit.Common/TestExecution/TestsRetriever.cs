@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using NDistribUnit.Common.Client;
-using NDistribUnit.Common.Common.ConsoleProcessing;
-using NDistribUnit.Common.Common.Domains;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.TestExecution.Data;
@@ -13,7 +11,6 @@ using NDistribUnit.Common.TestExecution.Storage;
 using NDistribUnit.Common.Updating;
 using NUnit.Core;
 using NUnit.Util;
-using AssemblyResolver = NDistribUnit.Common.Common.AssemblyResolver;
 using DomainManager = NDistribUnit.Common.Common.Domains.DomainManager;
 
 namespace NDistribUnit.Common.TestExecution
@@ -138,12 +135,8 @@ namespace NDistribUnit.Common.TestExecution
             {
                 var isTestSuiteWithAtLeastOneTestMethod = (test.IsSuite && test.Tests != null && test.Tests.Count != 0 &&
                                                            !((ITest) test.Tests[0]).IsSuite);
-
-//                string testToRun = testRun.NUnitParameters.TestToRun;
-
+                
                 if (!test.IsSuite || isTestSuiteWithAtLeastOneTestMethod)
-//                    || (string.IsNullOrEmpty(testToRun) && isTestSuiteWithAtLeastOneTestMethod)
-//                    || (!string.IsNullOrEmpty(testToRun) && test.TestName.FullName.StartsWith(testToRun) && isTestSuiteWithAtLeastOneTestMethod))
                 {
                     List<TestUnitWithMetadata> subTests = null;
                     if (test.IsSuite && test.Tests != null)

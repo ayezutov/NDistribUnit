@@ -37,7 +37,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
 
             collectionMock = Substitute.For<ITestUnitsCollection>();
             
-            reprocessor = new TestReprocessor(collectionMock, new ConsoleLog());
+            reprocessor = new TestReprocessor(collectionMock, new ConsoleLog(), null);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace NDistribUnit.Common.Tests.TestExecution
 
             reprocessor.AddForReprocessingIfRequired(unit, resultsfactory.Build(), new AgentMetadata(new EndpointAddress("net.tcp://test/")));
 
-            collectionMock.DidNotReceiveWithAnyArgs().Add(Arg.Any<TestUnitWithMetadata>());
+            collectionMock.DidNotReceive().Add(Arg.Any<TestUnitWithMetadata>());
         }
 
         [Test]
@@ -152,7 +152,8 @@ namespace NDistribUnit.Common.Tests.TestExecution
             reprocessor.AddForReprocessingIfRequired(units[0], result, agent);
             reprocessor.AddForReprocessingIfRequired(units[1], result, agent);
 
-            collectionMock.Received(1)
+            collectionMock
+                .Received(1)
                 .Add(Arg.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1")));
             collectionMock.Received(1)
                 .Add(Arg.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S2")));
@@ -365,7 +366,8 @@ namespace NDistribUnit.Common.Tests.TestExecution
             }
             
 
-            collectionMock.Received(2)
+            collectionMock
+                .Received(2)
                 .Add(Arg.Is<TestUnitWithMetadata>(v => v.FullName.Equals("As.Nam1.Nam2.Nam3.Nam4.S1.tc3")));
 
             collectionMock.DidNotReceive()

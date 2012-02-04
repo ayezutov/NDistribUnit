@@ -48,20 +48,13 @@ namespace NDistribUnit.Common.TestExecution
         /// </value>
         public List<TestResult> Results { get; private set; }
 
-        [NonSerialized]
-        private TestUnitAttachedData attachedData;
-
         /// <summary>
         /// Gets or sets the scheduler hints.
         /// </summary>
         /// <value>
         /// The scheduler hints.
         /// </value>
-        public TestUnitAttachedData AttachedData
-        {
-            get { return attachedData; }
-            private set { attachedData = value; }
-        }
+        public TestUnitAttachedData AttachedData { get; private set; }
 
         /// <summary>
         /// Gets the full name.

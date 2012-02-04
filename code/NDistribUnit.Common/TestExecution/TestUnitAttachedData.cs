@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution.Configuration;
@@ -8,6 +9,7 @@ namespace NDistribUnit.Common.TestExecution
     /// <summary>
     /// Holds the data, which is required for the scheduler to make right decisions
     /// </summary>
+    [Serializable]
     public class TestUnitAttachedData
     {
         /// <summary>
@@ -28,6 +30,19 @@ namespace NDistribUnit.Common.TestExecution
         public int GetCountAndIncrease(TestRunFailureSpecialHandling specialHandling)
         {
             return specialHandlingsEntryCount.AddOrUpdate(specialHandling, 1, (handling, i) => ++i);
+        }
+
+        /// <summary>
+        /// Gets the count.
+        /// </summary>
+        /// <param name="specialHandling">The special handling.</param>
+        /// <returns></returns>
+        public int GetCount(TestRunFailureSpecialHandling specialHandling)
+        {
+            int v;
+            if (!specialHandlingsEntryCount.TryGetValue(specialHandling, out v))
+                return 0;
+            return v;
         }
 
         /// <summary>

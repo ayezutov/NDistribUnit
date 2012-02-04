@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using NDistribUnit.Common.Common.Extensions;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.AgentsTracking;
 using NDistribUnit.Common.TestExecution.Scheduling;
+using NDistribUnit.Common.TestExecution.Storage;
 using NUnit.Core;
 
 namespace NDistribUnit.Common.TestExecution
@@ -17,16 +19,19 @@ namespace NDistribUnit.Common.TestExecution
     {
         private readonly ITestUnitsCollection collection;
         private readonly ILog log;
+        private readonly RequestsStorage requests;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestReprocessor"/> class.
         /// </summary>
         /// <param name="collection">The collection.</param>
         /// <param name="log">The log.</param>
-        public TestReprocessor(ITestUnitsCollection collection, ILog log)
+        /// <param name="requests">The requests.</param>
+        public TestReprocessor(ITestUnitsCollection collection, ILog log, RequestsStorage requests)
         {
             this.collection = collection;
             this.log = log;
+            this.requests = requests;
         }
 
         /// <summary>
@@ -37,10 +42,16 @@ namespace NDistribUnit.Common.TestExecution
         /// <param name="agent"> </param>
         public void AddForReprocessingIfRequired(TestUnitWithMetadata test, TestResult result, AgentMetadata agent)
         {
+            var request = requests != null ? requests.GetBy(test.Test.Run) : null;
+            Action registerReprocessing = () => { if (request != null) request.Statistics.RegisterReprocessing(); };
+
             if (result == null)
             {
                 test.AttachedData.NullReprocessingCount++;
                 collection.Add(test);
+                log.Info(string.Format("REPROCESSING (as null): '{0}' was added for reprocessing. [{1}]",
+                   test.FullName, test.Test.Run));
+                registerReprocessing();
                 return;
             }
 
@@ -51,11 +62,12 @@ namespace NDistribUnit.Common.TestExecution
                     && ProcessResult(childResult, test.Test.Run, test) == ReprocessingVerdict.PerformReprocessing)
                 {
                     AddTestForReprocessing(test, agent);
+                    registerReprocessing();
                 }
                 return;
             }
 
-
+            
             foreach (var suiteResult in result.FindBottomLevelTestSuites())
             {
                 if (test.FullName.Equals(suiteResult.FullName))
@@ -67,6 +79,7 @@ namespace NDistribUnit.Common.TestExecution
                     if (reprocessingVerdict == ReprocessingVerdict.PerformReprocessing)
                     {
                         AddTestForReprocessing(test, agent);
+                        registerReprocessing();
                         continue;
                     }
                 }
@@ -87,12 +100,16 @@ namespace NDistribUnit.Common.TestExecution
                 }
 
                 if (childrenForReprocessing.Count > 0 && childrenForReprocessing.Count == suiteResult.Results.Count)
+                {
                     AddTestForReprocessing(test, agent);
+                    registerReprocessing();
+                }
                 else
                 {
                     foreach (var childForReprocessing in childrenForReprocessing)
                     {
                         AddTestForReprocessing(childForReprocessing.Item2, agent);
+                        registerReprocessing();
                     }
                 }
             }
@@ -101,6 +118,9 @@ namespace NDistribUnit.Common.TestExecution
         private ReprocessingVerdict ProcessResult(TestResult result, TestRun testRun, TestUnitWithMetadata test,
                                    Func<TestUnitWithMetadata> createTestUnit = null)
         {
+            if (result == null)
+                return ReprocessingVerdict.Other;
+
             if (result.ResultState.IsOneOf(
                 ResultState.Ignored,
                 ResultState.Success,
@@ -112,21 +132,28 @@ namespace NDistribUnit.Common.TestExecution
             if (specialHandling == null)
                 return ReprocessingVerdict.NoHandlingFound;
 
-            test = test ?? (createTestUnit != null
+            test = (test ?? (createTestUnit != null
                                 ? createTestUnit()
-                                : null);
+                                : null));
 
             if (test == null)
                 return ReprocessingVerdict.Other;
 
-            return test.AttachedData.GetCountAndIncrease(specialHandling) <= specialHandling.RetryCount
+            var doReprocess = test.AttachedData.GetCountAndIncrease(specialHandling) <= specialHandling.RetryCount;
+
+            if (doReprocess)
+            {
+                log.Info(string.Format("REPROCESSING ({2}/{3}): '{0}' was added for reprocessing. [{1}]", 
+                    test.FullName, test.Test.Run, test.AttachedData.GetCount(specialHandling), specialHandling.RetryCount));
+            }
+
+            return doReprocess
                 ? ReprocessingVerdict.PerformReprocessing 
                 : ReprocessingVerdict.MaximumCountWasReached;
         }
 
         private void AddTestForReprocessing(TestUnitWithMetadata test, AgentMetadata agent)
         {
-            log.Info(string.Format("REPROCESSING: '{0}' was added for reprocessing. [{1}]", test.FullName, test.Test.Run));
             test.AttachedData.MarkAgentAs(agent, SchedulingHint.NotRecommended);
             collection.Add(test);
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.ServiceModel;
@@ -178,7 +179,11 @@ namespace NDistribUnit.Common.TestExecution
                 else
                     log.EndActivity(string.Format("Project '{0}' exist on agent {1}", test.Test.Run, agent));
 
-                log.BeginActivity(string.Format("Running {0} on {1} with variables ({2})...", test.Test.UniqueTestId, agent, configurationSubstitutions));
+                var reprocessedCount = request.Statistics.ReprocessedCount;
+                log.BeginActivity(string.Format("[{3}/{4}]: Running {0} on {1} with variables ({2})...", test.Test.UniqueTestId, agent, configurationSubstitutions,
+                    request.Statistics.GetCountAndIncrement(), reprocessedCount == 0 
+                    ? request.Statistics.Total.ToString(CultureInfo.InvariantCulture) 
+                    : string.Format("{2}({0}+{1})", request.Statistics.Total, reprocessedCount, request.Statistics.Total + reprocessedCount)));
                 TestResult result = testRunnerAgent.RunTests(test.Test, configurationSubstitutions);
                 log.EndActivity(string.Format("Finished running {0} on {1}...", test.Test.UniqueTestId, agent));
 
@@ -298,10 +303,11 @@ namespace NDistribUnit.Common.TestExecution
                     Complete(TestResultFactory.GetNoAvailableTestFailure(request), request.TestRun);
                     return;
                 }
-
+                //
                 request.ConfigurationSetup = configurationOperator.ReadConfigurationSetup(project, request.TestRun.NUnitParameters);
                 log.Info(string.Format("There were {0} tests found in {1}", testUnits != null ? testUnits.Count : 0, request.TestRun));
                 tests.AddRange(testUnits);
+                request.Statistics.Initialize(testUnits != null ? testUnits.Count : 0);
                 log.EndActivity("Finished parsing project into separate test units");
             }
             catch (Exception ex)
