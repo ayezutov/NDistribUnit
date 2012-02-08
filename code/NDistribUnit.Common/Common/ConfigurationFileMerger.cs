@@ -18,8 +18,9 @@ namespace NDistribUnit.Common.Common
         /// </summary>
         /// <param name="base">The @base.</param>
         /// <param name="part">The part.</param>
+        /// <param name="suffix"> </param>
         /// <returns></returns>
-        public string MergeFiles(string @base, string part)
+        public string MergeFiles(string @base, string part, string suffix)
         {
             if (@base == null)
                 return null;
@@ -29,7 +30,7 @@ namespace NDistribUnit.Common.Common
 
             var resultingDocument = MergeFilesToString(@base, part);
 
-            var mergedFileName = InAnotherDomainConfigurationMerger.GetMergedFileName(@base);
+            var mergedFileName = InAnotherDomainConfigurationMerger.GetMergedFileName(@base, suffix);
 
             if (File.Exists(mergedFileName))
                 File.Delete(mergedFileName);
@@ -85,10 +86,11 @@ namespace NDistribUnit.Common.Common
         /// Gets the name of the merged file.
         /// </summary>
         /// <param name="baseName">Name of the base.</param>
+        /// <param name="suffix"> </param>
         /// <returns></returns>
-        public static string GetMergedFileName(string baseName)
+        public static string GetMergedFileName(string baseName, string suffix)
         {
-            return Path.ChangeExtension(baseName, ".merged.config");
+            return Path.ChangeExtension(baseName, string.IsNullOrEmpty(suffix) ? ".merged.config" : string.Format("merged.{0}.config", suffix));
         }
 
         /// <summary>

@@ -1,7 +1,10 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
+using NDistribUnit.Common.Agent.Naming;
 using NDistribUnit.Common.Common;
+using NDistribUnit.Common.Common.Cleanup;
 using NDistribUnit.Common.Common.Domains;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Updating;
@@ -14,6 +17,7 @@ namespace NDistribUnit.Agent
     public abstract class EntryPoint
     {
         private const string appDomainMergedConfigurationKey = "ndistribunit.bootstrapped.configuration.merged";
+        private const string appDomainInstanceTrackerState = "ndistribunit.bootstrapped.instanceTracker.State";
 
         /// <summary>
         /// Runs the specified program with provided arguments.
@@ -29,6 +33,17 @@ namespace NDistribUnit.Agent
                 return (int) ReturnCodes.CannotLaunchBootstrappedApplicationDirectly;
             }
 
+            var state = AppDomain.CurrentDomain.GetData(appDomainInstanceTrackerState) as InstanceTrackerState;
+            if (state != null)
+                InstanceTracker.InitToState(state);
+
+            var startupCleaner = new StartupCleaner(bootstrapperParameters.RootFolder);
+            var instanceTracker = new InstanceTracker();
+            instanceTracker.Init(i=> startupCleaner.RunOnFirstInstanceStart());
+
+            System.Console.WriteLine("Entry point: {0}", instanceTracker.GetInstanceNumber());
+            startupCleaner.Run();
+
             var mergedConfigFileName = (string)AppDomain.CurrentDomain.GetData(appDomainMergedConfigurationKey);
 
             if (bootstrapperParameters.ConfigurationFile != null && mergedConfigFileName == null)
@@ -36,17 +51,19 @@ namespace NDistribUnit.Agent
                 string entryAssemblyFile = Assembly.GetEntryAssembly().Location;
                 var mergedConfig = new ConfigurationFileMerger()
                     .MergeFiles(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile,
-                                bootstrapperParameters.ConfigurationFile);
+                                bootstrapperParameters.ConfigurationFile, instanceTracker.GetInstanceNumber().ToString(CultureInfo.InvariantCulture));
 
                 var domain = DomainManager.CreateDomain(
                     AppDomain.CurrentDomain.FriendlyName + "-with-merged-configuration", 
                     Path.GetDirectoryName(entryAssemblyFile),
                     mergedConfig);
+                
                 DomainManager.AddResolverForPaths(domain, DomainManager.GetNUnitFolders(bootstrapperParameters));
                 try
                 {
                     BootstrapperParameters.WriteToDomain(bootstrapperParameters, domain);
                     domain.SetData(appDomainMergedConfigurationKey, mergedConfig);
+                    domain.SetData(appDomainInstanceTrackerState, InstanceTracker.GetState());
                     return domain.ExecuteAssembly(entryAssemblyFile, args);
                 }
                 catch

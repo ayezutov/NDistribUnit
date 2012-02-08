@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
 using NDistribUnit.Common.Contracts.DataContracts;
+using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
-using NUnit.Core;
 
 namespace NDistribUnit.Common.Agent
 {
@@ -15,7 +14,7 @@ namespace NDistribUnit.Common.Agent
     {
         private class TestRunnerMetadata
         {
-            public TestRunner Runner { get; set; }
+            public NDistribUnitProcessRunner Runner { get; set; }
             //public Timer Timer { get; set; }
         }
 
@@ -28,7 +27,7 @@ namespace NDistribUnit.Common.Agent
         /// <param name="substitutions"></param>
         /// <param name="loadRunner">The action.</param>
         /// <returns></returns>
-        public TestRunner GetOrLoad(TestRun testRun, DistributedConfigurationSubstitutions substitutions, Func<TestRunner> loadRunner)
+        public NDistribUnitProcessRunner GetOrLoad(TestRun testRun, DistributedConfigurationSubstitutions substitutions, Func<NDistribUnitProcessRunner> loadRunner)
         {
             var key = GetKey(testRun);
             //var timeSpan = TimeSpan.FromHours(4);

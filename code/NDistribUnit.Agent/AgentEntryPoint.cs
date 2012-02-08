@@ -2,7 +2,6 @@ using System;
 using System.Configuration;
 using Autofac;
 using NDistribUnit.Common.Agent;
-using NDistribUnit.Common.Agent.Naming;
 using NDistribUnit.Common.Dependencies;
 using NDistribUnit.Common.Logging;
 
@@ -28,9 +27,7 @@ namespace NDistribUnit.Agent
         {
             var configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var agentConfiguration = configuration.GetSection("settings") as AgentConfiguration;
-            if (agentConfiguration != null)
-                agentConfiguration.AgentName = string.Format("{0} #{1:000}", Environment.MachineName,
-                                                             InstanceNumberSearcher.Number);
+            
 
             var builder = new ContainerBuilder();
             builder.RegisterType<AgentProgram>();

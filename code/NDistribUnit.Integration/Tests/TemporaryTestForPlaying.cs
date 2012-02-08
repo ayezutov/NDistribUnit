@@ -10,11 +10,15 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Autofac;
 using Moq;
+using NDistribUnit.Common.Agent;
 using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Logging;
+using NDistribUnit.Common.TestExecution;
+using NUnit.Core;
 using NUnit.Framework;
 using System.Xml.XPath;
+using NUnit.Util;
 using Vestris.ResourceLib;
 using IContainer = Autofac.IContainer;
 

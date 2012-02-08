@@ -79,6 +79,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -106,22 +107,30 @@
     <Compile Include="Agent\ExternalModules\AnnouncementModule.cs" />
     <Compile Include="Agent\ExternalModules\DiscoveryModule.cs" />
     <Compile Include="Agent\ExternalModules\IAgentExternalModule.cs" />
-    <Compile Include="Agent\INativeRunnerCache.cs" />
-    <Compile Include="Agent\Naming\InstanceNumberSearcher.cs" />
-    <Compile Include="Agent\NativeRunnerCache.cs" />
+    <Compile Include="TestExecution\INativeRunnerCache.cs" />
+    <Compile Include="Agent\Naming\InstanceTracker.cs" />
+    <Compile Include="Agent\Naming\InstanceTrackerState.cs" />
+    <Compile Include="TestExecution\NativeRunnerCache.cs" />
     <Compile Include="Agent\AgentTestRunner.cs" />
     <Compile Include="Agent\Agent.cs" />
+    <Compile Include="TestExecution\NDistribUnitProcessRunner.cs" />
     <Compile Include="Client\ClientParameters.cs" />
     <Compile Include="Client\ClientProgram.cs" />
     <Compile Include="Client\NUnitParameters.cs" />
     <Compile Include="Common\AssemblyResolver.cs" />
+    <Compile Include="Common\Cleanup\StartupCleaner.cs" />
     <Compile Include="Common\Communication\ServiceConfiguration.cs" />
     <Compile Include="Common\ConfigurationFileMerger.cs" />
     <Compile Include="Common\ConsoleProcessing\ExceptionCatcher.cs" />
     <Compile Include="Common\Domains\DomainManager.cs" />
     <Compile Include="Common\Domains\InAnotherDomainResolverCreator.cs" />
     <Compile Include="Common\Extensions\EnumExtensions.cs" />
+    <Compile Include="Common\Extensions\ObjectExtensions.cs" />
     <Compile Include="Common\PathUtilities.cs" />
+    <Compile Include="Common\PInvoke\Win32.cs" />
+    <Compile Include="Common\ProcessManagement\ProcessCreationWatcher.cs" />
+    <Compile Include="Common\ProcessManagement\ProcessTreeKiller.cs" />
+    <Compile Include="Common\ProcessManagement\Win32_Process.cs" />
     <Compile Include="Common\Unlocker.cs" />
     <Compile Include="Contracts\DataContracts\Test.cs" />
     <Compile Include="Client\IClient.cs" />

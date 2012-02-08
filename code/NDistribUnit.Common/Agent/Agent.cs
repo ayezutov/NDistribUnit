@@ -1,5 +1,7 @@
 using System;
 using System.ServiceModel;
+using System.ServiceModel.Dispatcher;
+using NDistribUnit.Common.Agent.Naming;
 using NDistribUnit.Common.Common.ConsoleProcessing;
 using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Common.Updating;
@@ -35,20 +37,20 @@ namespace NDistribUnit.Common.Agent
         /// <param name="log">The log.</param>
         /// <param name="logStorage">The log storage.</param>
         /// <param name="updateReceiver">The update receiver.</param>
-        /// <param name="configuration">The configuration.</param>
         /// <param name="versionProvider">The version provider.</param>
         /// <param name="runner">The runner.</param>
         /// <param name="exceptionCatcher">The exception catcher.</param>
         /// <param name="projects">The projects.</param>
+        /// <param name="instanceProvider">The instance provider.</param>
         public Agent(
             ILog log,
             RollingLog logStorage,
             IUpdateReceiver updateReceiver,
-            AgentConfiguration configuration,
             IVersionProvider versionProvider,
             AgentTestRunner runner,
             ExceptionCatcher exceptionCatcher,
-            IProjectsStorage projects)
+            IProjectsStorage projects,
+            IInstanceTracker instanceProvider)
         {
             this.log = log;
             this.logStorage = logStorage;
@@ -57,7 +59,7 @@ namespace NDistribUnit.Common.Agent
             this.runner = runner;
             this.exceptionCatcher = exceptionCatcher;
             this.projects = projects;
-            Name = configuration.AgentName;
+            Name = string.Format("{0} #{1:000}", Environment.MachineName, instanceProvider.GetInstanceNumber());
         }
 
         /// <summary>

@@ -1,7 +1,7 @@
 using System;
 using NDistribUnit.Common.Contracts.DataContracts;
+using NDistribUnit.Common.TestExecution;
 using NDistribUnit.Common.TestExecution.DistributedConfiguration;
-using NUnit.Core;
 
 namespace NDistribUnit.Common.Agent
 {
@@ -17,7 +17,7 @@ namespace NDistribUnit.Common.Agent
         /// <param name="substitutions"></param>
         /// <param name="loadRunner">The action.</param>
         /// <returns></returns>
-        TestRunner GetOrLoad(TestRun testRun, DistributedConfigurationSubstitutions substitutions, Func<TestRunner> loadRunner);
+        NDistribUnitProcessRunner GetOrLoad(TestRun testRun, DistributedConfigurationSubstitutions substitutions, Func<NDistribUnitProcessRunner> loadRunner);
 
         /// <summary>
         /// Removes the specified run.

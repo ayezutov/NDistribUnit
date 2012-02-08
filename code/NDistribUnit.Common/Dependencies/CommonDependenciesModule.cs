@@ -1,5 +1,6 @@
 using System;
 using Autofac;
+using NDistribUnit.Common.Agent.Naming;
 using NDistribUnit.Common.Common;
 using NDistribUnit.Common.Common.Communication;
 using NDistribUnit.Common.Common.ConsoleProcessing;
@@ -54,6 +55,7 @@ namespace NDistribUnit.Common.Dependencies
 
             
             builder.RegisterType<NUnitInitializer>().As<ITestSystemInitializer>().InstancePerLifetimeScope();
+            builder.RegisterType<InstanceTracker>().As<IInstanceTracker>().InstancePerLifetimeScope();
             builder.RegisterType<ExceptionCatcher>().InstancePerLifetimeScope();
             builder.Register(c => new AssemblyResolver(c.Resolve<ILog>())).InstancePerLifetimeScope();
         }

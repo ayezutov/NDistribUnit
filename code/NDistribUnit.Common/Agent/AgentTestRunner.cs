@@ -117,21 +117,12 @@ namespace NDistribUnit.Common.Agent
                                                              
                                                              package.Settings["ShadowCopyFiles"] = true;
                                                              package.AutoBinPath = true;
-//                                                             package.BasePath = bootstrapperParameters.RootFolder;
-//                                                             package.PrivateBinPath =
-//                                                                 DomainManager.GetPrivateBinPath(
-//                                                                     bootstrapperParameters.RootFolder,
-//                                                                     new ArrayList()
-//                                                                         {
-//                                                                             Assembly.GetExecutingAssembly().Location,
-//                                                                             mappedAssemblyFile
-//                                                                         });
                                                              if (!string.IsNullOrEmpty(configurationFileName))
                                                              {
                                                                  package.ConfigurationFile = configurationFileName;
                                                              }
 
-                                                             var nativeTestRunner = new DefaultTestRunnerFactory().MakeTestRunner(package);
+                                                             var nativeTestRunner = new NDistribUnitProcessRunner(log);
                                                              nativeTestRunner.Load(package);
                                                              return nativeTestRunner;
                                                          });
@@ -150,6 +141,7 @@ namespace NDistribUnit.Common.Agent
                                                                                testOptions.IncludeCategories,
                                                                                testOptions.ExcludeCategories,
                                                                                test.UniqueTestId).NativeFilter);
+                                             nativeRunner.CleanupAfterRun();
                                          }
                                          //TODO: remove this. This is for tracking purposes only
                                          catch(AppDomainUnloadedException ex)
