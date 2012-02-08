@@ -123,10 +123,10 @@ namespace NDistribUnit.Common.Client
                     {
                         log.BeginActivity("Sending project to server...");
                         server.ReceiveProject(new ProjectMessage
-                        {
-                            Project = packageStream,
-                            TestRun = testRun
-                        });
+                                                  {
+                                                      Project = packageStream,
+                                                      TestRun = testRun
+                                                  });
                         log.EndActivity("Project was successfully sent to server");
                     }
                 }
@@ -148,78 +148,71 @@ namespace NDistribUnit.Common.Client
                 return (int) ReturnCodes.NetworkConnectivityError;
             }
 
-            var testRunningTask = Task.Factory.StartNew(() =>
-                                                            {
-                                                                try
-                                                                {
-                                                                    log.BeginActivity("Started running tests...");
-                                                                    
-                                                                    TestResult tempResult;
-                                                                    while ((tempResult = server.RunTests(testRun)) !=
-                                                                           null)
-                                                                    {
-                                                                        if (tempResult.IsFinal())
-                                                                        {
-                                                                            result = tempResult;
-                                                                            log.Info("Running all tests completed!");
-                                                                            break;
-                                                                        }
+            var testRunningTask = Task.Factory.StartNew(
+                () =>
+                    {
+                        try
+                        {
+                            log.BeginActivity("Started running tests...");
 
-                                                                        if (result == null)
-                                                                            result = tempResult;
-                                                                        else
-                                                                            resultsProcessor.Merge(tempResult, result);
+                            TestResult tempResult;
+                            while ((tempResult = server.RunTests(testRun)) != null)
+                            {
+                                if (tempResult.IsFinal())
+                                {
+                                    result = tempResult;
+                                    log.Info("Running all tests completed!");
+                                    break;
+                                }
 
-                                                                        SaveResult(result);
+                                if (result == null)
+                                    result = tempResult;
+                                else
+                                    resultsProcessor.Merge(tempResult, result);
 
-                                                                        PrintSummaryInfoForResult(tempResult);
-                                                                    }
-                                                                    log.EndActivity("Finished running tests");
-                                                                }
-                                                                catch (Exception ex)
-                                                                {
-                                                                    log.Error("An error occurred while running tests",
-                                                                              ex);
-                                                                }
-                                                            });
-            var updateTask = Task.Factory.StartNew(() =>
-                                                       {
-                                                           try
-                                                           {
-                                                               log.BeginActivity("Checking for updates...");
-                                                               var updatePackage =
-                                                                   server.GetUpdatePackage(new UpdateRequest
-                                                                                               {
-                                                                                                   Version =
-                                                                                                       versionProvider.
-                                                                                                       GetVersion()
-                                                                                               });
-                                                               if (updatePackage.IsAvailable)
-                                                               {
-                                                                   log.EndActivity("Update package available");
+                                SaveResult(result);
 
-                                                                   log.BeginActivity(
-                                                                       string.Format("Receiving update to {0}...",
-                                                                                     updatePackage.Version));
-                                                                   updateReceiver.SaveUpdatePackage(updatePackage);
-                                                                   log.EndActivity(
-                                                                       string.Format(
-                                                                           "Update {0} was successfully received",
-                                                                           updatePackage.Version));
-                                                               }
-                                                               else
-                                                                   log.EndActivity("No updates available.");
-                                                           }
-                                                           catch (Exception ex)
-                                                           {
-                                                               log.Warning(
-                                                                   "There was an exception when trying to get an update",
-                                                                   ex);
-                                                           }
-                                                       });
+                                PrintSummaryInfoForResult(tempResult);
+                            }
+                            log.EndActivity("Finished running tests");
+                        }
+                        catch (Exception ex)
+                        {
+                            log.Error("An error occurred while running tests", ex);
+                        }
+                    });
+
+            var updateTask = Task.Factory.StartNew(
+                () =>
+                    {
+                        try
+                        {
+                            log.BeginActivity("Checking for updates...");
+                            var updatePackage = server.GetUpdatePackage(
+                                new UpdateRequest
+                                    {
+                                        Version = versionProvider.GetVersion()
+                                    });
+                            if (updatePackage.IsAvailable)
+                            {
+                                log.EndActivity("Update package available");
+
+                                log.BeginActivity(string.Format("Receiving update to {0}...", updatePackage.Version));
+                                updateReceiver.SaveUpdatePackage(updatePackage);
+                                log.EndActivity(string.Format("Update {0} was successfully received",
+                                                              updatePackage.Version));
+                            }
+                            else
+                                log.EndActivity("No updates available.");
+                        }
+                        catch (Exception ex)
+                        {
+                            log.Warning("There was an exception when trying to get an update", ex);
+                        }
+                    });
             try
             {
-                Task.WaitAll(new[] {testRunningTask, updateTask}, options.TimeoutPeriod);
+                Task.WaitAll(new[] {testRunningTask, updateTask});
             }
             catch (AggregateException ex)
             {
