@@ -135,9 +135,9 @@ namespace NDistribUnit.Common.TestExecution
                     new ProcessTreeKiller().KillTree((uint)Agent.ProcessId, false);
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                log.Warning("Exception while cleaning up resources after run");
+                log.Warning("Exception while cleaning up resources after run", ex);
             }
         }
     }

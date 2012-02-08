@@ -107,6 +107,7 @@
     <Compile Include="Agent\ExternalModules\AnnouncementModule.cs" />
     <Compile Include="Agent\ExternalModules\DiscoveryModule.cs" />
     <Compile Include="Agent\ExternalModules\IAgentExternalModule.cs" />
+    <Compile Include="Common\Logging\ExceptionEntry.cs" />
     <Compile Include="TestExecution\INativeRunnerCache.cs" />
     <Compile Include="Agent\Naming\InstanceTracker.cs" />
     <Compile Include="Agent\Naming\InstanceTrackerState.cs" />

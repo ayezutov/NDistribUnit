@@ -1,4 +1,5 @@
-﻿using NDistribUnit.Common.Common.ConsoleProcessing;
+﻿using System;
+using NDistribUnit.Common.Common.ConsoleProcessing;
 using NDistribUnit.Common.Common.Updating;
 using NDistribUnit.Common.Communication;
 using NDistribUnit.Common.Logging;
@@ -35,6 +36,7 @@ namespace NDistribUnit.Common.Server
         /// <returns></returns>
         public int Run()
         {
+            log.Error("Is it available", new NotImplementedException("He?"));
             return exceptionCatcher.Run(() =>
             {
                 if (!bootstrapperParameters.AllParametersAreFilled)

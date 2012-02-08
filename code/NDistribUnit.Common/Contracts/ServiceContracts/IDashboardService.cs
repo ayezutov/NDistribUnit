@@ -2,6 +2,7 @@
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using NDistribUnit.Common.Common.Communication;
+using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.DataContracts;
 using NDistribUnit.Common.Logging;
 using NDistribUnit.Common.Server.Services;

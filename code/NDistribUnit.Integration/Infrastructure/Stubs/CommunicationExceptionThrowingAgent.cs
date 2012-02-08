@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ServiceModel;
+using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;

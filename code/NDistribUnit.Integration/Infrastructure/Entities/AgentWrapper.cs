@@ -2,6 +2,7 @@
 using System.ServiceModel;
 using System.Threading;
 using NDistribUnit.Common.Agent;
+using NDistribUnit.Common.Common.Logging;
 using NDistribUnit.Common.Contracts.DataContracts;
 using NDistribUnit.Common.Contracts.ServiceContracts;
 using NDistribUnit.Common.DataContracts;

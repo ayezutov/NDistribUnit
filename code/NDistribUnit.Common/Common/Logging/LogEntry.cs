@@ -1,8 +1,9 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using NDistribUnit.Common.Logging;
 
-namespace NDistribUnit.Common.Logging
+namespace NDistribUnit.Common.Common.Logging
 {
     /// <summary>
     /// The entry, which is saved in log
@@ -24,7 +25,7 @@ namespace NDistribUnit.Common.Logging
             Id = id;
             Type = type;
             Message = message;
-            Exception = exception;
+            Exception = exception != null ? new ExceptionEntry(exception) : null;
             LogTime = logTime;
         }
 
@@ -44,7 +45,7 @@ namespace NDistribUnit.Common.Logging
         /// The exception (if any), which is saved in log
         /// </summary>
         [DataMember]
-        public Exception Exception { get; private set; }
+        public ExceptionEntry Exception { get; private set; }
 
         /// <summary>
         /// The type of the log entry
@@ -57,13 +58,5 @@ namespace NDistribUnit.Common.Logging
         /// </summary>
         [DataMember]
         public DateTime LogTime { get; private set; }
-
-        /// <summary>
-        /// Value, specifying, whether the entry has an exception attached.
-        /// </summary>
-        public bool HasException
-        {
-            get { return Exception != null; }
-        }
     }
 }
