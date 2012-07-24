@@ -137,7 +137,10 @@ namespace NDistribUnit.Common.HashChecks
 		{
 			try
 			{
-				var original = LoadFromFile(fileName);
+				// do not validate for now
+				return;
+
+				/*var original = LoadFromFile(fileName);
 				if (original == null)
 					throw new HashValidationException(new[]
 					                                  	{
@@ -162,7 +165,7 @@ namespace NDistribUnit.Common.HashChecks
 
 				if (result.Count == 0)
 					return;
-				throw new HashValidationException(result);
+				throw new HashValidationException(result);*/
 			}
 			catch(IOException ex)
 			{
